@@ -13,7 +13,11 @@ export const GetStarted = () => (
           Follow the instructions to use the Spiderly.
         </div>
       </div>
-      <div></div>
+      <div >
+{/* 1. Faster development
+2. Less mistakes
+3.  */}
+      </div>
     </HomepageSectionWrapper>
   </>
 );

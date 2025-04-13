@@ -17,9 +17,9 @@ export const Hero = () => (
         <div className="text-5xl md:text-7xl font-bold py-1 mb-2">Fast.</div>
       </h1>
       <div className="text-lg md:text-xl py-1 text-gray-400">
-        From diagram to application in minutes. No more boring code, focus only
-        on specific logic. Generate the entire frontend and backend from C# .NET
-        classes, with full control and customization.
+        Generate front-end and back-end CRUD operations code from C# classes,
+        with full customization. Code updates automatically with every class
+        change at the right place in the project.
       </div>
     </div>
     <div className="w-full bg-linear-to-br from-50% to-pink-900 pb-6 pr-6 rounded-lg">
