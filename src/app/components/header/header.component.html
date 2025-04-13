@@ -1,0 +1,37 @@
+<div>
+  <div class="header-wrapper">
+    <div class="header">
+      <div class="header-logo">
+        <i class="pi pi-globe"></i>
+        <span>Spiderly</span>
+      </div>
+
+      <nav class="header-desktop desktop-only">
+        <a class="header-link">Docs</a>
+        <a class="header-link">Pricing</a>
+        <a class="header-link" style="display: flex; align-items: center;">
+          <i class="pi pi-github" style="font-size: 20px;"></i>
+        </a>
+      </nav>
+
+      <nav class="mobile-only" style="display: flex; align-items: center;">
+        @if(isSideMenuActive){
+          <i (click)="toggleSideMenu()" class="header-link pi pi-times"></i>
+        } 
+        @else{
+          <i (click)="toggleSideMenu()" class="header-link pi pi-bars"></i>
+        }
+      </nav>
+    </div>
+  </div>
+
+  <div class="side-menu mobile-only {{isSideMenuActive ? 'side-menu-open' : ''}}">
+    <a class="side-menu-link">Docs</a>
+    <a class="side-menu-link">Pricing</a>
+    <a class="side-menu-link"> 
+      <i class="pi pi-github" style="font-size: 20px;"></i>
+    </a>
+  </div>
+
+  <div class="header-spacer"></div>
+</div>

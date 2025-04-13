@@ -1,0 +1,73 @@
+@use '../../../../variables.scss' as vars;
+
+.gradient-title {
+  font-size: 3rem;
+  font-weight: bold;
+  display: inline-block;
+  white-space: normal;
+
+  background-image: linear-gradient(to right, #db2777, #fde047);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  @media (min-width: vars.$md) {
+    font-size: 4.5rem;
+    white-space: nowrap;
+  }
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+
+  @media (min-width: vars.$md) {
+    font-size: 4.5rem;
+  }
+}
+
+.text-below-title {
+    font-size: 1.1rem;
+    color: vars.$gray-color;
+  
+    @media (min-width: vars.$md) {
+      font-size: 1.25rem;
+    }
+  }
+
+  .background-transparent-gradient {
+    background-image: linear-gradient(to bottom right, transparent 50%, #881337);
+    padding-bottom: 1.5rem;
+    padding-right: 1.5rem; 
+    border-radius: 0.5rem; 
+  }
+
+  .terminal-wrapper {
+    padding-left: 1.25rem;  
+    padding-right: 1.25rem;
+    padding-top: 1rem;      
+    padding-bottom: 1.5rem; 
+  
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+    color: #d1d5db;         
+    font-size: 0.875rem;    
+    background-color: #1f2937;
+    border-radius: 0.5rem;  
+    line-height: 1.5;       
+    overflow: hidden;
+  }
+
+  .terminal-circle {
+    height: 0.75rem;
+    width: 0.75rem; 
+    border-radius: 9999px;
+  }
+
+  .terminal-message {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding-left: 0.5rem;    
+  }
