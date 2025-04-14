@@ -1,0 +1,25 @@
+@use './variables.scss' as vars;
+@import "primeicons/primeicons.css";
+
+:root{
+
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: vars.$background-color;
+  color: vars.$text-color;
+  margin: 0px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,h2,h3,h4,h5,h6{
+  line-height: 1.1;
+  margin: 0;
+}
+
+code, pre {
+  font-family: "Fira Code", monospace;
+}

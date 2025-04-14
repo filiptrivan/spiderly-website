@@ -1,0 +1,22 @@
+@use '../../../assets/variables.scss' as vars;
+
+.button{
+    background-color: vars.$primary-color;
+    color: vars.$text-color;
+    padding: 7px 10.5px;
+
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--p-button-primary-border-color);
+    font-size: 1rem;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    border-radius: 6px;
+    outline-color: transparent;
+    gap: 2px;
+}

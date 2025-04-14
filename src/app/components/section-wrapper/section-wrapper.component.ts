@@ -10,4 +10,5 @@ import { CommonModule } from '@angular/common';
 })
 export class SectionWrapperComponent {
     @Input() color = 'black';
+    @Input() parts: 'one' | 'two' = 'one'
 }

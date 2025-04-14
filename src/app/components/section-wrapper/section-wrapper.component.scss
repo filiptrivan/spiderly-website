@@ -1,6 +1,8 @@
-@use '../../../variables.scss' as vars;
+@use '../../../assets/variables.scss' as vars;
 
-.container {
+.container-one {
+    text-align: center;
+
     padding-left: 1.25rem; 
     padding-right: 1.25rem;
   
@@ -18,7 +20,14 @@
     @media (min-width: vars.$md) {
       padding-top: 5rem;      
       padding-bottom: 5rem;
-  
+    }
+  }
+
+  .container-two {
+    @extend .container-one;
+    text-align: unset;
+
+    @media (min-width: vars.$md) {
       flex-direction: row;    
     }
   }
