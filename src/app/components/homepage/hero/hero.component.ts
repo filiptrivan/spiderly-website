@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionWrapperComponent } from "../../section-wrapper/section-wrapper.component";
-// import { ButtonComponent } from '../../button/button.component';
 import { ButtonModule } from 'primeng/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
@@ -12,15 +12,10 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     CommonModule, 
     SectionWrapperComponent, 
-    // ButtonComponent,
-    ButtonModule
+    ButtonModule,
+    RouterModule
   ]
 })
 export class HeroComponent {
-  terminalMessages: string[] = [
-    "spiderly init",
-    "App name without spaces: SpiderlyTestApp",
-    "Template type (blank/loyalty/invertory management): blank",
-    "Basic app structure created, now you can use Spiderly to generate the rest of the app!",
-  ];
+
 }

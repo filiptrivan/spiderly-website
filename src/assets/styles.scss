@@ -2,7 +2,7 @@
 @import "primeicons/primeicons.css";
 
 :root{
-
+  --background-color: #0a0a0a;
 }
 
 body {
@@ -22,4 +22,9 @@ h1,h2,h3,h4,h5,h6{
 
 code, pre {
   font-family: "Fira Code", monospace;
+}
+
+a {
+  text-decoration: none;
+  color: var(--p-primary-800);
 }

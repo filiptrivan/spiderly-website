@@ -6,7 +6,7 @@
   display: inline-block;
   white-space: normal;
 
-  background-image: linear-gradient(to right, vars.$primary-color, vars.$secondary-color);
+  background-image: linear-gradient(to right, vars.$primary-color, vars.$accent);
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;

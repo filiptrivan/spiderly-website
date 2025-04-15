@@ -1,5 +1,5 @@
 <div [style]="'display: flex; justify-content: center; align-items: center; color: {{color}};'">
-    <div class="{{parts === 'one' ? 'container-one' : 'container-two'}}">
+    <div class="{{parts === 'one' ? 'container-one' : 'container-two'}}" [style]="{'width': width + 'px', 'text-align': textAlign}">
         <ng-content></ng-content>
     </div>
 </div>
