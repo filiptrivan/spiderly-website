@@ -2,7 +2,7 @@
     <topbar></topbar>
 
     <div class="layout-sidebar">
-        <sidebar-menu [menu]="menu" (onMenuItemSelect)="menuItemSelectChange($event)"></sidebar-menu>
+        <sidebar-menu [menu]="menu" [lastSelectedEntity]="lastSelectedEntity" (onMenuItemSelect)="menuItemSelectChange($event)"></sidebar-menu>
     </div>
 
     <div class="layout-main-container">

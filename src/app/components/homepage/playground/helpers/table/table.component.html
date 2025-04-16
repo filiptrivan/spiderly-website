@@ -4,7 +4,6 @@
   [value]="data" 
   class="spiderly-table" 
   styleClass="p-datatable-gridlines" 
-  (onFilter)="filter($event)" 
   [rows]="4" 
   [paginator]="true" 
   [totalRecords]="data.length"
@@ -25,24 +24,26 @@
       </ng-template>
       <ng-template #header>
         <tr>
+          <th style="width: 0rem;">
+            Actions
+          </th>
           <ng-container *ngFor="let col of cols;">
             <th [style]="getColHeaderWidth(col.type)">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                {{col.name}}
-              </div>
+              {{col.name}}
             </th>
           </ng-container>
         </tr>
       </ng-template>
       <ng-template #body let-rowData>
           <tr>
+            <td>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 18px;">
+                  <span pTooltip="Edit" class="pi pi-pencil" style="cursor: pointer; color: var(--p-primary-color);" (click)="editRow(rowData)"></span>
+                  <span pTooltip="Delete" class="pi pi-trash" style="cursor: pointer; color: red;" (click)="deleteRow(rowData)"></span>
+              </div>
+            </td>
             <ng-container *ngFor="let col of cols;">
               <td [pTooltip]="getRowData(rowData, col)" [style]="getStyleForBodyColumn(col)">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 18px;">
-                  <!-- <ng-container *ngFor="let action of col.actions;" >
-                    <span [pTooltip]="action.name" [class]="getClassForAction(action)" (click)="getMethodForAction(action, rowData)"></span>
-                  </ng-container> -->
-                </div>
                 {{getRowData(rowData, col)}}
               </td>
             </ng-container>

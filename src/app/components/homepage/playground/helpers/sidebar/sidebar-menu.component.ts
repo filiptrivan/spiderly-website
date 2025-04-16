@@ -24,6 +24,7 @@ export interface SpiderlyMenuItem extends MenuItem{
 })
 export class SidebarMenuComponent implements OnInit {
     @Input() menu: SpiderlyMenuItem[] = [];
+    @Input() lastSelectedEntity: SpiderlyClass;
     @Output() onMenuItemSelect: EventEmitter<SpiderlyClass> = new EventEmitter();
 
     constructor(

@@ -1,26 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SpiderlyClass } from '../entities';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SidebarMenuService {
-    private menuSource = new Subject<MenuChangeEvent>();
-    private resetSource = new Subject();
+    private menuSource = new Subject<SpiderlyClass>();
 
     menuSource$ = this.menuSource.asObservable();
-    resetSource$ = this.resetSource.asObservable();
 
-    onMenuStateChange(event: MenuChangeEvent) {
+    onMenuStateChange(event: SpiderlyClass) {
         this.menuSource.next(event);
     }
-
-    reset() {
-        this.resetSource.next(true);
-    }
-}
-
-export class MenuChangeEvent {
-    key: string = '';
-    routeEvent?: boolean;
 }

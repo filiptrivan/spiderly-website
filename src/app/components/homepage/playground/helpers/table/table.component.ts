@@ -2,10 +2,12 @@ import { Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../layout/layout.service';
 import { CommonModule, formatDate } from '@angular/common';
-import { Table, TableFilterEvent, TableModule } from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { SpiderProperty } from '../entities';
 import { TooltipModule } from 'primeng/tooltip';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
     selector: 'app-table',
@@ -24,8 +26,6 @@ import { TooltipModule } from 'primeng/tooltip';
           }
           .p-datatable{
             position: unset;
-          }
-          .p-paginator{
           }
         }
       }
@@ -54,19 +54,24 @@ export class TableComponent implements OnInit {
     }
 
     exportListToExcel() {
-        throw new Error('Method not implemented.');
-    }
-
-    clear(dt: Table) {
-        throw new Error('Method not implemented.');
+      if (!this.data || this.data.length === 0) {
+        console.warn('No data to export');
+        return;
+      }
+    
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
+      const workbook: XLSX.WorkBook = {
+        Sheets: { 'Sheet1': worksheet },
+        SheetNames: ['Sheet1']
+      };
+    
+      const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+      FileSaver.saveAs(blob, `${this.tableTitle}.xlsx`);
     }
 
     navigateToDetails(id: number) {
       throw new Error('Method not implemented.');
-    }
-
-    filter($event: TableFilterEvent) {
-        throw new Error('Method not implemented.');
     }
 
     getColHeaderWidth(filterType: string) {
@@ -116,6 +121,14 @@ export class TableComponent implements OnInit {
         default:
           return null;
       }
+  }
+
+  editRow(rowData: any) {
+    throw new Error('Method not implemented.');
+  }
+
+  deleteRow(rowData: any) {
+    throw new Error('Method not implemented.');
   }
     
 }

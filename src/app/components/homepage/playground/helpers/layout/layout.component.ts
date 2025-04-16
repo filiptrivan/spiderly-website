@@ -25,14 +25,13 @@ export class LayoutComponent implements OnDestroy {
     @Input() entities: SpiderlyClass[] = [
         {name: 'User', data: [{Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}], properties: [{name:'Id', type: 'string'}, {name: 'Name', type: 'string'}]}
     ];
-    isTableSelected: boolean = false;
-    lastSelectedEntity: SpiderlyClass;
+    isTableSelected: boolean = true;
+    lastSelectedEntity: SpiderlyClass = this.entities[0];
 
     @Input() menu: SpiderlyMenuItem[] = [
         {
             label: 'Home', 
             icon: 'pi pi-fw pi-home', 
-            // routerLink: [''],
         },
         {
             separator: true,
@@ -40,7 +39,6 @@ export class LayoutComponent implements OnDestroy {
         {
             label: 'Users', 
             icon: 'pi pi-fw pi-user', 
-            // routerLink: ['/playground'],
             entity: {name: 'User', data: [{Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}], properties: [{name:'Id', type: 'string'}, {name: 'Name', type: 'string'}]}
         },
     ];
