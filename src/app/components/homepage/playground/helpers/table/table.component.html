@@ -1,0 +1,65 @@
+<div style="border-radius: 10px; overflow: hidden;">
+  <p-table 
+  #dt 
+  [value]="data" 
+  class="spiderly-table" 
+  styleClass="p-datatable-gridlines" 
+  (onFilter)="filter($event)" 
+  [rows]="4" 
+  [paginator]="true" 
+  [totalRecords]="data.length"
+  >
+  <!-- NOTE FT: Don't add these because they make bug with filter dialogs
+  scrollHeight="flex"
+  [scrollable]="true"  -->
+      <ng-template #caption>
+          <div class="table-header" style="overflow-x: auto;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="pi pi-list"></i>
+              <div>{{tableTitle}}</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button pButton size="small" label="Export to Excel" class="p-button-outlined" style="flex: none;" icon="pi pi-download" (click)="exportListToExcel()"></button>
+            </div>
+          </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <ng-container *ngFor="let col of cols;">
+            <th [style]="getColHeaderWidth(col.type)">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                {{col.name}}
+              </div>
+            </th>
+          </ng-container>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowData>
+          <tr>
+            <ng-container *ngFor="let col of cols;">
+              <td [pTooltip]="getRowData(rowData, col)" [style]="getStyleForBodyColumn(col)">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 18px;">
+                  <!-- <ng-container *ngFor="let action of col.actions;" >
+                    <span [pTooltip]="action.name" [class]="getClassForAction(action)" (click)="getMethodForAction(action, rowData)"></span>
+                  </ng-container> -->
+                </div>
+                {{getRowData(rowData, col)}}
+              </td>
+            </ng-container>
+          </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td>No records found</td>
+        </tr>
+      </ng-template>
+      <ng-template #paginatorleft>
+        Total records: {{data.length}}
+      </ng-template>
+      <ng-template #paginatorright>
+        <div style="display: flex; justify-content: end; gap: 10px;">
+          <p-button size="small" label="Add new" icon="pi pi-plus" (onClick)="navigateToDetails(0)"></p-button>
+        </div>
+      </ng-template>
+  </p-table>
+</div>

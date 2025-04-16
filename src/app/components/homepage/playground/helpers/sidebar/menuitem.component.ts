@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { SidebarMenuService } from './sidebar-menu.service';
 import { SpiderlyMenuItem } from './sidebar-menu.component';
 import { LayoutService } from '../layout/layout.service';
 import { CommonModule } from '@angular/common';
+import { SpiderlyClass } from '../entities';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -32,12 +33,11 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class MenuitemComponent implements OnInit, OnDestroy {
-
-    @Input() item: SpiderlyMenuItem = {};
-
+    @Input() item: SpiderlyMenuItem;
     @Input() index!: number;
-
     @Input() parentKey!: string;
+
+    @Output() onMenuItemSelect: EventEmitter<SpiderlyClass> = new EventEmitter();
 
     active = false;
 
@@ -111,6 +111,7 @@ export class MenuitemComponent implements OnInit, OnDestroy {
         }
         
         this.menuService.onMenuStateChange({ key: this.key });
+        this.onMenuItemSelect.next(this.item.entity)
     }
 
     @HostBinding('class.active-menuitem') 

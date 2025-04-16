@@ -1,10 +1,12 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { AppTopBarComponent } from '../topbar/topbar.component';
 import { LayoutService } from './layout.service';
 import { SidebarMenuComponent, SpiderlyMenuItem } from '../sidebar/sidebar-menu.component';
 import { CommonModule } from '@angular/common';
+import { SpiderlyClass } from '../entities';
+import { TableComponent } from '../table/table.component';
 
 @Component({
     selector: 'app-layout',
@@ -15,15 +17,22 @@ import { CommonModule } from '@angular/common';
         CommonModule,
         RouterModule,
         AppTopBarComponent,
-        SidebarMenuComponent
+        SidebarMenuComponent,
+        TableComponent,
     ]
 })
 export class LayoutComponent implements OnDestroy {
-    menu: SpiderlyMenuItem[] = [
+    @Input() entities: SpiderlyClass[] = [
+        {name: 'User', data: [{Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}], properties: [{name:'Id', type: 'string'}, {name: 'Name', type: 'string'}]}
+    ];
+    isTableSelected: boolean = false;
+    lastSelectedEntity: SpiderlyClass;
+
+    @Input() menu: SpiderlyMenuItem[] = [
         {
             label: 'Home', 
             icon: 'pi pi-fw pi-home', 
-            routerLink: [''],
+            // routerLink: [''],
         },
         {
             separator: true,
@@ -31,7 +40,8 @@ export class LayoutComponent implements OnDestroy {
         {
             label: 'Users', 
             icon: 'pi pi-fw pi-user', 
-            routerLink: ['/playground'],
+            // routerLink: ['/playground'],
+            entity: {name: 'User', data: [{Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}], properties: [{name:'Id', type: 'string'}, {name: 'Name', type: 'string'}]}
         },
     ];
 
@@ -117,6 +127,11 @@ export class LayoutComponent implements OnDestroy {
         }
     }
 
+    menuItemSelectChange = (entity: SpiderlyClass) => {
+        this.lastSelectedEntity = entity;
+        this.isTableSelected = true;
+    }
+
     ngOnDestroy() {
         if (this.overlayMenuOpenSubscription) {
             this.overlayMenuOpenSubscription.unsubscribe();
@@ -128,4 +143,3 @@ export class LayoutComponent implements OnDestroy {
 
     }
 }
-

@@ -1,13 +1,15 @@
-import { ElementRef, Input, OnInit } from '@angular/core';
+import { ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from '../layout/layout.service';
 import { MenuitemComponent } from './menuitem.component';
 import { CommonModule } from '@angular/common';
+import { SpiderlyClass } from '../entities';
 
 export interface SpiderlyMenuItem extends MenuItem{
     hasPermission?: (permissionCodes: string[]) => boolean;
     showPartnerDialog?: boolean; 
+    entity?: SpiderlyClass;
 }
 
 @Component({
@@ -22,6 +24,7 @@ export interface SpiderlyMenuItem extends MenuItem{
 })
 export class SidebarMenuComponent implements OnInit {
     @Input() menu: SpiderlyMenuItem[] = [];
+    @Output() onMenuItemSelect: EventEmitter<SpiderlyClass> = new EventEmitter();
 
     constructor(
         public layoutService: LayoutService, 

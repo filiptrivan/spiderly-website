@@ -3,6 +3,24 @@
 
 :root{
   --background-color: #0a0a0a;
+  --p-button-outlined-primary-border-color: #c084fc !important;
+  --p-button-outlined-primary-color: #c084fc !important;
+
+  --p-datatable-header-background: #1e1e22 !important;
+  --p-datatable-header-color: #e5e7eb !important;
+  --p-datatable-header-border-color: #4c4955 !important;
+
+  --p-datatable-header-cell-background: #2f2f36 !important;
+  --p-datatable-header-cell-border-color: #4c4955 !important;
+  --p-datatable-header-cell-color: #e5e7eb !important;
+
+  --p-content-background: #2f2f36 !important;
+  --p-datatable-body-cell-border-color: #4c4955 !important;
+  --p-content-color: #e5e7eb !important;
+  --p-paginator-color: #e5e7eb !important;
+  --p-paginator-nav-button-color: #7d7a87 !important;
+  --p-paginator-nav-button-width: 30px !important;
+  --p-paginator-nav-button-height: 30px !important;
 }
 
 body {

@@ -10,7 +10,7 @@
   -webkit-transform: scale(1);
   transform: scale(1);
   background-color: vars.$surface-light;
-  height: 500px;
+  min-height: 500px;
   width: 100%;
   font-size: 90%;
   border-radius: 10px;
@@ -182,6 +182,7 @@
 .layout-main-container {
   display: flex;
   flex-direction: column;
+  // height: 500px;
   height: 100%;
   justify-content: space-between;
   padding: 6.5rem 2rem 2rem 4rem;
@@ -190,6 +191,7 @@
 
 .layout-main {
   flex: 1 1 auto;
+  overflow-y: auto;
 }
 
 //#endregion
