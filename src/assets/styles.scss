@@ -3,23 +3,33 @@
 
 :root{
   --background-color: #0a0a0a;
+  --text-color: #e5e7eb;
   --p-button-outlined-primary-border-color: #db2777 !important;
 
-  --p-datatable-header-background: #1e1e22 !important;
-  --p-datatable-header-color: #e5e7eb !important;
-  --p-datatable-header-border-color: #4c4955 !important;
+  --p-datatable-header-background: #2f2f36 !important;
+  --p-datatable-header-color: var(--text-color) !important;
+  --p-datatable-header-border-color: #3a3a3f !important;
+  --p-datatable-header-border-width: 2px !important;
 
-  --p-datatable-header-cell-background: #2f2f36 !important;
-  --p-datatable-header-cell-border-color: #4c4955 !important;
-  --p-datatable-header-cell-color: #e5e7eb !important;
+  --p-datatable-header-cell-background: #3a3a3f !important;
+  --p-datatable-header-cell-border-color: #4a4a4f !important;
+  --p-datatable-header-cell-color: var(--text-color) !important;
 
-  --p-content-background: #2f2f36 !important;
-  --p-datatable-body-cell-border-color: #4c4955 !important;
-  --p-content-color: #e5e7eb !important;
-  --p-paginator-color: #e5e7eb !important;
-  --p-paginator-nav-button-color: #7d7a87 !important;
+  --p-content-background: #3a3a3f !important;
+  --p-datatable-body-cell-border-color: #4a4a4f !important;
+  --p-content-color: var(--text-color) !important;
+
+  --p-paginator-background: #2f2f36 !important;
+  --p-paginator-color: var(--text-color) !important;
+  --p-paginator-border-radius: 0 0 10px 10px !important;
+  --p-paginator-nav-button-color: #9ca3af !important;
   --p-paginator-nav-button-width: 31px !important;
   --p-paginator-nav-button-height: 31px !important;
+
+  --p-dialog-background: var(--background-color) !important;
+  --p-dialog-color: var(--text-color) !important;
+  --p-confirm-dialog-icon-color: var(--text-color) !important;
+  --p-dialog-border-color: #2f2f36 !important;
 }
 
 body {
@@ -44,4 +54,12 @@ code, pre {
 a {
   text-decoration: none;
   color: var(--p-primary-800);
+}
+
+.p-tooltip-text {
+  font-size: 14px;
+}
+
+.p-toast{
+  z-index: 1003;
 }

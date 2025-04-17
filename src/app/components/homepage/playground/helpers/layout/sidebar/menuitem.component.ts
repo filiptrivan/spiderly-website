@@ -3,15 +3,15 @@ import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SidebarMenuService } from './sidebar-menu.service';
 import { SpiderlyMenuItem } from './sidebar-menu.component';
-import { LayoutService } from '../layout/layout.service';
+import { LayoutService } from '../../layout/layout.service';
 import { CommonModule } from '@angular/common';
-import { SpiderlyClass } from '../entities';
+import { SpiderlyClass } from '../../entities';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[menuitem]',
     templateUrl: './menuitem.component.html',
-    styleUrl: '../../playground.component.scss',
+    styleUrl: '../layout.component.scss',
     standalone: true,
     imports: [
         CommonModule,

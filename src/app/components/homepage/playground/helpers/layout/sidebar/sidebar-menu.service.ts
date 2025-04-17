@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { SpiderlyClass } from '../entities';
+import { SpiderlyClass } from '../../entities';
 
 @Injectable({
     providedIn: 'root'

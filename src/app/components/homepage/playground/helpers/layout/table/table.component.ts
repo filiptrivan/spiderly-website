@@ -1,13 +1,14 @@
-import { Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
+import { EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { Component } from '@angular/core';
-import { LayoutService } from '../layout/layout.service';
+import { LayoutService } from '../layout.service';
 import { CommonModule, formatDate } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { SpiderProperty } from '../entities';
+import { SpiderProperty } from '../../entities';
 import { TooltipModule } from 'primeng/tooltip';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-table',
@@ -27,6 +28,14 @@ import * as FileSaver from 'file-saver';
           .p-datatable{
             position: unset;
           }
+          .p-datatable-header{
+            border-radius: 10px 10px 0 0;
+          }
+          .p-paginator{
+            border-style: solid;
+            border-color: var(--p-datatable-header-border-color);
+            border-width: 0px 2px 2px 2px;
+          }
         }
       }
     `],
@@ -43,9 +52,13 @@ export class TableComponent implements OnInit {
     @Input() cols: SpiderProperty[] = [];
     @Input() tableTitle: string;
 
+    @Output() onNavigateToDetails = new EventEmitter<number>();
+
     constructor(
         public layoutService: LayoutService, 
-        @Inject(LOCALE_ID) private locale: string
+        @Inject(LOCALE_ID) private locale: string,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService,
     ) {
     }
 
@@ -70,8 +83,8 @@ export class TableComponent implements OnInit {
       FileSaver.saveAs(blob, `${this.tableTitle}.xlsx`);
     }
 
-    navigateToDetails(id: number) {
-      throw new Error('Method not implemented.');
+    navigateToDetails(index: number) {
+      this.onNavigateToDetails.next(index);
     }
 
     getColHeaderWidth(filterType: string) {
@@ -123,12 +136,21 @@ export class TableComponent implements OnInit {
       }
   }
 
-  editRow(rowData: any) {
-    throw new Error('Method not implemented.');
+  editRow(index: number) {
+    this.navigateToDetails(index)
   }
 
-  deleteRow(rowData: any) {
-    throw new Error('Method not implemented.');
+  deleteRow(index: number) {
+    this.confirmationService.confirm({
+      accept: () => {
+        this.data = this.data.filter((_, i) => i !== index);
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Item deleted successfully',
+        });
+      }
+    });
   }
     
 }

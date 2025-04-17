@@ -1,17 +1,21 @@
 import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { AppTopBarComponent } from '../topbar/topbar.component';
+import { AppTopBarComponent } from './topbar/topbar.component';
 import { LayoutService } from './layout.service';
-import { SidebarMenuComponent, SpiderlyMenuItem } from '../sidebar/sidebar-menu.component';
+import { SidebarMenuComponent, SpiderlyMenuItem } from './sidebar/sidebar-menu.component';
 import { CommonModule } from '@angular/common';
 import { SpiderlyClass } from '../entities';
-import { TableComponent } from '../table/table.component';
+import { TableComponent } from './table/table.component';
+import { PlaygroundDetailsComponent } from './playground-details/playground-details.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'
+import { ToastModule } from 'primeng/toast'
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-layout',
     templateUrl: './layout.component.html',
-    styleUrl: '../../playground.component.scss',
+    styleUrl: './layout.component.scss',
     standalone: true,
     imports: [
         CommonModule,
@@ -19,6 +23,13 @@ import { TableComponent } from '../table/table.component';
         AppTopBarComponent,
         SidebarMenuComponent,
         TableComponent,
+        PlaygroundDetailsComponent,
+        ToastModule,
+        ConfirmDialogModule,
+    ],
+    providers: [
+        MessageService,
+        ConfirmationService,
     ]
 })
 export class LayoutComponent implements OnDestroy {
@@ -27,6 +38,7 @@ export class LayoutComponent implements OnDestroy {
     ];
     isTableSelected: boolean = true;
     lastSelectedEntity: SpiderlyClass = this.entities[0];
+    lastIndexSelected: number;
 
     @Input() menu: SpiderlyMenuItem[] = [
         {
@@ -128,6 +140,12 @@ export class LayoutComponent implements OnDestroy {
     menuItemSelectChange = (entity: SpiderlyClass) => {
         this.lastSelectedEntity = entity;
         this.isTableSelected = true;
+    }
+
+    navigateToDetails(index: number) {
+        this.isTableSelected = false;
+        this.lastIndexSelected = index;
+
     }
 
     ngOnDestroy() {

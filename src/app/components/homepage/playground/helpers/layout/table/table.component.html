@@ -34,16 +34,16 @@
           </ng-container>
         </tr>
       </ng-template>
-      <ng-template #body let-rowData>
+      <ng-template #body let-rowData let-index="rowIndex">
           <tr>
             <td>
               <div style="display: flex; align-items: center; justify-content: center; gap: 18px;">
-                  <span pTooltip="Edit" class="pi pi-pencil" style="cursor: pointer; color: var(--p-primary-color);" (click)="editRow(rowData)"></span>
-                  <span pTooltip="Delete" class="pi pi-trash" style="cursor: pointer; color: red;" (click)="deleteRow(rowData)"></span>
+                  <span pTooltip="Edit" tooltipStyleClass="smaller-text" class="pi pi-pencil" style="cursor: pointer; color: var(--p-primary-color);" (click)="editRow(index)"></span>
+                  <span pTooltip="Delete" tooltipStyleClass="smaller-text" class="pi pi-trash" style="cursor: pointer; color: red;" (click)="deleteRow(index)"></span>
               </div>
             </td>
             <ng-container *ngFor="let col of cols;">
-              <td [pTooltip]="getRowData(rowData, col)" [style]="getStyleForBodyColumn(col)">
+              <td [pTooltip]="getRowData(rowData, col)" tooltipStyleClass="smaller-text" [style]="getStyleForBodyColumn(col)">
                 {{getRowData(rowData, col)}}
               </td>
             </ng-container>
@@ -59,7 +59,7 @@
       </ng-template>
       <ng-template #paginatorright>
         <div style="display: flex; justify-content: end; gap: 10px;">
-          <p-button size="small" label="Add new" icon="pi pi-plus" (onClick)="navigateToDetails(0)"></p-button>
+          <p-button size="small" label="Add new" icon="pi pi-plus" (onClick)="navigateToDetails(-1)"></p-button>
         </div>
       </ng-template>
   </p-table>

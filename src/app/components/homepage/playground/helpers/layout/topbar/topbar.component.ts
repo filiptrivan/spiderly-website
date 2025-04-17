@@ -1,7 +1,7 @@
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { filter } from 'rxjs';
-import { LayoutService } from '../layout/layout.service';
+import { LayoutService } from '../../layout/layout.service';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
@@ -18,7 +18,7 @@ interface SpiderlyMenuItem {
 @Component({
     selector: 'topbar',
     templateUrl: './topbar.component.html',
-    styleUrl: '../../playground.component.scss',
+    styleUrl: '../layout.component.scss',
     standalone: true,
     imports: [
       CommonModule,
@@ -58,7 +58,7 @@ export class AppTopBarComponent {
   ) { 
   }
 
-  async ngOnInit(){
+  ngOnInit(){
     this.menuItems = [
       {
         label: 'Profile',

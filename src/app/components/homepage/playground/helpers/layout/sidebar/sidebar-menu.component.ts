@@ -1,10 +1,10 @@
 import { ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { LayoutService } from '../layout/layout.service';
+import { LayoutService } from '../../layout/layout.service';
 import { MenuitemComponent } from './menuitem.component';
 import { CommonModule } from '@angular/common';
-import { SpiderlyClass } from '../entities';
+import { SpiderlyClass } from '../../entities';
 
 export interface SpiderlyMenuItem extends MenuItem{
     hasPermission?: (permissionCodes: string[]) => boolean;
@@ -15,7 +15,7 @@ export interface SpiderlyMenuItem extends MenuItem{
 @Component({
     selector: 'sidebar-menu', // FT: Don't chane selector to 'menu', because other style will apply to it
     templateUrl: './sidebar-menu.component.html',
-    styleUrl: '../../playground.component.scss',
+    styleUrl: '../layout.component.scss',
     standalone: true,
     imports: [
         CommonModule,
