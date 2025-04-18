@@ -28,7 +28,7 @@
             Actions
           </th>
           <ng-container *ngFor="let col of cols;">
-            <th [style]="getColHeaderWidth(col.type)">
+            <th [style]="getColHeaderWidth(col.dataType)">
               {{col.name}}
             </th>
           </ng-container>

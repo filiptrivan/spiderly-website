@@ -1,4 +1,6 @@
-export class SpiderlyClass
+import { BaseEntity } from "./layout/playground-details/helpers/entities/base-entity";
+
+export class SpiderlyClass extends BaseEntity
 {
     name?: string;
     attributes?: SpiderlyAttribute[] = [];
@@ -18,6 +20,8 @@ export class SpiderlyClass
     data?: any[];
   } = {}
   ) {
+    super('SpiderlyClass');
+
     this.name = name,
     this.attributes = attributes,
     this.properties = properties,
@@ -25,7 +29,8 @@ export class SpiderlyClass
   }
 }
 
-export class SpiderlyAttribute{
+export class SpiderlyAttribute extends BaseEntity
+{
   name?: string;
   value?: string;
 
@@ -38,29 +43,34 @@ export class SpiderlyAttribute{
     value?: string;
   } = {}
   ) {
+    super('SpiderlyAttribute');
+
     this.name = name,
     this.value = value
   }
 }
 
-export class SpiderlyProperty{
+export class SpiderlyProperty extends BaseEntity
+{
   name?: string;
-  type?: string;
+  dataType?: string;
   attributes?: SpiderlyAttribute[] = [];
 
   constructor(
   {
     name,
-    type,
+    dataType,
     attributes,
   }:{
     name?: string;
-    type?: string;
+    dataType?: string;
     attributes?: SpiderlyAttribute[];
   } = {}
   ) {
+    super('SpiderlyProperty');
+
     this.name = name,
-    this.type = type,
+    this.dataType = dataType,
     this.attributes = attributes
   }
 }

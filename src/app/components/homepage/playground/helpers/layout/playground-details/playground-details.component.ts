@@ -59,16 +59,16 @@ export class PlaygroundDetailsComponent implements OnInit {
             return UIControlTypeCodes[uiControlType.value];
         }
 
-        if (property.type === 'string') {
+        if (property.dataType === 'string') {
             return UIControlTypeCodes.TextBox;
         }
-        else if (property.type === 'bool') {
+        else if (property.dataType === 'bool') {
             return UIControlTypeCodes.CheckBox;
         }
-        else if (property.type === 'decimal') {
+        else if (property.dataType === 'decimal') {
             return UIControlTypeCodes.Decimal;
         }
-        else if (property.type === 'long' || property.type === 'int' || property.type === 'byte') {
+        else if (property.dataType === 'long' || property.dataType === 'int' || property.dataType === 'byte') {
             return UIControlTypeCodes.Integer;
         }
 

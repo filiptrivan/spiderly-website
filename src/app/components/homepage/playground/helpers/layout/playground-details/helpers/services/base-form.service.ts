@@ -87,34 +87,32 @@ export class BaseFormService {
   //   return helperFormGroup;
   // }
 
-  // initFormArray<T>(
-  //   parentFormGroup: SpiderlyFormGroup, 
-  //   modelList: (T & BaseEntity)[], 
-  //   modelConstructor: T & BaseEntity, 
-  //   formArraySaveBodyName: string, 
-  //   formArrayTranslationKey: string, 
-  //   required: boolean = false)
-  // {
-  //   if (modelList == null)
-  //     return null;
+  addFormArray<T>(
+    parentFormGroup: SpiderlyFormGroup, 
+    dataList: any[], 
+    modelConstructor: T & BaseEntity, 
+    formArraySaveBodyName: string, 
+    required: boolean = false)
+  {
+    if (dataList == null)
+      return null;
 
-  //   let formArray = new SpiderlyFormArray<T>([]);
-  //   formArray.required = required;
-  //   formArray.modelConstructor = modelConstructor;
-  //   formArray.translationKey = formArrayTranslationKey;
+    let formArray = new SpiderlyFormArray<T>([]);
+    formArray.required = required;
+    formArray.modelConstructor = modelConstructor;
+    const formControlNames = Object.keys(modelConstructor);
 
-  //   modelList.forEach(model => {
-  //     Object.assign(modelConstructor, model);
-  //     let helperFormGroup: SpiderlyFormGroup = new SpiderlyFormGroup({});
-  //     throw new Error('FT: Not implemented!');
-  //     this.initFormGroup(helperFormGroup, formArray.modelConstructor, 0);
-  //     formArray.push(helperFormGroup);
-  //   });
+    dataList.forEach(data => {
+      Object.assign(modelConstructor, data);
+      let helperFormGroup: SpiderlyFormGroup = new SpiderlyFormGroup({});
+      this.initFormGroup(helperFormGroup, formControlNames, formArray.modelConstructor);
+      formArray.push(helperFormGroup);
+    });
 
-  //   parentFormGroup.setControl(formArraySaveBodyName, formArray); // FT: Use setControl because it will update formArray if it already exists
+    parentFormGroup.setControl(formArraySaveBodyName, formArray); // FT: Use setControl because it will update formArray if it already exists
 
-  //   return formArray;
-  // }
+    return formArray;
+  }
 
   disableAllFormControls<T>(formArray: SpiderlyFormArray<T>){
     formArray.controls.forEach((segmentationItemFormGroup: SpiderlyFormGroup) => {

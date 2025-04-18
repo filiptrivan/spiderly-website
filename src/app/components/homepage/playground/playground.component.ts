@@ -5,11 +5,12 @@ import { SectionWrapperComponent } from "../../section-wrapper/section-wrapper.c
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from './helpers/layout/layout.component';
-import { SpiderlyClass } from './helpers/entities';
+import { SpiderlyAttribute, SpiderlyClass, SpiderlyProperty } from './helpers/entities';
 import { SpiderlyMenuItem } from './helpers/layout/sidebar/sidebar-menu.component';
 import { SpiderlyControlsModule } from "./helpers/layout/playground-details/helpers/controls/spiderly-controls.module";
 import { SpiderlyTextboxComponent } from "./helpers/layout/playground-details/helpers/controls/spiderly-textbox/spiderly-textbox.component";
-import { SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
+import { SpiderlyFormArray, SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
+import { BaseEntity } from './helpers/layout/playground-details/helpers/entities/base-entity';
 
 @Component({
   selector: 'app-playground',
@@ -31,6 +32,7 @@ export class PlaygroundComponent {
   ccb: string = '}';
 
   formGroup = new SpiderlyFormGroup({});
+  entitiesFormArray: SpiderlyFormArray<SpiderlyClass>;
 
   entities: SpiderlyClass[] = [];
   menu: SpiderlyMenuItem[] = [
@@ -72,6 +74,93 @@ export class PlaygroundComponent {
       entity: userEntity,
     });
 
-    this.baseFormService.addFormGroup(this.formGroup, new SpiderlyFormGroup({}), userEntity, null);
+    this.entitiesFormArray = this.addEntityFormArray(this.formGroup, this.entities, new SpiderlyClass({}), null);
+
+    // this.baseFormService.addFormGroup(this.formGroup, new SpiderlyFormGroup({}), userEntity, null);
+  }
+
+  addEntityFormArray(
+    parentFormGroup: SpiderlyFormGroup,
+    dataList: SpiderlyClass[], 
+    modelConstructor: SpiderlyClass, 
+    formArrayIdentifierName: string, 
+    required: boolean = false)
+  {
+    let formArray = new SpiderlyFormArray<SpiderlyClass>([]);
+    formArray.required = required;
+    formArray.modelConstructor = modelConstructor;
+    const formControlNames = Object.keys(modelConstructor);
+
+    dataList.forEach(dataItem => {
+      let helperFormGroup: SpiderlyFormGroup = new SpiderlyFormGroup<SpiderlyClass>({});
+
+      Object.keys(modelConstructor).forEach((key) => {
+        if (key === 'attributes') {
+          this.baseFormService.addFormArray(helperFormGroup, dataItem[key], new SpiderlyAttribute({}), 'entityAttributes');
+        }
+        else if (key === 'properties'){
+          this.addPropertyFormArray(helperFormGroup, dataItem[key], new SpiderlyProperty({}), 'entityProperties')
+        }
+        else{
+          modelConstructor[key] = dataItem[key];
+        }
+      });
+
+      this.baseFormService.initFormGroup(helperFormGroup, formControlNames, formArray.modelConstructor);
+      formArray.push(helperFormGroup);
+    });
+
+    parentFormGroup.setControl(formArrayIdentifierName, formArray); // FT: Use setControl because it will update formArray if it already exists
+
+    return formArray;
+  }
+
+  addPropertyFormArray(
+    parentFormGroup: SpiderlyFormGroup,
+    dataList: SpiderlyClass[], 
+    modelConstructor: SpiderlyClass, 
+    formArrayIdentifierName: string, 
+    required: boolean = false)
+  {
+    let formArray = new SpiderlyFormArray<SpiderlyClass>([]);
+    formArray.required = required;
+    formArray.modelConstructor = modelConstructor;
+    const formControlNames = Object.keys(modelConstructor);
+
+    dataList.forEach(dataItem => {
+      let helperFormGroup: SpiderlyFormGroup = new SpiderlyFormGroup<SpiderlyClass>({});
+
+      Object.keys(modelConstructor).forEach((key) => {
+        if (key === 'attributes') {
+          this.baseFormService.addFormArray(helperFormGroup, dataItem[key], new SpiderlyAttribute({}), 'propertyAttributes');
+        }
+        else{
+          modelConstructor[key] = dataItem[key];
+        }
+      });
+
+      this.baseFormService.initFormGroup(helperFormGroup, formControlNames, formArray.modelConstructor);
+      formArray.push(helperFormGroup);
+    });
+
+    parentFormGroup.setControl(formArrayIdentifierName, formArray); // FT: Use setControl because it will update formArray if it already exists
+
+    return formArray;
+  }
+
+  getFormArrayGroups<T>(formArray: SpiderlyFormArray<T>): SpiderlyFormGroup<T>[]{
+    return this.baseFormService.getFormArrayGroups<T>(formArray);
+  }
+
+  getEntityAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>): SpiderlyFormGroup<SpiderlyAttribute>[]{
+    return this.baseFormService.getFormArrayGroups<SpiderlyAttribute>(formGroup.controls['entityAttributes']);
+  }
+
+  getPropertiesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>): SpiderlyFormGroup<SpiderlyProperty>[]{
+    return this.baseFormService.getFormArrayGroups<SpiderlyProperty>(formGroup.controls['entityProperties']);
+  }
+
+  getPropertyAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyProperty>): SpiderlyFormGroup<SpiderlyAttribute>[]{
+    return this.baseFormService.getFormArrayGroups<SpiderlyAttribute>(formGroup.controls['propertyAttributes']);
   }
 }

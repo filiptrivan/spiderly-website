@@ -105,7 +105,7 @@ export class TableComponent implements OnInit {
     }
 
     getStyleForBodyColumn(col: SpiderlyProperty) {
-      switch(col.type){
+      switch(col.dataType){
         case 'long':
         case 'int':
         case 'byte':
@@ -116,7 +116,7 @@ export class TableComponent implements OnInit {
     }
 
     getRowData(rowData: any, col: SpiderlyProperty): string{
-      switch (col.type) {
+      switch (col.dataType) {
         case 'string':
           return rowData[col.name];
         case 'DateTime':
