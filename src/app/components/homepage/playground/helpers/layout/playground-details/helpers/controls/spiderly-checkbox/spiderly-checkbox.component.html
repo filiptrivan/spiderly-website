@@ -1,4 +1,4 @@
-<div class="flex flex-column gap-2">
+<div style="display: flex; flex-direction: column; gap: 0.5rem;">
     <div *ngIf="inlineLabel === false && getTranslatedLabel() != '' && getTranslatedLabel() != null">
       <label>{{getTranslatedLabel()}}</label>
       <required *ngIf="control?.required"></required>

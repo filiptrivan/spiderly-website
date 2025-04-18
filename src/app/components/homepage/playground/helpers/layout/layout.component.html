@@ -9,7 +9,7 @@
         <div class="layout-main">
             <div *ngIf="lastSelectedEntity == null">Welcome!</div>
             <app-table 
-            *ngIf="isTableSelected && lastSelectedEntity != null" 
+            *ngIf="isTableSelected === true && lastSelectedEntity != null" 
             [data]="lastSelectedEntity.data" 
             [cols]="lastSelectedEntity.properties"
             [tableTitle]="lastSelectedEntity.name + 'List'"

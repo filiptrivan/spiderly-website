@@ -1,6 +1,7 @@
 import { HttpResponse } from "@angular/common/http";
 import { BaseEntity } from "../entities/base-entity";
 import { SpiderlyFormGroup } from "../spiderly-form-control/spiderly-form-control";
+import { ToastMessageOptions } from "primeng/api";
 
 // Helper function for PrecisionScale validation (to be added in the TypeScript output):
 export function validatePrecisionScale(value: any, precision: number, scale: number, ignoreTrailingZeros: boolean): boolean {
@@ -209,4 +210,23 @@ export function capitalizeFirstLetter(inputString: string): string {
     }
     
     return false;
+  }
+
+  export const getSuccessMessageOptions = (detail: string, title: string = 'Successful action') : ToastMessageOptions => {
+    return {
+      severity: 'success',
+      summary: title,
+      detail: detail,
+      life: 10000,
+    };
+  }
+
+  export const getWarningMessageOptions = (detail: string, title?: string, sticky?: boolean) : ToastMessageOptions => {
+    return {
+      severity: 'warn',
+      summary: title ?? 'Warning',
+      detail: detail,
+      life: 10000,
+      sticky: sticky
+    };
   }

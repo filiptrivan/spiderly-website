@@ -1,0 +1,19 @@
+export enum UIControlTypeCodes
+{
+    Decimal,
+    File,
+    Dropdown,
+    TextArea,
+    Autocomplete,
+    TextBox,
+    CheckBox,
+    Calendar,
+    Integer,
+    ColorPick,
+    Editor,
+    MultiAutocomplete,
+    MultiSelect,
+    Password,
+    TextBlock,
+    TODO
+}

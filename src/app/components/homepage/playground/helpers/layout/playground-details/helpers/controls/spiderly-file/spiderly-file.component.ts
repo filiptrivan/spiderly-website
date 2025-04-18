@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { getMimeTypeForFileName, isExcelFileType, isImageFileType } from '../../services/helper-functions';
@@ -22,6 +23,7 @@ import { ButtonModule } from 'primeng/button';
         RequiredComponent,
         FileUploadModule,
         ButtonModule,
+        HttpClientModule, // NOTE FT: Without HttpClientModule control is throwing null injector exception. 
     ]
 })
 export class SpiderlyFileComponent extends BaseControl implements OnInit {

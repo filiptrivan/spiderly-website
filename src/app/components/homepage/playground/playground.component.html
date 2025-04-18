@@ -1,15 +1,32 @@
 <app-section-wrapper parts="one" text-align="left" >
+  
+  <form>
+    @for (entity of entities; track $index) {
+      <pre class="code-editor">
+@for (attribute of entity.attributes; track $index) {
+  [{{attribute.name}}{{attribute.value == null ? '' : `(${attribute.value})`}}]
+}
+<p-button size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
+public class {{entity.name}} {{ocb}}
+<!-- public class <spiderly-textbox [control]=""/> {{entity.name}} {{ocb}} -->
+  @for (property of entity.properties; track $index) {
+    @for (attribute of property.attributes; track $index) {
+    [{{attribute.name}}{{attribute.value == null ? '' : `(${attribute.value})`}}]
+    }
+    <p-button size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
+    public {{property.type}} {{property.name}} {{ocb}} get; set; {{ccb}}
+    }
+    
+    <p-button size="small" label="Add new property" icon="pi pi-plus"></p-button>
+{{ccb}}
+
+<p-button size="small" label="Save" icon="pi pi-save"></p-button></pre>
+    }
+    <p-button label="Add new entity" icon="pi pi-plus"></p-button>
+  </form>
+
   <div class="web-page">
-    <app-layout></app-layout>
+      <app-layout [menu]="menu" [entities]="entities"></app-layout>
   </div>
   
-  <pre class="code-editor">
-    public class User {{ocb}}
-      public long Id {{ocb}} get; set; {{ccb}}
-      public int Version {{ocb}} get; set; {{ccb}}
-      public string Username {{ocb}} get; set; {{ccb}}
-      public string Email {{ocb}} get; set; {{ccb}}
-      public string Password {{ocb}} get; set; {{ccb}}
-    {{ccb}}
-  </pre>
 </app-section-wrapper>

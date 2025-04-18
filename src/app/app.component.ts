@@ -12,8 +12,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ToastModule,
     ConfirmDialogModule,
   ],
-  providers: [
-  ],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

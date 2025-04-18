@@ -10,7 +10,6 @@ import { TableComponent } from './table/table.component';
 import { PlaygroundDetailsComponent } from './playground-details/playground-details.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ToastModule } from 'primeng/toast'
-import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-layout',
@@ -26,34 +25,15 @@ import { ConfirmationService, MessageService } from 'primeng/api';
         PlaygroundDetailsComponent,
         ToastModule,
         ConfirmDialogModule,
-    ],
-    providers: [
-        MessageService,
-        ConfirmationService,
     ]
 })
 export class LayoutComponent implements OnDestroy {
-    @Input() entities: SpiderlyClass[] = [
-        {name: 'User', data: [{Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}], properties: [{name:'Id', type: 'string'}, {name: 'Name', type: 'string'}]}
-    ];
-    isTableSelected: boolean = true;
-    lastSelectedEntity: SpiderlyClass = this.entities[0];
+    @Input() entities: SpiderlyClass[] = [];
+    isTableSelected: boolean = false;
+    lastSelectedEntity: SpiderlyClass;
     lastIndexSelected: number;
 
-    @Input() menu: SpiderlyMenuItem[] = [
-        {
-            label: 'Home', 
-            icon: 'pi pi-fw pi-home', 
-        },
-        {
-            separator: true,
-        },
-        {
-            label: 'Users', 
-            icon: 'pi pi-fw pi-user', 
-            entity: {name: 'User', data: [{Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}, {Id: 1, Name: 'Filip'}], properties: [{name:'Id', type: 'string'}, {name: 'Name', type: 'string'}]}
-        },
-    ];
+    @Input() menu: SpiderlyMenuItem[] = [];
 
     overlayMenuOpenSubscription: Subscription;
 

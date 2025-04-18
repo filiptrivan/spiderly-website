@@ -1,7 +1,10 @@
 @use '../../../../assets/variables.scss' as vars;
 
 .code-editor {
-  background-color: rgb(0, 0, 97);
+  background-color: vars.$surface-light;
+  border-radius: 10px;
+  width: 100%;
+  padding: 32px;
 }
 
 .web-page {

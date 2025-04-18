@@ -1,0 +1,25 @@
+$gutter: 1rem; // FT: Need for PrimeNG grid
+$md-breakpoint: 768px;
+$max-cols: 12;
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+  margin-top: -0.5rem;
+}
+
+@for $i from 1 through $max-cols {
+  .col-#{$i} {
+    width: ($i / $max-cols) * 100%;
+    flex: 0 0 auto;
+    padding: $gutter;
+  }
+
+  @media (min-width: $md-breakpoint) {
+    .md\:col-#{$i} {
+        width: ($i / $max-cols) * 100% !important;
+    }
+  }
+}

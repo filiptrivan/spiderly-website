@@ -1,8 +1,8 @@
 export class SpiderlyClass
 {
     name?: string;
-    attributes?: SpiderAttribute[] = [];
-    properties?: SpiderProperty[] = [];
+    attributes?: SpiderlyAttribute[] = [];
+    properties?: SpiderlyProperty[] = [];
     data?: any[] = [];
 
   constructor(
@@ -13,19 +13,19 @@ export class SpiderlyClass
     data,
   }:{
     name?: string;
-    attributes?: SpiderAttribute[];
-    properties?: SpiderProperty[];
+    attributes?: SpiderlyAttribute[];
+    properties?: SpiderlyProperty[];
     data?: any[];
   } = {}
   ) {
     this.name = name,
     this.attributes = attributes,
     this.properties = properties,
-    this.data = properties
+    this.data = data
   }
 }
 
-export class SpiderAttribute{
+export class SpiderlyAttribute{
   name?: string;
   value?: string;
 
@@ -43,10 +43,10 @@ export class SpiderAttribute{
   }
 }
 
-export class SpiderProperty{
+export class SpiderlyProperty{
   name?: string;
   type?: string;
-  attributes?: SpiderAttribute[] = [];
+  attributes?: SpiderlyAttribute[] = [];
 
   constructor(
   {
@@ -56,7 +56,7 @@ export class SpiderProperty{
   }:{
     name?: string;
     type?: string;
-    attributes?: SpiderAttribute[];
+    attributes?: SpiderlyAttribute[];
   } = {}
   ) {
     this.name = name,

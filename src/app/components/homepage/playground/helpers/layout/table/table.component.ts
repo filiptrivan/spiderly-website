@@ -4,7 +4,7 @@ import { LayoutService } from '../layout.service';
 import { CommonModule, formatDate } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { SpiderProperty } from '../../entities';
+import { SpiderlyProperty } from '../../entities';
 import { TooltipModule } from 'primeng/tooltip';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
@@ -49,7 +49,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 })
 export class TableComponent implements OnInit {
     @Input() data: any[] = [];
-    @Input() cols: SpiderProperty[] = [];
+    @Input() cols: SpiderlyProperty[] = [];
     @Input() tableTitle: string;
 
     @Output() onNavigateToDetails = new EventEmitter<number>();
@@ -104,7 +104,7 @@ export class TableComponent implements OnInit {
         }
     }
 
-    getStyleForBodyColumn(col: SpiderProperty) {
+    getStyleForBodyColumn(col: SpiderlyProperty) {
       switch(col.type){
         case 'long':
         case 'int':
@@ -115,7 +115,7 @@ export class TableComponent implements OnInit {
       }
     }
 
-    getRowData(rowData: any, col: SpiderProperty): string{
+    getRowData(rowData: any, col: SpiderlyProperty): string{
       switch (col.type) {
         case 'string':
           return rowData[col.name];

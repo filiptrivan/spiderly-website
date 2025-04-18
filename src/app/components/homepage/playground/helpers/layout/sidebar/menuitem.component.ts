@@ -37,7 +37,7 @@ export class MenuitemComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.updateActiveStateFromRoute(new SpiderlyClass({name: 'User'}));
+        this.updateActiveStateFromRoute(null);
     }
 
     updateActiveStateFromRoute(lastSelectedEntity: SpiderlyClass) {

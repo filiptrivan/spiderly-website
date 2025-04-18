@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
 import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'spiderly-textbox',
@@ -16,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
         FormsModule,
         RequiredComponent,
         TooltipModule,
+        InputTextModule,
     ]
 })
 export class SpiderlyTextboxComponent extends BaseControl implements OnInit {
