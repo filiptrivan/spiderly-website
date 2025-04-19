@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SpiderlyFormArray, SpiderlyFormControl, SpiderlyFormGroup } from '../spiderly-form-control/spiderly-form-control';
 import { BaseEntity } from '../entities/base-entity';
-import { SpiderlyProperty } from '../../../../entities';
-import { MessageService } from 'primeng/api';
+import { SpiderlyClass, SpiderlyProperty } from '../../../../entities';
+import { MenuItem, MessageService } from 'primeng/api';
 import { getWarningMessageOptions } from './helper-functions';
 
 @Injectable({
@@ -68,24 +68,19 @@ export class BaseFormService {
     return formArray.controls as SpiderlyFormGroup<T>[]
   }
 
-  // addNewFormGroupToFormArray<T>(
-  //   formArray: SpiderlyFormArray<T>, 
-  //   modelConstructor: SpiderlyClass,
-  //   index: number,
-  // ) : SpiderlyFormGroup {
-  //   let helperFormGroup = new SpiderlyFormGroup({});
+  addNewFormGroupToFormArray<T>(
+    formArray: SpiderlyFormArray<T>, 
+    formGroup: SpiderlyFormGroup<T>,
+    index: number,
+  ) : SpiderlyFormGroup {
+    if (index == null) {
+      formArray.push(formGroup);
+    }else{
+      formArray.insert(index, formGroup);
+    }
 
-  //   throw new Error('FT: Not implemented!');
-  //   this.initFormGroup(helperFormGroup, modelConstructor, 0);
-    
-  //   if (index == null) {
-  //     formArray.push(helperFormGroup);
-  //   }else{
-  //     formArray.insert(index, helperFormGroup);
-  //   }
-
-  //   return helperFormGroup;
-  // }
+    return formGroup;
+  }
 
   addFormArray<T>(
     parentFormGroup: SpiderlyFormGroup, 
@@ -94,15 +89,12 @@ export class BaseFormService {
     formArraySaveBodyName: string, 
     required: boolean = false)
   {
-    if (dataList == null)
-      return null;
-
     let formArray = new SpiderlyFormArray<T>([]);
     formArray.required = required;
     formArray.modelConstructor = modelConstructor;
     const formControlNames = Object.keys(modelConstructor);
 
-    dataList.forEach(data => {
+    dataList?.forEach(data => {
       Object.assign(modelConstructor, data);
       let helperFormGroup: SpiderlyFormGroup = new SpiderlyFormGroup({});
       this.initFormGroup(helperFormGroup, formControlNames, formArray.modelConstructor);
@@ -128,6 +120,30 @@ export class BaseFormService {
             segmentationItemFormGroup.controls[key].enable();
         });
     });
+  }
+
+  getCrudMenuForOrderedData = (
+    formArray: SpiderlyFormArray, 
+    formGroup: SpiderlyFormGroup, 
+    lastMenuIconIndexClicked: LastMenuIconIndexClicked, 
+  ): MenuItem[] => {
+    let crudMenuForOrderedData: MenuItem[] = [
+      {label: 'Remove', icon: 'pi pi-minus', command: () => {
+        formArray.removeAt(lastMenuIconIndexClicked.index);
+      }},
+      {label: 'Add above', icon: 'pi pi-arrow-up', command: () => {
+        this.addNewFormGroupToFormArray(
+          formArray, formGroup, lastMenuIconIndexClicked.index
+        );
+      }},
+      {label: 'Add below', icon: 'pi pi-arrow-down', command: () => {
+        this.addNewFormGroupToFormArray(
+          formArray, formGroup, lastMenuIconIndexClicked.index + 1
+        );
+      }},
+    ];
+
+    return crudMenuForOrderedData;
   }
 
   //#region Helpers
@@ -162,4 +178,21 @@ export class BaseFormService {
 
   //#endregion
 
+}
+
+export class LastMenuIconIndexClicked extends BaseEntity
+{
+    index?: number;
+
+    constructor(
+    {
+        index,
+    }:{
+        index?: number;
+    } = {}
+    ) {
+        super('LastMenuIconIndexClicked'); 
+
+        this.index = index;
+    }
 }
