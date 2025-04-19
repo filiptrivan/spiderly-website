@@ -14,23 +14,25 @@ public class {{entityFormGroup.controls.name.value}} {{ocb}} <i class="pi pi-ell
     }
     <p-button size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
     public {{propertyFormGroup.controls.dataType.value}} {{propertyFormGroup.controls.name.value}} {{ocb}} get; set; {{ccb}} <i class="pi pi-ellipsis-h icon-hover" (click)="propertyMenuItemClick(propertyIndex, $event)"></i>
+    <p-menu #propertyAttributeMenu [model]="getPropertyAttributesCrudMenu(propertyFormGroup)" [tabindex]="undefined" [popup]="true" appendTo="body"></p-menu>
     }
     
     <p-button size="small" label="Add new property" icon="pi pi-plus"></p-button>
 {{ccb}}
 
-<p-button size="small" label="Save" icon="pi pi-save"></p-button></pre>
-    }
-    <p-button label="Add new entity" icon="pi pi-plus"></p-button>
-  </form>
 
-  <div class="web-page">
-      <app-layout [menu]="menu" [entities]="entities"></app-layout>
-  </div>
-  
+<p-button size="small" label="Save" icon="pi pi-save"></p-button></pre>
+<p-menu #entityAttributeMenu [model]="getEntityAttributesCrudMenu(entityFormGroup)" [tabindex]="undefined" [popup]="true" appendTo="body"></p-menu>
+<p-menu #propertyMenu [model]="getPropertiesCrudMenu(entityFormGroup)" [tabindex]="undefined" [popup]="true" appendTo="body"></p-menu>
+}
+<p-button label="Add new entity" icon="pi pi-plus"></p-button>
+</form>
+
+<div class="web-page">
+  <app-layout [menu]="menu" [entities]="entities"></app-layout>
+</div>
+
 </app-section-wrapper>
 
-<p-menu #entityMenu [model]="entitiesCrudMenu" [popup]="true" appendTo="body"></p-menu>
-<p-menu #entityAttributeMenu [model]="entityAttributesCrudMenu" [popup]="true" appendTo="body"></p-menu>
-<p-menu #propertyMenu [model]="propertiesCrudMenu" [popup]="true" appendTo="body"></p-menu>
-<p-menu #propertyAttributeMenu [model]="propertyAttributesCrudMenu" [popup]="true" appendTo="body"></p-menu>
+<!-- FT: [tabindex] is not necessary here because model is not returned by method: https://github.com/primefaces/primeng/issues/13934 -->
+<p-menu #entityMenu [model]="entitiesCrudMenu" [popup]="true" appendTo="body"></p-menu> 

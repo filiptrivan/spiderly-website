@@ -1,6 +1,6 @@
 import { HttpResponse } from "@angular/common/http";
 import { BaseEntity } from "../entities/base-entity";
-import { SpiderlyFormGroup } from "../spiderly-form-control/spiderly-form-control";
+import { SpiderlyFormControl, SpiderlyFormGroup } from "../spiderly-form-control/spiderly-form-control";
 import { ToastMessageOptions } from "primeng/api";
 
 // Helper function for PrecisionScale validation (to be added in the TypeScript output):
@@ -167,7 +167,7 @@ export function capitalizeFirstLetter(inputString: string): string {
       if(formGroup.controlNamesFromHtml.findIndex(x => x === formControlName) === -1)
         formGroup.controlNamesFromHtml.push(formControlName);
   
-      let formControl = formGroup.controls[formControlName];
+      let formControl = formGroup.controls[formControlName] as SpiderlyFormControl;
       if (formControl == null) {
         console.error(`FT: The property ${formControlName} in the form group ${formGroup.getRawValue().typeName} doesn't exist`);
         return null;
@@ -230,3 +230,5 @@ export function capitalizeFirstLetter(inputString: string): string {
       sticky: sticky
     };
   }
+
+  export type Ctor<T> = new (...args: any[]) => T;

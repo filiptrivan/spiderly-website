@@ -34,7 +34,7 @@ export class PlaygroundComponent {
   ocb: string = '{';
   ccb: string = '}';
 
-  formGroup = new SpiderlyFormGroup({});
+  // formGroup = new SpiderlyFormGroup({});
   entitiesFormArray: SpiderlyFormArray<SpiderlyClass>;
 
   lastEntitiesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
@@ -59,9 +59,6 @@ export class PlaygroundComponent {
   ];
 
   entitiesCrudMenu: MenuItem[];
-  entityAttributesCrudMenu: MenuItem[];
-  propertiesCrudMenu: MenuItem[];
-  propertyAttributesCrudMenu: MenuItem[];
 
   constructor(
     private baseFormService: BaseFormService,
@@ -70,7 +67,7 @@ export class PlaygroundComponent {
   }
 
   ngOnInit(){
-    const userEntity = {
+    const userEntity = new SpiderlyClass({
       name: 'User', 
       data: [
         {Id: 1, Name: 'Filip'}, 
@@ -78,12 +75,11 @@ export class PlaygroundComponent {
         {Id: 3, Name: 'Milica'}
       ],
       properties: [
-          {name:'Id', type: 'string', attributes: []}, 
-          {name: 'Name', type: 'string', attributes: []}, 
-          {name: 'Logo', type: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
+          {name:'Id', dataType: 'string', attributes: []}, 
+          {name: 'Name', dataType: 'string', attributes: []}, 
+          {name: 'Logo', dataType: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
       ],
-      attributes: []
-    };
+    });
 
     this.entities.push(userEntity);
     this.menu.push({
@@ -92,118 +88,24 @@ export class PlaygroundComponent {
       entity: userEntity,
     });
 
-    this.entitiesFormArray = this.addEntityFormArray(this.formGroup, this.entities, new SpiderlyClass({}), null);
-    const entityFormGroup = this.initEntityFormGroup(new SpiderlyClass({}), new SpiderlyClass({}));
-    this.entitiesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(this.entitiesFormArray, entityFormGroup, this.lastEntitiesMenuIconIndexClicked);
-  }
-
-  addEntityFormArray(
-    parentFormGroup: SpiderlyFormGroup,
-    dataList: SpiderlyClass[], 
-    modelConstructor: SpiderlyClass, 
-    formArrayIdentifierName: string, 
-    required: boolean = false)
-  {
-    let formArray = new SpiderlyFormArray<SpiderlyClass>([]);
-    formArray.required = required;
-    formArray.modelConstructor = modelConstructor;
-
-    dataList.forEach(dataItem => {
-      const helperFormGroup = this.initEntityFormGroup(dataItem, modelConstructor);
-      formArray.push(helperFormGroup);
-    });
-
-    parentFormGroup.setControl(formArrayIdentifierName, formArray); // FT: Use setControl because it will update formArray if it already exists
-
-    return formArray;
-  }
-
-  initEntityFormGroup = (dataItem: any, modelConstructor: BaseEntity) => {
-    let formGroup: SpiderlyFormGroup = new SpiderlyFormGroup<SpiderlyClass>({});
-
-    Object.keys(modelConstructor).forEach((key) => {
-      if (key === 'attributes') {
-        const entityAttributesFormArray = this.baseFormService.addFormArray(formGroup, dataItem[key], new SpiderlyAttribute({}), 'entityAttributes');
-        const entityAttributesFormGroup = this.baseFormService.initFormGroup(new SpiderlyFormGroup({}), Object.keys(new SpiderlyAttribute({})), new SpiderlyAttribute({}));
-        this.entityAttributesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(entityAttributesFormArray, entityAttributesFormGroup, this.lastEntityAttributesMenuIconIndexClicked);
-      }
-      else if (key === 'properties'){
-        const propertiesFormArray = this.addPropertyFormArray(formGroup, dataItem[key], new SpiderlyProperty({}), 'entityProperties');
-        const propertyFormGroup = this.initPropertyFormGroup(new SpiderlyProperty({}), new SpiderlyProperty({}));
-        this.propertiesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(propertiesFormArray, propertyFormGroup, this.lastPropertiesMenuIconIndexClicked);
-      }
-      else{
-        let formControl: SpiderlyFormControl;
-        const formControlValue = dataItem[key];
-        formControl = new SpiderlyFormControl(formControlValue, { updateOn: 'blur' });
-        formControl.label = key;
-        formControl.labelForDisplay = key;
-  
-        formGroup.setControl(key, formControl); // FT: Use setControl because it will update formControl if it already exists
-      }
-    });
-
-    return formGroup;
-  }
-
-  addPropertyFormArray(
-    parentFormGroup: SpiderlyFormGroup,
-    dataList: SpiderlyProperty[], 
-    modelConstructor: SpiderlyProperty, 
-    formArrayIdentifierName: string, 
-    required: boolean = false)
-  {
-    let formArray = new SpiderlyFormArray<SpiderlyProperty>([]);
-    formArray.required = required;
-    formArray.modelConstructor = modelConstructor;
-
-    dataList?.forEach(dataItem => {
-      const helperFormGroup = this.initPropertyFormGroup(dataItem, modelConstructor);
-      formArray.push(helperFormGroup);
-    });
-
-    parentFormGroup.setControl(formArrayIdentifierName, formArray); // FT: Use setControl because it will update formArray if it already exists
-
-    return formArray;
-  }
-
-  initPropertyFormGroup = (dataItem: any, modelConstructor: BaseEntity) => {
-    let formGroup = new SpiderlyFormGroup<SpiderlyProperty>({});
-
-    Object.keys(modelConstructor).forEach((key) => {
-      if (key === 'attributes') {
-        const propertyAttributesFormArray = this.baseFormService.addFormArray(formGroup, dataItem[key], new SpiderlyAttribute({}), 'propertyAttributes');
-        const propertyAttributesFormGroup = this.baseFormService.initFormGroup(new SpiderlyFormGroup({}), Object.keys(new SpiderlyAttribute({})), new SpiderlyAttribute({}));
-        this.propertyAttributesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(propertyAttributesFormArray, propertyAttributesFormGroup, this.lastPropertyAttributesMenuIconIndexClicked);
-      }
-      else {
-        let formControl: SpiderlyFormControl;
-        const formControlValue = dataItem[key];
-        formControl = new SpiderlyFormControl(formControlValue, { updateOn: 'blur' });
-        formControl.label = key;
-        formControl.labelForDisplay = key;
-  
-        formGroup.setControl(key, formControl); // FT: Use setControl because it will update formControl if it already exists
-      }
-    });
-
-    return formGroup;
+    this.entitiesFormArray = this.baseFormService.initFormArray(new SpiderlyClass({}), this.entities);
+    this.entitiesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(new SpiderlyClass({}), this.entitiesFormArray, this.lastEntitiesMenuIconIndexClicked);
   }
 
   getFormArrayGroups<T>(formArray: SpiderlyFormArray<T>): SpiderlyFormGroup<T>[]{
     return this.baseFormService.getFormArrayGroups<T>(formArray);
   }
 
-  getEntityAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>): SpiderlyFormGroup<SpiderlyAttribute>[]{
-    return this.baseFormService.getFormArrayGroups<SpiderlyAttribute>(formGroup.controls['entityAttributes']);
+  getEntityAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>){
+    return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>);
   }
 
-  getPropertiesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>): SpiderlyFormGroup<SpiderlyProperty>[]{
-    return this.baseFormService.getFormArrayGroups<SpiderlyProperty>(formGroup.controls['entityProperties']);
+  getPropertiesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>){
+    return this.baseFormService.getFormArrayGroups(formGroup.controls.properties as SpiderlyFormArray<SpiderlyProperty>);
   }
 
-  getPropertyAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyProperty>): SpiderlyFormGroup<SpiderlyAttribute>[]{
-    return this.baseFormService.getFormArrayGroups<SpiderlyAttribute>(formGroup.controls['propertyAttributes']);
+  getPropertyAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyProperty>){
+    return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>);
   }
 
   entityMenuItemClick = (index: number, event) => {
@@ -224,6 +126,21 @@ export class PlaygroundComponent {
   propertyAttributeMenuItemClick = (index: number, event) => {
     this.propertyAttributeMenu.toggle(event);
     this.lastPropertyAttributesMenuIconIndexClicked.index = index;
+  }
+
+  getEntityAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {
+    const formArray = formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>;
+    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formArray, this.lastEntityAttributesMenuIconIndexClicked);
+  }
+
+  getPropertiesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {
+    const formArray = formGroup.controls.properties as SpiderlyFormArray<SpiderlyProperty>;
+    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyProperty({}), formArray, this.lastPropertiesMenuIconIndexClicked);
+  }
+
+  getPropertyAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyProperty>) => {
+    const formArray = formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>;
+    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formArray, this.lastPropertyAttributesMenuIconIndexClicked);
   }
 
 

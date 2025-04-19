@@ -34,9 +34,9 @@ export class SpiderlyFormControl<T = any> extends FormControl<T> {
 }
 
 export class SpiderlyFormGroup<TValue = any> extends FormGroup {
-    declare controls: { [P in keyof TValue]: SpiderlyFormControl<TValue[P]> };
+    declare controls: { [P in keyof TValue]: SpiderlyFormControl<TValue[P]> | SpiderlyFormArray<any> | SpiderlyFormGroup<any> };
 
-    constructor(controls: { [P in keyof TValue]: SpiderlyFormControl<TValue[P]> }) {
+    constructor(controls: { [P in keyof TValue]: SpiderlyFormControl<TValue[P]> | SpiderlyFormArray<any> | SpiderlyFormGroup<any> }) {
         super(controls);
     }
 
@@ -54,7 +54,5 @@ export class SpiderlyFormGroup<TValue = any> extends FormGroup {
 export class SpiderlyFormArray<TValue = any> extends FormArray {
     override value: TValue[] = []; // FT: There is no getRawValue in FormArray
     public required: boolean;
-    public modelConstructor: TValue;
-    public translationKey: string;
     public controlNamesFromHtml?: string[] = [];
 }

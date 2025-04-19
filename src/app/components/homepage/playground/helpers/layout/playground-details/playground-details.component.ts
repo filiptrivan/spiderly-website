@@ -45,7 +45,7 @@ export class PlaygroundDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.baseFormService.initFormGroup(this.formGroup, this.entity.properties.map(x => x.name), this.entity.data[this.index])
+        this.baseFormService.initFormGroup(this.formGroup, this.entity.data[this.index], this.entity.properties.map(x => x.name))
     }
     
     control = (formControlName: string, formGroup: SpiderlyFormGroup) => {
