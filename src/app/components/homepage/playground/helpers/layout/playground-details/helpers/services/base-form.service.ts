@@ -178,19 +178,58 @@ export class BaseFormService {
 
   //#region Helpers
 
-  // FT: If you want to call single method
-  checkFormGroupValidity = <T>(formGroup: SpiderlyFormGroup<T>): boolean => {
-    if (formGroup.invalid) {
-      Object.keys(formGroup.controls).forEach(key => {
-        formGroup.controls[key].markAsDirty(); // this.formGroup.markAsDirty(); // FT: For some reason this doesnt work
-      });
+  generateNewNegativeId<T extends BaseEntity>(formArray: SpiderlyFormArray<T>){
+    return -formArray.getRawValue().filter(x => x.id < 0).length - 1;
+  }
 
-      this.showInvalidFieldsMessage();
+  checkFormGroupValidity = (formGroup: SpiderlyFormGroup) => {
+    const [invalid, arrayInvalid] = this.isFormGroupValid(formGroup);
 
+    if (arrayInvalid) {
+      this.messageService.add(getWarningMessageOptions('List can not be empty', null, null, 'app'));
       return false;
     }
-    
+
+    if (invalid) {
+      this.showInvalidFieldsMessage();
+      return false;
+    }
+
     return true;
+  }
+
+  isFormGroupValid(formGroup: SpiderlyFormGroup): [boolean, boolean] {
+    if(formGroup.controls == null)
+      return [true, true];
+
+    let [invalid, arrayInvalid] = [false, false];
+    // let invalid: boolean = false;
+    // let arrayInvalid: boolean = false;
+
+    Object.keys(formGroup.controls).forEach(key => {
+      const form = formGroup.controls[key];
+
+      if (form instanceof SpiderlyFormGroup){
+        [invalid, arrayInvalid] = this.isFormGroupValid(form);
+      }
+      else if (form instanceof SpiderlyFormControl){
+        if (form.invalid) {
+          form.markAsDirty();
+          invalid = true;
+        }
+      }
+      else if (form instanceof SpiderlyFormArray){
+        (form.controls as SpiderlyFormGroup[]).forEach(formGroup => {
+          [invalid, arrayInvalid] = this.isFormGroupValid(formGroup);
+        });
+        if (form.required == true && form.length == 0) {
+          arrayInvalid = true;
+        }
+      }
+
+    });
+
+    return [invalid, arrayInvalid];
   }
 
   showInvalidFieldsMessage = () => {
@@ -200,10 +239,6 @@ export class BaseFormService {
         'You have some invalid fields'
       )
     );
-  }
-
-  generateNewNegativeId<T extends BaseEntity>(formArray: SpiderlyFormArray<T>){
-    return -formArray.getRawValue().filter(x => x.id < 0).length - 1;
   }
 
   //#endregion

@@ -95,8 +95,7 @@ export class PlaygroundComponent {
   }
 
   saveEntityFormGroup(formGroup: SpiderlyFormGroup<SpiderlyClass>) {
-    if (formGroup.invalid) {
-      this.messageService.add(getWarningMessageOptions('Some fields on the form are invalid.'));
+    if (this.baseFormService.checkFormGroupValidity(formGroup) === false) {
       return;
     }
 
