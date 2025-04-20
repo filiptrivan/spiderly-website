@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { SpiderlyFormArray, SpiderlyFormControl, SpiderlyFormGroup } from '../spiderly-form-control/spiderly-form-control';
 import { BaseEntity } from '../entities/base-entity';
 import { MenuItem, MessageService } from 'primeng/api';
-import { Ctor, getWarningMessageOptions } from './helper-functions';
-import { SpiderlyAttribute } from '../../../../entities';
+import { getWarningMessageOptions } from './helper-functions';
 import { setValidator } from './validator-functions';
 import { instance } from './instance-mapper';
 
@@ -183,7 +182,8 @@ export class BaseFormService {
   }
 
   checkFormGroupValidity = (formGroup: SpiderlyFormGroup) => {
-    const [invalid, arrayInvalid] = this.isFormGroupValid(formGroup);
+    let [invalid, arrayInvalid] = [false, false];
+    [invalid, arrayInvalid] = this.isFormGroupValid(formGroup, [invalid, arrayInvalid]);
 
     if (arrayInvalid) {
       this.messageService.add(getWarningMessageOptions('List can not be empty', null, null, 'app'));
@@ -198,19 +198,15 @@ export class BaseFormService {
     return true;
   }
 
-  isFormGroupValid(formGroup: SpiderlyFormGroup): [boolean, boolean] {
+  isFormGroupValid(formGroup: SpiderlyFormGroup, [invalid, arrayInvalid]): [boolean, boolean] {
     if(formGroup.controls == null)
       return [true, true];
-
-    let [invalid, arrayInvalid] = [false, false];
-    // let invalid: boolean = false;
-    // let arrayInvalid: boolean = false;
 
     Object.keys(formGroup.controls).forEach(key => {
       const form = formGroup.controls[key];
 
       if (form instanceof SpiderlyFormGroup){
-        [invalid, arrayInvalid] = this.isFormGroupValid(form);
+        [invalid, arrayInvalid] = this.isFormGroupValid(form, [invalid, arrayInvalid]);
       }
       else if (form instanceof SpiderlyFormControl){
         if (form.invalid) {
@@ -220,7 +216,7 @@ export class BaseFormService {
       }
       else if (form instanceof SpiderlyFormArray){
         (form.controls as SpiderlyFormGroup[]).forEach(formGroup => {
-          [invalid, arrayInvalid] = this.isFormGroupValid(formGroup);
+          [invalid, arrayInvalid] = this.isFormGroupValid(formGroup, [invalid, arrayInvalid]);
         });
         if (form.required == true && form.length == 0) {
           arrayInvalid = true;

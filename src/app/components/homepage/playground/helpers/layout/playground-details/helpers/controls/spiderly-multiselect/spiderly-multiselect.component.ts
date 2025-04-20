@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RequiredComponent } from '../../required/required.component';
@@ -24,8 +24,9 @@ import { TooltipModule } from 'primeng/tooltip';
 export class SpiderlyMultiSelectComponent extends BaseDropdownControl implements OnInit {
     
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+        super(platformId);
     }
 
     override ngOnInit(){

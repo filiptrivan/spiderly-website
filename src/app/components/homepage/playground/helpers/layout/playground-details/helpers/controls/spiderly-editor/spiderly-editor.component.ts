@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
@@ -27,8 +27,9 @@ export class SpiderlyEditorComponent extends BaseControl implements OnInit {
     @ViewChild(Tooltip) tooltip: Tooltip;
 
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+    super(platformId);
     }
 
     override ngOnInit(){

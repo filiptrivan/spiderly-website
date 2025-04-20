@@ -1,7 +1,9 @@
 import {
-    Component, Input,
+    Component, Inject, Input,
+    PLATFORM_ID,
   } from '@angular/core';
 import { SpiderlyFormControl } from '../spiderly-form-control/spiderly-form-control';
+import { isPlatformBrowser } from '@angular/common';
   
   @Component({
     selector: 'base-control',
@@ -21,6 +23,7 @@ import { SpiderlyFormControl } from '../spiderly-form-control/spiderly-form-cont
     errorMessageTooltipEvent: 'hover' | 'focus';
     
     constructor(
+      @Inject(PLATFORM_ID) protected platformId: Object
     ) {
 
     }
@@ -28,12 +31,10 @@ import { SpiderlyFormControl } from '../spiderly-form-control/spiderly-form-cont
     ngOnInit(){
       if(this.control != null && this.disabled == true)
         this.control.disable();
-
-      // TODO FT: Delete if you don't need
-      // if(this.control?.validator?.hasNotEmptyRule == true) // FT HACK: Be carefull with this name, if you change it in generator you need to change it here also
-      //   this.control.required = true;
-
-       this.errorMessageTooltipEvent = window.innerWidth > 1000 ? 'hover' : 'focus'
+      
+      if (isPlatformBrowser(this.platformId)) {
+        this.errorMessageTooltipEvent = window.innerWidth > 1000 ? 'hover' : 'focus';
+      }
     }
 
     ngAfterViewInit(){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
@@ -23,8 +23,9 @@ import { TooltipModule } from 'primeng/tooltip';
 export class SpiderlyColorpickComponent extends BaseControl implements OnInit {
 
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+    super(platformId);
     }
 
     override ngOnInit(){

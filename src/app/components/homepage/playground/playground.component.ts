@@ -1,5 +1,5 @@
 import { BaseFormService, LastMenuIconIndexClicked } from './helpers/layout/playground-details/helpers/services/base-form.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionWrapperComponent } from "../../section-wrapper/section-wrapper.component";
 import { ButtonModule } from 'primeng/button';
@@ -10,11 +10,11 @@ import { SpiderlyMenuItem } from './helpers/layout/sidebar/sidebar-menu.componen
 import { SpiderlyControlsModule } from "./helpers/layout/playground-details/helpers/controls/spiderly-controls.module";
 import { SpiderlyTextboxComponent } from "./helpers/layout/playground-details/helpers/controls/spiderly-textbox/spiderly-textbox.component";
 import { SpiderlyFormArray, SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
-import { Menu, MenuModule } from 'primeng/menu';
+import { MenuModule } from 'primeng/menu';
 import { MenuItem, MessageService } from 'primeng/api';
-import { getWarningMessageOptions } from './helpers/layout/playground-details/helpers/services/helper-functions';
 import { PrimengOption } from './helpers/layout/playground-details/helpers/entities/primeng-option';
 import { getCSharpDataTypeOptions, getEntityAttributeOptions, getPropertyAttributeOptions } from './helpers/get-options-functions';
+import { IndexCardComponent } from './helpers/components/index-card/index-card.component';
 
 @Component({
   selector: 'app-playground',
@@ -29,25 +29,20 @@ import { getCSharpDataTypeOptions, getEntityAttributeOptions, getPropertyAttribu
     SpiderlyControlsModule,
     LayoutComponent,
     MenuModule,
-    SpiderlyTextboxComponent
+    SpiderlyTextboxComponent,
+    IndexCardComponent,
   ],
 })
 export class PlaygroundComponent {
   ocb: string = '{';
   ccb: string = '}';
 
-  // formGroup = new SpiderlyFormGroup({});
   entitiesFormArray: SpiderlyFormArray<SpiderlyClass>;
 
   lastEntitiesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
   lastEntityAttributesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
   lastPropertiesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
   lastPropertyAttributesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
-  
-  @ViewChild('entityMenu') entityMenu: Menu;
-  @ViewChild('entityAttributeMenu') entityAttributeMenu: Menu;
-  @ViewChild('propertyMenu') propertyMenu: Menu;
-  @ViewChild('propertyAttributeMenu') propertyAttributeMenu: Menu;
 
   entities: SpiderlyClass[] = [];
   menu: SpiderlyMenuItem[] = [
@@ -74,21 +69,21 @@ export class PlaygroundComponent {
   }
 
   ngOnInit(){
-    // const userEntity = new SpiderlyClass({
-    //   name: 'User', 
-    //   data: [
-    //     {Id: 1, Name: 'Filip'}, 
-    //     {Id: 2, Name: 'Aleksa'}, 
-    //     {Id: 3, Name: 'Milica'}
-    //   ],
-    //   properties: [
-    //       {name:'Id', dataType: 'string', attributes: []}, 
-    //       {name: 'Name', dataType: 'string', attributes: []}, 
-    //       {name: 'Logo', dataType: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
-    //   ],
-    // });
+    const userEntity = new SpiderlyClass({
+      name: 'User', 
+      data: [
+        {Id: 1, Name: 'Filip'}, 
+        {Id: 2, Name: 'Aleksa'}, 
+        {Id: 3, Name: 'Milica'}
+      ],
+      properties: [
+          {name:'Id', dataType: 'string', attributes: []}, 
+          {name: 'Name', dataType: 'string', attributes: []}, 
+          {name: 'Logo', dataType: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
+      ],
+    });
 
-    // this.saveEntity(userEntity);
+    this.saveEntity(userEntity);
 
     this.entitiesFormArray = this.baseFormService.initFormArray(new SpiderlyClass({}), this.entities);
     this.entitiesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(new SpiderlyClass({}), this.entitiesFormArray, this.lastEntitiesMenuIconIndexClicked);
@@ -125,26 +120,6 @@ export class PlaygroundComponent {
 
   getPropertyAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyProperty>){
     return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes);
-  }
-
-  entityMenuItemClick = (index: number, event) => {
-    this.entityMenu.toggle(event);
-    this.lastEntitiesMenuIconIndexClicked.index = index;
-  }
-
-  entityAttributeMenuItemClick = (index: number, event) => {
-    this.entityAttributeMenu.toggle(event);
-    this.lastEntityAttributesMenuIconIndexClicked.index = index;
-  }
-
-  propertyMenuItemClick = (index: number, event) => {
-    this.propertyMenu.toggle(event);
-    this.lastPropertiesMenuIconIndexClicked.index = index;
-  }
-  
-  propertyAttributeMenuItemClick = (index: number, event) => {
-    this.propertyAttributeMenu.toggle(event);
-    this.lastPropertyAttributesMenuIconIndexClicked.index = index;
   }
 
   getEntityAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {

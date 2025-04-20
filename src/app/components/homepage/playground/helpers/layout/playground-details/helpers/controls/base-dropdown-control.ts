@@ -1,8 +1,10 @@
 import {
     Component,
     EventEmitter,
+    Inject,
     Input,
     Output,
+    PLATFORM_ID,
   } from '@angular/core';
 import { BaseControl } from './base-control';
 import { PrimengOption } from '../entities/primeng-option';
@@ -20,8 +22,9 @@ import { PrimengOption } from '../entities/primeng-option';
     @Output() onButtonClick: EventEmitter<null> = new EventEmitter();
     
     constructor(
+      @Inject(PLATFORM_ID) protected override platformId: Object
     ) {
-      super();
+      super(platformId);
     }
 
     dropdownMarkAsDirty(){

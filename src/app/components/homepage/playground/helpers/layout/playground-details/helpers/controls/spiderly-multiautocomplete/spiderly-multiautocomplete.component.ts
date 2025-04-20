@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { BaseAutocompleteControl } from '../base-autocomplete-control';
 import { CommonModule } from '@angular/common';
@@ -25,8 +25,9 @@ export class SpiderlyMultiAutocompleteComponent extends BaseAutocompleteControl 
     // @Input() required: boolean = true; // TODO FT: delete if you don't need through whole app
     
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+        super(platformId);
     }
 
     override ngOnInit(){

@@ -1,63 +1,108 @@
 <app-section-wrapper parts="one" text-align="left" >
   
-  <form>
+  <form style="width: 100%;">
     @for (entityFormGroup of getFormArrayGroups(entitiesFormArray); track $index; let entityIndex = $index) {
-      <div class="code-editor">
-        <!-- <div style="display: flex; flex-direction: column; gap: 5px;"> -->
-          @for (attributeFormGroup of getEntityAttributesFormArrayGroups(entityFormGroup); track $index; let entityAttributeIndex = $index) {
-            <div style="display: flex; align-items: center;">
-              [<spiderly-dropdown [control]="attributeFormGroup.controls.name" [options]="entityAttributeOptions"></spiderly-dropdown>]
-              <!-- [{{attributeFormGroup.controls.name.value}}{{attributeFormGroup.controls.value.value == null ? '' : `(${attributeFormGroup.controls.value.value})`}}]  -->
-              <i class="pi pi-ellipsis-h icon-hover" (click)="entityAttributeMenuItemClick(entityAttributeIndex, $event)"></i>
+      <index-card 
+      [index]="entityIndex" 
+      [last]="false" 
+      [crudMenu]="entitiesCrudMenu" 
+      (onMenuIconClick)="lastEntitiesMenuIconIndexClicked.index = $event"
+      >
+        <div class="playground-code-block-wrapper">
+
+          <div class="c-sharp-class-form">
+
+            <div style="display: flex; align-items: center; margin-bottom: 18px;">
+              <spiderly-textbox [control]="entityFormGroup.controls.name"></spiderly-textbox>
             </div>
-          }
-          <p-button (onClick)="addNewEntityAttribute(entityFormGroup)" size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
-        <!-- </div> -->
 
-        <div>
-          public class {{entityFormGroup.controls.name.value}} {{ocb}} 
-          <i class="pi pi-ellipsis-h icon-hover" (click)="entityMenuItemClick(entityIndex, $event)"></i>
-        </div>
+            @for (attributeFormGroup of getEntityAttributesFormArrayGroups(entityFormGroup); track $index; let entityAttributeIndex = $index) {
+              <index-card 
+              [index]="entityAttributeIndex" 
+              [last]="false"
+              [crudMenu]="getEntityAttributesCrudMenu(entityFormGroup)"
+              (onMenuIconClick)="lastEntityAttributesMenuIconIndexClicked.index = $event"
+              >
+                <spiderly-dropdown [control]="attributeFormGroup.controls.name" [options]="entityAttributeOptions"></spiderly-dropdown>
+              </index-card>
+            }
+            <p-button (onClick)="addNewEntityAttribute(entityFormGroup)" [style]="{'margin-bottom': '18px'}" size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
 
-        <div style="margin-bottom: 35px;"></div>
-
-        <div>
-          @for (propertyFormGroup of getPropertiesFormArrayGroups(entityFormGroup); track $index; let propertyIndex = $index) {
-            <div style="display: flex; flex-direction: column; gap: 5px;">
-              @for (attributeFormGroup of getPropertyAttributesFormArrayGroups(propertyFormGroup); track $index; let propertyAttributeIndex = $index) {
-                <div style="display: flex; align-items: center;">
-                  [<spiderly-dropdown [control]="attributeFormGroup.controls.name" [options]="entityAttributeOptions"></spiderly-dropdown>]
-                  <!-- [{{attributeFormGroup.controls.name.value}}{{attributeFormGroup.controls.value.value == null ? '' : `(${attributeFormGroup.controls.value.value})`}}]  -->
-                  <i class="pi pi-ellipsis-h icon-hover" (click)="propertyAttributeMenuItemClick(propertyAttributeIndex, $event)"></i>
-                </div>
+            <div>
+              @for (propertyFormGroup of getPropertiesFormArrayGroups(entityFormGroup); track $index; let propertyIndex = $index) {
+                <index-card 
+                [index]="propertyIndex" 
+                [last]="false"
+                [crudMenu]="getPropertiesCrudMenu(entityFormGroup)"
+                (onMenuIconClick)="lastPropertiesMenuIconIndexClicked.index = $event"
+                >
+                  <div style="margin-bottom: 18px;">
+                    <spiderly-dropdown [control]="propertyFormGroup.controls.dataType" [options]="cSharpDataTypeOptions"></spiderly-dropdown> 
+                  </div>
+                  <div style="margin-bottom: 18px;">
+                    <spiderly-textbox [control]="propertyFormGroup.controls.name"></spiderly-textbox>
+                  </div>
+                  <div>
+                    @for (attributeFormGroup of getPropertyAttributesFormArrayGroups(propertyFormGroup); track $index; let propertyAttributeIndex = $index) {
+                      <index-card 
+                      [index]="propertyAttributeIndex" 
+                      [last]="false"
+                      [crudMenu]="getPropertyAttributesCrudMenu(propertyFormGroup)"
+                      (onMenuIconClick)="lastPropertyAttributesMenuIconIndexClicked.index = $event"
+                      >
+                        <spiderly-dropdown [control]="attributeFormGroup.controls.name" [options]="entityAttributeOptions"></spiderly-dropdown>
+                      </index-card>
+                    }
+                    <p-button (onClick)="addNewPropertyAttribute(propertyFormGroup)" size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
+                  </div>
+                </index-card>
               }
-              <p-button (onClick)="addNewPropertyAttribute(propertyFormGroup)" size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
+              <p-button (onClick)="addNewProperty(entityFormGroup)" [style]="{'margin-bottom': '18px'}" size="small" label="Add new property" icon="pi pi-plus"></p-button>
             </div>
 
-            <div style="display: flex; align-items: center;">
-              public <spiderly-dropdown [control]="propertyFormGroup.controls.dataType" [options]="cSharpDataTypeOptions"></spiderly-dropdown> <spiderly-textbox [control]="propertyFormGroup.controls.name"></spiderly-textbox> {{ocb}} get; set; {{ccb}} 
-              <!-- public {{propertyFormGroup.controls.dataType.value}} {{propertyFormGroup.controls.name.value}} {{ocb}} get; set; {{ccb}}  -->
-              <i class="pi pi-ellipsis-h icon-hover" (click)="propertyMenuItemClick(propertyIndex, $event)"></i>
-            </div>
+            <p-button (onClick)="saveEntityFormGroup(entityFormGroup)" size="small" label="Save" icon="pi pi-save"></p-button>
+          </div>
 
+          <code class="code-editor">
+            @for (attributeFormGroup of getEntityAttributesFormArrayGroups(entityFormGroup); track $index; let entityAttributeIndex = $index) {
+              <div>
+                [<span class="punct">{{attributeFormGroup.controls.name.value}}</span>
+                <ng-container *ngIf="attributeFormGroup.controls.value.value != null">(<span>{{attributeFormGroup.controls.value.value}}</span>)</ng-container>]
+              </div>
+            }
+  
+            <div>
+              <span class="kw">public class</span> <span class="punct"> {{entityFormGroup.controls.name.value}}</span> {{ocb}}
+            </div>
+  
             <div style="margin-bottom: 35px;"></div>
+  
+            <div style="margin-left: 20px;">
+              @for (propertyFormGroup of getPropertiesFormArrayGroups(entityFormGroup); track $index; let propertyIndex = $index) {
+                @for (attributeFormGroup of getPropertyAttributesFormArrayGroups(propertyFormGroup); track $index; let propertyAttributeIndex = $index) {
+                  <div>
+                    [<span class="punct">{{attributeFormGroup.controls.name.value}}</span>
+                    <ng-container *ngIf="attributeFormGroup.controls.value.value != null">(<span>{{attributeFormGroup.controls.value.value}}</span>)</ng-container>]
+                  </div>
+                }
+  
+                <div>
+                  <span class="kw">public {{propertyFormGroup.controls.dataType.value}}</span> {{propertyFormGroup.controls.name.value}} {{ocb}} <span class="kw">get</span>; <span class="kw">set</span>; {{ccb}} 
+                </div>
+  
+                <div style="margin-bottom: 35px;"></div>
+              }
+            </div>
+  
+            <div style="margin-bottom: 20px;">
+              {{ccb}}
+            </div>
+          </code>
 
-            <p-menu #propertyAttributeMenu [model]="getPropertyAttributesCrudMenu(propertyFormGroup)" [tabindex]="undefined" [popup]="true" appendTo="body"></p-menu>
-          }
-          <p-button (onClick)="addNewProperty(entityFormGroup)" size="small" label="Add new property" icon="pi pi-plus" [style]="{'margin-bottom': '5px'}"></p-button>
         </div>
-
-        <div style="margin-bottom: 20px;">
-          {{ccb}}
-        </div>
-
-        <p-button (onClick)="saveEntityFormGroup(entityFormGroup)" size="small" label="Save" icon="pi pi-save"></p-button>
-      </div>
-
-      <p-menu #entityAttributeMenu [model]="getEntityAttributesCrudMenu(entityFormGroup)" [tabindex]="undefined" [popup]="true" appendTo="body"></p-menu>
-      <p-menu #propertyMenu [model]="getPropertiesCrudMenu(entityFormGroup)" [tabindex]="undefined" [popup]="true" appendTo="body"></p-menu>
+      </index-card>
     }
-    <p-button (onClick)="addNewEntity()" label="Add new entity" icon="pi pi-plus"></p-button>
+    <p-button (onClick)="addNewEntity()" label="Add new class" icon="pi pi-plus"></p-button>
   </form>
 
   <div class="web-page">
@@ -65,6 +110,3 @@
   </div>
 
 </app-section-wrapper>
-
-<!-- FT: [tabindex] is not necessary here because model is not returned by method: https://github.com/primefaces/primeng/issues/13934 -->
-<p-menu #entityMenu [model]="entitiesCrudMenu" [popup]="true" appendTo="body"></p-menu> 

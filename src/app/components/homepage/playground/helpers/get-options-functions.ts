@@ -2,26 +2,26 @@ import { PrimengOption } from "./layout/playground-details/helpers/entities/prim
 
 export const getEntityAttributeOptions = (): PrimengOption[] => {
     return [
-        {label: 'Authorize', value: 0},
-        {label: 'TranslatePluralEn', value: 1},
-        {label: 'TranslatePluralSr', value: 2},
+        {label: 'Authorize', value: 'Authorize'},
+        {label: 'TranslatePluralEn', value: 'TranslatePluralEn'},
+        {label: 'TranslatePluralSr', value: 'TranslatePluralSr'},
     ];
 }
 
 export const getPropertyAttributeOptions = (): PrimengOption[] => {
     return [
-        {label: 'BlobName', value: 0},
-        {label: 'CascadeDelete', value: 1},
-        {label: 'DisplayName', value: 2},
+        {label: 'BlobName', value: 'BlobName'},
+        {label: 'CascadeDelete', value: 'CascadeDelete'},
+        {label: 'DisplayName', value: 'DisplayName'},
     ];
 }
 export const getCSharpDataTypeOptions = (): PrimengOption[] => {
     return [
-        {label: 'string', value: 0},
-        {label: 'DateTime', value: 1},
-        {label: 'bool', value: 2},
-        {label: 'long', value: 3},
-        {label: 'int', value: 4},
-        {label: 'byte', value: 5},
+        {label: 'string', value: 'string'},
+        {label: 'DateTime', value: 'DateTime'},
+        {label: 'bool', value: 'bool'},
+        {label: 'long', value: 'long'},
+        {label: 'int', value: 'int'},
+        {label: 'byte', value: 'byte'},
     ];
 }

@@ -1,10 +1,36 @@
-@use '../../../../assets/variables.scss' as vars;
+@use "../../../../assets/variables.scss" as vars;
+
+.c-sharp-class-form {
+  background-color: vars.$surface-light;
+  border-radius: 10px;
+  width: 100%;
+  padding: 18px;
+}
 
 .code-editor {
   background-color: vars.$surface-light;
   border-radius: 10px;
   width: 100%;
-  padding: 32px;
+  padding: 18px;
+}
+
+.code-editor .kw {
+  color: #c678dd;
+}
+
+.code-editor .punct {
+  color: #56b6c2;
+}
+
+.playground-code-block-wrapper {
+  display: flex;
+  gap: 18px;
+}
+
+@media (max-width: vars.$md) {
+  .playground-code-block-wrapper {
+    flex-direction: column;
+  } 
 }
 
 .web-page {
@@ -21,6 +47,25 @@
 
 @media (max-width: vars.$md) {
   .web-page {
-    width: 88vw;
+    // width: 83vw;
   }
+}
+
+.last-child-zero-margin{
+	margin-bottom: 0px !important;
+}
+
+.card-margin-bottom{
+	margin-bottom: 18px;
+}
+
+.icon-hover {
+	cursor: pointer;
+	padding: 7px;
+	border-radius: 50%;
+	transition: background-color 0.3s ease;
+}
+
+.icon-hover:hover {
+	background-color: vars.$hover;
 }

@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'spiderly-panel',
   templateUrl: './spiderly-panel.component.html',
+  styleUrl: '../../../../../../playground.component.scss',
   imports: [
     CommonModule,
     PanelModule,

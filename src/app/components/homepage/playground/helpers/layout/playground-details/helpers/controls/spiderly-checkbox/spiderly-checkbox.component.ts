@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -27,8 +27,9 @@ export class SpiderlyCheckboxComponent extends BaseControl implements OnInit {
     @Input() inlineLabel = false;
 
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+    super(platformId);
     }
 
      override ngOnInit(){

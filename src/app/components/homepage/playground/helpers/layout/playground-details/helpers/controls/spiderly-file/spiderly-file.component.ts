@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
@@ -39,8 +39,9 @@ export class SpiderlyFileComponent extends BaseControl implements OnInit {
     @Input() files: File[] = [];
 
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+    super(platformId);
     }
 
     override ngOnInit(){

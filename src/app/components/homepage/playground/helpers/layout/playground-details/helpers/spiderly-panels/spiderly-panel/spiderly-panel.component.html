@@ -24,7 +24,8 @@ collapseIcon="pi pi-chevron-down"
     <ng-template pTemplate="icons">
         <div *ngIf="showCrudMenu && crudMenu" class="mr-2">
             <i class="pi pi-ellipsis-h icon-hover" (click)="menuItemClick(index, $event)"></i>
-            <p-menu #menu [model]="crudMenu" [popup]="true" appendTo="body"></p-menu>
+            <!-- FT: [tabindex]="undefined": https://github.com/primefaces/primeng/issues/13934 -->
+            <p-menu #menu [model]="crudMenu" [popup]="true" [tabindex]="undefined" appendTo="body"></p-menu>
         </div>
         <div *ngIf="showRemoveIcon" class="mr-2">
             <i class="pi pi-minus icon-hover error-color-light" (click)="removeItemClick()"></i>

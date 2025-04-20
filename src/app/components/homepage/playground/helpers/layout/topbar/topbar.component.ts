@@ -86,7 +86,7 @@ export class AppTopBarComponent {
 
   onDocumentClick(event: any) {
     if (
-      !this.menu.nativeElement.contains(event.target) 
+      !this.menu?.nativeElement.contains(event.target) 
     ) {
       if (this.layoutService.state.profileDropdownSidebarVisible == true) {
         this.layoutService.state.profileDropdownSidebarVisible = false;

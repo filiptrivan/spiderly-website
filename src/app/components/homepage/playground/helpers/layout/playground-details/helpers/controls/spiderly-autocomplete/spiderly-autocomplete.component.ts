@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { BaseAutocompleteControl } from '../base-autocomplete-control';
 import { CommonModule } from '@angular/common';
@@ -28,8 +28,9 @@ export class SpiderlyAutocompleteComponent extends BaseAutocompleteControl imple
     @Input() displayName: string; // FT: Added because when we initialize the object options are null
 
     constructor(
-    ) { 
-        super();
+        @Inject(PLATFORM_ID) protected override platformId: Object
+    ) {
+        super(platformId);
     }
 
     override ngOnInit(){
