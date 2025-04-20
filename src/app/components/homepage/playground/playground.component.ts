@@ -9,10 +9,12 @@ import { SpiderlyAttribute, SpiderlyClass, SpiderlyProperty } from './helpers/en
 import { SpiderlyMenuItem } from './helpers/layout/sidebar/sidebar-menu.component';
 import { SpiderlyControlsModule } from "./helpers/layout/playground-details/helpers/controls/spiderly-controls.module";
 import { SpiderlyTextboxComponent } from "./helpers/layout/playground-details/helpers/controls/spiderly-textbox/spiderly-textbox.component";
-import { SpiderlyFormArray, SpiderlyFormControl, SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
-import { BaseEntity } from './helpers/layout/playground-details/helpers/entities/base-entity';
+import { SpiderlyFormArray, SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
 import { Menu, MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
+import { getWarningMessageOptions } from './helpers/layout/playground-details/helpers/services/helper-functions';
+import { PrimengOption } from './helpers/layout/playground-details/helpers/entities/primeng-option';
+import { getCSharpDataTypeOptions, getEntityAttributeOptions, getPropertyAttributeOptions } from './helpers/get-options-functions';
 
 @Component({
   selector: 'app-playground',
@@ -60,36 +62,54 @@ export class PlaygroundComponent {
 
   entitiesCrudMenu: MenuItem[];
 
+  entityAttributeOptions: PrimengOption[] = getEntityAttributeOptions();
+  propertyAttributeOptions: PrimengOption[] = getPropertyAttributeOptions();
+  cSharpDataTypeOptions: PrimengOption[] = getCSharpDataTypeOptions();
+
   constructor(
     private baseFormService: BaseFormService,
+    private messageService: MessageService,
   ) {
         
   }
 
   ngOnInit(){
-    const userEntity = new SpiderlyClass({
-      name: 'User', 
-      data: [
-        {Id: 1, Name: 'Filip'}, 
-        {Id: 2, Name: 'Aleksa'}, 
-        {Id: 3, Name: 'Milica'}
-      ],
-      properties: [
-          {name:'Id', dataType: 'string', attributes: []}, 
-          {name: 'Name', dataType: 'string', attributes: []}, 
-          {name: 'Logo', dataType: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
-      ],
-    });
+    // const userEntity = new SpiderlyClass({
+    //   name: 'User', 
+    //   data: [
+    //     {Id: 1, Name: 'Filip'}, 
+    //     {Id: 2, Name: 'Aleksa'}, 
+    //     {Id: 3, Name: 'Milica'}
+    //   ],
+    //   properties: [
+    //       {name:'Id', dataType: 'string', attributes: []}, 
+    //       {name: 'Name', dataType: 'string', attributes: []}, 
+    //       {name: 'Logo', dataType: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
+    //   ],
+    // });
 
-    this.entities.push(userEntity);
-    this.menu.push({
-      label: `${userEntity.name}List`,
-      icon: `pi pi-list`,
-      entity: userEntity,
-    });
+    // this.saveEntity(userEntity);
 
     this.entitiesFormArray = this.baseFormService.initFormArray(new SpiderlyClass({}), this.entities);
     this.entitiesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(new SpiderlyClass({}), this.entitiesFormArray, this.lastEntitiesMenuIconIndexClicked);
+  }
+
+  saveEntityFormGroup(formGroup: SpiderlyFormGroup<SpiderlyClass>) {
+    if (formGroup.invalid) {
+      this.messageService.add(getWarningMessageOptions('Some fields on the form are invalid.'));
+      return;
+    }
+
+    this.saveEntity(formGroup.value);
+  }
+
+  saveEntity(entity: SpiderlyClass) {
+    this.entities.push(entity);
+    this.menu.push({
+      label: `${entity.name}List`,
+      icon: `pi pi-list`,
+      entity: entity,
+    });
   }
 
   getFormArrayGroups<T>(formArray: SpiderlyFormArray<T>): SpiderlyFormGroup<T>[]{
@@ -97,15 +117,15 @@ export class PlaygroundComponent {
   }
 
   getEntityAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>){
-    return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>);
+    return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes);
   }
 
   getPropertiesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyClass>){
-    return this.baseFormService.getFormArrayGroups(formGroup.controls.properties as SpiderlyFormArray<SpiderlyProperty>);
+    return this.baseFormService.getFormArrayGroups(formGroup.controls.properties);
   }
 
   getPropertyAttributesFormArrayGroups(formGroup: SpiderlyFormGroup<SpiderlyProperty>){
-    return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>);
+    return this.baseFormService.getFormArrayGroups(formGroup.controls.attributes);
   }
 
   entityMenuItemClick = (index: number, event) => {
@@ -129,19 +149,31 @@ export class PlaygroundComponent {
   }
 
   getEntityAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {
-    const formArray = formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>;
-    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formArray, this.lastEntityAttributesMenuIconIndexClicked);
+    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formGroup.controls.attributes, this.lastEntityAttributesMenuIconIndexClicked);
   }
 
   getPropertiesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {
-    const formArray = formGroup.controls.properties as SpiderlyFormArray<SpiderlyProperty>;
-    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyProperty({}), formArray, this.lastPropertiesMenuIconIndexClicked);
+    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyProperty({}), formGroup.controls.properties, this.lastPropertiesMenuIconIndexClicked);
   }
 
   getPropertyAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyProperty>) => {
-    const formArray = formGroup.controls.attributes as SpiderlyFormArray<SpiderlyAttribute>;
-    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formArray, this.lastPropertyAttributesMenuIconIndexClicked);
+    return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formGroup.controls.attributes, this.lastPropertyAttributesMenuIconIndexClicked);
   }
 
+  addNewEntity() {
+    this.baseFormService.addNewFormGroupToFormArray(this.entitiesFormArray, new SpiderlyClass({}), null);
+  }
+
+  addNewEntityAttribute(formGroup: SpiderlyFormGroup<SpiderlyClass>) {
+    this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.attributes, new SpiderlyAttribute({}), null);
+  }
+
+  addNewProperty(formGroup: SpiderlyFormGroup<SpiderlyClass>) {
+    this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.properties, new SpiderlyProperty({}), null);
+  }
+
+  addNewPropertyAttribute(formGroup: SpiderlyFormGroup<SpiderlyProperty>) {
+    this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.attributes, new SpiderlyAttribute({}), null);
+  }
 
 }

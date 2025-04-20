@@ -33,10 +33,17 @@ export class SpiderlyFormControl<T = any> extends FormControl<T> {
     }
 }
 
-export class SpiderlyFormGroup<TValue = any> extends FormGroup {
-    declare controls: { [P in keyof TValue]: SpiderlyFormControl<TValue[P]> | SpiderlyFormArray<any> | SpiderlyFormGroup<any> };
+type ControlOf<T> =
+  T extends (infer U)[]
+    ? SpiderlyFormArray<U>
+    : T extends object
+      ? SpiderlyFormGroup<T>
+      : SpiderlyFormControl<T>;
 
-    constructor(controls: { [P in keyof TValue]: SpiderlyFormControl<TValue[P]> | SpiderlyFormArray<any> | SpiderlyFormGroup<any> }) {
+export class SpiderlyFormGroup<TValue = any> extends FormGroup {
+    declare controls: { [K in keyof TValue]: ControlOf<TValue[K]> };
+
+    constructor(controls: { [K in keyof TValue]: ControlOf<TValue[K]> }) {
         super(controls);
     }
 

@@ -3,9 +3,9 @@ import { BaseEntity } from "./layout/playground-details/helpers/entities/base-en
 export class SpiderlyClass extends BaseEntity
 {
     name?: string;
-    attributes?: SpiderlyAttribute[] = [];
-    properties?: SpiderlyProperty[] = [];
-    data?: any[] = [];
+    attributes?: SpiderlyAttribute[];
+    properties?: SpiderlyProperty[];
+    data?: any[];
 
   constructor(
   {
@@ -23,9 +23,9 @@ export class SpiderlyClass extends BaseEntity
     super('SpiderlyClass');
 
     this.name = name,
-    this.attributes = attributes,
-    this.properties = properties,
-    this.data = data
+    this.attributes = attributes ?? [],
+    this.properties = properties ?? [],
+    this.data = data ?? []
   }
 }
 
@@ -54,7 +54,7 @@ export class SpiderlyProperty extends BaseEntity
 {
   name?: string;
   dataType?: string;
-  attributes?: SpiderlyAttribute[] = [];
+  attributes?: SpiderlyAttribute[];
 
   constructor(
   {
@@ -71,6 +71,6 @@ export class SpiderlyProperty extends BaseEntity
 
     this.name = name,
     this.dataType = dataType,
-    this.attributes = attributes
+    this.attributes = attributes ?? []
   }
 }

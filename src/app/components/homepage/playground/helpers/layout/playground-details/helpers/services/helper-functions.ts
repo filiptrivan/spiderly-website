@@ -212,22 +212,24 @@ export function capitalizeFirstLetter(inputString: string): string {
     return false;
   }
 
-  export const getSuccessMessageOptions = (detail: string, title: string = 'Successful action') : ToastMessageOptions => {
+  export const getSuccessMessageOptions = (detail: string, title?: string, key?: string) : ToastMessageOptions => {
     return {
       severity: 'success',
-      summary: title,
+      summary: title ?? 'Successful action',
       detail: detail,
       life: 10000,
+      key: key ?? 'app'
     };
   }
 
-  export const getWarningMessageOptions = (detail: string, title?: string, sticky?: boolean) : ToastMessageOptions => {
+  export const getWarningMessageOptions = (detail: string, title?: string, sticky?: boolean, key?: string) : ToastMessageOptions => {
     return {
       severity: 'warn',
       summary: title ?? 'Warning',
       detail: detail,
       life: 10000,
-      sticky: sticky
+      sticky: sticky,
+      key: key ?? 'app'
     };
   }
 

@@ -4,6 +4,8 @@ import { BaseEntity } from '../entities/base-entity';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Ctor, getWarningMessageOptions } from './helper-functions';
 import { SpiderlyAttribute } from '../../../../entities';
+import { setValidator } from './validator-functions';
+import { instance } from './instance-mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -49,8 +51,10 @@ export class BaseFormService {
       const initialValue = ctor[formControlName];
 
       if (Array.isArray(initialValue)) {
-        const childCtor = new (initialValue.constructor as new ({}) => any)({});
-        formControl = this.initFormArray(childCtor, initialValue);
+        const childCtor = instance(ctor.typeName, formControlName);
+        if (childCtor != null) {
+          formControl = this.initFormArray(childCtor, initialValue);
+        }
       }
       else {
         if (updateOnChangeControls?.includes(formControlName)){
@@ -62,11 +66,11 @@ export class BaseFormService {
 
         formControl.label = formControlName;
         formControl.labelForDisplay = formControlName;
+        
+        setValidator(formControl, ctor.typeName);
       }
 
       formGroup.setControl(formControlName, formControl); // FT: Use setControl because it will update formControl if it already exists
-
-      // this.validatorService.setValidator(formControl, modelConstructor.typeName);
     });
 
     return formGroup;
@@ -89,7 +93,7 @@ export class BaseFormService {
     }else{
       formArray.insert(index, helperFormGroup);
     }
-
+    
     return helperFormGroup;
   }
 

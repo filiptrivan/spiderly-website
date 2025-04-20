@@ -9,6 +9,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { getSuccessMessageOptions } from '../playground-details/helpers/services/helper-functions';
 
 @Component({
     selector: 'app-table',
@@ -145,10 +146,7 @@ export class TableComponent implements OnInit {
       accept: () => {
         this.data = this.data.filter((_, i) => i !== index);
 
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Item deleted successfully',
-        });
+        this.messageService.add(getSuccessMessageOptions('Item deleted successfully', null, 'playground'));
       }
     });
   }
