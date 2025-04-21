@@ -1,9 +1,10 @@
 @use '../../../assets/variables.scss' as vars;
 
 .container-one {
-
-    padding-left: 1.25rem; 
-    padding-right: 1.25rem;
+    max-width: 1100px;
+    margin: auto;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   
     padding-top: 2rem;     
     padding-bottom: 2rem;

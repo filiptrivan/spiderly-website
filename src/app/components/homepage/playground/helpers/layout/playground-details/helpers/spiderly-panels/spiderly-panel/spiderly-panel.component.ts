@@ -9,6 +9,15 @@ import { CommonModule } from '@angular/common';
   selector: 'spiderly-panel',
   templateUrl: './spiderly-panel.component.html',
   styleUrl: '../../../../../../playground.component.scss',
+  styles: [`
+    :host {
+      ::ng-deep {
+        .p-panel{
+          overflow: hidden;
+        }
+      }
+    }
+  `],
   imports: [
     CommonModule,
     PanelModule,

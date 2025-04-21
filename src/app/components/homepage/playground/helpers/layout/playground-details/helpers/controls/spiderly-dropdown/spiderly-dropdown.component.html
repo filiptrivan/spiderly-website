@@ -8,8 +8,8 @@
   </div>
 
   <!-- FT: Dropdown doesn't support tooltip event, but it can only has not empty validation, so for now it's okay to not show validation message on dropdown ever -->
-  <div class="p-inputgroup p-fluid">
-    <p-dropdown
+  <div class="p-inputgroup">
+    <p-select
     *ngIf="control"
     [pTooltip]="getValidationErrrorMessages()" tooltipPosition="bottom" [tooltipDisabled]="control.valid" tooltipStyleClass="spiderly-tooltip-invalid" 
     [id]="label"
@@ -21,8 +21,8 @@
     [showClear]="true"
     (onHide)="dropdownMarkAsDirty()"
     (onChange)="change($event)"
-    [style]="{'width':'100%'}"
     appendTo="body"
+    [fluid]="true"
     />
     <span *ngIf="showAddon" (click)="addonClick()" class="p-inputgroup-addon" style="cursor: pointer; background-color: var(--primary-color); border-color: var(--primary-color);">
       <i class="pi {{addonIcon}}" style="color: #fff;"></i>

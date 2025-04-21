@@ -9,12 +9,14 @@ import { SpiderlyAttribute, SpiderlyClass, SpiderlyProperty } from './helpers/en
 import { SpiderlyMenuItem } from './helpers/layout/sidebar/sidebar-menu.component';
 import { SpiderlyControlsModule } from "./helpers/layout/playground-details/helpers/controls/spiderly-controls.module";
 import { SpiderlyTextboxComponent } from "./helpers/layout/playground-details/helpers/controls/spiderly-textbox/spiderly-textbox.component";
-import { SpiderlyFormArray, SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
+import { SpiderlyFormArray, SpiderlyFormControl, SpiderlyFormGroup } from './helpers/layout/playground-details/helpers/spiderly-form-control/spiderly-form-control';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem, MessageService } from 'primeng/api';
 import { PrimengOption } from './helpers/layout/playground-details/helpers/entities/primeng-option';
 import { getCSharpDataTypeOptions, getEntityAttributeOptions, getPropertyAttributeOptions } from './helpers/get-options-functions';
 import { IndexCardComponent } from './helpers/components/index-card/index-card.component';
+import { SelectModule } from 'primeng/select';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
   selector: 'app-playground',
@@ -31,9 +33,12 @@ import { IndexCardComponent } from './helpers/components/index-card/index-card.c
     MenuModule,
     SpiderlyTextboxComponent,
     IndexCardComponent,
-  ],
+    SelectModule,
+    PanelModule,
+],
 })
 export class PlaygroundComponent {
+  testControl = new SpiderlyFormControl({});
   ocb: string = '{';
   ccb: string = '}';
 
@@ -148,6 +153,11 @@ export class PlaygroundComponent {
 
   addNewPropertyAttribute(formGroup: SpiderlyFormGroup<SpiderlyProperty>) {
     this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.attributes, new SpiderlyAttribute({}), null);
+  }
+
+  onEntitiesItemRemove(index: number) {
+    this.entities = this.entities.filter((_, i) => i !== index);
+    this.menu = this.menu.filter((_, i) => i !== index + 2); // FT: Because we always have home and separator as default ones
   }
 
 }

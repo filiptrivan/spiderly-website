@@ -11,6 +11,19 @@ import { Component, OnInit, Input } from '@angular/core';
     .p-panel-icons-end {
       font-size: 50px;
     }
+    .number-circle {
+      border-radius: 50%;
+      width: 33px;
+      height: 33px;
+      padding: 5px;
+
+      background: var(--p-primary-color);
+      border: 1px solid var(--p-primary-color);
+      color: white;
+      text-align: center;
+      margin-right: 16px;
+      display: inline-block;
+    }
   `],
 })
 export class PanelHeaderComponent implements OnInit {

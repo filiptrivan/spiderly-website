@@ -18,7 +18,7 @@ import { PrimengOption } from '../entities/primeng-option';
     @Input() options: PrimengOption[];
     @Input() showAddon: boolean = false;
     @Input() addonIcon: string = 'pi pi-ellipsis-h';
-    @Input() override placeholder: string = 'Select from the list';
+    @Input() override placeholder: string = 'Select';
     @Output() onButtonClick: EventEmitter<null> = new EventEmitter();
     
     constructor(

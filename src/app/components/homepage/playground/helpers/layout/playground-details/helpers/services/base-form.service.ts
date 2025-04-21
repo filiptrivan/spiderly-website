@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { SpiderlyFormArray, SpiderlyFormControl, SpiderlyFormGroup } from '../spiderly-form-control/spiderly-form-control';
 import { BaseEntity } from '../entities/base-entity';
 import { MenuItem, MessageService } from 'primeng/api';
 import { getWarningMessageOptions } from './helper-functions';
 import { setValidator } from './validator-functions';
 import { instance } from './instance-mapper';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -151,6 +152,9 @@ export class BaseFormService {
     });
   }
 
+  private formGroupRemove = new Subject<any>(); // FT: Subject is okay because we are firstly subscribing then the command is executed
+  formGroupRemove$ = this.formGroupRemove.asObservable();
+
   getCrudMenuForOrderedData = <T extends BaseEntity>(
     ctor: T, 
     formArray: SpiderlyFormArray<T>, 
@@ -159,6 +163,7 @@ export class BaseFormService {
     let crudMenuForOrderedData: MenuItem[] = [
       {label: 'Remove', icon: 'pi pi-minus', command: () => {
         formArray.removeAt(lastMenuIconIndexClicked.index);
+        this.formGroupRemove.next(lastMenuIconIndexClicked.index);
       }},
       {label: 'Add above', icon: 'pi pi-arrow-up', command: () => {
         this.addNewFormGroupToFormArray(

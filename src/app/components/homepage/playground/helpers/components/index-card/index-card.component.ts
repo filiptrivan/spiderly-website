@@ -1,3 +1,4 @@
+import { BaseFormService } from './../../layout/playground-details/helpers/services/base-form.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -5,6 +6,7 @@ import { MenuItem } from 'primeng/api';
 import { SpiderlyPanelComponent } from '../../layout/playground-details/helpers/spiderly-panels/spiderly-panel/spiderly-panel.component';
 import { PanelHeaderComponent } from '../../layout/playground-details/helpers/spiderly-panels/panel-header/panel-header.component';
 import { PanelBodyComponent } from '../../layout/playground-details/helpers/spiderly-panels/panel-body/panel-body.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'index-card',
@@ -30,15 +32,20 @@ export class IndexCardComponent {
 
     @Output() onMenuIconClick = new EventEmitter<number>();
     @Output() onRemoveIconClick = new EventEmitter<null>();
+
+    crudMenuItemRemoveSubscription: Subscription;
+    @Output() onCrudMenuItemRemove = new EventEmitter<number>();
     
     constructor(
-        protected formBuilder: FormBuilder,
+        private baseFormService: BaseFormService
     ) {
 
     }
 
     ngOnInit(){
-        // console.log(this.last);
+        this.crudMenuItemRemoveSubscription = this.baseFormService.formGroupRemove$.subscribe((index) => {
+            this.onCrudMenuItemRemove.next(index);
+        });
     }
 
     menuIconClick(index: number){
@@ -47,6 +54,12 @@ export class IndexCardComponent {
 
     removeIconClick(){
         this.onRemoveIconClick.next(null);
+    }
+
+    ngOnDestroy() {
+        if (this.crudMenuItemRemoveSubscription) {
+            this.crudMenuItemRemoveSubscription.unsubscribe();
+        }
     }
 
 }

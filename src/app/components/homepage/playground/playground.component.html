@@ -1,5 +1,5 @@
 <app-section-wrapper parts="one" text-align="left" >
-  
+
   <form style="width: 100%;">
     @for (entityFormGroup of getFormArrayGroups(entitiesFormArray); track $index; let entityIndex = $index) {
       <index-card 
@@ -7,16 +7,17 @@
       [last]="false" 
       [crudMenu]="entitiesCrudMenu" 
       (onMenuIconClick)="lastEntitiesMenuIconIndexClicked.index = $event"
+      (onCrudMenuItemRemove)="onEntitiesItemRemove($event)"
       >
-        <div class="playground-code-block-wrapper">
-
-          <div class="c-sharp-class-form">
-
-            <div style="display: flex; align-items: center; margin-bottom: 18px;">
-              <spiderly-textbox [control]="entityFormGroup.controls.name"></spiderly-textbox>
-            </div>
-
-            @for (attributeFormGroup of getEntityAttributesFormArrayGroups(entityFormGroup); track $index; let entityAttributeIndex = $index) {
+      <div class="playground-code-block-wrapper">
+        
+        <div class="c-sharp-class-form">
+          
+          <div style="margin-bottom: 18px;">
+            <spiderly-textbox [control]="entityFormGroup.controls.name"></spiderly-textbox>
+          </div>
+          
+          @for (attributeFormGroup of getEntityAttributesFormArrayGroups(entityFormGroup); track $index; let entityAttributeIndex = $index) {
               <index-card 
               [index]="entityAttributeIndex" 
               [last]="false"
@@ -94,7 +95,7 @@
               }
             </div>
   
-            <div style="margin-bottom: 20px;">
+            <div style="margin-bottom: 15px;">
               {{ccb}}
             </div>
           </code>

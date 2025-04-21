@@ -4,7 +4,13 @@
 :root{
   --background-color: #0a0a0a;
   --text-color: #e5e7eb;
+  --p-text-color: #e5e7eb;
   --p-button-outlined-primary-border-color: #db2777 !important;
+
+  --p-inputtext-padding-y: 0.45rem !important;
+  // --p-form-field-background: #9ca3af !important;
+
+  --p-select-padding-y: 0.45rem !important;
 
   --p-datatable-header-background: #2f2f36 !important;
   --p-datatable-header-color: var(--text-color) !important;
@@ -16,6 +22,7 @@
   --p-datatable-header-cell-color: var(--text-color) !important;
 
   --p-content-background: #3a3a3f !important;
+  --p-content-border-color: #2f2f36 !important;
   --p-datatable-body-cell-border-color: #4a4a4f !important;
   --p-content-color: var(--text-color) !important;
 
@@ -30,6 +37,17 @@
   --p-dialog-color: var(--text-color) !important;
   --p-confirm-dialog-icon-color: var(--text-color) !important;
   --p-dialog-border-color: #2f2f36 !important;
+
+  --p-panel-header-background: #1e1e22 !important;
+  --p-panel-header-color: #e5e7eb !important;
+  --p-panel-header-border-color: #2f2f36 !important;
+  --p-panel-border-color: #2f2f36 !important;
+  --p-panel-content-padding: 1.125rem !important;
+  --p-panel-header-padding: 0.75rem 1.125rem !important;
+  --p-panel-background: #2f2f36 !important;
+
+  --p-navigation-item-color: #e5e7eb !important;
+  --p-menu-item-focus-background: #4a4a4f !important;
 }
 
 body {

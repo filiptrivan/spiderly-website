@@ -4,7 +4,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
 import { BaseDropdownControl } from '../base-dropdown-control';
 
-import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
+import { SelectChangeEvent, SelectModule } from 'primeng/select';
+// import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
@@ -18,11 +19,12 @@ import { TooltipModule } from 'primeng/tooltip';
         TooltipModule,
         CommonModule,
         RequiredComponent,
-        DropdownModule,
+        SelectModule,
+        // DropdownModule,
     ]
 })
 export class SpiderlyDropdownComponent extends BaseDropdownControl implements OnInit {
-    @Output() onChange: EventEmitter<DropdownChangeEvent> = new EventEmitter();
+    @Output() onChange: EventEmitter<SelectChangeEvent> = new EventEmitter();
 
     constructor(
         @Inject(PLATFORM_ID) protected override platformId: Object
@@ -34,7 +36,7 @@ export class SpiderlyDropdownComponent extends BaseDropdownControl implements On
         super.ngOnInit();
     }
 
-    change(event: DropdownChangeEvent){
+    change(event: SelectChangeEvent){
         this.onChange.next(event);
     }
 

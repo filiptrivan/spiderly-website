@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SectionWrapperComponent } from "../../section-wrapper/section-wrapper.component";
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -10,7 +9,6 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule, 
-    SectionWrapperComponent, 
     RouterModule
   ]
 })

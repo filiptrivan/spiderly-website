@@ -11,6 +11,5 @@ import { CommonModule } from '@angular/common';
 export class SectionWrapperComponent {
     @Input() color = 'black';
     @Input() parts: 'one' | 'two' = 'one'
-    @Input() width: '1100' | '1600' = '1100'
     @Input() textAlign: 'center' | 'left' = 'left'
 }

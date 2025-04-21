@@ -136,6 +136,5 @@ export class LayoutComponent implements OnDestroy {
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
         }
-
     }
 }

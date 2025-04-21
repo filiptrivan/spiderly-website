@@ -1,17 +1,15 @@
 @use "../../../../assets/variables.scss" as vars;
 
 .c-sharp-class-form {
-  background-color: vars.$surface-light;
-  border-radius: 10px;
   width: 100%;
-  padding: 18px;
 }
 
 .code-editor {
-  background-color: vars.$surface-light;
+  background-color: var(--p-content-background);
   border-radius: 10px;
   width: 100%;
   padding: 18px;
+  overflow-x: auto;
 }
 
 .code-editor .kw {
@@ -43,12 +41,6 @@
   width: 100%;
   font-size: 90%;
   border-radius: 10px;
-}
-
-@media (max-width: vars.$md) {
-  .web-page {
-    // width: 83vw;
-  }
 }
 
 .last-child-zero-margin{

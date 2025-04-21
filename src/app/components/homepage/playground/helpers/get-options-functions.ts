@@ -3,7 +3,7 @@ import { PrimengOption } from "./layout/playground-details/helpers/entities/prim
 export const getEntityAttributeOptions = (): PrimengOption[] => {
     return [
         {label: 'Authorize', value: 'Authorize'},
-        {label: 'TranslatePluralEn', value: 'TranslatePluralEn'},
+        {label: 'Translate Plural En', value: 'TranslatePluralEn'},
         {label: 'TranslatePluralSr', value: 'TranslatePluralSr'},
     ];
 }
