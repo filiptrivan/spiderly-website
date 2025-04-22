@@ -1,8 +1,6 @@
-@use '../../../assets/variables.scss' as vars;
-
 .button{
-    background-color: vars.$primary-color;
-    color: vars.$text-color;
+    background-color: var(--p-primary-color);
+    color: var(--p-text-color);
     padding: 7px 10.5px;
 
     display: inline-flex;
@@ -16,7 +14,7 @@
     font-size: 1rem;
     font-family: inherit;
     font-feature-settings: inherit;
-    border-radius: 6px;
+    border-radius: var(--p-content-border-radius);
     outline-color: transparent;
     gap: 2px;
 }

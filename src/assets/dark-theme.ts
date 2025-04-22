@@ -5,6 +5,20 @@ export const DarkThemePreset = definePreset(Aura, {
   semantic: {
     colorScheme: {
       dark: {
+        surface: {
+          0: '#e5e7eb',
+          // 50: '',
+          // 100: '',
+          // 200: '',
+          // 300: '',
+          // 400: '',
+          // 500: '',
+          // 600: '',
+          // 700: '',
+          // 800: '',
+          // 900: '',
+          // 950: '',
+        },
         primary: {
           50: '{pink.50}',
           100: '{pink.100}',
@@ -21,6 +35,29 @@ export const DarkThemePreset = definePreset(Aura, {
           contrastColor: '{surface.0}',
           hoverColor: '{pink.500}',
           activeColor: '{pink.400}',
+        },
+      },
+    },
+  },
+  components: {
+    button: {
+      colorScheme: {
+        dark: {
+          root: {
+            // paddingX: '40px'
+          },
+        },
+      },
+    },
+    panel: {
+      colorScheme: {
+        dark: {
+          root: {
+            background: '{surface.800}',
+            header: {
+              background: '{surface.900}',
+            },
+          },
         },
       },
     },

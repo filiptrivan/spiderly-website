@@ -21,21 +21,8 @@ import { getSuccessMessageOptions } from '../playground-details/helpers/services
           .p-datatable-thead{
             position: unset !important;
           }
-          .p-datatable-filter-overlay{
-            margin-left: -240px;
-            top: 215px;
-            z-index: 996;
-          }
-          .p-datatable{
-            position: unset;
-          }
           .p-datatable-header{
-            border-radius: 10px 10px 0 0;
-          }
-          .p-paginator{
-            border-style: solid;
-            border-color: var(--p-datatable-header-border-color);
-            border-width: 0px 2px 2px 2px;
+            border-radius: 6px 6px 0 0;
           }
         }
       }

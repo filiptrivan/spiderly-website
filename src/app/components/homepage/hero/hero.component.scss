@@ -6,7 +6,7 @@
   display: inline-block;
   white-space: normal;
 
-  background-image: linear-gradient(to right, vars.$primary-color, vars.$accent);
+  background-image: linear-gradient(to right, var(--p-primary-color), var(--p-secondary-color));
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
@@ -28,7 +28,7 @@
 
 .text-below-title {
     font-size: 1.1rem;
-    color: vars.$gray-color;
+    color: var(--p-surface-400);
   
     @media (min-width: vars.$md) {
       font-size: 1.25rem;

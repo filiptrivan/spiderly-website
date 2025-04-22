@@ -1,21 +1,21 @@
-@use './variables.scss' as vars;
 @import "primeicons/primeicons.css";
 
 :root{
   --background-color: #0a0a0a;
-  --text-color: #e5e7eb;
-  --p-text-color: #e5e7eb;
-  --p-button-outlined-primary-border-color: #db2777 !important;
+  // --text-color: #e5e7eb;
+  // --p-text-color: #e5e7eb;
+  // --p-button-outlined-primary-border-color: #db2777 !important;
+  --p-secondary-color: #00f0b5;
 
   --p-inputtext-padding-y: 0.45rem !important;
-  // --p-form-field-background: #9ca3af !important;
+  --p-form-field-background: var(--p-surface-900) !important;
 
   --p-select-padding-y: 0.45rem !important;
 
   // --p-datatable-header-background: #2f2f36 !important;
   // --p-datatable-header-color: var(--text-color) !important;
   // --p-datatable-header-border-color: #3a3a3f !important;
-  --p-datatable-header-border-width: 2px !important;
+  // --p-datatable-header-border-width: 2px !important;
 
   // --p-datatable-header-cell-background: #3a3a3f !important;
   // --p-datatable-header-cell-border-color: #4a4a4f !important;
@@ -28,7 +28,7 @@
 
   // --p-paginator-background: #2f2f36 !important;
   // --p-paginator-color: var(--text-color) !important;
-  --p-paginator-border-radius: 0 0 10px 10px !important;
+  --p-paginator-border-radius: 0 0 6px 6px !important;
   // --p-paginator-nav-button-color: #9ca3af !important;
   --p-paginator-nav-button-width: 31px !important;
   --p-paginator-nav-button-height: 31px !important;
@@ -52,8 +52,8 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: vars.$background-color;
-  color: vars.$text-color;
+  // background-color: var(--p-surface-950);
+  color: var(--p-text-color);
   margin: 0px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;

@@ -1,5 +1,4 @@
 @use '../../../assets/variables.scss' as vars;
-
 $header-height: 60px;
 
 .header-wrapper {
@@ -8,17 +7,20 @@ $header-height: 60px;
   left: 0;
   width: 100%;
   height: 60px;
-  background-color: vars.$background-color;
+  background-color: var(--p-surface-950);
   z-index: 1002;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: var(--p-surface-800);
 }
 
 .header {
   padding-left: 1.2rem;
   padding-right: 1.2rem;
-  width: 1100px;
+  width: vars.$page-width;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,7 +47,7 @@ $header-height: 60px;
 .header-link {
   cursor: pointer;
   transition: color 100ms ease;
-  color: vars.$gray-color;
+  color: var(--p-surface-400);
 
   &:hover {
     color: white;
@@ -57,7 +59,7 @@ $header-height: 60px;
   top: $header-height;
   left: 0;
   width: 100%;
-  background-color: vars.$background-color;
+  background-color: var(--p-surface-950);
   color: white;
   z-index: 1001;
   transform: translateY(-100%);
@@ -66,6 +68,10 @@ $header-height: 60px;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  border-radius: 0 0 6px 6px;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: var(--p-surface-800);
 }
 
 .side-menu-open {

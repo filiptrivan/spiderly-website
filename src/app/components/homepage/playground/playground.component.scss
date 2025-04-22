@@ -5,8 +5,9 @@
 }
 
 .code-editor {
-  background-color: var(--p-content-background);
-  border-radius: 10px;
+  background-color: var(--p-surface-900);
+  border-radius: var(--p-content-border-radius);
+  border: 1px solid var(--p-surface-700);
   width: 100%;
   padding: 18px;
   overflow-x: auto;
@@ -36,11 +37,12 @@
   -o-transform: scale(1);
   -webkit-transform: scale(1);
   transform: scale(1);
-  background-color: vars.$surface-light;
+  background-color: var(--p-surface-800);
+  border: 1px solid var(--p-surface-700);
   min-height: 500px;
   width: 100%;
   font-size: 90%;
-  border-radius: 10px;
+  border-radius: var(--p-content-border-radius);
 }
 
 .last-child-zero-margin{
@@ -59,5 +61,5 @@
 }
 
 .icon-hover:hover {
-	background-color: vars.$hover;
+	background-color: var(--p-surface-700);
 }
