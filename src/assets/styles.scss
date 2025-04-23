@@ -43,11 +43,14 @@
   // --p-panel-header-border-color: #2f2f36 !important;
   // --p-panel-border-color: #2f2f36 !important;
   --p-panel-content-padding: 1.125rem !important;
-  --p-panel-header-padding: 0.75rem 1.125rem !important;
+  --p-panel-header-padding: 0.65rem 1.125rem !important;
+  --p-panel-toggleable-header-padding: var(--p-panel-header-padding) !important;
   // --p-panel-background: #2f2f36 !important;
 
   // --p-navigation-item-color: #e5e7eb !important;
   // --p-menu-item-focus-background: #4a4a4f !important;
+
+  --p-button-icon-only-width: 30px !important;
 }
 
 body {

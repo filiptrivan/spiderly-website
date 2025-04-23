@@ -13,7 +13,17 @@ import { ButtonModule } from 'primeng/button';
 @Component({
     selector: 'spiderly-file',
     templateUrl: './spiderly-file.component.html',
-    styles: [],
+    styles: [
+      `
+      :host {
+        ::ng-deep {
+            .p-fileupload-header{
+              padding: 12px 18px !important;
+            }
+          }
+        }
+      `
+    ],
     standalone: true,
     imports: [
         CommonModule,

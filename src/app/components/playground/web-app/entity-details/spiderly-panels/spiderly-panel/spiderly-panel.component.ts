@@ -15,6 +15,10 @@ import { CommonModule } from '@angular/common';
         .p-panel{
           overflow: hidden;
         }
+        .p-panel-icons{
+          display: flex;
+          align-items: center;
+        }
       }
     }
   `],

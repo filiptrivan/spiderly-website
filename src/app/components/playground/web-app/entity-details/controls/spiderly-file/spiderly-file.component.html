@@ -18,7 +18,7 @@
         <ng-template #header let-files let-chooseCallback="chooseCallback" let-uploadCallback="uploadCallback">
             <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1; gap: 1rem;">
                 <div style="display: flex; gap: 0.5rem;">
-                    <p-button [disabled]="disabled" (onClick)="choose($event, chooseCallback)" icon="pi pi-upload" [rounded]="true" [outlined]="true" />
+                    <p-button [disabled]="disabled" (onClick)="choose($event, chooseCallback)" icon="pi pi-upload" [rounded]="true" [outlined]="true" size="small" />
                 </div>
             </div>
         </ng-template>
@@ -35,14 +35,14 @@
                                 <span class="file-name">{{ file.name }}</span>
                             </div>
                         </div>
-                        <p-button [disabled]="disabled" icon="pi pi-times" (onClick)="fileRemoved(removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
+                        <p-button [disabled]="disabled" icon="pi pi-times" (onClick)="fileRemoved(removeFileCallback, index)" [outlined]="true" [rounded]="true" size="small" severity="danger" />
                     </div>
                 </div>
             </div>
         </ng-template>
         <ng-template #file> </ng-template>
         <ng-template #empty>
-            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 9px;">
                 <i class="pi pi-cloud-upload" style="border: solid; border-width: 2px; border-radius: 50%; padding: 1.25rem; font-size: 3rem; color: var(--surface-400); border-color: var(--surface-400);"></i>
                 <p style="margin-top: 1rem; margin-bottom: 0;">Drag and drop files here to upload</p>
             </div>

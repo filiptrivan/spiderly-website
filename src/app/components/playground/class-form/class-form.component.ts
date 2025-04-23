@@ -10,6 +10,9 @@ import { SpiderlyClass, SpiderlyProperty, SpiderlyAttribute } from '../entities/
 import { SpiderlyFormGroup } from '../web-app/entity-details/spiderly-form-control/spiderly-form-control';
 import { getEntityAttributeOptions, getPropertyAttributeOptions, getCSharpDataTypeOptions } from '../services/get-options-functions';
 import { PrimengOption } from '../web-app/entity-details/entities/primeng-option';
+import { SpiderlyPanelComponent } from "../web-app/entity-details/spiderly-panels/spiderly-panel/spiderly-panel.component";
+import { PanelBodyComponent } from "../web-app/entity-details/spiderly-panels/panel-body/panel-body.component";
+import { PanelHeaderComponent } from "../web-app/entity-details/spiderly-panels/panel-header/panel-header.component";
 
 @Component({
   selector: 'app-class-form',
@@ -19,7 +22,10 @@ import { PrimengOption } from '../web-app/entity-details/entities/primeng-option
     ButtonModule,
     IndexCardComponent,
     SpiderlyTextboxComponent,
-    SpiderlyDropdownComponent
+    SpiderlyDropdownComponent,
+    SpiderlyPanelComponent,
+    PanelBodyComponent,
+    PanelHeaderComponent
 ],
 })
 export class ClassFormComponent {

@@ -50,7 +50,7 @@ $header-height: 60px;
   color: var(--p-surface-400);
 
   &:hover {
-    color: white;
+    color: var(--p-text-color);
   }
 }
 
@@ -60,7 +60,7 @@ $header-height: 60px;
   left: 0;
   width: 100%;
   background-color: var(--p-surface-950);
-  color: white;
+  color: var(--p-text-color);
   z-index: 1001;
   transform: translateY(-100%);
   transition: transform 0.3s ease;
