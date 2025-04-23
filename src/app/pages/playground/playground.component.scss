@@ -1,8 +1,19 @@
 @use "../../../assets/variables.scss" as vars;
 
 .playground-code-block-wrapper {
+  // -moz-transform: scale(1);
+  // -o-transform: scale(1);
+  // -webkit-transform: scale(1);
+  // transform: scale(1);
+  max-height: 700px;
+  overflow-y: auto;
+  margin-bottom: 18px;
   display: flex;
+  align-items: flex-start;
   gap: 18px;
+  padding: 18px;
+  border-radius: var(--p-content-border-radius);
+  border: 1px solid var(--p-surface-700);
 }
 
 @media (max-width: vars.$md) {

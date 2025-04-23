@@ -106,12 +106,21 @@ export class PlaygroundComponent {
       
       entity.data = entity.data ?? [];
 
-      this.entities.push(entity);
-      this.menu.push({
+      if (index != null) {
+        this.entities.splice(index, 0, entity);
+        this.menu.splice(index + 2, 0, {
           label: `${entity.name}List`,
           icon: `pi pi-list`,
           entity: entity,
-      });
+        });
+      } else {
+        this.entities.push(entity);
+        this.menu.push({
+            label: `${entity.name}List`,
+            icon: `pi pi-list`,
+            entity: entity,
+        });
+      }
 
       if (entityIndex !== -1) {
           this.removeEntity(entityIndex);

@@ -6,7 +6,6 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SpiderlyAttribute, SpiderlyClass, SpiderlyProperty as SpiderlyProperty } from '../../entities/entities';
 import { SpiderlyControlsModule } from './controls/spiderly-controls.module';
-import { UIControlTypeCodes } from './enums/enums';
 import { BaseFormService } from './services/base-form.service';
 import { getControl } from './services/helper-functions';
 import { SpiderlyFormGroup } from './spiderly-form-control/spiderly-form-control';
@@ -14,6 +13,7 @@ import { PanelBodyComponent } from './spiderly-panels/panel-body/panel-body.comp
 import { PanelFooterComponent } from './spiderly-panels/panel-footer/panel-footer.component';
 import { PanelHeaderComponent } from './spiderly-panels/panel-header/panel-header.component';
 import { SpiderlyPanelComponent } from './spiderly-panels/spiderly-panel/spiderly-panel.component';
+import { UIControlTypeCodes } from '../../class-form/services/get-options-functions';
 
 @Component({
     selector: 'app-entity-details',
