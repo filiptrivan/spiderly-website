@@ -1,0 +1,39 @@
+<app-section-wrapper parts="one" text-align="left" >
+
+  <form style="width: 100%;">
+    @for (entityFormGroup of getFormArrayGroups(entitiesFormArray); track $index; let entityIndex = $index) {
+      <index-card 
+      [index]="entityIndex" 
+      [last]="false" 
+      [crudMenu]="entitiesCrudMenu" 
+      (onMenuIconClick)="lastEntitiesMenuIconIndexClicked.index = $event"
+      >
+        <div class="playground-code-block-wrapper">
+        
+          <div style="width: 100%;">
+            <app-class-form
+            [entities]="entities"
+            [menu]="menu"
+            [entityFormGroup]="entityFormGroup"
+            [entityIndex]="entityIndex"
+            (onSaveEntityFormGroup)="saveEntityFormGroup(entityFormGroup, entityIndex)"
+            ></app-class-form>
+          </div>
+
+          <div class="class-code-editor">
+            <app-class-code-editor
+            [entityFormGroup]="entityFormGroup"
+            ></app-class-code-editor>
+          </div>
+
+        </div>
+      </index-card>
+    }
+    <p-button (onClick)="addNewEntity()" label="Add new class" icon="pi pi-plus"></p-button>
+  </form>
+
+  <div class="web-app">
+    <app-layout [menu]="menu" [entities]="entities"></app-layout>
+  </div>
+
+</app-section-wrapper>

@@ -1,0 +1,81 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { MenuItem } from 'primeng/api';
+import { BaseFormService, LastMenuIconIndexClicked } from '../web-app/entity-details/services/base-form.service';
+import { IndexCardComponent } from '../index-card/index-card.component';
+import { SpiderlyTextboxComponent } from '../web-app/entity-details/controls/spiderly-textbox/spiderly-textbox.component';
+import { SpiderlyDropdownComponent } from '../web-app/entity-details/controls/spiderly-dropdown/spiderly-dropdown.component';
+import { SpiderlyClass, SpiderlyProperty, SpiderlyAttribute } from '../entities/entities';
+import { SpiderlyFormGroup } from '../web-app/entity-details/spiderly-form-control/spiderly-form-control';
+import { getEntityAttributeOptions, getPropertyAttributeOptions, getCSharpDataTypeOptions } from '../services/get-options-functions';
+import { PrimengOption } from '../web-app/entity-details/entities/primeng-option';
+
+@Component({
+  selector: 'app-class-form',
+  templateUrl: './class-form.component.html',
+  imports: [
+    CommonModule,
+    ButtonModule,
+    IndexCardComponent,
+    SpiderlyTextboxComponent,
+    SpiderlyDropdownComponent
+],
+})
+export class ClassFormComponent {
+    @Input() entityFormGroup: SpiderlyFormGroup<SpiderlyClass>;
+    @Input() entityIndex: number;
+    
+    @Input() entities: SpiderlyClass[] = [];
+    @Input() menu: MenuItem[] = [];
+
+    @Output() onSaveEntityFormGroup = new EventEmitter();
+
+    
+    lastEntityAttributesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
+    lastPropertiesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
+    lastPropertyAttributesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
+
+    entityAttributeOptions: PrimengOption[] = getEntityAttributeOptions();
+    propertyAttributeOptions: PrimengOption[] = getPropertyAttributeOptions();
+    cSharpDataTypeOptions: PrimengOption[] = getCSharpDataTypeOptions();
+    
+    constructor(
+        public baseFormService: BaseFormService,
+    ) {
+            
+    }
+
+    ngOnInit(){
+
+    }
+
+    saveEntityFormGroup = () => {
+        this.onSaveEntityFormGroup.next(null);
+    }
+  
+    getEntityAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {
+      return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formGroup.controls.attributes, this.lastEntityAttributesMenuIconIndexClicked);
+    }
+  
+    getPropertiesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyClass>) => {
+      return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyProperty({}), formGroup.controls.properties, this.lastPropertiesMenuIconIndexClicked);
+    }
+  
+    getPropertyAttributesCrudMenu = (formGroup: SpiderlyFormGroup<SpiderlyProperty>) => {
+      return this.baseFormService.getCrudMenuForOrderedData(new SpiderlyAttribute({}), formGroup.controls.attributes, this.lastPropertyAttributesMenuIconIndexClicked);
+    }
+
+    addNewEntityAttribute(formGroup: SpiderlyFormGroup<SpiderlyClass>) {
+        this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.attributes, new SpiderlyAttribute({}), null);
+    }
+
+    addNewProperty(formGroup: SpiderlyFormGroup<SpiderlyClass>) {
+        this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.properties, new SpiderlyProperty({}), null);
+    }
+
+    addNewPropertyAttribute(formGroup: SpiderlyFormGroup<SpiderlyProperty>) {
+        this.baseFormService.addNewFormGroupToFormArray(formGroup.controls.attributes, new SpiderlyAttribute({}), null);
+    }
+
+}

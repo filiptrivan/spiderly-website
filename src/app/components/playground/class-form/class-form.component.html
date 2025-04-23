@@ -1,0 +1,53 @@
+<div>
+
+  <div style="margin-bottom: 18px;">
+    <spiderly-textbox [control]="entityFormGroup.controls.name"></spiderly-textbox>
+  </div>
+  
+  @for (attributeFormGroup of baseFormService.getFormArrayGroups(entityFormGroup.controls.attributes); track $index; let entityAttributeIndex = $index) {
+      <index-card 
+      [index]="entityAttributeIndex" 
+      [last]="false"
+      [crudMenu]="getEntityAttributesCrudMenu(entityFormGroup)"
+      (onMenuIconClick)="lastEntityAttributesMenuIconIndexClicked.index = $event"
+      >
+        <spiderly-dropdown [control]="attributeFormGroup.controls.name" [options]="entityAttributeOptions"></spiderly-dropdown>
+      </index-card>
+    }
+    <p-button (onClick)="addNewEntityAttribute(entityFormGroup)" [style]="{'margin-bottom': '18px'}" size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
+
+    <div>
+      @for (propertyFormGroup of baseFormService.getFormArrayGroups(entityFormGroup.controls.properties); track $index; let propertyIndex = $index) {
+        <index-card 
+        [index]="propertyIndex" 
+        [last]="false"
+        [crudMenu]="getPropertiesCrudMenu(entityFormGroup)"
+        (onMenuIconClick)="lastPropertiesMenuIconIndexClicked.index = $event"
+        >
+          <div style="margin-bottom: 18px;">
+            <spiderly-dropdown [control]="propertyFormGroup.controls.dataType" [options]="cSharpDataTypeOptions"></spiderly-dropdown> 
+          </div>
+          <div style="margin-bottom: 18px;">
+            <spiderly-textbox [control]="propertyFormGroup.controls.name"></spiderly-textbox>
+          </div>
+          <div>
+            @for (attributeFormGroup of baseFormService.getFormArrayGroups(propertyFormGroup.controls.attributes); track $index; let propertyAttributeIndex = $index) {
+              <index-card 
+              [index]="propertyAttributeIndex" 
+              [last]="false"
+              [crudMenu]="getPropertyAttributesCrudMenu(propertyFormGroup)"
+              (onMenuIconClick)="lastPropertyAttributesMenuIconIndexClicked.index = $event"
+              >
+                <spiderly-dropdown [control]="attributeFormGroup.controls.name" [options]="entityAttributeOptions"></spiderly-dropdown>
+              </index-card>
+            }
+            <p-button (onClick)="addNewPropertyAttribute(propertyFormGroup)" size="small" label="Add new attribute" icon="pi pi-plus"></p-button>
+          </div>
+        </index-card>
+      }
+      <p-button (onClick)="addNewProperty(entityFormGroup)" [style]="{'margin-bottom': '18px'}" size="small" label="Add new property" icon="pi pi-plus"></p-button>
+    </div>
+
+    <p-button (onClick)="saveEntityFormGroup()" size="small" label="Save" icon="pi pi-save"></p-button>
+
+</div>

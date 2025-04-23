@@ -1,0 +1,37 @@
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <topbar></topbar>
+
+    <div class="layout-sidebar">
+        <sidebar-menu [menu]="menu" [lastSelectedEntity]="lastSelectedEntity" (onMenuItemSelect)="menuItemSelectChange($event)"></sidebar-menu>
+    </div>
+
+    <div class="layout-main-container">
+        <div class="layout-main">
+            <div *ngIf="lastSelectedEntity == null">Welcome!</div>
+            <app-table 
+            *ngIf="isTableSelected === true && lastSelectedEntity != null" 
+            [data]="lastSelectedEntity.data" 
+            [cols]="lastSelectedEntity.properties"
+            [tableTitle]="lastSelectedEntity.name + 'List'"
+            (onNavigateToDetails)="navigateToDetails($event)"
+            ></app-table>
+            <app-entity-details 
+            *ngIf="isTableSelected === false && lastSelectedEntity != null"
+            [entity]="lastSelectedEntity"
+            [index]="lastIndexSelected"
+            ></app-entity-details>
+        </div>
+    </div>
+</div>
+
+<p-confirmDialog 
+acceptLabel="Confirm"
+rejectLabel="Cancle"
+rejectButtonStyleClass="p-button-secondary" 
+[style]="{width: '400px'}" 
+header="Are you sure?"
+message="Please confirm to proceed"
+icon="pi pi-exclamation-circle"
+></p-confirmDialog>
+
+<p-toast [breakpoints]="{ '600px': { width: '100%', right: '0', left: '0' } }" key="playground"></p-toast>

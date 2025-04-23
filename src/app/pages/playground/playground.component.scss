@@ -1,0 +1,36 @@
+@use "../../../assets/variables.scss" as vars;
+
+.playground-code-block-wrapper {
+  display: flex;
+  gap: 18px;
+}
+
+@media (max-width: vars.$md) {
+  .playground-code-block-wrapper {
+    flex-direction: column;
+  } 
+}
+
+// FT: Don't put inside class-code-editor it needs to be wrapped in parent component
+.class-code-editor {
+  background-color: var(--p-surface-900);
+  border-radius: var(--p-content-border-radius);
+  border: 1px solid var(--p-surface-700);
+  width: 100%;
+  padding: 18px;
+  overflow-x: auto;
+}
+
+.web-app {
+  -moz-transform: scale(1);
+  -o-transform: scale(1);
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  background-color: var(--p-surface-800);
+  border: 1px solid var(--p-surface-700);
+  min-height: 500px;
+  width: 100%;
+  font-size: 90%;
+  border-radius: var(--p-content-border-radius);
+}
+
