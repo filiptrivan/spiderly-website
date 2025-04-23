@@ -1,9 +1,9 @@
-<div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+<div>
     @if (tabs == null) {
-        <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
             <span *ngIf="index != null" class="number-circle">{{index + 1}}</span>
-            <i class="{{icon}} primary-color" [style]="showBigTitle ? 'font-size: 19px' : 'font-size: 16px;'"></i> 
-            <div [style]="(showBigTitle ? 'font-size: 16px;' : '')">{{title}}</div>
+            <i *ngIf="icon != null" class="{{icon}} primary-color" [style]="showBigTitle ? 'font-size: 19px' : 'font-size: 16px;'"></i> 
+            <div *ngIf="title != null && title != ''" [style]="(showBigTitle ? 'font-size: 16px;' : '')">{{title}}</div>
         </div>
     }
     @else {

@@ -21,7 +21,6 @@ import { Component, OnInit, Input } from '@angular/core';
       border: 1px solid var(--p-primary-color);
       color: white;
       text-align: center;
-      margin-right: 16px;
       display: inline-block;
     }
   `],
