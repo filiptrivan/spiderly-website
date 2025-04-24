@@ -1,8 +1,9 @@
+import { FormGroupValid } from './../entities/form-group-valid';
 import { Injectable } from '@angular/core';
 import { SpiderlyFormArray, SpiderlyFormControl, SpiderlyFormGroup } from '../spiderly-form-control/spiderly-form-control';
 import { BaseEntity } from '../entities/base-entity';
 import { MenuItem, MessageService } from 'primeng/api';
-import { getWarningMessageOptions } from './helper-functions';
+import { firstCharToUpper, getWarningMessageOptions, splitPascalCase } from './helper-functions';
 import { setValidator } from './validator-functions';
 import { instance } from './instance-mapper';
 import { Subject } from 'rxjs';
@@ -49,13 +50,17 @@ export class BaseFormService {
 
     formControlNames.forEach(formControlName => {
       let formControl: SpiderlyFormControl | SpiderlyFormArray;
-    
+      const formControlLabelForDisplay = splitPascalCase(firstCharToUpper(formControlName));
+
       const initialValue = ctor[formControlName];
 
       if (Array.isArray(initialValue)) {
         const childCtor = instance(ctor.typeName, formControlName);
         if (childCtor != null) {
           formControl = this.initFormArray(childCtor, initialValue);
+          formControl.label = formControlName;
+          formControl.labelForDisplay = formControlLabelForDisplay;
+          setValidator(formControl, ctor.typeName);
         }
       }
       else {
@@ -67,10 +72,10 @@ export class BaseFormService {
         }
 
         formControl.label = formControlName;
-        formControl.labelForDisplay = formControlName;
-        
+        formControl.labelForDisplay = formControlLabelForDisplay;  
         setValidator(formControl, ctor.typeName);
       }
+      
 
       formGroup.setControl(formControlName, formControl); // FT: Use setControl because it will update formControl if it already exists
     });
@@ -188,58 +193,65 @@ export class BaseFormService {
     return -formArray.getRawValue().filter(x => x.id < 0).length - 1;
   }
 
-  checkFormGroupValidity = (formGroup: SpiderlyFormGroup) => {
-    let [invalid, arrayInvalid] = [false, false];
-    [invalid, arrayInvalid] = this.isFormGroupValid(formGroup, [invalid, arrayInvalid]);
+  checkFormGroupValidity = (formGroup: SpiderlyFormGroup, messageKey?: string) => {
+    const formGroupValid = new FormGroupValid({invalid: false, arrayInvalid: false})
+    this.isFormGroupValid(formGroup, formGroupValid);
 
-    if (arrayInvalid) {
-      this.messageService.add(getWarningMessageOptions('List can not be empty', null, null, 'app'));
-      return false;
+    if (formGroupValid.arrayInvalid) {
+      this.messageService.add(getWarningMessageOptions(
+        `${formGroupValid.arrayValidationMessages.join(', ')} list can not be empty`, 
+        null, 
+        null, 
+        'app'
+      ));
     }
 
-    if (invalid) {
-      this.showInvalidFieldsMessage();
-      return false;
+    if (formGroupValid.invalid) {
+      this.showInvalidFieldsMessage(messageKey);
     }
+
+    if(formGroupValid.invalid || formGroupValid.arrayInvalid)
+      return false;
 
     return true;
   }
 
-  isFormGroupValid(formGroup: SpiderlyFormGroup, [invalid, arrayInvalid]): [boolean, boolean] {
-    if(formGroup.controls == null)
-      return [true, true];
-
+  isFormGroupValid(formGroup: SpiderlyFormGroup, formGroupValid: FormGroupValid) {
     Object.keys(formGroup.controls).forEach(key => {
       const form = formGroup.controls[key];
 
       if (form instanceof SpiderlyFormGroup){
-        [invalid, arrayInvalid] = this.isFormGroupValid(form, [invalid, arrayInvalid]);
+        this.isFormGroupValid(form, formGroupValid);
       }
       else if (form instanceof SpiderlyFormControl){
         if (form.invalid) {
           form.markAsDirty();
-          invalid = true;
+          formGroupValid.invalid = true;
         }
       }
       else if (form instanceof SpiderlyFormArray){
         (form.controls as SpiderlyFormGroup[]).forEach(formGroup => {
-          [invalid, arrayInvalid] = this.isFormGroupValid(formGroup, [invalid, arrayInvalid]);
+          this.isFormGroupValid(formGroup, formGroupValid);
         });
-        if (form.required == true && form.length == 0) {
-          arrayInvalid = true;
+
+        if (form.required && form.length == 0) {
+          formGroupValid.arrayInvalid = true;
+          if (formGroupValid.arrayValidationMessages.includes(form.labelForDisplay) === false) {
+            formGroupValid.arrayValidationMessages.push(form.labelForDisplay)
+          }
         }
       }
 
     });
-
-    return [invalid, arrayInvalid];
   }
 
-  showInvalidFieldsMessage = () => {
+  showInvalidFieldsMessage = (messageKey?: string) => {
     this.messageService.add(
       getWarningMessageOptions(
         'Some of the fields on the form are not valid, please check which ones and try again.',
-        'You have some invalid fields'
+        'You have some invalid fields',
+        null,
+        messageKey
       )
     );
   }

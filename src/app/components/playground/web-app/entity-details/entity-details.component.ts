@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SpiderlyAttribute, SpiderlyClass, SpiderlyProperty } from '../../entities/entities';
 import { SpiderlyControlsModule } from './controls/spiderly-controls.module';
-import { SpiderlyFormControl, SpiderlyFormGroup } from './spiderly-form-control/spiderly-form-control';
+import { SpiderlyFormControl, SpiderlyFormGroup, SpiderlyValidatorFn } from './spiderly-form-control/spiderly-form-control';
 import { PanelBodyComponent } from './spiderly-panels/panel-body/panel-body.component';
 import { PanelFooterComponent } from './spiderly-panels/panel-footer/panel-footer.component';
 import { PanelHeaderComponent } from './spiderly-panels/panel-header/panel-header.component';
@@ -16,7 +16,8 @@ import { CSharpDataTypeCodes, PropertyAttributeCodes, UIControlTypeCodes } from 
 import { PrimengOption } from './entities/primeng-option';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { MessageService } from 'primeng/api';
-import { getSuccessMessageOptions } from './services/helper-functions';
+import { firstCharToUpper, getEntityDisplayProperty, getSuccessMessageOptions, splitPascalCase } from './services/helper-functions';
+import { notEmptyValidator, setValidators } from './services/validator-functions';
 
 @Component({
     selector: 'app-entity-details',
@@ -39,16 +40,16 @@ export class EntityDetailsComponent implements OnInit {
     @Input() entity: SpiderlyClass;
     @Input() entities: SpiderlyClass[];
     @Input() index: number;
+    @Input() dropdownOptions: { [key: string]: PrimengOption[] } = {};
+    dropdownFilteredOptions: { [key: string]: PrimengOption[] } = {};
 
     @Output() onReturn = new EventEmitter();
+    @Output() onSave = new EventEmitter();
 
     formGroup: SpiderlyFormGroup;
     isNewDataItem: boolean = false;
 
     UIControlTypeCodes = UIControlTypeCodes;
-
-    dropdownOptions: { [key: string]: PrimengOption[] } = {};
-    dropdownFilteredOptions: { [key: string]: PrimengOption[] } = {};
 
     constructor(
         private baseFormService: BaseFormService,
@@ -58,7 +59,7 @@ export class EntityDetailsComponent implements OnInit {
     
     ngOnInit() {
         this.refreshFormGroup();
-        this.initDropdownOptions();
+        this.dropdownFilteredOptions = this.dropdownOptions;
     }
 
     refreshFormGroup = () => {
@@ -70,31 +71,28 @@ export class EntityDetailsComponent implements OnInit {
             ctor = {};
         }
 
-        this.entity.properties.forEach(property => {
-            if (ctor[property.name] == null) {
-                ctor[property.name] = null;
-            }
-        });
-        
-        this.initFormGroup(this.formGroup, ctor)
+        this.initFormGroup(this.formGroup, ctor, this.entity.properties)
     }
 
     // FT: Not using the baseFormService.initFormGroup because this is specific runtime use case 
     initFormGroup = (
         formGroup: SpiderlyFormGroup, 
         ctor: any,
+        properties: SpiderlyProperty[],
         updateOnChangeControls?: string[]
     ) => {
         if (formGroup == null)
             console.error('FT: You need to instantiate the form group.')
     
-        if (ctor == null)
-            console.error('FT: Ctor can not be null.')
+        properties.forEach(property => {
+            const formControlName = property.name;
 
-        const formControlNames = Object.keys(ctor);
-    
-        formControlNames.forEach(formControlName => {
+            if (ctor[formControlName] == null) {
+                ctor[formControlName] = null;
+            }
+
             let formControl: SpiderlyFormControl;
+            const formControlLabelForDisplay = splitPascalCase(firstCharToUpper(formControlName));
     
             const initialValue = ctor[formControlName];
 
@@ -106,8 +104,14 @@ export class EntityDetailsComponent implements OnInit {
             }
 
             formControl.label = formControlName;
-            formControl.labelForDisplay = formControlName;
+            formControl.labelForDisplay = formControlLabelForDisplay;
     
+            let validators: SpiderlyValidatorFn[] = [];
+            if (property.attributes.some(x => x.name === PropertyAttributeCodes.Required)) {
+                validators.push(notEmptyValidator(formControl));
+            }
+            setValidators(formControl, validators)
+
             formGroup.setControl(formControlName, formControl); // FT: Use setControl because it will update formControl if it already exists
         });
     
@@ -117,7 +121,7 @@ export class EntityDetailsComponent implements OnInit {
     getUIControlTypeCode = (property: SpiderlyProperty) : UIControlTypeCodes => {
         const uiControlType: SpiderlyAttribute = property.attributes.find(x => x.name === PropertyAttributeCodes.UIControlType);
 
-        if (uiControlType != null) {
+        if (uiControlType != null && uiControlType.value != null) {
             return UIControlTypeCodes[uiControlType.value];
         }
 
@@ -131,7 +135,7 @@ export class EntityDetailsComponent implements OnInit {
             return UIControlTypeCodes.Decimal;
         }
         else if (property.dataType === CSharpDataTypeCodes.Long || property.dataType === CSharpDataTypeCodes.Int || property.dataType === CSharpDataTypeCodes.Byte) {
-            return UIControlTypeCodes.Integer;
+            return UIControlTypeCodes.Number;
         }
 
         return UIControlTypeCodes.Autocomplete;
@@ -147,29 +151,6 @@ export class EntityDetailsComponent implements OnInit {
         return null;
     }
 
-    initDropdownOptions = () => {
-        this.dropdownOptions = {};
-        this.dropdownFilteredOptions = {};
-
-        this.entity.properties.forEach(property => {
-            const uiControlTypeCode = this.getUIControlTypeCode(property);
-            if (uiControlTypeCode !== UIControlTypeCodes.Autocomplete && uiControlTypeCode !== UIControlTypeCodes.Dropdown) {
-              return;
-            }
-            
-            const entity = this.entities.find(e => e.name === property.dataType);
-
-            const displayProperty = entity.properties.find(p => p.name === PropertyAttributeCodes.DisplayName);
-
-            this.dropdownOptions[entity.name] = this.dropdownFilteredOptions[entity.name] = entity.data.map((dataItem, i) => {
-                return {
-                    label: displayProperty == null ? i.toString() : dataItem[displayProperty.name], 
-                    value: i
-                }
-            });
-        });
-    }
-
     search(event: AutoCompleteCompleteEvent, className: string) {
         const query = event.query.toLowerCase();
 
@@ -179,7 +160,7 @@ export class EntityDetailsComponent implements OnInit {
     }
 
     save() {
-        if (this.baseFormService.checkFormGroupValidity(this.formGroup) === false) {
+        if (this.baseFormService.checkFormGroupValidity(this.formGroup, 'playground') === false) {
             return;
         }
 
@@ -194,6 +175,7 @@ export class EntityDetailsComponent implements OnInit {
 
         this.messageService.add(getSuccessMessageOptions('Successfully saved.', null, 'playground'));
         this.isNewDataItem = false;
+        this.onSave.next(null);
     }
     
     return() {

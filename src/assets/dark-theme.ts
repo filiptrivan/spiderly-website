@@ -41,13 +41,13 @@ export const DarkThemePreset = definePreset(Aura, {
   },
   components: {
     button: {
-      colorScheme: {
-        dark: {
+      // colorScheme: {
+        // dark: {
           root: {
             // paddingX: '40px'
           },
-        },
-      },
+        // },
+      // },
     },
     panel: {
       colorScheme: {

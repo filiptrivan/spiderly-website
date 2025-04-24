@@ -46,17 +46,7 @@
                         <spiderly-file [control]="formGroup.getFormControl(property.name)"></spiderly-file>
                     </div>
                 }
-                @else if (getUIControlTypeCode(property) === UIControlTypeCodes.MultiAutocomplete) {
-                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
-                        <spiderly-multiautocomplete [control]="formGroup.getFormControl(property.name)"></spiderly-multiautocomplete>
-                    </div>
-                }
-                @else if (getUIControlTypeCode(property) === UIControlTypeCodes.MultiSelect) {
-                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
-                        <spiderly-multiselect [control]="formGroup.getFormControl(property.name)"></spiderly-multiselect>
-                    </div>
-                }
-                @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Integer) {
+                @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Number) {
                     <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
                         <spiderly-number [control]="formGroup.getFormControl(property.name)"></spiderly-number>
                     </div>

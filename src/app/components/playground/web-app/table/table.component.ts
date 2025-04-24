@@ -3,13 +3,15 @@ import { Component } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { SpiderlyProperty } from '../../entities/entities';
+import { SpiderlyClass, SpiderlyProperty } from '../../entities/entities';
 import { TooltipModule } from 'primeng/tooltip';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { getSuccessMessageOptions } from '../entity-details/services/helper-functions';
+import { getEntityDisplayProperty, getSuccessMessageOptions } from '../entity-details/services/helper-functions';
 import { LayoutService } from '../layout/layout.service';
+import { CSharpDataTypeCodes } from '../../class-form/services/get-options-functions';
+import { PrimengOption } from '../entity-details/entities/primeng-option';
 
 @Component({
     selector: 'app-table',
@@ -24,6 +26,10 @@ import { LayoutService } from '../layout/layout.service';
           .p-datatable-header{
             border-radius: 6px 6px 0 0;
           }
+          .p-datatable {
+            border-radius: var(--p-content-border-radius);
+            border: 1px solid var(--p-surface-700);
+          }
         }
       }
     `],
@@ -37,8 +43,10 @@ import { LayoutService } from '../layout/layout.service';
 })
 export class TableComponent implements OnInit {
     @Input() data: any[] = [];
+    @Input() entities: SpiderlyClass[] = [];
     @Input() cols: SpiderlyProperty[] = [];
     @Input() tableTitle: string;
+    @Input() dropdownOptions: { [key: string]: PrimengOption[] } = {};
 
     @Output() onNavigateToDetails = new EventEmitter<number>();
 
@@ -103,24 +111,30 @@ export class TableComponent implements OnInit {
       }
     }
 
-    getRowData(rowData: any, col: SpiderlyProperty): string{
+    getRowData(rowData: any, col: SpiderlyProperty) {
       switch (col.dataType) {
-        case 'string':
+        case CSharpDataTypeCodes.String:
           return rowData[col.name];
-        case 'DateTime':
+        case CSharpDataTypeCodes.DateTime:
           if (rowData[col.name] == null)
             return null;
           return formatDate(rowData[col.name], 'dd.MM.yyyy. HH:mm', this.locale);
-        case 'multiselect':
-          return rowData[col.name];
-        case 'bool':
+        case CSharpDataTypeCodes.Bool:
           return rowData[col.name] == true ? 'Yes' : 'No';
-        case 'long':
-        case 'int':
-        case 'byte':
+        case CSharpDataTypeCodes.Long:
+        case CSharpDataTypeCodes.Int:
+        case CSharpDataTypeCodes.Byte:
           return rowData[col.name];
-        default:
-          return null;
+        case CSharpDataTypeCodes.Decimal:
+          return rowData[col.name];
+        default:          
+          const dataItemIndex = rowData[col.name];
+
+          if (dataItemIndex == null) {
+            return null
+          }
+
+          return this.dropdownOptions[col.dataType].find(x => x.value === dataItemIndex).label;
       }
   }
 

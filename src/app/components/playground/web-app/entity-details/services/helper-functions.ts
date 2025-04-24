@@ -2,6 +2,8 @@ import { HttpResponse } from "@angular/common/http";
 import { BaseEntity } from "../entities/base-entity";
 import { SpiderlyFormControl, SpiderlyFormGroup } from "../spiderly-form-control/spiderly-form-control";
 import { ToastMessageOptions } from "primeng/api";
+import { SpiderlyClass } from "../../../entities/entities";
+import { EntityAttributeCodes, PropertyAttributeCodes } from "../../../class-form/services/get-options-functions";
 
 // Helper function for PrecisionScale validation (to be added in the TypeScript output):
 export function validatePrecisionScale(value: any, precision: number, scale: number, ignoreTrailingZeros: boolean): boolean {
@@ -104,8 +106,13 @@ export function getParentUrl(currentUrl: string){
     return parentUrl;
 }
 
-export function capitalizeFirstLetter(inputString: string): string {
-    return inputString.charAt(0).toUpperCase() + inputString.slice(1);
+  export function firstCharToUpper(input: string): string {
+    return input.charAt(0).toUpperCase() + input.slice(1);
+  }
+
+  export function splitPascalCase(input: string) {
+    const regex = /($[a-z])|[A-Z][^A-Z]+/g;
+    return input.match(regex).join(" ");
   }
 
   // export function getMonth(number: number): string {
@@ -231,6 +238,15 @@ export function capitalizeFirstLetter(inputString: string): string {
       sticky: sticky,
       key: key ?? 'app'
     };
+  }
+
+  export const getEntityPluralName = (entity: SpiderlyClass) => {
+    const pluralAttribute = entity.attributes.find(x => x.name === EntityAttributeCodes.TranslatePluralEn);
+    return pluralAttribute == null ? `${entity.name}List` : pluralAttribute.value;
+  }
+
+  export const getEntityDisplayProperty = (entity: SpiderlyClass) => {
+    return entity.properties.find(p => p.attributes.some(x => x.name === PropertyAttributeCodes.DisplayName));
   }
 
   export type Ctor<T> = new (...args: any[]) => T;

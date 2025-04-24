@@ -25,17 +25,14 @@ const enumToPrimengOptions = <T extends Record<string, string>>(enumObj: T): Pri
 };
 
 export enum EntityAttributeCodes {
-    Authorize = 'Authorize',
     TranslatePluralEn = 'TranslatePluralEn',
-    TranslatePluralSr = 'TranslatePluralSr',
+    TranslateEn = 'TranslateEn',
 }
 
 export enum PropertyAttributeCodes {
-    BlobName = 'BlobName',
-    CascadeDelete = 'CascadeDelete',
+    Required = 'Required',
     DisplayName = 'DisplayName',
-    TranslatePluralEn = 'TranslatePluralEn',
-    TranslatePluralSr = 'TranslatePluralSr',
+    TranslateEn = 'TranslateEn',
     UIControlType = 'UIControlType',
     UIControlWidth = 'UIControlWidth'
 }
@@ -60,11 +57,9 @@ export enum UIControlTypeCodes
     TextBox = 'TextBox',
     CheckBox = 'CheckBox',
     Calendar = 'Calendar',
-    Integer = 'Integer',
+    Number = 'Number',
     ColorPick = 'ColorPick',
     Editor = 'Editor',
-    MultiAutocomplete = 'MultiAutocomplete',
-    MultiSelect = 'MultiSelect',
     Password = 'Password',
     TextBlock = 'TextBlock',
     TODO = 'TODO',
@@ -79,7 +74,12 @@ export enum UIControlWidthCodes
 }
 
 export const showEntityAttributeValueTextbox = (formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean => {
-    if (formGroup.controls.name.value === EntityAttributeCodes.TranslatePluralEn) {
+    const attributeName = formGroup.controls.name.value;
+
+    if (attributeName === EntityAttributeCodes.TranslatePluralEn) {
+        return true;
+    }
+    if (attributeName === EntityAttributeCodes.TranslateEn) {
         return true;
     }
 
@@ -91,7 +91,9 @@ export const showEntityAttributeValueDropdown = (formGroup: SpiderlyFormGroup<Sp
 }
 
 export const showPropertyAttributeValueTextbox = (formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean => {
-    if (formGroup.controls.name.value === PropertyAttributeCodes.TranslatePluralEn) {
+    const attributeName = formGroup.controls.name.value;
+    
+    if (attributeName === EntityAttributeCodes.TranslateEn) {
         return true;
     }
 
@@ -100,6 +102,7 @@ export const showPropertyAttributeValueTextbox = (formGroup: SpiderlyFormGroup<S
 
 export const showPropertyAttributeValueDropdown = (formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean => {
     const attributeName = formGroup.controls.name.value;
+    
     if (attributeName === PropertyAttributeCodes.UIControlType) {
         return true;
     }

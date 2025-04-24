@@ -15,10 +15,10 @@ import { PanelModule } from 'primeng/panel';
 import { SpiderlyControlsModule } from '../../components/playground/web-app/entity-details/controls/spiderly-controls.module';
 import { SpiderlyFormArray, SpiderlyFormGroup } from '../../components/playground/web-app/entity-details/spiderly-form-control/spiderly-form-control';
 import { ClassFormComponent } from '../../components/playground/class-form/class-form.component';
-import { getWarningMessageOptions, getSuccessMessageOptions } from '../../components/playground/web-app/entity-details/services/helper-functions';
+import { getWarningMessageOptions, getSuccessMessageOptions, getEntityPluralName } from '../../components/playground/web-app/entity-details/services/helper-functions';
 import { Subject } from 'rxjs';
 import { ClassCodeEditorComponent } from '../../components/playground/class-code-editor/class-code-editor.component';
-import { getCSharpDataTypeOptions } from '../../components/playground/class-form/services/get-options-functions';
+import { CSharpDataTypeCodes, EntityAttributeCodes, getCSharpDataTypeOptions, PropertyAttributeCodes, UIControlTypeCodes, UIControlWidthCodes } from '../../components/playground/class-form/services/get-options-functions';
 import { PrimengOption } from '../../components/playground/web-app/entity-details/entities/primeng-option';
 
 @Component({
@@ -68,20 +68,39 @@ export class PlaygroundComponent {
 
   ngOnInit(){
     const userEntity = new SpiderlyClass({
-        name: 'User', 
+        name: 'User',
+        attributes: [
+          {name: EntityAttributeCodes.TranslatePluralEn, value: 'Users'}
+        ],
+        properties: [
+          {name:'Id', dataType: CSharpDataTypeCodes.Long, attributes: [{name: PropertyAttributeCodes.Required}]}, 
+          {name: 'Name', dataType: CSharpDataTypeCodes.String, attributes: [{name: PropertyAttributeCodes.DisplayName}, {name: PropertyAttributeCodes.Required}]}, 
+          {name: 'Gender', dataType: 'Gender', attributes: [{name: PropertyAttributeCodes.UIControlWidth, value: UIControlWidthCodes._12}]},
+          {name: 'Logo', dataType: CSharpDataTypeCodes.String, attributes: [{name: PropertyAttributeCodes.UIControlType, value: UIControlTypeCodes.File}]},
+        ],
         data: [
             {Id: 1, Name: 'Filip'}, 
             {Id: 2, Name: 'Aleksa'}, 
             {Id: 3, Name: 'Milica'}
         ],
+    });
+    const genderEntity = new SpiderlyClass({
+        name: 'Gender', 
+        attributes: [
+          {name: EntityAttributeCodes.TranslatePluralEn, value: 'Genders'}
+        ],
         properties: [
-            {name:'Id', dataType: 'string', attributes: []}, 
-            {name: 'Name', dataType: 'string', attributes: []}, 
-            {name: 'Logo', dataType: 'string', attributes: [{name: 'UIControlType', value: 'File'}]}
+          {name:'Id', dataType: CSharpDataTypeCodes.Long, attributes: [{name: PropertyAttributeCodes.Required}]}, 
+          {name: 'Name', dataType: CSharpDataTypeCodes.String, attributes: [{name: PropertyAttributeCodes.DisplayName}, {name: PropertyAttributeCodes.Required}]}, 
+        ],
+        data: [
+            {Id: 1, Name: 'Male'}, 
+            {Id: 2, Name: 'Female'}, 
         ],
     });
 
     this.saveEntity(userEntity, null);
+    this.saveEntity(genderEntity, null);
 
     this.entitiesFormArray = this.baseFormService.initFormArray(new SpiderlyClass({}), this.entities);
     this.entitiesCrudMenu = this.baseFormService.getCrudMenuForOrderedData(new SpiderlyClass({}), this.entitiesFormArray, this.lastEntitiesMenuIconIndexClicked, this.entitiesCrudMenuRemoveHandler);
@@ -118,18 +137,22 @@ export class PlaygroundComponent {
 
       entity.data = entity.data ?? [];
 
+      const menuLabel = getEntityPluralName(entity);
+
+      const menuIcon = 'pi pi-list';
+      
       if (index != null) {
         this.entities.splice(index, 0, entity);
         this.menu.splice(index + 2, 0, {
-          label: `${entity.name}List`,
-          icon: `pi pi-list`,
+          label: menuLabel,
+          icon: menuIcon,
           entity: entity,
         });
       } else {
         this.entities.push(entity);
         this.menu.push({
-            label: `${entity.name}List`,
-            icon: `pi pi-list`,
+            label: menuLabel,
+            icon: menuIcon,
             entity: entity,
         });
       }
