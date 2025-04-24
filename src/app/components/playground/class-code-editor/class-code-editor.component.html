@@ -1,4 +1,4 @@
-<code class="class-code-editor">
+<code>
   @for (attributeFormGroup of baseFormService.getFormArrayGroups(entityFormGroup.controls.attributes); track $index; let entityAttributeIndex = $index) {
     <div>
       [<span class="punct">{{attributeFormGroup.controls.name.value}}</span>
@@ -17,7 +17,7 @@
       @for (attributeFormGroup of baseFormService.getFormArrayGroups(propertyFormGroup.controls.attributes); track $index; let propertyAttributeIndex = $index) {
         <div>
           [<span class="punct">{{attributeFormGroup.controls.name.value}}</span>
-          <ng-container *ngIf="attributeFormGroup.controls.value.value != null">(<span>{{attributeFormGroup.controls.value.value}}</span>)</ng-container>]
+          <ng-container *ngIf="attributeFormGroup.controls.value.value != null">(<span class="string">"{{attributeFormGroup.controls.value.value}}"</span>)</ng-container>]
         </div>
       }
 

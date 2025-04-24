@@ -51,6 +51,10 @@ export class SpiderlyFormGroup<TValue = any> extends FormGroup {
         return super.getRawValue() as TValue;
     }
 
+    getFormControl(name: string): SpiderlyFormControl {
+        return super.get(name as string) as SpiderlyFormControl;
+    }
+
     public name?: string; // FT: Using for nested form groups
     public mainDTOName?: string;
     public saveObservableMethod?: (saveBody: any) => Observable<any>;

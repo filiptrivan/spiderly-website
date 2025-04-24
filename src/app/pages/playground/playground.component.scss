@@ -1,11 +1,7 @@
 @use "../../../assets/variables.scss" as vars;
 
 .playground-code-block-wrapper {
-  // -moz-transform: scale(1);
-  // -o-transform: scale(1);
-  // -webkit-transform: scale(1);
-  // transform: scale(1);
-  max-height: 700px;
+  max-height: 650px;
   overflow-y: auto;
   margin-bottom: 18px;
   display: flex;
@@ -27,6 +23,10 @@
   background-color: var(--p-surface-900);
   border-radius: var(--p-content-border-radius);
   border: 1px solid var(--p-surface-700);
+  height: fit-content; 
+  position: sticky; 
+  position: -webkit-sticky; 
+  top: 0;
   width: 100%;
   padding: 18px;
   overflow-x: auto;

@@ -37,17 +37,19 @@ export class BaseFormService {
   initFormGroup = <T extends BaseEntity>(
     formGroup: SpiderlyFormGroup<T>, 
     ctor: T,
-    formControlNames?: string[],
     updateOnChangeControls?: string[]
   ) => {
     if (formGroup == null)
       console.error('FT: You need to instantiate the form group.')
 
-    formControlNames = formControlNames ?? Object.keys(ctor);
+    if (ctor == null)
+      console.error('FT: Ctor can not be null.')
+
+    const formControlNames = Object.keys(ctor);
 
     formControlNames.forEach(formControlName => {
       let formControl: SpiderlyFormControl | SpiderlyFormArray;
-      
+    
       const initialValue = ctor[formControlName];
 
       if (Array.isArray(initialValue)) {

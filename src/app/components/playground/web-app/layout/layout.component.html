@@ -18,6 +18,7 @@
             <app-entity-details 
             *ngIf="isTableSelected === false && lastSelectedEntity != null"
             [entity]="lastSelectedEntity"
+            [entities]="entities"
             [index]="lastIndexSelected"
             ></app-entity-details>
         </div>

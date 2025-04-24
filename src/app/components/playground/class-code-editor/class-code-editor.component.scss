@@ -1,8 +1,12 @@
 
-.class-code-editor .kw {
-  color: #c678dd;
+.kw {
+  color: var(--p-primary-500);
 }
 
-.class-code-editor .punct {
-  color: #56b6c2;
+.punct {
+  color: var(--p-secondary-color);
+}
+
+.string {
+  color: var(--p-primary-300);
 }

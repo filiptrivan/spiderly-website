@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
@@ -8,12 +8,11 @@ import { SpiderlyTextboxComponent } from '../web-app/entity-details/controls/spi
 import { SpiderlyDropdownComponent } from '../web-app/entity-details/controls/spiderly-dropdown/spiderly-dropdown.component';
 import { SpiderlyClass, SpiderlyProperty, SpiderlyAttribute } from '../entities/entities';
 import { SpiderlyFormGroup } from '../web-app/entity-details/spiderly-form-control/spiderly-form-control';
-import { getEntityAttributeOptions, getPropertyAttributeOptions, getCSharpDataTypeOptions, EntityAttributeCodes, PropertyAttributeCodes, getPropertyAttributeUIControlTypeOptions } from './services/get-options-functions';
+import { getEntityAttributeOptions, getPropertyAttributeOptions, PropertyAttributeCodes, getPropertyAttributeUIControlTypeOptions, showEntityAttributeValueTextbox, showEntityAttributeValueDropdown, showPropertyAttributeValueTextbox, showPropertyAttributeValueDropdown, getPropertyAttributeUIControlWidthOptions } from './services/get-options-functions';
 import { PrimengOption } from '../web-app/entity-details/entities/primeng-option';
 import { SpiderlyPanelComponent } from "../web-app/entity-details/spiderly-panels/spiderly-panel/spiderly-panel.component";
 import { PanelBodyComponent } from "../web-app/entity-details/spiderly-panels/panel-body/panel-body.component";
 import { PanelHeaderComponent } from "../web-app/entity-details/spiderly-panels/panel-header/panel-header.component";
-import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-class-form',
@@ -36,16 +35,18 @@ export class ClassFormComponent {
     @Input() entities: SpiderlyClass[] = [];
     @Input() menu: MenuItem[] = [];
 
-    @Output() onSaveEntityFormGroup = new EventEmitter();
-
-    
     lastEntityAttributesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
     lastPropertiesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
     lastPropertyAttributesMenuIconIndexClicked = new LastMenuIconIndexClicked({});
 
     entityAttributeOptions: PrimengOption[] = getEntityAttributeOptions();
     propertyAttributeOptions: PrimengOption[] = getPropertyAttributeOptions();
-    cSharpDataTypeOptions: PrimengOption[] = getCSharpDataTypeOptions();
+    @Input() cSharpDataTypeOptions: PrimengOption[] = [];
+
+    showEntityAttributeValueTextbox = showEntityAttributeValueTextbox;
+    showEntityAttributeValueDropdown = showEntityAttributeValueDropdown;
+    showPropertyAttributeValueTextbox = showPropertyAttributeValueTextbox;
+    showPropertyAttributeValueDropdown = showPropertyAttributeValueDropdown;
     
     constructor(
         public baseFormService: BaseFormService,
@@ -57,41 +58,14 @@ export class ClassFormComponent {
 
     }
 
-    saveEntityFormGroup = () => {
-        this.onSaveEntityFormGroup.next(null);
-    }
-
-    showEntityAttributeValueTextbox(formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean {
-      if (formGroup.controls.name.value === EntityAttributeCodes.TranslatePluralEn) {
-        return true;
-      }
-
-      return false;
-    }
-
-    showEntityAttributeValueDropdown(formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean {
-      return false;
-    }
-
-    showPropertyAttributeValueTextbox(formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean {
-      if (formGroup.controls.name.value === PropertyAttributeCodes.TranslatePluralEn) {
-        return true;
-      }
-
-      return false;
-    }
-
-    showPropertyAttributeValueDropdown(formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean {
-      if (formGroup.controls.name.value === PropertyAttributeCodes.UIControlType) {
-        return true;
-      }
-
-      return false;
-    }
-
     getPropertyAttributeValueOptions(formGroup: SpiderlyFormGroup<SpiderlyAttribute>): PrimengOption[] {
-      if (formGroup.controls.name.value === PropertyAttributeCodes.UIControlType) {
+      const attributeName = formGroup.controls.name.value;
+
+      if (attributeName === PropertyAttributeCodes.UIControlType) {
         return getPropertyAttributeUIControlTypeOptions();
+      }
+      if (attributeName === PropertyAttributeCodes.UIControlWidth) {
+        return getPropertyAttributeUIControlWidthOptions();
       }
 
       return [];

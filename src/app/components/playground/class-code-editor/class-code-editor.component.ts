@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { SpiderlyFormGroup } from '../web-app/entity-details/spiderly-form-control/spiderly-form-control';
 import { SpiderlyClass } from '../entities/entities';
+import { showEntityAttributeValueTextbox, showEntityAttributeValueDropdown, showPropertyAttributeValueTextbox, showPropertyAttributeValueDropdown } from '../class-form/services/get-options-functions';
 
 
 @Component({
@@ -19,7 +20,11 @@ export class ClassCodeEditorComponent {
   ocb: string = '{';
   ccb: string = '}';
 
-  
+  showEntityAttributeValueTextbox = showEntityAttributeValueTextbox;
+  showEntityAttributeValueDropdown = showEntityAttributeValueDropdown;
+  showPropertyAttributeValueTextbox = showPropertyAttributeValueTextbox;
+  showPropertyAttributeValueDropdown = showPropertyAttributeValueDropdown;
+
   constructor(
     public baseFormService: BaseFormService
   ) {

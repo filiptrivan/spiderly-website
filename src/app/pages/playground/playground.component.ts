@@ -18,6 +18,8 @@ import { ClassFormComponent } from '../../components/playground/class-form/class
 import { getWarningMessageOptions, getSuccessMessageOptions } from '../../components/playground/web-app/entity-details/services/helper-functions';
 import { Subject } from 'rxjs';
 import { ClassCodeEditorComponent } from '../../components/playground/class-code-editor/class-code-editor.component';
+import { getCSharpDataTypeOptions } from '../../components/playground/class-form/services/get-options-functions';
+import { PrimengOption } from '../../components/playground/web-app/entity-details/entities/primeng-option';
 
 @Component({
   selector: 'app-playground',
@@ -55,6 +57,7 @@ export class PlaygroundComponent {
         separator: true,
     }
   ];
+  cSharpDataTypeOptions: PrimengOption[] = getCSharpDataTypeOptions();
 
   constructor(
     private baseFormService: BaseFormService,
@@ -101,9 +104,18 @@ export class PlaygroundComponent {
           this.messageService.add(getWarningMessageOptions('You already have class with the same name.'))
           return;
       }
+
+      if (entity.properties.length !== new Set(entity.properties.map(x => x.name)).size) {
+        this.messageService.add(getWarningMessageOptions('You have multiple properties with the same name.'))
+        return;
+      }
       
-      const entityIndex = this.entities.findIndex(x => x.name == entity.name);
-      
+      const entityAlreadyExists = this.entities.some((_, i) => i === index);
+      if (entityAlreadyExists) {
+        this.removeEntity(index);
+        this.cSharpDataTypeOptions = this.cSharpDataTypeOptions.filter(dataType => dataType.label !== entity.name);
+      }
+
       entity.data = entity.data ?? [];
 
       if (index != null) {
@@ -122,15 +134,11 @@ export class PlaygroundComponent {
         });
       }
 
-      if (entityIndex !== -1) {
-          this.removeEntity(entityIndex);
-          this.messageService.add(getSuccessMessageOptions('Successfully updated.'));
-          return;
+      if (index != null) { // FT: index is null only when we manually push new entity at the begining of the program
+          this.messageService.add(getSuccessMessageOptions('Successfully saved.'));
       }
 
-      if (index != null) { // FT: index is null only when we manually push new entity at the begining of the program
-          this.messageService.add(getSuccessMessageOptions('Successfully created.'));
-      }
+      this.cSharpDataTypeOptions.push({label: entity.name, value: entity.name});
   }
 
   removeEntity(index: number) {

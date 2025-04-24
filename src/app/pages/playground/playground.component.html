@@ -16,21 +16,18 @@
             [menu]="menu"
             [entityFormGroup]="entityFormGroup"
             [entityIndex]="entityIndex"
-            (onSaveEntityFormGroup)="saveEntityFormGroup(entityFormGroup, entityIndex)"
+            [cSharpDataTypeOptions]="cSharpDataTypeOptions"
             ></app-class-form>
           </div>
 
-          <!-- <div style="position: relative;"> -->
-            <div class="class-code-editor" style="height: fit-content; position: sticky; position: -webkit-sticky; top: 0;">
-              <app-class-code-editor
-              [entityFormGroup]="entityFormGroup"
-              ></app-class-code-editor>
-            </div>
-          <!-- </div> -->
+          <div class="class-code-editor">
+            <app-class-code-editor
+            [entityFormGroup]="entityFormGroup"
+            ></app-class-code-editor>
+          </div>
 
         </div>
-        <!-- <p-button (onClick)="saveEntityFormGroup()" size="small" label="Save" icon="pi pi-save"></p-button> -->
-        <p-button  label="Save" icon="pi pi-save"></p-button>
+        <p-button (onClick)="saveEntityFormGroup(entityFormGroup, entityIndex)" label="Save" icon="pi pi-save"></p-button>
       </index-card>
     }
     <p-button (onClick)="addNewEntity()" label="Add new class" icon="pi pi-plus"></p-button>

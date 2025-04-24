@@ -3,93 +3,86 @@
 
     <panel-body>
         <form class="grid">
-            <!-- <ng-container *ngFor="let property of entity.properties"> -->
             @for (property of entity.properties; track $index) {
                 @if (getUIControlTypeCode(property) === UIControlTypeCodes.Autocomplete) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-autocomplete [control]="control(property.name, formGroup)"></spiderly-autocomplete>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-autocomplete 
+                        [control]="formGroup.getFormControl(property.name)"
+                        [options]="this.dropdownFilteredOptions[property.dataType]"
+                        (onTextInput)="search($event, property.dataType)"
+                        ></spiderly-autocomplete>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Calendar) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-calendar [control]="control(property.name, formGroup)"></spiderly-calendar>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-calendar [control]="formGroup.getFormControl(property.name)"></spiderly-calendar>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.CheckBox) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-checkbox [control]="control(property.name, formGroup)"></spiderly-checkbox>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-checkbox [control]="formGroup.getFormControl(property.name)"></spiderly-checkbox>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.ColorPick) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-colorpick [control]="control(property.name, formGroup)"></spiderly-colorpick>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-colorpick [control]="formGroup.getFormControl(property.name)"></spiderly-colorpick>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Dropdown) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-dropdown [control]="control(property.name, formGroup)"></spiderly-dropdown>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-dropdown 
+                        [control]="formGroup.getFormControl(property.name)"
+                        [options]="this.dropdownOptions[property.dataType]"
+                        ></spiderly-dropdown>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Editor) {
-                    <div class="col-12">
-                        <spiderly-editor [control]="control(property.name, formGroup)"></spiderly-editor>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12'">
+                        <spiderly-editor [control]="formGroup.getFormControl(property.name)"></spiderly-editor>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.File) {
-                    <div class="col-12">
-                        <spiderly-file [control]="control(property.name, formGroup)"></spiderly-file>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12'">
+                        <spiderly-file [control]="formGroup.getFormControl(property.name)"></spiderly-file>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.MultiAutocomplete) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-multiautocomplete [control]="control(property.name, formGroup)"></spiderly-multiautocomplete>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-multiautocomplete [control]="formGroup.getFormControl(property.name)"></spiderly-multiautocomplete>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.MultiSelect) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-multiselect [control]="control(property.name, formGroup)"></spiderly-multiselect>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-multiselect [control]="formGroup.getFormControl(property.name)"></spiderly-multiselect>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Integer) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-number [control]="control(property.name, formGroup)"></spiderly-number>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-number [control]="formGroup.getFormControl(property.name)"></spiderly-number>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Password) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-password [control]="control(property.name, formGroup)"></spiderly-password>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-password [control]="formGroup.getFormControl(property.name)"></spiderly-password>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.TextArea) {
-                    <div class="col-12">
-                        <spiderly-textarea [control]="control(property.name, formGroup)"></spiderly-textarea>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12'">
+                        <spiderly-textarea [control]="formGroup.getFormControl(property.name)"></spiderly-textarea>
                     </div>
                 }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.TextBox) {
-                    <div class="col-12 md:col-6">
-                        <spiderly-textbox [control]="control(property.name, formGroup)"></spiderly-textbox>
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-textbox [control]="formGroup.getFormControl(property.name)"></spiderly-textbox>
                     </div>
                 }
             }
-            <!-- </ng-container> -->
-            <!-- <div class="col-12">
-                <spiderly-textbox [control]="control('name', formGroup)"></spiderly-textbox>
-            </div>
-            <div class="col-12">
-                <spiderly-textarea [control]="control('description', formGroup)"></spiderly-textarea>
-            </div>
-            <div class="col-12">
-                <spiderly-multiautocomplete [control]="selectedUsersForRole" [options]="usersForRoleOptions" (onTextInput)="searchUsersForRole($event)" label="Users"></spiderly-multiautocomplete>
-            </div>
-            <div class="col-12">
-                <spiderly-multiselect [control]="selectedPermissionsForRole" [options]="permissionsForRoleOptions" label="Permissions"></spiderly-multiselect>
-            </div> -->
         </form>
 
     </panel-body>
 
     <panel-footer>
-        <!-- <p-button (onClick)="save()" label="Save" icon="pi pi-save"></p-button>
-        <p-button (onClick)="onReturn()" label="Return" icon="pi pi-undo" [outlined]="true"></p-button> -->
+        <p-button (onClick)="save()" label="Save" icon="pi pi-save" size="small"></p-button>
+        <p-button (onClick)="onReturn()" label="Return" icon="pi pi-undo" [outlined]="true" size="small"></p-button>
     </panel-footer>
 </spiderly-panel>
