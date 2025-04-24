@@ -1,4 +1,5 @@
-import { Input, OnInit } from '@angular/core';
+import { BaseFormService } from './services/base-form.service';
+import { EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -14,6 +15,8 @@ import { SpiderlyPanelComponent } from './spiderly-panels/spiderly-panel/spiderl
 import { CSharpDataTypeCodes, PropertyAttributeCodes, UIControlTypeCodes } from '../../class-form/services/get-options-functions';
 import { PrimengOption } from './entities/primeng-option';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { MessageService } from 'primeng/api';
+import { getSuccessMessageOptions } from './services/helper-functions';
 
 @Component({
     selector: 'app-entity-details',
@@ -33,10 +36,14 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
     ],
 })
 export class EntityDetailsComponent implements OnInit {
-    formGroup: SpiderlyFormGroup;
     @Input() entity: SpiderlyClass;
     @Input() entities: SpiderlyClass[];
     @Input() index: number;
+
+    @Output() onReturn = new EventEmitter();
+
+    formGroup: SpiderlyFormGroup;
+    isNewDataItem: boolean = false;
 
     UIControlTypeCodes = UIControlTypeCodes;
 
@@ -44,6 +51,8 @@ export class EntityDetailsComponent implements OnInit {
     dropdownFilteredOptions: { [key: string]: PrimengOption[] } = {};
 
     constructor(
+        private baseFormService: BaseFormService,
+        private messageService: MessageService
     ) {
     }
     
@@ -55,12 +64,18 @@ export class EntityDetailsComponent implements OnInit {
     refreshFormGroup = () => {
         this.formGroup = new SpiderlyFormGroup({});
         let ctor = this.entity.data[this.index];
+        
         if (ctor == null) {
-            ctor = {}
-            this.entity.properties.forEach(property => {
-                ctor[property.name] = undefined;
-            });
+            this.isNewDataItem = true;
+            ctor = {};
         }
+
+        this.entity.properties.forEach(property => {
+            if (ctor[property.name] == null) {
+                ctor[property.name] = null;
+            }
+        });
+        
         this.initFormGroup(this.formGroup, ctor)
     }
 
@@ -143,7 +158,7 @@ export class EntityDetailsComponent implements OnInit {
             }
             
             const entity = this.entities.find(e => e.name === property.dataType);
-            
+
             const displayProperty = entity.properties.find(p => p.name === PropertyAttributeCodes.DisplayName);
 
             this.dropdownOptions[entity.name] = this.dropdownFilteredOptions[entity.name] = entity.data.map((dataItem, i) => {
@@ -164,10 +179,24 @@ export class EntityDetailsComponent implements OnInit {
     }
 
     save() {
-        throw new Error('Method not implemented.');
+        if (this.baseFormService.checkFormGroupValidity(this.formGroup) === false) {
+            return;
+        }
+
+        if (this.isNewDataItem) {
+            this.entity.data.push(this.formGroup.value);
+            this.index = this.entity.data.length - 1;
+        }
+        else{
+            this.entity.data = this.entity.data.filter((_, i) => i !== this.index)
+            this.entity.data.splice(this.index, 0, this.formGroup.value);
+        }
+
+        this.messageService.add(getSuccessMessageOptions('Successfully saved.', null, 'playground'));
+        this.isNewDataItem = false;
     }
     
-    onReturn() {
-        throw new Error('Method not implemented.');
+    return() {
+        this.onReturn.next(null);
     }
 }
