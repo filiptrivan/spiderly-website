@@ -26,13 +26,11 @@ const enumToPrimengOptions = <T extends Record<string, string>>(enumObj: T): Pri
 
 export enum EntityAttributeCodes {
     TranslatePluralEn = 'TranslatePluralEn',
-    TranslateEn = 'TranslateEn',
 }
 
 export enum PropertyAttributeCodes {
     Required = 'Required',
     DisplayName = 'DisplayName',
-    TranslateEn = 'TranslateEn',
     UIControlType = 'UIControlType',
     UIControlWidth = 'UIControlWidth'
 }
@@ -49,20 +47,18 @@ export enum CSharpDataTypeCodes {
 
 export enum UIControlTypeCodes
 {
-    Decimal = 'Decimal',
-    File = 'File',
-    Dropdown = 'Dropdown',
-    TextArea = 'TextArea',
-    Autocomplete = 'Autocomplete',
     TextBox = 'TextBox',
+    TextArea = 'TextArea',
+    Dropdown = 'Dropdown',
+    Autocomplete = 'Autocomplete',
     CheckBox = 'CheckBox',
     Calendar = 'Calendar',
     Number = 'Number',
+    Decimal = 'Decimal',
+    File = 'File',
     ColorPick = 'ColorPick',
     Editor = 'Editor',
     Password = 'Password',
-    TextBlock = 'TextBlock',
-    TODO = 'TODO',
 }
 
 export enum UIControlWidthCodes
@@ -79,9 +75,6 @@ export const showEntityAttributeValueTextbox = (formGroup: SpiderlyFormGroup<Spi
     if (attributeName === EntityAttributeCodes.TranslatePluralEn) {
         return true;
     }
-    if (attributeName === EntityAttributeCodes.TranslateEn) {
-        return true;
-    }
 
     return false;
 }
@@ -92,10 +85,6 @@ export const showEntityAttributeValueDropdown = (formGroup: SpiderlyFormGroup<Sp
 
 export const showPropertyAttributeValueTextbox = (formGroup: SpiderlyFormGroup<SpiderlyAttribute>): boolean => {
     const attributeName = formGroup.controls.name.value;
-    
-    if (attributeName === EntityAttributeCodes.TranslateEn) {
-        return true;
-    }
 
     return false;
 }
