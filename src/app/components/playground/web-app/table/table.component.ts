@@ -114,6 +114,9 @@ export class TableComponent implements OnInit {
     getRowData(rowData: any, col: SpiderlyProperty) {
       switch (col.dataType) {
         case CSharpDataTypeCodes.String:
+          if (typeof rowData[col.name] === 'object') { // FT HACK: UIControlType File
+            return rowData[col.name].name;
+          }
           return rowData[col.name];
         case CSharpDataTypeCodes.DateTime:
           if (rowData[col.name] == null)
