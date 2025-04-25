@@ -23,6 +23,7 @@ import { ButtonModule } from 'primeng/button';
         }
       `
     ],
+    styleUrl: '../../../../../../pages/playground/playground.component.scss',
     standalone: true,
     imports: [
         CommonModule,

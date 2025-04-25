@@ -8,7 +8,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { getEntityDisplayProperty, getSuccessMessageOptions } from '../entity-details/services/helper-functions';
+import { getEntityDisplayProperty, getSuccessMessageOptions, initDropdownOptions } from '../entity-details/services/helper-functions';
 import { LayoutService } from '../layout/layout.service';
 import { CSharpDataTypeCodes } from '../../class-form/services/get-options-functions';
 import { PrimengOption } from '../entity-details/entities/primeng-option';
@@ -46,7 +46,7 @@ export class TableComponent implements OnInit {
     @Input() entities: SpiderlyClass[] = [];
     @Input() cols: SpiderlyProperty[] = [];
     @Input() tableTitle: string;
-    @Input() dropdownOptions: { [key: string]: PrimengOption[] } = {};
+    dropdownOptions: { [key: string]: PrimengOption[] } = {};
 
     @Output() onNavigateToDetails = new EventEmitter<number>();
 
@@ -60,6 +60,7 @@ export class TableComponent implements OnInit {
 
 
     ngOnInit() {
+      this.dropdownOptions = initDropdownOptions(this.entities);
     }
 
     exportListToExcel() {
@@ -114,7 +115,7 @@ export class TableComponent implements OnInit {
     getRowData(rowData: any, col: SpiderlyProperty) {
       switch (col.dataType) {
         case CSharpDataTypeCodes.String:
-          if (typeof rowData[col.name] === 'object') { // FT HACK: UIControlType File
+          if (rowData[col.name] != null && typeof rowData[col.name] === 'object') { // FT HACK: UIControlType File
             return rowData[col.name].name;
           }
           return rowData[col.name];
@@ -148,7 +149,7 @@ export class TableComponent implements OnInit {
   deleteRow(index: number) {
     this.confirmationService.confirm({
       accept: () => {
-        this.data = this.data.filter((_, i) => i !== index);
+        this.data.splice(index, 1);
 
         this.messageService.add(getSuccessMessageOptions('Item deleted successfully', null, 'playground'));
       }

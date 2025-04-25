@@ -11,7 +11,7 @@
     [name]="control?.label ?? label" 
     [multiple]="multiple" 
     [accept]="acceptedFileTypesCommaSeparated" 
-    [maxFileSize]="1000000" 
+    [maxFileSize]="10000000" 
     (onSelect)="filesSelected($event)"
     [class]="control?.invalid && control?.dirty ? 'control-error-border' : ''"
     >

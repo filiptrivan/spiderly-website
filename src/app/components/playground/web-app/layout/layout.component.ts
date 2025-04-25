@@ -10,7 +10,7 @@ import { SpiderlyClass } from '../../entities/entities';
 import { EntityDetailsComponent } from '../entity-details/entity-details.component';
 import { SidebarMenuComponent, SpiderlyMenuItem } from '../sidebar/sidebar-menu.component';
 import { TableComponent } from '../table/table.component';
-import { getEntityDisplayProperty, getEntityPluralName } from '../entity-details/services/helper-functions';
+import { getEntityPluralName } from '../entity-details/services/helper-functions';
 import { PrimengOption } from '../entity-details/entities/primeng-option';
 
 @Component({
@@ -92,7 +92,7 @@ export class LayoutComponent implements OnDestroy {
     }
 
     ngOnInit() {
-        this.initDropdownOptions();
+        
     }
 
     hideMenu() {
@@ -138,19 +138,6 @@ export class LayoutComponent implements OnDestroy {
 
     getEntityPluralName(entity: SpiderlyClass): string {
         return getEntityPluralName(entity);
-    }
-
-    initDropdownOptions = () => {
-        this.entities.forEach(entity => {            
-            const displayProperty = getEntityDisplayProperty(entity);
-
-            this.dropdownOptions[entity.name] = entity.data.map((dataItem, i) => {
-                return {
-                    label: displayProperty == null ? i : dataItem[displayProperty.name], 
-                    value: i.toString()
-                }
-            });
-        });
     }
 
     ngOnDestroy() {

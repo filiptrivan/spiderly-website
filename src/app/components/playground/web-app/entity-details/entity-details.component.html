@@ -2,7 +2,7 @@
     <panel-header></panel-header>
 
     <panel-body>
-        <form class="grid">
+        <form [formGroup]="formGroup" class="grid">
             @for (property of entity.properties; track $index) {
                 @if (getUIControlTypeCode(property) === UIControlTypeCodes.Autocomplete) {
                     <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">

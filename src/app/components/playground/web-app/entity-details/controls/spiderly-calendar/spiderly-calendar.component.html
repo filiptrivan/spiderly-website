@@ -5,16 +5,17 @@
         <!-- tabindex="-1": Makes the element focusable, but removes it from the tab order. -->
         <i *ngIf="showTooltip" class="{{tooltipIcon}}" style="margin-left: 5px; cursor: pointer;" [pTooltip]="tooltipText" tabindex="-1" tooltipEvent="focus"></i>
     </div>
-    <p-calendar
+    <p-datepicker
     *ngIf="control"
-    [style]="{'width':'100%'}"
     [pTooltip]="getValidationErrrorMessages()" [tooltipEvent]="errorMessageTooltipEvent" tooltipPosition="bottom" [tooltipDisabled]="control.valid" tooltipStyleClass="spiderly-tooltip-invalid"
     [formControl]="control"
     (onBlur)="control.markAsDirty()"
     dateFormat="dd.mm.yy."
     iconDisplay="input" 
     [showIcon]="true" 
+    [disabled]="false"
     [showTime]="showTime"
+    [fluid]="true"
     (onSelect)="setDate($event)"
     />
 </div>

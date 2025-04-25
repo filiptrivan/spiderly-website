@@ -4,6 +4,7 @@ import { SpiderlyFormControl, SpiderlyFormGroup } from "../spiderly-form-control
 import { ToastMessageOptions } from "primeng/api";
 import { SpiderlyClass } from "../../../entities/entities";
 import { EntityAttributeCodes, PropertyAttributeCodes } from "../../../class-form/services/get-options-functions";
+import { PrimengOption } from "../entities/primeng-option";
 
 // Helper function for PrecisionScale validation (to be added in the TypeScript output):
 export function validatePrecisionScale(value: any, precision: number, scale: number, ignoreTrailingZeros: boolean): boolean {
@@ -247,6 +248,23 @@ export function getParentUrl(currentUrl: string){
 
   export const getEntityDisplayProperty = (entity: SpiderlyClass) => {
     return entity.properties.find(p => p.attributes.some(x => x.name === PropertyAttributeCodes.DisplayName));
+  }
+
+  export const initDropdownOptions = (entities: SpiderlyClass[]) => {
+    let dropdownOptions: { [key: string]: PrimengOption[] } = {};
+
+    entities.forEach(entity => {            
+        const displayProperty = getEntityDisplayProperty(entity);
+
+        dropdownOptions[entity.name] = entity.data.map((dataItem, i) => {
+            return {
+                label: displayProperty == null ? i : dataItem[displayProperty.name], 
+                value: i.toString()
+            }
+        });
+    });
+
+    return dropdownOptions;
   }
 
   export type Ctor<T> = new (...args: any[]) => T;

@@ -5,6 +5,7 @@ import { RequiredComponent } from '../../required/required.component';
 import { CommonModule } from '@angular/common';
 import { ColorPickerModule } from 'primeng/colorpicker'
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'spiderly-colorpick',
@@ -18,6 +19,7 @@ import { TooltipModule } from 'primeng/tooltip';
         TooltipModule,
         RequiredComponent,
         ColorPickerModule,
+        InputTextModule,
     ]
 })
 export class SpiderlyColorpickComponent extends BaseControl implements OnInit {

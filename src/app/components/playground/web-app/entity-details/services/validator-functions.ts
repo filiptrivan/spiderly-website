@@ -56,7 +56,7 @@ export const notEmptyValidator = (control: SpiderlyFormControl): SpiderlyValidat
         const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
         
         const valid = notEmptyRule;
-
+        
         return valid ? null : { _: 'The field can not be empty.' };
     };
     

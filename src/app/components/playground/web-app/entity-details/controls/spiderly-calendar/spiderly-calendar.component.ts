@@ -3,13 +3,14 @@ import { BaseControl } from '../base-control';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
-import { CalendarModule } from 'primeng/calendar';
 import { TooltipModule } from 'primeng/tooltip';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
     selector: 'spiderly-calendar',
     templateUrl: './spiderly-calendar.component.html',
-    styles: [],
+    styles: [
+    ],
     standalone: true,
     imports: [
         CommonModule,
@@ -17,7 +18,7 @@ import { TooltipModule } from 'primeng/tooltip';
         FormsModule,
         TooltipModule,
         RequiredComponent,
-        CalendarModule
+        DatePickerModule
     ]
 })
 export class SpiderlyCalendarComponent extends BaseControl implements OnInit {
@@ -34,6 +35,5 @@ export class SpiderlyCalendarComponent extends BaseControl implements OnInit {
     }
 
     setDate(event:Date) { 
-        
     }
 }

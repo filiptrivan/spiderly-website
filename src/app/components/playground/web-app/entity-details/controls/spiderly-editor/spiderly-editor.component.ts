@@ -11,6 +11,7 @@ import { Tooltip } from 'primeng/tooltip';
 @Component({
     selector: 'spiderly-editor',
     templateUrl: './spiderly-editor.component.html',
+    styleUrl: '../../../../../../pages/playground/playground.component.scss',
     styles: [],
     standalone: true,
     imports: [

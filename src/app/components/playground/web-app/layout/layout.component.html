@@ -15,15 +15,12 @@
             [tableTitle]="getEntityPluralName(lastSelectedEntity)"
             (onNavigateToDetails)="navigateToDetails($event)"
             [entities]="entities"
-            [dropdownOptions]="dropdownOptions"
             ></app-table>
             <app-entity-details 
             *ngIf="isTableSelected === false && lastSelectedEntity != null"
             [entity]="lastSelectedEntity"
             [entities]="entities"
-            [dropdownOptions]="dropdownOptions"
             [index]="lastIndexSelected"
-            (onSave)="initDropdownOptions()"
             (onReturn)="isTableSelected = true"
             ></app-entity-details>
         </div>

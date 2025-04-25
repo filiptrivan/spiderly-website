@@ -16,8 +16,9 @@ import { CSharpDataTypeCodes, PropertyAttributeCodes, UIControlTypeCodes } from 
 import { PrimengOption } from './entities/primeng-option';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { MessageService } from 'primeng/api';
-import { firstCharToUpper, getEntityDisplayProperty, getSuccessMessageOptions, splitPascalCase } from './services/helper-functions';
+import { firstCharToUpper, getEntityDisplayProperty, getSuccessMessageOptions, initDropdownOptions, splitPascalCase } from './services/helper-functions';
 import { notEmptyValidator, setValidators } from './services/validator-functions';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-entity-details',
@@ -26,6 +27,7 @@ import { notEmptyValidator, setValidators } from './services/validator-functions
     standalone: true,
     imports: [
         CommonModule,
+        ReactiveFormsModule,
         TableModule,
         ButtonModule,
         TooltipModule,
@@ -40,7 +42,7 @@ export class EntityDetailsComponent implements OnInit {
     @Input() entity: SpiderlyClass;
     @Input() entities: SpiderlyClass[];
     @Input() index: number;
-    @Input() dropdownOptions: { [key: string]: PrimengOption[] } = {};
+    dropdownOptions: { [key: string]: PrimengOption[] } = {};
     dropdownFilteredOptions: { [key: string]: PrimengOption[] } = {};
 
     @Output() onReturn = new EventEmitter();
@@ -59,6 +61,7 @@ export class EntityDetailsComponent implements OnInit {
     
     ngOnInit() {
         this.refreshFormGroup();
+        this.dropdownOptions = initDropdownOptions(this.entities);
         this.dropdownFilteredOptions = this.dropdownOptions;
     }
 
@@ -96,7 +99,13 @@ export class EntityDetailsComponent implements OnInit {
     
             const initialValue = ctor[formControlName];
 
-            if (updateOnChangeControls?.includes(formControlName)){
+            if (
+                updateOnChangeControls?.includes(formControlName) ||
+                property.attributes.some(x => x.value === UIControlTypeCodes.Calendar) ||
+                property.attributes.some(x => x.value === UIControlTypeCodes.Dropdown) ||
+                property.attributes.some(x => x.value === UIControlTypeCodes.Autocomplete) ||
+                property.attributes.some(x => x.value === UIControlTypeCodes.ColorPick)
+            ){
                 formControl = new SpiderlyFormControl(initialValue, { updateOn: 'change' });
             }
             else{
@@ -132,6 +141,9 @@ export class EntityDetailsComponent implements OnInit {
         }
         else if (property.dataType === CSharpDataTypeCodes.Bool) {
             return UIControlTypeCodes.CheckBox;
+        }
+        else if (property.dataType === CSharpDataTypeCodes.DateTime) {
+            return UIControlTypeCodes.Calendar;
         }
         else if (property.dataType === CSharpDataTypeCodes.Decimal) {
             return UIControlTypeCodes.Decimal;
