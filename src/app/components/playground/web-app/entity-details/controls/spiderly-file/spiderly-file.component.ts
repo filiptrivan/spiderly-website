@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
-import { getMimeTypeForFileName, isExcelFileType, isImageFileType } from '../../services/helper-functions';
-import { BaseEntity } from '../../entities/base-entity';
+import { isExcelFileType, isImageFileType } from '../../services/helper-functions';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 
@@ -37,10 +36,6 @@ import { ButtonModule } from 'primeng/button';
     ]
 })
 export class SpiderlyFileComponent extends BaseControl implements OnInit {
-    @Output() onFileSelected = new EventEmitter<SpiderlyFileSelectEvent>();
-    @Output() onFileRemoved = new EventEmitter<null>();
-    @Input() objectId: number;
-    @Input() fileData: string;
     @Input() acceptedFileTypes: Array<'image/*' | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' | 'application/vnd.ms-excel' | '.xlsx' | '.xls'> = ['image/*'];
     @Input() required: boolean; // FT: It's okay for this control, because for the custom uploads where we are not initializing the control from the backend, there is no need for formControl.
     @Input() multiple: boolean = false;
@@ -55,8 +50,8 @@ export class SpiderlyFileComponent extends BaseControl implements OnInit {
     }
 
     override ngOnInit(){
-        if (this.control?.value != null && this.fileData != null) {
-            const file = this.base64ToFile(this.fileData);
+        if (this.control?.value != null) {
+            const file = this.control.value;
             this.files.push(file);
         }
 
@@ -67,11 +62,7 @@ export class SpiderlyFileComponent extends BaseControl implements OnInit {
 
     filesSelected(event: FileSelectEvent){
         const file = event.files[0];
-
-        const formData: FormData = new FormData();
-        formData.append('file', file, `${this.objectId}-${file.name}`);
-        
-        this.onFileSelected.next(new SpiderlyFileSelectEvent({file: file, formData: formData}));
+        this.control.setValue(file);
     }
 
     choose(event, chooseCallback){
@@ -80,27 +71,7 @@ export class SpiderlyFileComponent extends BaseControl implements OnInit {
     
     fileRemoved(removeFileCallback, index: number){
         removeFileCallback(index);
-        this.control?.setValue(null);
-        this.onFileRemoved.next(null);
-    }
-
-    // FT: Put inside global functions if you need it
-    base64ToFile(base64String: string){
-        const [header, base64Content] = base64String.split(';base64,');
-        const fileName = header.split('=')[1];
-        const mimeType = getMimeTypeForFileName(fileName);
-
-        const byteCharacters = atob(base64Content);
-        const byteNumbers = new Uint8Array(byteCharacters.length);
-
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-
-        const blob = new Blob([byteNumbers], { type: mimeType });
-        const file = new File([blob], fileName, { type: mimeType });
-
-        return file;
+        this.control.setValue(null);
     }
 
     isImageFileType(mimeType: string): boolean {
@@ -111,25 +82,4 @@ export class SpiderlyFileComponent extends BaseControl implements OnInit {
         return isExcelFileType(mimeType);
     }
 
-}
-
-export class SpiderlyFileSelectEvent extends BaseEntity
-{
-    file?: File;
-    formData?: FormData;
-
-    constructor(
-    {
-        file,
-        formData,
-    }:{
-        file?: File;
-        formData?: FormData;
-    } = {}
-    ) {
-        super('SpiderlyFileSelectEvent'); 
-
-        this.file = file;
-        this.formData = formData;
-    }
 }

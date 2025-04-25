@@ -224,6 +224,10 @@ export class BaseFormService {
         this.isFormGroupValid(form, formGroupValid);
       }
       else if (form instanceof SpiderlyFormControl){
+        if (form.label == 'logo') {
+          console.log(form)
+          console.log(key)
+        }
         if (form.invalid) {
           form.markAsDirty();
           formGroupValid.invalid = true;

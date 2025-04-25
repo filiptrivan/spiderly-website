@@ -13,7 +13,6 @@ import { isPlatformBrowser } from '@angular/common';
   export class BaseControl {
     @Input() control: SpiderlyFormControl; // FT: if you name it formControl: https://stackoverflow.com/a/54755671/21209982
     @Input() disabled: boolean = false;
-    @Input() showLabel: boolean = true;
     @Input() label: string = null; // NgModel/Want custom translation
     @Input() controlValid: boolean = true; // NgModel
     @Input() placeholder: string = '';

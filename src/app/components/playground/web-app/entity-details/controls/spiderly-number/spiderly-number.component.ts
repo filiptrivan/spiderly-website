@@ -10,7 +10,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
     selector: 'spiderly-number',
     templateUrl: './spiderly-number.component.html',
-    styles: [],
     standalone: true,
     imports: [
         CommonModule,
@@ -24,13 +23,13 @@ import { InputNumberModule } from 'primeng/inputnumber';
 export class SpiderlyNumberComponent extends BaseControl implements OnInit {
     @Input() prefix: string;
     @Input() showButtons: boolean = true;
-    @Input() decimal: boolean;
+    @Input() decimal: boolean = false;
     @Input() maxFractionDigits: number = 0;
 
     constructor(
         @Inject(PLATFORM_ID) protected override platformId: Object
     ) {
-    super(platformId);
+        super(platformId);
     }
 
     override ngOnInit(){

@@ -45,7 +45,7 @@ export const setValidators = (control, validators: SpiderlyValidatorFn[]): Spide
     }
 
     control.validator = validator;
-
+    control.updateValueAndValidity(); // FT: It's necessary only for Date Angular type and p-number 
     return validator;
 }
 

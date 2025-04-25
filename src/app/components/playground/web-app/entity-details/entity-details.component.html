@@ -28,6 +28,14 @@
                         <spiderly-colorpick [control]="formGroup.getFormControl(property.name)"></spiderly-colorpick>
                     </div>
                 }
+                @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Decimal) {
+                    <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
+                        <spiderly-number
+                        [control]="formGroup.getFormControl(property.name)"
+                        [maxFractionDigits]="2"
+                        ></spiderly-number>
+                    </div>
+                }
                 @else if (getUIControlTypeCode(property) === UIControlTypeCodes.Dropdown) {
                     <div [class]="getUIControlWidth(property) ?? 'col-12 md:col-6'">
                         <spiderly-dropdown 

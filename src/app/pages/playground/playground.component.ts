@@ -158,7 +158,7 @@ export class PlaygroundComponent {
       }
 
       if (index != null) { // FT: index is null only when we manually push new entity at the begining of the program
-          this.messageService.add(getSuccessMessageOptions('Successfully saved.'));
+          this.messageService.add(getSuccessMessageOptions('Successfully saved'));
       }
 
       this.cSharpDataTypeOptions.push({label: entity.name, value: entity.name});

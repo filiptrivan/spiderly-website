@@ -107,9 +107,11 @@ export class EntityDetailsComponent implements OnInit {
             formControl.labelForDisplay = formControlLabelForDisplay;
     
             let validators: SpiderlyValidatorFn[] = [];
+            
             if (property.attributes.some(x => x.name === PropertyAttributeCodes.Required)) {
                 validators.push(notEmptyValidator(formControl));
             }
+
             setValidators(formControl, validators)
 
             formGroup.setControl(formControlName, formControl); // FT: Use setControl because it will update formControl if it already exists
@@ -173,7 +175,7 @@ export class EntityDetailsComponent implements OnInit {
             this.entity.data.splice(this.index, 0, this.formGroup.value);
         }
 
-        this.messageService.add(getSuccessMessageOptions('Successfully saved.', null, 'playground'));
+        this.messageService.add(getSuccessMessageOptions('Successfully saved', null, 'playground'));
         this.isNewDataItem = false;
         this.onSave.next(null);
     }
