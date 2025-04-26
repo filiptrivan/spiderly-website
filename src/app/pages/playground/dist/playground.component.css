@@ -1,5 +1,3 @@
-@use "../../../assets/variables.scss" as vars;
-
 .playground-code-block-wrapper {
   max-height: 650px;
   overflow-y: auto;
@@ -11,25 +9,23 @@
   border-radius: var(--p-content-border-radius);
   border: 1px solid var(--p-surface-700);
 }
-@media (max-width: vars.$md) {
+
+@media (max-width: 770px) {
   .playground-code-block-wrapper {
     flex-direction: column;
-  } 
+  }
 }
-
-// FT: Don't put inside class-code-editor it needs to be wrapped in parent component
 .class-code-editor {
   background-color: var(--p-surface-900);
   border-radius: var(--p-content-border-radius);
   border: 1px solid var(--p-surface-700);
-  height: fit-content; 
-  position: sticky; 
-  position: -webkit-sticky; 
+  height: fit-content;
+  position: sticky;
+  position: -webkit-sticky;
   top: 0;
   width: 100%;
   padding: 18px;
   word-wrap: break-word;
-  // overflow-x: auto; // FT HACK: If I add overflow-x: auto, overflow-y: auto is also added, which is bad, so for now I made a hack with word-wrap
 }
 
 .web-app {
@@ -45,7 +41,7 @@
   border-radius: var(--p-content-border-radius);
 }
 
-.control-error-border{
-	outline: 1px solid var(--p-inputtext-invalid-border-color);
-	border-radius: var(--p-form-field-border-radius);
+.control-error-border {
+  outline: 1px solid var(--p-inputtext-invalid-border-color);
+  border-radius: var(--p-form-field-border-radius);
 }

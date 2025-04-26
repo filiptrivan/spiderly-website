@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.component';
 
 @Component({
   selector: 'app-get-started',
@@ -9,14 +10,15 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule, 
-    RouterModule
+    RouterModule,
+    SectionWrapperComponent,
   ]
 })
 export class GetStartedComponent {
   terminalMessages: string[] = [
     "spiderly init",
-    "App name without spaces: SpiderlyTestApp",
+    "App name without spaces: SpiderlyDemoApp",
     "Template type (blank/loyalty/invertory management): blank",
-    "Basic app structure created, now you can use Spiderly to generate the rest of the app!",
+    "Basic Spiderly app structure created!",
   ];
 }

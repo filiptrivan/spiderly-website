@@ -5,7 +5,7 @@ import { SectionWrapperComponent } from "../../components/section-wrapper/sectio
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../components/playground/web-app/layout/layout.component';
-import { SpiderlyClass } from '../../components/playground/entities/entities';
+import { SpiderlyClass, SpiderlyProperty } from '../../components/playground/entities/entities';
 import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/sidebar-menu.component';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -167,7 +167,22 @@ export class PlaygroundComponent {
   }
 
   removeEntity(index: number) {
+    const entityForDelete = this.entities.find((_, i) => i === index);
     this.entities = this.entities.filter((_, i) => i !== index);
+    this.entities.forEach(entity => {
+      entity.properties = entity.properties.filter(property => property.dataType !== entityForDelete.name)
+    });
+    this.entitiesFormArray.controls.forEach((entityFormGroup: SpiderlyFormGroup<SpiderlyClass>) => {
+      const propertiesFormArray = entityFormGroup.controls.properties;
+
+      for (let i = propertiesFormArray.length - 1; i >= 0; i--) {
+        const propertyFormGroup = propertiesFormArray.at(i) as SpiderlyFormGroup<SpiderlyProperty>;
+        const dataType = propertyFormGroup.controls.dataType.value;
+        if (dataType === entityForDelete.name) {
+          propertiesFormArray.removeAt(i);
+        }
+      }
+    });
     this.menu = this.menu.filter((_, i) => i !== index + 2); // FT: Because we always have home and separator as default ones
   }
 

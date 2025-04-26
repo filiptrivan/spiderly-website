@@ -1,12 +1,12 @@
 @use '../../../assets/variables.scss' as vars;
-$header-height: 60px;
+$header-height: 70px;
 
 .header-wrapper {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: $header-height;
   background-color: var(--p-surface-950);
   z-index: 1002;
   display: flex;

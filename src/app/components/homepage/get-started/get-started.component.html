@@ -1,14 +1,50 @@
-<!-- <app-section-wrapper parts="two">
-  <div class="background-transparent-gradient" style="flex: 1;">
+<app-section-wrapper parts="two" backgroundColor="light">
+  <div style="width: 100%;">
+    <div class="get-started-card" style="margin-bottom: 18px;">
+      <div class="title">
+        1. Install the CLI Tool
+      </div>
+      <div>
+      You need to have .NET SDK installed. 
+      You can check if you have by running 
+      <span class="code-block">dotnet --version</span>.
+      If you don't have it, install it from 
+      <a href="https://dotnet.microsoft.com/" target="_blank" rel="noopener noreferrer">here</a>.
+    </div>
+      <!-- <div> -->
+        <!-- dotnet tool install -g Spiderly.ProjectInitializer -->
+        <!-- VS (backend) and VSC (frontend) will open up automaticaly -->
+      <!-- </div> -->
+    </div>
+    <div class="get-started-card" style="margin-bottom: 18px;">
+      <div class="title">
+        1. Init app structure
+      </div>
+      <div>
+        Using the Spiderly CLI tool, you initialize 
+        the basic application structure so that you can use 
+        all the functionalities of the Spiderly library.
+        <!-- VS (backend) and VSC (frontend) will open up automaticaly -->
+      </div>
+    </div>
+    <div>
+      2. Start the application
+      <p>Backend - ng build, Frontend - npm start</p>
+    </div>
+    <div>
+      3. Make new Classes as you need
+    </div>
+  </div>
+  <div class="background-transparent-gradient">
     <div class="terminal-wrapper">
       <div style="margin-bottom: 1rem; display: flex;">
-        <div class="terminal-circle" style="background-color: #EC4899;"></div>
+        <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
         <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
         <div class="terminal-circle" style="background-color: #10B981; margin-left: 1rem;"></div>
       </div>
       @for (message of terminalMessages; track $index) {
         <code style="margin-top: 1rem; display: flex;">
-            <span style="color: #f170b1;">$</span>
+            <span style="color: var(--p-primary-400);">$</span>
             <span class="terminal-message">
                 {{message}}
                 <br />
@@ -17,11 +53,4 @@
       }
     </div>
   </div>
-  <div>
-
-  </div>
-</app-section-wrapper> -->
-
-<!-- <div style="background-color: #10B981;width:300px;height:200px;">
-
-</div> -->
+</app-section-wrapper>
