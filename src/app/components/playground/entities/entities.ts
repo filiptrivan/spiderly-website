@@ -6,6 +6,7 @@ export class SpiderlyClass extends BaseEntity
     attributes?: SpiderlyAttribute[];
     properties?: SpiderlyProperty[];
     data?: any[];
+    collapsed?: boolean; // FT HACK: Using only for the initialized classes User and Gender
 
   constructor(
   {
@@ -13,11 +14,13 @@ export class SpiderlyClass extends BaseEntity
     attributes,
     properties,
     data,
+    collapsed,
   }:{
     name?: string;
     attributes?: SpiderlyAttribute[];
     properties?: SpiderlyProperty[];
     data?: any[];
+    collapsed?: boolean;
   } = {}
   ) {
     super('SpiderlyClass');
@@ -25,7 +28,8 @@ export class SpiderlyClass extends BaseEntity
     this.name = name,
     this.attributes = attributes ?? [],
     this.properties = properties ?? [],
-    this.data = data ?? []
+    this.data = data ?? [],
+    this.collapsed = collapsed
   }
 }
 

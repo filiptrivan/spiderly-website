@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class SectionWrapperComponent {
-    @Input() backgroundColor;
+    @Input() backgroundColor: 'light' | null;
     @Input() parts: 'one' | 'two' = 'one'
     @Input() textAlign: 'center' | 'left' = 'left'
 }

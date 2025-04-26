@@ -79,10 +79,11 @@ export class PlaygroundComponent {
           {name: 'Logo', dataType: CSharpDataTypeCodes.String, attributes: [{name: PropertyAttributeCodes.UIControlType, value: UIControlTypeCodes.File}]},
         ],
         data: [
-            {Id: 1, Name: 'Filip'}, 
-            {Id: 2, Name: 'Aleksa'}, 
-            {Id: 3, Name: 'Milica'}
+            {Id: 1, Name: 'John', Gender: '0'}, 
+            {Id: 2, Name: 'Alice', Gender: '1'}, 
+            {Id: 3, Name: 'Bob'}
         ],
+        collapsed: true
     });
     const genderEntity = new SpiderlyClass({
         name: 'Gender', 
@@ -97,6 +98,7 @@ export class PlaygroundComponent {
             {Id: 1, Name: 'Male'}, 
             {Id: 2, Name: 'Female'}, 
         ],
+        collapsed: true
     });
 
     this.saveEntity(userEntity, null);

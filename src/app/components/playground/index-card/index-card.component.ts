@@ -27,6 +27,8 @@ export class IndexCardComponent {
 
     @Input() crudMenu: MenuItem[];
 
+    @Input() collapsed: boolean = false; // FT HACK: Only for initialized entities User and Gender panels
+
     @Output() onMenuIconClick = new EventEmitter<number>();
     @Output() onRemoveIconClick = new EventEmitter<null>();
 

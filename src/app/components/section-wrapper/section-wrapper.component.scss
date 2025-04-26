@@ -6,13 +6,12 @@
     padding-left: 0.75rem;
     padding-right: 0.75rem;
   
-    padding-top: 2rem;     
-    padding-bottom: 2rem;
+    padding-top: 2.5rem;     
+    padding-bottom: 2.5rem;
   
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     gap: 2.5rem;
   
     @media (min-width: vars.$md) {

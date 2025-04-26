@@ -7,7 +7,7 @@
 
     <div class="layout-main-container">
         <div class="layout-main">
-            <div *ngIf="lastSelectedEntity == null">Welcome!</div>
+            <div *ngIf="lastSelectedEntity == null">Switch between pages and test the generated app!</div>
             <app-table 
             *ngIf="isTableSelected === true && lastSelectedEntity != null" 
             [data]="lastSelectedEntity.data" 

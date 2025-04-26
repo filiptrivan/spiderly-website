@@ -252,7 +252,7 @@ export class BaseFormService {
   showInvalidFieldsMessage = (messageKey?: string) => {
     this.messageService.add(
       getWarningMessageOptions(
-        'Some of the fields on the form are not valid, please check which ones and try again.',
+        'Some of the fields on the form are not valid, please check which ones and try again',
         'You have some invalid fields',
         null,
         messageKey

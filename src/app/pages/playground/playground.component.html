@@ -1,4 +1,51 @@
-<app-section-wrapper parts="one" text-align="left" >
+<app-section-wrapper textAlign="center" >
+  <div>
+    <h1 style="margin-bottom: 15px">
+      <div class="gradient-title">
+        Welcome to Playground.
+      </div>
+      <div class="title">
+        Try it Yourself.
+      </div>
+    </h1>
+    <div class="text-below-title">
+      Here you can test and play with Spiderly functionalities. Please note that the functionalities are quite limited compared to everything in the real product.
+    </div>
+  </div>
+</app-section-wrapper>
+
+<app-section-wrapper parts="one" textAlign="left" backgroundColor="light">
+  <div>
+    <h2 style="margin-bottom: 15px;">
+      <div class="subtitle">
+        App Demo
+      </div>
+    </h2>
+    <div class="text-below-subtitle">
+      Here is the result of the C# classes initialized in the section below. 
+      Change the classes yourself, save them and see live changes here.
+    </div>
+  </div>
+  
+  <div class="web-app">
+    <app-layout [menu]="menu" [entities]="entities"></app-layout>
+  </div>
+</app-section-wrapper>
+
+<app-section-wrapper parts="one" textAlign="left">
+
+  <div>
+    <h2 style="margin-bottom: 15px;">
+      <div class="subtitle">
+        Describing the App
+      </div>
+    </h2>
+    <div class="text-below-subtitle">
+      Here, we are describing the app using C# classes, properties and attributes.
+      After the class save, any changes made here will be reflected in the 'App Demo' section above. 
+      We helped you a little bit with User and Gender classes, but if you want delete them and start fresh.
+    </div>
+  </div>
 
   <form style="width: 100%;">
     @for (entityFormGroup of getFormArrayGroups(entitiesFormArray); track $index; let entityIndex = $index) {
@@ -7,6 +54,7 @@
       [last]="false" 
       [crudMenu]="entitiesCrudMenu" 
       (onMenuIconClick)="lastEntitiesMenuIconIndexClicked.index = $event"
+      [collapsed]="entityFormGroup.controls.collapsed.value"
       >
         <div class="playground-code-block-wrapper">
 
@@ -32,9 +80,5 @@
     }
     <p-button (onClick)="addNewEntity()" label="Add new class" icon="pi pi-plus"></p-button>
   </form>
-
-  <div class="web-app">
-    <app-layout [menu]="menu" [entities]="entities"></app-layout>
-  </div>
 
 </app-section-wrapper>

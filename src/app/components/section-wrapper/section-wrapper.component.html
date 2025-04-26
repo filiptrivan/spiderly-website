@@ -1,5 +1,8 @@
-<div [style]="'width: 100%; background-color: {{backgroundColor}};'">
-    <div class="{{parts === 'one' ? 'container-one' : 'container-two'}}" [style]="{'text-align': textAlign}">
+<div 
+[style]="'width: 100%;'"
+[style.background-color]="backgroundColor === 'light' ? 'var(--p-surface-900)' : ''"
+>
+    <div class="{{parts === 'one' ? 'container-one' : 'container-two'}}" [style]="{'text-align': 'left'}">
         <ng-content></ng-content>
     </div>
 </div>

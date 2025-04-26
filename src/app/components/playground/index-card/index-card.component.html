@@ -2,7 +2,15 @@
 	'last-child-zero-margin': last,
     'card-margin-bottom': true,
 	}">
-	<spiderly-panel [crudMenu]="crudMenu" [showCrudMenu]="showCrudMenu" (onMenuIconClick)="menuIconClick($event)" [showRemoveIcon]="showRemoveIcon" (onRemoveIconClick)="removeIconClick()" [index]="index" [toggleable]="true">
+	<spiderly-panel [crudMenu]="crudMenu" 
+	[showCrudMenu]="showCrudMenu" 
+	(onMenuIconClick)="menuIconClick($event)" 
+	[showRemoveIcon]="showRemoveIcon" 
+	(onRemoveIconClick)="removeIconClick()" 
+	[index]="index" 
+	[toggleable]="true" 
+	[collapsed]="collapsed"
+	>
 		<panel-header [title]="header" [index]="index" [showIcon]="false"></panel-header>
 		
 		<panel-body>

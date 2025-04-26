@@ -86,15 +86,16 @@ export class TableComponent implements OnInit {
 
     getColHeaderWidth(filterType: string) {
         switch (filterType) {
-          case 'string':
+          case CSharpDataTypeCodes.String:
             return 'min-width: 12rem;';
-          case 'DateTime':
+          case CSharpDataTypeCodes.DateTime:
             return 'min-width: 10rem;';
-          case 'bool':
+          case CSharpDataTypeCodes.Bool:
             return 'min-width: 8rem;';
-          case 'long':
-          case 'int':
-          case 'byte':
+          case CSharpDataTypeCodes.Long:
+          case CSharpDataTypeCodes.Int:
+          case CSharpDataTypeCodes.Byte:
+          case CSharpDataTypeCodes.Decimal:
             return 'min-width: 12rem;';
           default:
             return 'width: 0rem;'; // fitting content of the row like this
@@ -103,9 +104,10 @@ export class TableComponent implements OnInit {
 
     getStyleForBodyColumn(col: SpiderlyProperty) {
       switch(col.dataType){
-        case 'long':
-        case 'int':
-        case 'byte':
+        case CSharpDataTypeCodes.Long:
+        case CSharpDataTypeCodes.Int:
+        case CSharpDataTypeCodes.Byte:
+        case CSharpDataTypeCodes.Decimal:
           return 'text-align: right;';
         default:
           return null;
