@@ -15,6 +15,7 @@
             [tableTitle]="getEntityPluralName(lastSelectedEntity)"
             (onNavigateToDetails)="navigateToDetails($event)"
             [entities]="entities"
+            [entity]="lastSelectedEntity"
             ></app-table>
             <app-entity-details 
             *ngIf="isTableSelected === false && lastSelectedEntity != null"

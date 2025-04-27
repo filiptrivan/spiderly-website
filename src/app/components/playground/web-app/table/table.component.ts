@@ -8,7 +8,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { getEntityDisplayProperty, getSuccessMessageOptions, initDropdownOptions } from '../entity-details/services/helper-functions';
+import { getSuccessMessageOptions, initDropdownOptions } from '../entity-details/services/helper-functions';
 import { LayoutService } from '../layout/layout.service';
 import { CSharpDataTypeCodes } from '../../class-form/services/get-options-functions';
 import { PrimengOption } from '../entity-details/entities/primeng-option';
@@ -43,6 +43,7 @@ import { PrimengOption } from '../entity-details/entities/primeng-option';
 })
 export class TableComponent implements OnInit {
     @Input() data: any[] = [];
+    @Input() entity: SpiderlyClass;
     @Input() entities: SpiderlyClass[] = [];
     @Input() cols: SpiderlyProperty[] = [];
     @Input() tableTitle: string;
@@ -151,11 +152,40 @@ export class TableComponent implements OnInit {
   deleteRow(index: number) {
     this.confirmationService.confirm({
       accept: () => {
+        const entitiesChangedBecauseManyToOne = this.manyToOneSetToNull(index);
+
         this.data.splice(index, 1);
+
+        if (entitiesChangedBecauseManyToOne) {
+          this.dropdownOptions = initDropdownOptions(this.entities);
+        }
 
         this.messageService.add(getSuccessMessageOptions('Item deleted successfully', null, 'playground'));
       }
     });
+  }
+
+  manyToOneSetToNull = (index: number) => {
+    let entitiesChangedBecauseManyToOne: boolean = false;
+
+    this.entities.forEach(entity => {
+      entity.properties.forEach(property => {
+        if (property.dataType === this.entity.name) {
+          entity.data.forEach(dataRow => {
+            if (dataRow[property.name] == index) {
+              dataRow[property.name] = null;
+              entitiesChangedBecauseManyToOne = true;
+            }
+            if (<number>dataRow[property.name] > index) {
+              dataRow[property.name] = (<number>dataRow[property.name] - 1).toString();
+              entitiesChangedBecauseManyToOne = true;
+            }
+          });
+        }
+      });
+    });
+
+    return entitiesChangedBecauseManyToOne;
   }
     
 }

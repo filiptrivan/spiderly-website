@@ -27,9 +27,9 @@
         </div>
         @for (terminalMessage of terminalMessages[lastSelectedStepIndex]; track $index) {
           <code style="margin-top: 1rem; display: flex; align-items: center;">
-              <span style="color: var(--p-primary-400);">$</span>
-              <span class="terminal-message">
-                <div>
+            <span class="terminal-message">
+              <div>
+                <span style="color: var(--p-primary-400);">$</span>
                   {{terminalMessage.text}}
                 </div>
                 <p-button (onClick)="copyTerminalMessageToClipboard(terminalMessage)" *ngIf="terminalMessage.showCopyButton" [icon]="terminalMessage.icon ?? 'pi pi-copy'" [outlined]="true" size="small">

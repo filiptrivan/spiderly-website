@@ -62,7 +62,7 @@ export class EntityDetailsComponent implements OnInit {
     ngOnInit() {
         this.refreshFormGroup();
         this.dropdownOptions = initDropdownOptions(this.entities);
-        this.dropdownFilteredOptions = this.dropdownOptions;
+        this.dropdownFilteredOptions = {...this.dropdownOptions};
     }
 
     refreshFormGroup = () => {
