@@ -21,17 +21,14 @@ export class GetStartedComponent {
     {
       title: 'Install the CLI Tool',
       description: 'You need to have .NET SDK installed. You can check if you have by running <span class="code-block">dotnet --version</span>. If you don\'t have it, install it from <a href="https://dotnet.microsoft.com/" target="_blank" rel="noopener noreferrer">here</a>.',
-      terminalMessages: ['dotnet tool install -g Spiderly.ProjectInitializer']
     },
     {
       title: 'Init the app',
       description: 'Using the Spiderly CLI tool, you initialize the basic application structure so that you can use all the functionalities of the Spiderly library.',
-      terminalMessages: ['dotnet tool install -g Spiderly.ProjectInitializer']
     },
     {
       title: 'Start the app',
       description: 'After app base initialization, Visual Studio (.NET backend) and Visual Studio Code (Angular frontend) will open up automaticaly. Start both. You can also go to your SQL Server Management Studio and see if Database has been initialized also.',
-      terminalMessages: ['dotnet tool install -g Spiderly.ProjectInitializer']
     },
   ]
   
@@ -55,5 +52,4 @@ export class GetStartedComponent {
 export interface GetStartedStep {
   title: string;
   description: string;
-  terminalMessages: string[];
 }

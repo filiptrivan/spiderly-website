@@ -51,6 +51,11 @@ a {
   color: var(--p-primary-600);
 }
 
+.quotation {
+  padding-left: 18px;
+  border-left: var(--p-primary-900) solid;
+}
+
 .gradient-title {
   font-size: 3rem;
   font-weight: bold;

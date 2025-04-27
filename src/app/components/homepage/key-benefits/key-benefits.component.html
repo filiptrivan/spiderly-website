@@ -1,43 +1,26 @@
 <app-section-wrapper parts="one" textAlign="left" backgroundColor="light">
   <div>
-    <h2 style="margin-bottom: 15px;">
+    <h2 style="margin-bottom: 10px;">
       <div class="subtitle">
-        Getting Started
+        Key Benefits
       </div>
     </h2>
-    <div class="text-below-subtitle">
+    <!-- <div class="text-below-subtitle">
       After completing these steps, you can fully use the Spiderly library and all its functionalities.
-    </div>
+    </div> -->
   </div>
-  <div style="display: flex; gap: 18px;">
-    <div style="width: 100%;">
-      @for (getStartedStep of getStartedSteps; let index = $index; track $index) {
-        <div (click)="lastSelectedStepIndex = index" [class.active]="lastSelectedStepIndex === index" class="get-started-card" style="margin-bottom: 18px;">
-          <div class="title">
-            {{index + 1}}. {{getStartedStep.title}}
-          </div>
-          <div [innerHTML]="getStartedStep.description">
-          </div>
+  <div class="key-benefits-wrapper">
+    @for (keyBenefit of keyBenefits; let index = $index; track $index) {
+      <div class="key-benefit-card">
+        <div style="display: flex; gap: 8px;">
+          <i class="icon {{keyBenefit.icon}}"></i>
+          <h3 class="title">
+            {{keyBenefit.title}}
+          </h3>
         </div>
-      }
-    </div>
-    <div class="background-transparent-gradient">
-      <div class="terminal-wrapper">
-        <div style="margin-bottom: 1rem; display: flex;">
-          <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
-          <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
-          <div class="terminal-circle" style="background-color: #10B981; margin-left: 1rem;"></div>
+        <div [innerHTML]="keyBenefit.description">
         </div>
-        @for (message of terminalMessages[lastSelectedStepIndex]; track $index) {
-          <code style="margin-top: 1rem; display: flex;">
-              <span style="color: var(--p-primary-400);">$</span>
-              <span class="terminal-message">
-                  {{message}}
-                  <br />
-              </span>
-          </code>
-        }
       </div>
-    </div>
+    }
   </div>
 </app-section-wrapper>

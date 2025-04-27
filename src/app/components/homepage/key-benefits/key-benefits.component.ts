@@ -8,52 +8,35 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
   templateUrl: './key-benefits.component.html',
   styleUrl: './key-benefits.component.scss',
   standalone: true,
-  imports: [
-    CommonModule, 
-    RouterModule,
-    SectionWrapperComponent,
-  ]
+  imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
-export class GetStartedComponent {
+export class KeyBenefitsComponent {
   lastSelectedStepIndex: number = 0;
 
-  getStartedSteps: GetStartedStep[] = [
+  keyBenefits: KeyBenefit[] = [
     {
-      title: 'Install the CLI Tool',
-      description: 'You need to have .NET SDK installed. You can check if you have by running <span class="code-block">dotnet --version</span>. If you don\'t have it, install it from <a href="https://dotnet.microsoft.com/" target="_blank" rel="noopener noreferrer">here</a>.',
-      terminalMessages: ['dotnet tool install -g Spiderly.ProjectInitializer']
+      title: 'Speed',
+      description:
+        'With CRUD operations, Backend/Frontend architecture, Auth, Logging, and the best Libraries already set up for you, we save you a significant amount of time so you can focus on your specific business logic. This library makes working with LLMs like ChatGPT, Grok, and Claude much easier - we handle the big picture, so you can concentrate on the smaller, specific logic chunks with a smooth vibe coding experience.',
+      icon: 'pi pi-bolt'
     },
     {
-      title: 'Init the app',
-      description: 'Using the Spiderly CLI tool, you initialize the basic application structure so that you can use all the functionalities of the Spiderly library.',
-      terminalMessages: ['dotnet tool install -g Spiderly.ProjectInitializer']
+      title: 'Accuracy',
+      description:
+        'Even if the generated code is boilerplate, copy-pasting without focus inevitably leads to mistakes. Spiderly eliminates this subconscious burden, freeing your mind for more important tasks.',
+      icon: 'pi pi-check'
     },
     {
-      title: 'Start the app',
-      description: 'After app base initialization, Visual Studio (.NET backend) and Visual Studio Code (Angular frontend) will open up automaticaly. Start both. You can also go to your SQL Server Management Studio and see if Database has been initialized also.',
-      terminalMessages: ['dotnet tool install -g Spiderly.ProjectInitializer']
+      title: 'Customizability',
+      description:
+        'If you don\'t like any of Spiderly\'s functionalities (CRUD operations, backend/frontend architecture, auth, logging), you can disable them and implement your own. You can also build on top of the generated admin pages, add custom pages, and customize the appearance.',
+      icon: 'pi pi-pencil'
     },
-  ]
-  
-  terminalMessages: string[][] = [
-    [
-      'dotnet tool install -g Spiderly.ProjectInitializer'
-    ],
-    [
-      "spiderly init",
-      "App name without spaces: SpiderlyDemoApp",
-      "Template type (blank/loyalty/invertory management): blank",
-      "Basic Spiderly app structure created!",
-    ],
-    [
-      "dotnet run",
-      "npm start",
-    ],
   ];
 }
 
-export interface GetStartedStep {
+export interface KeyBenefit {
   title: string;
   description: string;
-  terminalMessages: string[];
+  icon: string;
 }

@@ -1,21 +1,18 @@
 <app-section-wrapper parts="one" textAlign="left" backgroundColor="light">
   <div>
-    <h2 style="margin-bottom: 15px;">
+    <h2 style="margin-bottom: 10px;">
       <div class="subtitle">
         Getting Started
       </div>
     </h2>
-    <div class="text-below-subtitle">
-      After completing these steps, you can fully use the Spiderly library and all its functionalities.
-    </div>
   </div>
-  <div style="display: flex; gap: 18px;">
-    <div style="width: 100%;">
+  <div class="get-started-wrapper">
+    <div style="width: 100%; display: flex; flex-direction: column; gap: 18px;">
       @for (getStartedStep of getStartedSteps; let index = $index; track $index) {
-        <div (click)="lastSelectedStepIndex = index" [class.active]="lastSelectedStepIndex === index" class="get-started-card" style="margin-bottom: 18px;">
-          <div class="title">
-            {{index + 1}}. {{getStartedStep.title}}
-          </div>
+        <div (click)="lastSelectedStepIndex = index" [class.active]="lastSelectedStepIndex === index" class="get-started-card">
+          <h3 class="title">
+            <span class="index">{{index + 1}}.</span> {{getStartedStep.title}}
+          </h3>
           <div [innerHTML]="getStartedStep.description">
           </div>
         </div>

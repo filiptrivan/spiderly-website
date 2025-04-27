@@ -1,43 +1,19 @@
-.background-transparent-gradient {
-  width: 100%;
-  height: fit-content;
-}
+@use "../../../../assets/variables.scss" as vars;
 
-.terminal-wrapper {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  padding-top: 1rem;
-  padding-bottom: 1.5rem;
-
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-  font-size: 0.875rem;
-  background-color: var(--p-surface-900);
-  border: 1px solid var(--p-surface-700);
-  border-radius: var(--p-content-border-radius);
-  line-height: 1.5;
-  overflow: hidden;
-}
-
-.terminal-circle {
-  height: 0.75rem;
-  width: 0.75rem;
-  border-radius: 50%;
-}
-
-.terminal-message {
+.key-benefits-wrapper{
   display: flex;
-  flex: 1;
-  align-items: center;
-  padding-left: 0.5rem;
+  flex-direction: row;
+  gap: 18px;
 }
 
-//#region Steps
+@media (max-width: vars.$md) {
+  .key-benefits-wrapper{
+    flex-direction: column;
+  }
+}
 
-.get-started-card {
-  cursor: pointer;
-  height: fit-content;
+.key-benefit-card {
+  width: 100%;
   padding: 18px;
   background-color: var(--p-surface-900);
   border-radius: var(--p-content-border-radius);
@@ -47,23 +23,11 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 10px;
-    display: inline-block;
-    white-space: normal;
+  }
 
-    background-image: linear-gradient(
-      to right,
-      var(--p-primary-color),
-      var(--p-secondary-color)
-    );
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
+  .icon{
+    font-size: 1.5rem;
+    color: var(--p-primary-color);
   }
 }
 
-.get-started-card.active {
-  border: 1px solid var(--p-primary-color);
-}
-
-
-//#endregion
