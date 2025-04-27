@@ -4,9 +4,9 @@ import { RouterModule } from '@angular/router';
 import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.component';
 
 @Component({
-  selector: 'app-get-started',
-  templateUrl: './get-started.component.html',
-  styleUrl: './get-started.component.scss',
+  selector: 'app-key-benefits',
+  templateUrl: './key-benefits.component.html',
+  styleUrl: './key-benefits.component.scss',
   standalone: true,
   imports: [
     CommonModule, 

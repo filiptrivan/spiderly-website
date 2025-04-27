@@ -48,7 +48,7 @@ pre {
 
 a {
   text-decoration: none;
-  color: var(--p-primary-800);
+  color: var(--p-primary-600);
 }
 
 .gradient-title {
@@ -113,4 +113,10 @@ a {
 
 .p-toast {
   z-index: 1003;
+}
+
+.code-block{
+  padding: 1px 5px;
+  background-color: var(--p-surface-700);
+  border-radius: var(--p-content-border-radius);
 }
