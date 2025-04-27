@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-get-started',
@@ -12,6 +13,7 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
     CommonModule, 
     RouterModule,
     SectionWrapperComponent,
+    ButtonModule
   ]
 })
 export class GetStartedComponent {
@@ -32,24 +34,45 @@ export class GetStartedComponent {
     },
   ]
   
-  terminalMessages: string[][] = [
+  terminalMessages: TerminalMessage[][] = [
     [
-      'dotnet tool install -g Spiderly.ProjectInitializer'
+      {text:'dotnet tool install -g Spiderly.ProjectInitializer', showCopyButton: true}
     ],
     [
-      "spiderly init",
-      "App name without spaces: SpiderlyDemoApp",
-      "Template type (blank/loyalty/invertory management): blank",
-      "Basic Spiderly app structure created!",
+      {text: 'spiderly init', showCopyButton: true},
+      {text: 'App name without spaces: SpiderlyDemoApp'},
+      {text: 'Template type (blank/loyalty/invertory management): blank'},
+      {text: 'Basic Spiderly app structure created!'},
     ],
     [
-      "dotnet run",
-      "npm start",
+      {text: 'dotnet run', showCopyButton: true},
+      {text: 'npm start', showCopyButton: true},
     ],
   ];
+
+  copyTerminalMessageToClipboard(terminalMessage: TerminalMessage) {
+    terminalMessage.icon = 'pi pi-check'
+    setTimeout(() => {
+      terminalMessage.icon = 'pi pi-copy'
+    }, 2000);
+
+    this.copyToClipboard(terminalMessage.text);
+  }
+
+  copyToClipboard(text: string): void {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+  }
 }
 
 export interface GetStartedStep {
   title: string;
   description: string;
+}
+
+export interface TerminalMessage {
+  text: string;
+  showCopyButton?: boolean;
+  icon?: string;
 }

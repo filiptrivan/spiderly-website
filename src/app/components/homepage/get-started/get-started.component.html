@@ -1,6 +1,6 @@
 <app-section-wrapper parts="one" textAlign="left" backgroundColor="light">
   <div>
-    <h2 style="margin-bottom: 10px;">
+    <h2>
       <div class="subtitle">
         Getting Started
       </div>
@@ -25,12 +25,16 @@
           <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
           <div class="terminal-circle" style="background-color: #10B981; margin-left: 1rem;"></div>
         </div>
-        @for (message of terminalMessages[lastSelectedStepIndex]; track $index) {
-          <code style="margin-top: 1rem; display: flex;">
+        @for (terminalMessage of terminalMessages[lastSelectedStepIndex]; track $index) {
+          <code style="margin-top: 1rem; display: flex; align-items: center;">
               <span style="color: var(--p-primary-400);">$</span>
               <span class="terminal-message">
-                  {{message}}
-                  <br />
+                <div>
+                  {{terminalMessage.text}}
+                </div>
+                <p-button (onClick)="copyTerminalMessageToClipboard(terminalMessage)" *ngIf="terminalMessage.showCopyButton" [icon]="terminalMessage.icon ?? 'pi pi-copy'" [outlined]="true" size="small">
+                </p-button>
+                <!-- <br /> -->
               </span>
           </code>
         }
