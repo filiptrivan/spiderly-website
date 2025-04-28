@@ -21,27 +21,33 @@ export class GetStartedComponent {
 
   getStartedSteps: GetStartedStep[] = [
     {
-      title: 'Install the CLI Tool',
-      description: 'You need to have .NET SDK installed. You can check if you have by running <span class="code-block">dotnet --version</span>. If you don\'t have it, install it from <a href="https://dotnet.microsoft.com/" target="_blank" rel="noopener noreferrer">here</a>.',
+      "title": "Install Prerequisites",
+      "description": "Before you begin, ensure you have the following prerequisites installed."
     },
     {
-      title: 'Init the app',
-      description: 'Using the Spiderly CLI tool, you initialize the basic application structure so that you can use all the functionalities of the Spiderly library.',
+      title: 'Install the Spiderly CLI',
+      description: "Use the Spiderly CLI to properly initialize your app so the Spiderly Library can function."
+    },
+    {
+      title: 'Initialize App',
+      description: 'Run this script in the folder where you want your app to be located.'
     },
     {
       title: 'Start the app',
-      description: 'After app base initialization, Visual Studio (.NET backend) and Visual Studio Code (Angular frontend) will open up automaticaly. Start both. You can also go to your SQL Server Management Studio and see if Database has been initialized also.',
+      description: 'After app base initialization, open both, backend and frontend, with you preferred code editors. Start both apps.',
     },
   ]
   
   terminalMessages: TerminalMessage[][] = [
     [
-      {text:'dotnet tool install -g Spiderly.ProjectInitializer', showCopyButton: true}
+      
+    ],
+    [
+      {text:'dotnet tool install -g Spiderly.AppInitializer', showCopyButton: true},
     ],
     [
       {text: 'spiderly init', showCopyButton: true},
       {text: 'App name without spaces: SpiderlyDemoApp'},
-      {text: 'Template type (blank/loyalty/invertory management): blank'},
       {text: 'Basic Spiderly app structure created!'},
     ],
     [
@@ -68,7 +74,7 @@ export class GetStartedComponent {
 
 export interface GetStartedStep {
   title: string;
-  description: string;
+  description?: string;
 }
 
 export interface TerminalMessage {

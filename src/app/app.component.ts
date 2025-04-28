@@ -15,7 +15,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'spiderly-website';
 
   constructor() {
         

@@ -4,6 +4,7 @@ import { HeroComponent } from '../../components/homepage/hero/hero.component';
 import { GetStartedComponent } from "../../components/homepage/get-started/get-started.component";
 import { KeyBenefitsComponent } from "../../components/homepage/key-benefits/key-benefits.component";
 import { WordFromAFounderComponent } from "../../components/homepage/word-from-a-founder/word-from-a-founder.component";
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-homepage',
@@ -17,5 +18,13 @@ import { WordFromAFounderComponent } from "../../components/homepage/word-from-a
   imports: [CommonModule, HeroComponent, GetStartedComponent, KeyBenefitsComponent, WordFromAFounderComponent],
 })
 export class HomepageComponent {
+  
+  constructor(
+    private titleService: Title,
+    private metaService: Meta
+  ) {
+    this.titleService.setTitle('Spiderly - .NET (C#) + Angular Web Apps Generator');
+    this.metaService.updateTag({ name: 'description', content: 'Spiderly is a .NET (C#) library that turns C# classes into full .NET + Angular web apps with full customization. No more boilerplate code - focus only on building logic.' });
+  }
 
 }
