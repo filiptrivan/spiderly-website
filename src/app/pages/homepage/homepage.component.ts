@@ -4,7 +4,6 @@ import { HeroComponent } from '../../components/homepage/hero/hero.component';
 import { GetStartedComponent } from "../../components/homepage/get-started/get-started.component";
 import { KeyBenefitsComponent } from "../../components/homepage/key-benefits/key-benefits.component";
 import { WordFromAFounderComponent } from "../../components/homepage/word-from-a-founder/word-from-a-founder.component";
-import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-homepage',
@@ -18,7 +17,5 @@ import { Meta } from '@angular/platform-browser';
   imports: [CommonModule, HeroComponent, GetStartedComponent, KeyBenefitsComponent, WordFromAFounderComponent],
 })
 export class HomepageComponent {
-  constructor(private meta: Meta){
-    meta.addTag
-  }
+
 }

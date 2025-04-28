@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 import { ClassCodeEditorComponent } from '../../components/playground/class-code-editor/class-code-editor.component';
 import { CSharpDataTypeCodes, EntityAttributeCodes, getCSharpDataTypeOptions, PropertyAttributeCodes, UIControlTypeCodes, UIControlWidthCodes } from '../../components/playground/class-form/services/get-options-functions';
 import { PrimengOption } from '../../components/playground/web-app/entity-details/entities/primeng-option';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-playground',
@@ -62,8 +63,11 @@ export class PlaygroundComponent {
   constructor(
     private baseFormService: BaseFormService,
     private messageService: MessageService,
+    private titleService: Title, 
+    private metaService: Meta
   ) {
-        
+    this.titleService.setTitle('Spiderly Playground - Generate and Explore Generator');
+    this.metaService.updateTag({ name: 'description', content: 'Explore the Spiderly Library Playground to instantly generate .NET + Angular web apps from your C# classes. Test and experiment with automatic boilerplate code updates.' });
   }
 
   ngOnInit(){
