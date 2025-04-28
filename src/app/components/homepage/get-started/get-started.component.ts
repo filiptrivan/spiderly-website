@@ -22,15 +22,15 @@ export class GetStartedComponent {
   getStartedSteps: GetStartedStep[] = [
     {
       "title": "Install Prerequisites",
-      "description": "Before you begin, ensure you have the following prerequisites installed."
-    },
+      "description": "All prerequisite commands are global and should be executed in the terminal."
+    },    
     {
       title: 'Install the Spiderly CLI',
-      description: "Use the Spiderly CLI to properly initialize your app so the Spiderly Library can function."
+      description: "Command is global and should be executed in the terminal."
     },
     {
       title: 'Initialize App',
-      description: 'Run this script in the folder where you want your app to be located.'
+      description: "Run this command in the folder where you want your app to be located. Using the Spiderly CLI you properly initialize the app so the Spiderly Library can function."
     },
     {
       title: 'Start the app',
@@ -43,7 +43,7 @@ export class GetStartedComponent {
       
     ],
     [
-      {text:'dotnet tool install -g Spiderly.AppInitializer', showCopyButton: true},
+      {text:'dotnet tool install -g Spiderly.CLI', showCopyButton: true},
     ],
     [
       {text: 'spiderly init', showCopyButton: true},
