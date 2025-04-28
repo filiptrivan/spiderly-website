@@ -1,10 +1,8 @@
 <div>
   <div class="header-wrapper">
     <div class="header">
-      <div [routerLink]="['/']" class="header-logo">
-        <div style="width: 42px; height: 42px">
-          <app-logo></app-logo>
-        </div>
+      <div (click)="isSideMenuActive = false" [routerLink]="['/']" class="header-logo">
+        <app-logo style="display: flex; justify-content: center;"></app-logo>
         <span style="font-weight: 400">SPIDERLY</span>
       </div>
 
@@ -34,7 +32,7 @@
   <div
     class="side-menu mobile-only {{ isSideMenuActive ? 'side-menu-open' : '' }}"
   >
-    <a [routerLink]="['/playground']" class="side-menu-link">Playground</a>
+    <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link">Playground</a>
     <a
       href="https://github.com/filiptrivan/spiderly"
       target="_blank"
