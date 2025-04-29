@@ -29,7 +29,7 @@ export class KeyBenefitsComponent {
     {
       title: 'Customizability',
       description:
-        'If you don\'t like any of Spiderly\'s functionalities (CRUD operations, backend/frontend architecture, auth, logging), you can disable them and implement your own. You can also build on top of the generated admin pages, add custom pages, and customize the appearance.',
+        'If you don\'t like any of Spiderly\'s functionalities (CRUD operations, backend/frontend architecture, auth, logging), you can disable any of them and implement your own. You can also build on top of the generated admin pages, add custom pages, and customize the appearance.',
       icon: 'pi pi-pencil'
     },
   ];
