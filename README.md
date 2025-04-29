@@ -1,5 +1,5 @@
 <div align="right">
-  <img src="https://www.spiderly.dev/assets/spiderly-logo.svg" alt="Spiderly Logo" width="60"/>
+  <img src="https://github.com/filiptrivan/spiderly/blob/main/spiderly-logo.svg" alt="Spiderly Logo" width="60"/>
 </div>
 
 # Spiderly Website
