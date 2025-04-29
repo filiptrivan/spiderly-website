@@ -30,7 +30,7 @@ export class GetStartedComponent {
     },
     {
       title: 'Initialize App',
-      description: "Run this command in the folder where you want your app to be located. Using the Spiderly CLI you properly initialize the app so the Spiderly Library can function."
+      description: "Run this command in the folder where you want your app to be located. Using the Spiderly CLI you properly initialize the app so the Spiderly Library can work."
     },
     {
       title: 'Start the app',
