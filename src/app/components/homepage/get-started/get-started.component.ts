@@ -38,7 +38,7 @@ export class GetStartedComponent {
     },
     {
       title: 'Configure app settings',
-      description: 'Enter the email and <a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="noopener">app password for Gmail</a>. For Google Auth, use Google Cloud to create a client ID.',
+      description: 'Enter the email and <a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="noopener">app password for Gmail</a>. For Google Auth, use Google Cloud to create credentials and a client ID.',
     },
     {
       title: 'Register user',
