@@ -39,7 +39,7 @@
         }
       </div>
     </div>
-    <div *ngIf="terminalMessages[lastSelectedStepIndex].length === 0" class="background-transparent-gradient">
+    <div *ngIf="terminalMessages[lastSelectedStepIndex].length === 0 && lastSelectedStepIndex === 0" class="background-transparent-gradient">
       <div class="terminal-wrapper">
         <div>
           <h4 class="title">Mandatory Prerequisites</h4>

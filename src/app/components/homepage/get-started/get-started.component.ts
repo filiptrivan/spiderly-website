@@ -36,6 +36,18 @@ export class GetStartedComponent {
       title: 'Start the app',
       description: 'After app base initialization, open both, backend and frontend, with you preferred code editors. Start both apps.',
     },
+    {
+      title: 'Configure app settings',
+      description: 'Enter the email and <a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="noopener">app password for Gmail</a>. For Google Auth, use Google Cloud to create a client ID.',
+    },
+    {
+      title: 'Register user',
+      description: 'Register the user using email or Google Auth through UI.',
+    },
+    {
+      title: 'Assign admin permissions',
+      description: 'Run the script at {app-name}/Data/initialize-script.sql in SQL Server Management Studio.',
+    },
   ]
   
   terminalMessages: TerminalMessage[][] = [
@@ -54,6 +66,9 @@ export class GetStartedComponent {
       {text: 'dotnet run', showCopyButton: true},
       {text: 'npm start', showCopyButton: true},
     ],
+    [],
+    [],
+    []
   ];
 
   copyTerminalMessageToClipboard(terminalMessage: TerminalMessage) {
