@@ -1,8 +1,32 @@
 @use "../../../../assets/variables.scss" as vars;
 
-.background-transparent-gradient {
-  width: 100%;
-  height: fit-content;
+:host {
+  ::ng-deep {
+    .carousel-wrapper.active{
+      .p-carousel-item{
+        max-height: 0;
+      }
+      .p-carousel-item-active{
+        max-height: fit-content !important;
+      }
+    }
+
+    .p-carousel-prev-button, .p-carousel-next-button{
+      align-self: unset;
+    }
+  }
+}
+
+.carousel-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+}
+
+@media (max-width: vars.$md) {
+  .carousel-item-wrapper {
+    flex-direction: column;
+  }
 }
 
 .terminal-wrapper {
@@ -42,6 +66,7 @@
 .get-started-card {
   cursor: pointer;
   height: fit-content;
+  width: 100%;
   padding: 18px;
   background-color: var(--p-surface-900);
   border-radius: var(--p-content-border-radius);
@@ -53,13 +78,9 @@
     margin-bottom: 10px;
 
     .index{
-      color: var(--p-primary-color);
+      color: var(--p-secondary-color);
     }
   }
-}
-
-.get-started-card.active {
-  border: 1px solid var(--p-primary-color);
 }
 
 .get-started-wrapper {
