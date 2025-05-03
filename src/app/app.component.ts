@@ -7,11 +7,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet, 
+    RouterOutlet,
     HeaderComponent,
     ToastModule,
     ConfirmDialogModule,
-  ],
+],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

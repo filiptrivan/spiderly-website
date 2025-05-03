@@ -15,22 +15,40 @@ export class KeyBenefitsComponent {
 
   keyBenefits: KeyBenefit[] = [
     {
-      title: 'Speed',
+      title: 'Faster Development',
       description:
-        'With CRUD operations, backend/frontend architecture, authentication, authorization, logging, and the best libraries already set up for you, we save you a significant amount of time so you can focus on your specific business logic. This library makes working with LLMs like ChatGPT, Grok, and Claude much easier - we handle the big picture, so you can concentrate on the smaller, specific logic chunks with a smooth "vibe coding" experience.',
+        'Skip repetitive coding tasks and generate ready-to-use code instantly, so you can focus on building core features instead of boilerplate.',
       icon: 'pi pi-bolt'
     },
     {
-      title: 'Accuracy',
+      title: 'App Scalability',
       description:
-        'Even if the code is boilerplate, copy-pasting without focus inevitably leads to mistakes. Spiderly eliminates this subconscious burden, freeing your mind for more important tasks.',
-      icon: 'pi pi-check'
+        'To add admin features for a new entity, all you need is a single C# class, everything else is generated for you.',
+      icon: 'pi pi-expand'
     },
     {
-      title: 'Customizability',
+      title: 'Human Error Reduction',
       description:
-        'If you don\'t like any of Spiderly\'s features (CRUD operations, backend/frontend architecture, authentication, authorization, logging), you can disable any of them and implement your own. You can also build on top of the generated admin pages, add custom pages, and customize the appearance.',
-      icon: 'pi pi-pencil'
+        'By generating proven and pre-tested code automatically, the chances of manual errors are greatly reduced.',
+      icon: 'pi pi-shield'
+    },
+    {
+      title: 'Consistency',
+      description:
+        'Automatically applies the same patterns, conventions, industry standards and best practices to ensure a uniform codebase every time.',
+      icon: 'pi pi-align-justify'
+    },
+    {
+      title: 'Maintainability',
+      description:
+        'Generated code is correct and separated, making code reviews easier and keeping your project structure clean.',
+      icon: 'pi pi-wrench'
+    },
+    {
+      title: 'Core Features Focus',
+      description:
+        'Forget boilerplate code and focus on core features that matter and deliver real value to your customers.',
+      icon: 'pi pi-star'
     },
   ];
 }

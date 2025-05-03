@@ -24,7 +24,7 @@ export class HomepageComponent {
     private metaService: Meta
   ) {
     this.titleService.setTitle('Spiderly - .NET (C#) + Angular Web Apps Generator');
-    this.metaService.updateTag({ name: 'description', content: 'Spiderly is a .NET (C#) library that turns C# classes into full .NET + Angular web apps with full customization. No more boilerplate code - focus only on building logic.' });
+    this.metaService.updateTag({ name: 'description', content: 'Spiderly is a .NET (C#) library that turns C# classes into full .NET (C#) + Angular web apps with full customization. No more boilerplate code - focus only on building logic.' });
   }
 
 }

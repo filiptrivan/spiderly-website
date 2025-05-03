@@ -1,0 +1,22 @@
+@use '../../../assets/variables.scss' as vars;
+
+.footer-wrapper {
+    width: 100%;
+    background-color: var(--p-surface-950);
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: var(--p-surface-800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 36px;
+  }
+  
+.footer {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    width: vars.$page-width;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

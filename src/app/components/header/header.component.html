@@ -8,6 +8,7 @@
 
       <nav class="header-desktop desktop-only">
         <a [routerLink]="['/playground']" class="header-link">Playground</a>
+        <a [routerLink]="['/faq']" class="header-link">FAQ</a>
         <a
           href="https://github.com/filiptrivan/spiderly"
           target="_blank"
@@ -33,6 +34,7 @@
     class="side-menu mobile-only {{ isSideMenuActive ? 'side-menu-open' : '' }}"
   >
     <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link">Playground</a>
+    <a (click)="isSideMenuActive = false" [routerLink]="['/faq']" class="side-menu-link">FAQ</a>
     <a
       href="https://github.com/filiptrivan/spiderly"
       target="_blank"
