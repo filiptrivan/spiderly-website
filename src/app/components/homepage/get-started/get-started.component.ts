@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.component';
 import { ButtonModule } from 'primeng/button';
-import { Carousel, CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'app-get-started',
@@ -15,7 +14,6 @@ import { Carousel, CarouselModule } from 'primeng/carousel';
     RouterModule,
     SectionWrapperComponent,
     ButtonModule,
-    CarouselModule,
   ]
 })
 export class GetStartedComponent {
@@ -53,15 +51,19 @@ export class GetStartedComponent {
     },
     {
       title: 'Configure app settings',
-      description: 'Enter the email and <a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="noopener">app password for Gmail</a>. For Google Auth, use Google Cloud to create credentials and a client ID.',
+      description: `In <span class="code-block">{your_app_name}\\API\\{your_app_name}.WebAPI\\appsettings.json</span>, set the following fields: <span class="code-block">"EmailSender"</span>, <span class="code-block">"EmailSenderPassword"</span>, <span class="code-block">"UnhandledExceptionRecipients"</span>, and <span class="code-block">"GoogleClientId"</span>. 
+      <p>In <span class="code-block">{your_app_name}\\Angular\\src\\environments\\environment.ts</span>, set the <span class="code-block">"GoogleClientId"</span> field.</p>
+      <p><a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="noopener">How to make "EmailSenderPassword"?</a></p>
+      <div><a href="https://youtu.be/C9EQcMOy5c4?si=781--PodiMHf6Hrl" target="_blank" rel="noopener">How to make "GoogleClientId"?</a></div>
+      `,
     },
     {
-      title: 'Register user',
-      description: 'Register the user using email or Google Auth through UI.',
+      title: 'Register the user',
+      description: 'Use the UI of your generated app to register the user via email or Google.',
     },
     {
       title: 'Assign admin permissions',
-      description: 'Run the script at {app-name}/Data/initialize-script.sql in SQL Server Management Studio.',
+      description: 'Run the script located at <span class="code-block">{your_app_name}/Data/initialize-script.sql</span> using SQL Server Management Studio to assign admin permissions to the previously registered user.',
     },
   ];
 

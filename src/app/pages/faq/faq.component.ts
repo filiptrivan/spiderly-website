@@ -31,12 +31,12 @@ export class FAQComponent {
     {
       question: 'What parts of the app does Spiderly Source Generators generate?',
       answer: `
-        <h4>Frontend (UI)</h4>
+        <h3>Frontend (UI)</h3>
         <ul>
           <li>Admin pages</li>
           <li>Controllers</li>
         </ul>
-        <h4>Backend (API)</h4>
+        <h3>Backend (API)</h3>
         <ul>
           <li>Controllers</li>
           <li>Services (CRUD operations, table filtering, Excel export)</li>
