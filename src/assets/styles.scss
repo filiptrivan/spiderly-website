@@ -58,7 +58,7 @@ pre {
 
 a {
   text-decoration: none;
-  color: var(--p-primary-600);
+  color: var(--p-primary-400);
 }
 
 .quotation {
@@ -135,11 +135,3 @@ a {
   background-color: var(--p-surface-700);
   border-radius: var(--p-content-border-radius);
 }
-
-// ::ng-deep {
-//   body .p-component.p-carousel.p-carousel-horizontal,
-//   body .p-component.p-carousel.p-carousel-horizontal .p-carousel-content,
-//   body .p-component.p-carousel.p-carousel-horizontal .p-carousel-content .p-carousel-container {
-//     height: 100%;
-//   }
-// }

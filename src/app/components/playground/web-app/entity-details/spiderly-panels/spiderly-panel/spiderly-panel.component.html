@@ -10,14 +10,16 @@
     'panel-border': !isFirstMultiplePanel,
     'spiderly-panel': true,
 }"
-[toggleable]="toggleable"
-[collapsed]="toggleable && collapsed"
+[toggleable]="true"
+toggler="header"
+[collapsed]="collapsed"
 expandIcon="pi pi-chevron-up"
 collapseIcon="pi pi-chevron-down"
 >
     <ng-template pTemplate="header">
         <div>
             <ng-content select="panel-header"></ng-content>
+            <ng-content select=".panel-header-selector"></ng-content>
         </div>
     </ng-template>
 
@@ -34,6 +36,7 @@ collapseIcon="pi pi-chevron-down"
 
     <div class="panel-body-wrapper">
         <ng-content select="panel-body"></ng-content>
+        <ng-content select=".panel-body-selector"></ng-content>
     </div>
 
     <ng-content select="panel-footer"></ng-content>

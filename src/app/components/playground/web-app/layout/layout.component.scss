@@ -55,7 +55,7 @@
     transition: background-color 0.2s;
 
     &:hover {
-      color: var(--p-primary-color);
+      color: var(--p-primary-400);
       background-color: var(--p-surface-800);
     }
 
@@ -215,7 +215,7 @@
 
   &.active-route {
     font-weight: 700;
-    color: var(--p-primary-color);
+    color: var(--p-primary-400);
   }
 
   &:hover {

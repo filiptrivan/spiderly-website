@@ -9,16 +9,6 @@ import { Carousel, CarouselModule } from 'primeng/carousel';
   selector: 'app-get-started',
   templateUrl: './get-started.component.html',
   styleUrl: './get-started.component.scss',
-  styles: [
-    `
-    // :host  ::ng-deep .p-carousel-item{
-    //   max-height: 0;
-    // }
-    // :host ::ng-deep  .p-carousel-item-active{
-    //   max-height: fit-content !important;
-    // }
-    `
-  ],
   standalone: true,
   imports: [
     CommonModule, 

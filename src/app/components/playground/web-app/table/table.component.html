@@ -18,7 +18,7 @@
               <div>{{tableTitle}}</div>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button pButton size="small" label="Export to Excel" class="p-button-outlined" style="flex: none;" icon="pi pi-download" (click)="exportListToExcel()"></button>
+              <button pButton size="small" label="Export to Excel" class="p-button-outlined" style="flex: none;" icon="pi pi-download" (click)="exportListToExcel()" severity="secondary"></button>
             </div>
           </div>
       </ng-template>
@@ -38,8 +38,8 @@
           <tr>
             <td>
               <div style="display: flex; align-items: center; justify-content: center; gap: 18px;">
-                  <span pTooltip="Edit" tooltipStyleClass="smaller-text" class="pi pi-pencil" style="cursor: pointer; color: var(--p-primary-color);" (click)="editRow(index)"></span>
-                  <span pTooltip="Delete" tooltipStyleClass="smaller-text" class="pi pi-trash" style="cursor: pointer; color: red;" (click)="deleteRow(index)"></span>
+                  <span pTooltip="Edit" tooltipStyleClass="smaller-text" class="pi pi-pencil" style="cursor: pointer; color: var(--p-primary-400);" (click)="editRow(index)"></span>
+                  <span pTooltip="Delete" tooltipStyleClass="smaller-text" class="pi pi-trash" style="cursor: pointer; color: var(--p-surface-500);" (click)="deleteRow(index)"></span>
               </div>
             </td>
             <ng-container *ngFor="let col of cols;">

@@ -1,3 +1,32 @@
 <app-section-wrapper textAlign="center" >
+    <div>
+        <h1 style="margin-bottom: 15px">
+            <div class="gradient-title">
+            Frequently Asked Questions
+            </div>
+            <div class="title">
+            About Spiderly
+            </div>
+        </h1>
+        <div class="text-below-title">
+            Find answers to common questions about Spiderly.
+        </div>
+    </div>
+</app-section-wrapper>
 
+<app-section-wrapper parts="one" textAlign="left" backgroundColor="light">
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+        @for (faq of faqs; track $index) {
+            <spiderly-panel [toggleable]="true" [collapsed]="true">
+                <div class="panel-header-selector">
+                    <div style="cursor: pointer;">
+                        <h2 style="font-size: 1.2rem;">{{faq.question}}</h2>
+                    </div>
+                </div>
+                <div class="panel-body-selector">
+                    <div [innerHTML]="faq.answer"></div>
+                </div>
+            </spiderly-panel>
+        }
+    </div>
 </app-section-wrapper>

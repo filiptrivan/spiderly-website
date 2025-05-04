@@ -1,22 +1,5 @@
 @use "../../../../assets/variables.scss" as vars;
 
-:host {
-  ::ng-deep {
-    .carousel-wrapper.active{
-      .p-carousel-item{
-        max-height: 0;
-      }
-      .p-carousel-item-active{
-        max-height: fit-content !important;
-      }
-    }
-
-    .p-carousel-prev-button, .p-carousel-next-button{
-      align-self: unset;
-    }
-  }
-}
-
 .carousel-item-wrapper {
   display: flex;
   flex-direction: row;

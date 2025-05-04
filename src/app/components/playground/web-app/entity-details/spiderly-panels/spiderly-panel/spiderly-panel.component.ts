@@ -19,6 +19,9 @@ import { CommonModule } from '@angular/common';
           display: flex;
           align-items: center;
         }
+        .p-panel-header{
+          cursor: pointer;
+        }
       }
     }
   `],
@@ -51,6 +54,7 @@ export class SpiderlyPanelComponent implements OnInit {
   }
 
   menuItemClick(index: number, event){
+    event.stopPropagation();
     this.menu.toggle(event);
     this.onMenuIconClick.next(index);
   }
