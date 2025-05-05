@@ -43,7 +43,7 @@ export class GetStartedComponent {
     },
     {
       title: 'Start the app',
-      description: 'After app base initialization, open both, backend and frontend, with you preferred code editors. Start both apps.',
+      description: 'After app base initialization, open both, the backend (<span class="code-block">{your_app_name}\\API\\{your_app_name}.sln</span>) and the frontend (<span class="code-block">{your_app_name}\\Angular</span>) in your preferred code editors, then start both using the scripts shown in the terminal.',
       terminalMessages: [
         {text: 'dotnet run', showCopyButton: true},
         {text: 'npm start', showCopyButton: true},
