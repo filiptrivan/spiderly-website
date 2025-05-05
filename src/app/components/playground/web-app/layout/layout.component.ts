@@ -30,6 +30,7 @@ import { PrimengOption } from '../entity-details/entities/primeng-option';
     ]
 })
 export class LayoutComponent implements OnDestroy {
+    @Input() logoTitle: string = 'Spiderly';
     @Input() entities: SpiderlyClass[] = [];
     dropdownOptions: { [key: string]: PrimengOption[] } = {};
 
