@@ -3,15 +3,15 @@ import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SpiderlyClass } from '../../entities/entities';
-import { LayoutService } from '../layout/layout.service';
-import { SpiderlyMenuItem } from './sidebar-menu.component';
-import { SidebarMenuService } from './sidebar-menu.service';
+import { PlaygroundLayoutService } from '../layout/playground-layout.service';
+import { SpiderlyMenuItem } from './playground-sidebar-menu.component';
+import { PlaygroundSidebarMenuService } from './playground-sidebar-menu.service';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[menuitem]',
-    templateUrl: './menuitem.component.html',
-    styleUrl: '../layout/layout.component.scss',
+    templateUrl: './playground-menuitem.component.html',
+    styleUrl: '../layout/playground-layout.component.scss',
     standalone: true,
     imports: [
         CommonModule,
@@ -28,8 +28,8 @@ export class MenuitemComponent implements OnInit, OnDestroy {
     private menuSourceSubscription: Subscription;
 
     constructor(
-        public layoutService: LayoutService, 
-        private menuService: SidebarMenuService, 
+        public layoutService: PlaygroundLayoutService, 
+        private menuService: PlaygroundSidebarMenuService, 
     ) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe(entity => {
             this.updateActiveStateFromRoute(entity);

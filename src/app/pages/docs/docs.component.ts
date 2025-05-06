@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { SectionWrapperComponent } from '../../components/section-wrapper/section-wrapper.component';
-import { SpiderlyPanelComponent } from '../../components/playground/web-app/entity-details/spiderly-panels/spiderly-panel/spiderly-panel.component';
 import { Meta, Title } from '@angular/platform-browser';
-import { LayoutComponent } from "../../components/playground/web-app/layout/layout.component";
-import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/sidebar-menu.component';
+import { PlaygroundLayoutComponent } from "../../components/playground/web-app/layout/playground-layout.component";
+import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/playground-sidebar-menu.component';
 
 @Component({
   selector: 'app-docs',
@@ -13,7 +12,7 @@ import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/si
   imports: [
     CommonModule,
     SectionWrapperComponent,
-    LayoutComponent
+    PlaygroundLayoutComponent
 ],
 })
 export class DocsComponent {

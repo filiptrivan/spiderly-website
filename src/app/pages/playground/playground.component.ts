@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { SectionWrapperComponent } from "../../components/section-wrapper/section-wrapper.component";
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from '../../components/playground/web-app/layout/layout.component';
+import { PlaygroundLayoutComponent } from '../../components/playground/web-app/layout/playground-layout.component';
 import { SpiderlyClass, SpiderlyProperty } from '../../components/playground/entities/entities';
-import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/sidebar-menu.component';
+import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/playground-sidebar-menu.component';
 import { MenuItem, MessageService } from 'primeng/api';
 import { IndexCardComponent } from '../../components/playground/index-card/index-card.component';
 import { SpiderlyControlsModule } from '../../components/playground/web-app/entity-details/controls/spiderly-controls.module';
@@ -29,7 +29,7 @@ import { Meta, Title } from '@angular/platform-browser';
     ButtonModule,
     RouterModule,
     SpiderlyControlsModule,
-    LayoutComponent,
+    PlaygroundLayoutComponent,
     IndexCardComponent,
     ClassFormComponent,
     ClassCodeEditorComponent,

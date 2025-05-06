@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
-import { LayoutService } from '../layout/layout.service';
+import { PlaygroundLayoutService } from '../layout/playground-layout.service';
 
 interface SpiderlyMenuItem {
   label?: string;
@@ -16,9 +16,9 @@ interface SpiderlyMenuItem {
 }
 
 @Component({
-    selector: 'topbar',
-    templateUrl: './topbar.component.html',
-    styleUrl: '../layout/layout.component.scss',
+    selector: 'playground-topbar',
+    templateUrl: './playground-topbar.component.html',
+    styleUrl: '../layout/playground-layout.component.scss',
     standalone: true,
     imports: [
       CommonModule,
@@ -27,7 +27,7 @@ interface SpiderlyMenuItem {
       ButtonModule
     ]
 })
-export class AppTopBarComponent {
+export class PlaygroundAppTopBarComponent {
   currentUser: User = new User({id: 0, email: 'user@gmail.com'});
   unreadNotificationsCount: number = 1;
   menuItems: SpiderlyMenuItem[] = [];
@@ -52,7 +52,7 @@ export class AppTopBarComponent {
   @ViewChild('topbarprofiledropdownmenubutton') topbarProfileDropdownMenuButton!: ElementRef;
 
   constructor(
-    public layoutService: LayoutService, 
+    public layoutService: PlaygroundLayoutService, 
     public el: ElementRef,
     protected router: Router,
   ) { 

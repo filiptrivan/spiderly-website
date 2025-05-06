@@ -1,0 +1,10 @@
+<a 
+(click)="itemClick($event)" 
+[routerLink]="item.routerLink" 
+tabindex="0" 
+pRipple
+class="layout-menuitem {{activeItemClass()}}"
+>
+    <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+    <span class="layout-menuitem-text">{{item.label}}</span>
+</a>
