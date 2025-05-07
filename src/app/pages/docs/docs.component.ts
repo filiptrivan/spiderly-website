@@ -1,18 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { SectionWrapperComponent } from '../../components/section-wrapper/section-wrapper.component';
 import { Meta, Title } from '@angular/platform-browser';
-import { PlaygroundLayoutComponent } from "../../components/playground/web-app/layout/playground-layout.component";
 import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/playground-sidebar-menu.component';
+import { DocsLayoutComponent } from '../../components/docs/layout/docs-layout.component';
 
 @Component({
   selector: 'app-docs',
   templateUrl: './docs.component.html',
-  styleUrl: './docs.component.scss',
   imports: [
     CommonModule,
-    SectionWrapperComponent,
-    PlaygroundLayoutComponent
+    DocsLayoutComponent
 ],
 })
 export class DocsComponent {

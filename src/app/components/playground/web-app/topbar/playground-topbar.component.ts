@@ -35,16 +35,6 @@ export class PlaygroundAppTopBarComponent {
   companyName: string = 'Spiderly';
   showProfileIcon: boolean = true;
 
-  notificationMenuItem: SpiderlyMenuItem =       
-  {
-    label: 'Notifications',
-    icon: 'pi-bell',
-    showNotificationBadge: true,
-    onClick: () => {
-      this.router.navigateByUrl(`/notifications`);
-    },
-  };
-
   @ViewChild('menubutton') menubutton!: ElementRef;
 
   @ViewChild('topbarmenu') menu!: ElementRef;
@@ -65,7 +55,11 @@ export class PlaygroundAppTopBarComponent {
         icon: 'pi-user',
         showSeparator: true,
       },
-      this.notificationMenuItem,
+      {
+        label: 'Notifications',
+        icon: 'pi-bell',
+        showNotificationBadge: true,
+      },
       {
         label: 'Settings',
         icon: 'pi-cog',

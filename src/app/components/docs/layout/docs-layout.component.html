@@ -1,41 +1,27 @@
 <div class="layout-wrapper" [ngClass]="containerClass">
-    <topbar></topbar>
+    <docs-topbar></docs-topbar>
 
     <div class="layout-sidebar">
-        <sidebar-menu [menu]="menu" [lastSelectedEntity]="lastSelectedEntity" (onMenuItemSelect)="menuItemSelectChange($event)"></sidebar-menu>
+        <docs-sidebar-menu [menu]="menu"></docs-sidebar-menu>
     </div>
 
     <div class="layout-main-container">
         <div class="layout-main">
-            <div *ngIf="lastSelectedEntity == null">Switch between pages and test the generated app!</div>
-            <app-table 
-            *ngIf="isTableSelected === true && lastSelectedEntity != null" 
-            [data]="lastSelectedEntity.data" 
-            [cols]="lastSelectedEntity.properties"
-            [tableTitle]="getEntityPluralName(lastSelectedEntity)"
-            (onNavigateToDetails)="navigateToDetails($event)"
-            [entities]="entities"
-            [entity]="lastSelectedEntity"
-            ></app-table>
-            <app-entity-details 
-            *ngIf="isTableSelected === false && lastSelectedEntity != null"
-            [entity]="lastSelectedEntity"
-            [entities]="entities"
-            [index]="lastIndexSelected"
-            (onReturn)="isTableSelected = true"
-            ></app-entity-details>
+            <app-section-wrapper textAlign="center">
+                <div>
+                    <h1 style="margin-bottom: 15px">
+                        <div class="gradient-title">
+                        Spiderly Docs
+                        </div>
+                        <div class="title">
+                        Learn Everything About Spiderly
+                        </div>
+                    </h1>
+                    <div class="text-below-title">
+                        Find answers to common questions about Spiderly.
+                    </div>
+                </div>
+            </app-section-wrapper>
         </div>
     </div>
 </div>
-
-<p-confirmDialog 
-acceptLabel="Confirm"
-rejectLabel="Cancle"
-rejectButtonStyleClass="p-button-secondary" 
-[style]="{width: '400px'}" 
-header="Are you sure?"
-message="Please confirm to proceed"
-icon="pi pi-exclamation-circle"
-></p-confirmDialog>
-
-<p-toast [breakpoints]="{ '600px': { width: '100%', right: '0', left: '0' } }" key="playground"></p-toast>

@@ -16,28 +16,8 @@
 
 .layout-topbar {
   position: fixed;
-  height: 4.5rem;
-  z-index: 997;
-  left: 0;
-  top: 0;
-  width: 100%;
-  padding: 0 2rem;
-  background-color: var(--p-surface-900);
-  transition: left 0.2s;
-  display: flex;
-  align-items: center;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05),
-    0px 1px 4px rgba(0, 0, 0, 0.08);
-  border-radius: 6px 6px 0px 0px;
-
-  .layout-topbar-logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.3rem;
-    font-weight: 500;
-    width: 220px;
-    border-radius: var(--p-content-border-radius);
-  }
+  top: 5rem;
+  left: 2rem;
 
   .layout-menu-button {
     border-radius: 50%;
@@ -67,41 +47,11 @@
       font-size: 1.2rem;
     }
   }
-
-  .profile-button {
-    margin: 0 0 0 auto;
-    padding: 0;
-    list-style: none;
-    display: flex;
-  }
 }
 
 .gray-separator {
   border-top: 1px solid var(--p-surface-700);
   width: 100%;
-}
-
-.hover-card {
-  padding: 8px 10px;
-  border-radius: var(--p-content-border-radius);
-  cursor: pointer;
-}
-
-.hover-card:hover {
-  background-color: var(--p-surface-800);
-}
-
-.card {
-  background: var(--p-surface-900);
-  border: 1px solid var(--p-surface-700);
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: #000;
-  border-radius: var(--p-content-border-radius);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 
 //#endregion
@@ -114,7 +64,7 @@
 
     &.layout-static {
       .layout-main-container {
-        margin-left: 220px;
+        margin-left: 256px;
       }
 
       &.layout-static-inactive {
@@ -136,7 +86,6 @@
   .layout-wrapper {
     .layout-main-container {
       margin-left: 0;
-      padding-left: 2rem;
     }
 
     .layout-sidebar {
@@ -144,8 +93,7 @@
       left: 0;
       top: 0;
       height: 100%;
-      z-index: 999;
-      // border: 0px solid var(--p-surface-700) !important;
+      z-index: 1003;
     }
 
     &.layout-mobile-active {
@@ -161,7 +109,7 @@
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-  padding: 6.5rem 2rem 2rem 4rem;
+  padding-top: 3.5rem;
   transition: margin-left 0.2s;
 }
 
@@ -180,7 +128,7 @@
   height: calc(100% - 8.5rem);
   overflow-y: auto;
   user-select: none;
-  top: 6.5rem;
+  top: 7.75rem;
   left: 2rem;
   transition: transform 0.2s, left 0.2s;
   background-color: var(--p-surface-900);
