@@ -61,6 +61,7 @@ export class PlaygroundComponent {
   ) {
     this.titleService.setTitle('Try and Explore Spiderly Live | Spiderly Playground');
     this.metaService.updateTag({ name: 'description', content: 'Explore the Spiderly Playground to instantly generate .NET (C#) + Angular web apps from your C# classes. Test and experiment with automatic boilerplate code updates.' });
+    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
   }
 
   ngOnInit(){

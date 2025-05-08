@@ -40,6 +40,7 @@ export class DocsComponent {
   ) {
     this.titleService.setTitle('Spiderly Docs - Frequently Asked Questions');
     this.metaService.updateTag({ name: 'description', content: 'Find answers to common questions about Spiderly - the powerful tool that instantly generates full-stack .NET (C#) + Angular applications from your C# classes.'});
+    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
   }
 
 
