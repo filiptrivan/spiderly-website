@@ -1,6 +1,5 @@
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';

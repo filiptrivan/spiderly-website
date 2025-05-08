@@ -5,19 +5,16 @@ import { AppTopBarComponent } from './topbar/docs-topbar.component';
 import { DocsLayoutService } from './docs-layout.service';
 import { CommonModule } from '@angular/common';
 import { SidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
-import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.component';
 
 @Component({
     selector: 'app-docs-layout',
     templateUrl: './docs-layout.component.html',
     styleUrl: './docs-layout.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         RouterModule,
         AppTopBarComponent,
         SidebarMenuComponent,
-        SectionWrapperComponent,
     ]
 })
 export class DocsLayoutComponent implements OnDestroy {

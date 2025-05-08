@@ -9,18 +9,29 @@ import { DocsLayoutComponent } from '../../components/docs/layout/docs-layout.co
   templateUrl: './docs.component.html',
   imports: [
     CommonModule,
-    DocsLayoutComponent
+    DocsLayoutComponent,
 ],
 })
 export class DocsComponent {
     menu: SpiderlyMenuItem[] = [
       {
-          label: 'Home', 
+          label: 'Docs home', 
           icon: 'pi pi-fw pi-home', 
+          routerLink: '/docs/home'
       },
       {
-          separator: true,
-      }
+        separator: true,
+      },
+      {
+          label: 'Source generators', 
+          icon: 'pi pi-fw pi-home', 
+          items: [
+            {
+              label: 'Authorize',
+              routerLink: 'authorize'
+            }
+          ]
+      },
     ];
   
   constructor(
