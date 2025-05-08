@@ -1,30 +1,37 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { SectionWrapperComponent } from '../../components/section-wrapper/section-wrapper.component';
-import { SpiderlyPanelComponent } from '../../components/playground/web-app/entity-details/spiderly-panels/spiderly-panel/spiderly-panel.component';
 import { Meta, Title } from '@angular/platform-browser';
-import { LayoutComponent } from "../../components/playground/web-app/layout/layout.component";
-import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/sidebar-menu.component';
+import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/playground-sidebar-menu.component';
+import { DocsLayoutComponent } from '../../components/docs/layout/docs-layout.component';
 
 @Component({
   selector: 'app-docs',
   templateUrl: './docs.component.html',
-  styleUrl: './docs.component.scss',
   imports: [
     CommonModule,
-    SectionWrapperComponent,
-    LayoutComponent
+    DocsLayoutComponent,
 ],
 })
 export class DocsComponent {
     menu: SpiderlyMenuItem[] = [
       {
-          label: 'Home', 
+          label: 'Docs home', 
           icon: 'pi pi-fw pi-home', 
+          routerLink: '/docs/home'
       },
       {
-          separator: true,
-      }
+        separator: true,
+      },
+      {
+          label: 'Source generators', 
+          icon: 'pi pi-fw pi-home', 
+          items: [
+            {
+              label: 'Authorize',
+              routerLink: 'authorize'
+            }
+          ]
+      },
     ];
   
   constructor(

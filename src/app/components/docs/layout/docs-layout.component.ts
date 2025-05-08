@@ -1,44 +1,24 @@
 import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { AppTopBarComponent } from '../topbar/topbar.component';
-import { LayoutService } from './layout.service';
+import { AppTopBarComponent } from './topbar/docs-topbar.component';
+import { DocsLayoutService } from './docs-layout.service';
 import { CommonModule } from '@angular/common';
-import { ConfirmDialogModule } from 'primeng/confirmdialog'
-import { ToastModule } from 'primeng/toast'
-import { SpiderlyClass } from '../../entities/entities';
-import { EntityDetailsComponent } from '../entity-details/entity-details.component';
-import { SidebarMenuComponent, SpiderlyMenuItem } from '../sidebar/sidebar-menu.component';
-import { TableComponent } from '../table/table.component';
-import { getEntityPluralName } from '../entity-details/services/helper-functions';
-import { PrimengOption } from '../entity-details/entities/primeng-option';
+import { SidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
 
 @Component({
-    selector: 'app-layout',
-    templateUrl: './layout.component.html',
-    styleUrl: './layout.component.scss',
-    standalone: true,
+    selector: 'app-docs-layout',
+    templateUrl: './docs-layout.component.html',
+    styleUrl: './docs-layout.component.scss',
     imports: [
         CommonModule,
         RouterModule,
         AppTopBarComponent,
         SidebarMenuComponent,
-        TableComponent,
-        EntityDetailsComponent,
-        ToastModule,
-        ConfirmDialogModule,
     ]
 })
-export class LayoutComponent implements OnDestroy {
-    @Input() logoTitle: string = 'Spiderly';
-    @Input() entities: SpiderlyClass[] = [];
-    dropdownOptions: { [key: string]: PrimengOption[] } = {};
-
-    isTableSelected: boolean = false;
-    lastSelectedEntity: SpiderlyClass;
-    lastIndexSelected: number;
-
-    @Input() menu: SpiderlyMenuItem[] = [];
+export class DocsLayoutComponent implements OnDestroy {
+    @Input() menu: DocsSpiderlyMenuItem[] = [];
 
     overlayMenuOpenSubscription: Subscription;
 
@@ -51,7 +31,7 @@ export class LayoutComponent implements OnDestroy {
     @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
 
     constructor(
-        protected layoutService: LayoutService, 
+        protected layoutService: DocsLayoutService, 
         protected renderer: Renderer2, 
         protected router: Router,
     ) {
@@ -124,21 +104,6 @@ export class LayoutComponent implements OnDestroy {
             'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
             'p-ripple-disabled': true
         }
-    }
-
-    menuItemSelectChange = (entity: SpiderlyClass) => {
-        this.lastSelectedEntity = entity;
-        this.isTableSelected = true;
-    }
-
-    navigateToDetails(index: number) {
-        this.isTableSelected = false;
-        this.lastIndexSelected = index;
-
-    }
-
-    getEntityPluralName(entity: SpiderlyClass): string {
-        return getEntityPluralName(entity);
     }
 
     ngOnDestroy() {

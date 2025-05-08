@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
-import { LayoutService } from '../layout/layout.service';
+import { PlaygroundLayoutService } from '../layout/playground-layout.service';
 
 interface SpiderlyMenuItem {
   label?: string;
@@ -16,9 +16,9 @@ interface SpiderlyMenuItem {
 }
 
 @Component({
-    selector: 'topbar',
-    templateUrl: './topbar.component.html',
-    styleUrl: '../layout/layout.component.scss',
+    selector: 'playground-topbar',
+    templateUrl: './playground-topbar.component.html',
+    styleUrl: '../layout/playground-layout.component.scss',
     standalone: true,
     imports: [
       CommonModule,
@@ -27,23 +27,13 @@ interface SpiderlyMenuItem {
       ButtonModule
     ]
 })
-export class AppTopBarComponent {
+export class PlaygroundAppTopBarComponent {
   currentUser: User = new User({id: 0, email: 'user@gmail.com'});
   unreadNotificationsCount: number = 1;
   menuItems: SpiderlyMenuItem[] = [];
   avatarLabel: string = 'U';
   companyName: string = 'Spiderly';
   showProfileIcon: boolean = true;
-
-  notificationMenuItem: SpiderlyMenuItem =       
-  {
-    label: 'Notifications',
-    icon: 'pi-bell',
-    showNotificationBadge: true,
-    onClick: () => {
-      this.router.navigateByUrl(`/notifications`);
-    },
-  };
 
   @ViewChild('menubutton') menubutton!: ElementRef;
 
@@ -52,7 +42,7 @@ export class AppTopBarComponent {
   @ViewChild('topbarprofiledropdownmenubutton') topbarProfileDropdownMenuButton!: ElementRef;
 
   constructor(
-    public layoutService: LayoutService, 
+    public layoutService: PlaygroundLayoutService, 
     public el: ElementRef,
     protected router: Router,
   ) { 
@@ -65,7 +55,11 @@ export class AppTopBarComponent {
         icon: 'pi-user',
         showSeparator: true,
       },
-      this.notificationMenuItem,
+      {
+        label: 'Notifications',
+        icon: 'pi-bell',
+        showNotificationBadge: true,
+      },
       {
         label: 'Settings',
         icon: 'pi-cog',

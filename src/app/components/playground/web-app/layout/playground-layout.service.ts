@@ -1,25 +1,12 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-
-export interface AppConfig {
-    menuMode: string;
-    scale: number;
-    color: string;
-}
-
-interface LayoutState {
-    staticMenuDesktopInactive: boolean;
-    overlayMenuActive: boolean;
-    profileSidebarVisible: boolean;
-    profileDropdownSidebarVisible:boolean;
-    staticMenuMobileActive: boolean;
-}
+import { AppConfig, LayoutState } from '../../../docs/layout/docs-layout.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LayoutService {
+export class PlaygroundLayoutService {
     layoutConfig: AppConfig = {
         menuMode: 'static',
         scale: 14,

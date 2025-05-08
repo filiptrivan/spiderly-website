@@ -1,10 +1,10 @@
 import { ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { MenuitemComponent } from './menuitem.component';
+import { MenuitemComponent } from './playground-menuitem.component';
 import { CommonModule } from '@angular/common';
 import { SpiderlyClass } from '../../entities/entities';
-import { LayoutService } from '../layout/layout.service';
+import { PlaygroundLayoutService } from '../layout/playground-layout.service';
 
 export interface SpiderlyMenuItem extends MenuItem{
     hasPermission?: (permissionCodes: string[]) => boolean;
@@ -13,22 +13,22 @@ export interface SpiderlyMenuItem extends MenuItem{
 }
 
 @Component({
-    selector: 'sidebar-menu', // FT: Don't change selector to 'menu', because other style will apply to it
-    templateUrl: './sidebar-menu.component.html',
-    styleUrl: '../layout/layout.component.scss',
+    selector: 'playground-sidebar-menu', // FT: Don't change selector to 'menu', because other style will apply to it
+    templateUrl: './playground-sidebar-menu.component.html',
+    styleUrl: '../layout/playground-layout.component.scss',
     standalone: true,
     imports: [
         CommonModule,
         MenuitemComponent
     ]
 })
-export class SidebarMenuComponent implements OnInit {
+export class PlaygroundSidebarMenuComponent implements OnInit {
     @Input() menu: SpiderlyMenuItem[] = [];
     @Input() lastSelectedEntity: SpiderlyClass;
     @Output() onMenuItemSelect: EventEmitter<SpiderlyClass> = new EventEmitter();
 
     constructor(
-        public layoutService: LayoutService, 
+        public layoutService: PlaygroundLayoutService, 
         public el: ElementRef
     ) {
         

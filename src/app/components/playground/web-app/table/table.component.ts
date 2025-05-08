@@ -9,7 +9,7 @@ import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { getSuccessMessageOptions, initDropdownOptions } from '../entity-details/services/helper-functions';
-import { LayoutService } from '../layout/layout.service';
+import { PlaygroundLayoutService } from '../layout/playground-layout.service';
 import { CSharpDataTypeCodes } from '../../class-form/services/get-options-functions';
 import { PrimengOption } from '../entity-details/entities/primeng-option';
 
@@ -52,7 +52,7 @@ export class TableComponent implements OnInit {
     @Output() onNavigateToDetails = new EventEmitter<number>();
 
     constructor(
-        public layoutService: LayoutService, 
+        public layoutService: PlaygroundLayoutService, 
         @Inject(LOCALE_ID) private locale: string,
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
