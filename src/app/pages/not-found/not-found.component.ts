@@ -7,6 +7,7 @@ import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-not-found',
+ feature/add-robots-txt
   standalone: true,
   imports: [RouterLink, CommonModule, SectionWrapperComponent, ButtonModule],
   template: `
@@ -27,13 +28,22 @@ import { Meta, Title } from '@angular/platform-browser';
     </app-section-wrapper>
   `,
   styleUrls: ['./not-found.component.scss']
+
+  imports: [RouterLink, CommonModule, SectionWrapperComponent, ButtonModule],
+  templateUrl: './not-found.component.html'
+ master
 })
 export class NotFoundComponent {
   constructor(
     private titleService: Title,
     private metaService: Meta
   ) {
+ feature/add-robots-txt
     this.titleService.setTitle('Page Not Found - Spiderly');
     this.metaService.updateTag({ name: 'description', content: 'The page you\'re looking for doesn\'t exist. Return to Spiderly homepage to generate your .NET (C#) + Angular web apps.' });
+
+    this.titleService.setTitle('404 Page Not Found | Spiderly');
+    this.metaService.updateTag({ name: 'description', content: 'The page you\'re looking for doesn\'t exist. Return to the Spiderly homepage to generate your .NET (C#) + Angular web apps.' });
+ master
   }
 } 

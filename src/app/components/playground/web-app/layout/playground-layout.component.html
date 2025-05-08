@@ -1,8 +1,8 @@
 <div class="layout-wrapper" [ngClass]="containerClass">
-    <topbar></topbar>
+    <playground-topbar></playground-topbar>
 
     <div class="layout-sidebar">
-        <sidebar-menu [menu]="menu" [lastSelectedEntity]="lastSelectedEntity" (onMenuItemSelect)="menuItemSelectChange($event)"></sidebar-menu>
+        <playground-sidebar-menu [menu]="menu" [lastSelectedEntity]="lastSelectedEntity" (onMenuItemSelect)="menuItemSelectChange($event)"></playground-sidebar-menu>
     </div>
 
     <div class="layout-main-container">

@@ -5,7 +5,7 @@ import { SpiderlyClass } from '../../entities/entities';
 @Injectable({
     providedIn: 'root'
 })
-export class SidebarMenuService {
+export class PlaygroundSidebarMenuService {
     private menuSource = new Subject<SpiderlyClass>();
 
     menuSource$ = this.menuSource.asObservable();
