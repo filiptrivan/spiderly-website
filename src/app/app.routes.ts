@@ -1,15 +1,13 @@
 import { InMemoryScrollingOptions, Routes } from '@angular/router';
 import { HomepageComponent } from './pages/homepage/homepage.component';
-import { PlaygroundComponent } from './pages/playground/playground.component';
-import { FAQComponent } from './pages/faq/faq.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
-  { path: 'playground', component: PlaygroundComponent },
-  { path: 'faq', component: FAQComponent },
-  { path: '404', component: NotFoundComponent },
-  { path: '**', component: NotFoundComponent },
+  { path: 'playground', loadComponent: () => import('./pages/playground/playground.component').then(m => m.PlaygroundComponent) },
+  { path: 'faq', loadComponent: () => import('./pages/faq/faq.component').then(m => m.FAQComponent) },
+  // { path: 'docs/:slug', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
+  { path: '404', loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent) },
+  { path: '**', redirectTo: '404' }
 ];
 
 export const scrollConfig: InMemoryScrollingOptions = {

@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "cp dist/404/index.html dist/404.html",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:spiderly-website": "node dist/spiderly-website/server/server.mjs"
