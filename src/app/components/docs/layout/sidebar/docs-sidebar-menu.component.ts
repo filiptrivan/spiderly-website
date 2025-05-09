@@ -20,7 +20,7 @@ export interface DocsSpiderlyMenuItem extends MenuItem{
         MenuitemComponent
     ]
 })
-export class SidebarMenuComponent implements OnInit {
+export class DocsSidebarMenuComponent implements OnInit {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
 
     constructor(

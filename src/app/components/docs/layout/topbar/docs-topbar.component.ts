@@ -26,12 +26,8 @@ interface SpiderlyMenuItem {
       ButtonModule
     ]
 })
-export class AppTopBarComponent {
+export class DocsAppTopBarComponent {
   @ViewChild('menubutton') menubutton!: ElementRef;
-
-  @ViewChild('topbarmenu') menu!: ElementRef;
-
-  @ViewChild('topbarprofiledropdownmenubutton') topbarProfileDropdownMenuButton!: ElementRef;
 
   constructor(
     public layoutService: DocsLayoutService, 

@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { AppTopBarComponent } from './topbar/docs-topbar.component';
+import { DocsAppTopBarComponent } from './topbar/docs-topbar.component';
 import { DocsLayoutService } from './docs-layout.service';
 import { CommonModule } from '@angular/common';
-import { SidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
+import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
 
 @Component({
     selector: 'app-docs-layout',
@@ -13,8 +13,8 @@ import { SidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sideb
     imports: [
         CommonModule,
         RouterModule,
-        AppTopBarComponent,
-        SidebarMenuComponent,
+        DocsAppTopBarComponent,
+        DocsSidebarMenuComponent,
     ]
 })
 export class DocsLayoutComponent implements OnDestroy {
@@ -26,9 +26,9 @@ export class DocsLayoutComponent implements OnDestroy {
 
     profileMenuOutsideClickListener: any;
 
-    @ViewChild(SidebarMenuComponent) appSidebar!: SidebarMenuComponent;
+    @ViewChild(DocsSidebarMenuComponent) appSidebar!: DocsSidebarMenuComponent;
 
-    @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
+    @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
 
     constructor(
         protected layoutService: DocsLayoutService, 
@@ -47,19 +47,6 @@ export class DocsLayoutComponent implements OnDestroy {
                     
                     if (isOutsideClicked) {
                         this.hideMenu();
-                    }
-                });
-            }
-
-            if (!this.profileMenuOutsideClickListener) {
-                this.profileMenuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                    const isOutsideClicked = !(
-                        this.appTopbar.menu.nativeElement.isSameNode(event.target) || 
-                        this.appTopbar.menu.nativeElement.contains(event.target)
-                    );
-
-                    if (isOutsideClicked) {
-                        this.hideProfileMenu();
                     }
                 });
             }
