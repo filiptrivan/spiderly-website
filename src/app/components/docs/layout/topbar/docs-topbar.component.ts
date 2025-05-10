@@ -6,14 +6,6 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { DocsLayoutService } from '../docs-layout.service';
 
-interface SpiderlyMenuItem {
-  label?: string;
-  icon?: string;
-  showSeparator?: boolean;
-  onClick?: () => void;
-  showNotificationBadge?: boolean;
-}
-
 @Component({
     selector: 'docs-topbar',
     templateUrl: './docs-topbar.component.html',

@@ -31,7 +31,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class MenuitemComponent implements OnInit, OnDestroy {
     @Input() item: DocsSpiderlyMenuItem;
     @Input() index!: number;
-    @Input() @HostBinding('class.layout-root-menuitem') root!: boolean;
     @Input() parentKey!: string;
 
     key: string = '';
@@ -44,17 +43,62 @@ export class MenuitemComponent implements OnInit, OnDestroy {
         public layoutService: DocsLayoutService, 
         private menuService: SidebarMenuService, 
     ) {
-        
+        // this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
+        //     Promise.resolve(null).then(() => {
+        //         if (value.routeEvent) {
+        //             this.active = (value.key === this.key || value.key.startsWith(this.key + '-')) ? true : false;
+        //         }
+        //         else {
+        //             if (value.key !== this.key && !value.key.startsWith(this.key + '-')) {
+        //                 this.active = false;
+        //             }
+        //         }
+        //     });
+        // });
+
+        // this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
+        //     this.active = false;
+        // });
+
+        // this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+        //     .subscribe(params => {
+        //         if (this.item.routerLink) {
+        //             this.updateActiveStateFromRoute();
+        //         }
+        //     });
     }
 
     ngOnInit() {
+        this.key = this.parentKey ? this.parentKey + '-' + this.index : String(this.index);
+        
+        if (this.item.routerLink) {
+            this.updateActiveStateFromRoute();
+        }
+    }
+
+    updateActiveStateFromRoute() {
+        // let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });
+
+        // if (activeRoute) {
+        //     this.menuService.onMenuStateChange({ key: this.key, routeEvent: true });
+        // }
     }
 
     itemClick(event: Event) {
+        if (this.item.items) {
+            this.active = !this.active;
+        }
+
+        this.menuService.onMenuStateChange({ key: this.key });
     }
 
     get submenuAnimation() {
-        return this.root ? 'expanded' : (this.active ? 'expanded' : 'collapsed');
+        return this.active ? 'expanded' : 'collapsed';
+    }
+
+    @HostBinding('class.active-menuitem') 
+    get activeClass() {
+        return this.active;
     }
 
     ngOnDestroy() {

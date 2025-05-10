@@ -15,23 +15,27 @@ import { DocsLayoutComponent } from '../../components/docs/layout/docs-layout.co
 export class DocsComponent {
     menu: SpiderlyMenuItem[] = [
       {
-          label: 'Docs home', 
-          icon: 'pi pi-fw pi-home', 
-          routerLink: '/docs/home'
+        label: 'Docs home', 
+        icon: 'pi pi-fw pi-home', 
+        routerLink: '/docs/home',
       },
       {
         separator: true,
       },
       {
-          label: 'Source generators', 
-          icon: 'pi pi-fw pi-home', 
-          items: [
-            {
-              label: 'Authorize',
-              routerLink: 'authorize'
-            }
-          ]
-      },
+        items: [
+          {
+              label: 'Source generators', 
+              icon: 'pi pi-fw pi-home', 
+              items: [
+                {
+                  label: 'Authorize',
+                  routerLink: 'authorize'
+                }
+              ]
+          },
+        ]
+      }
     ];
   
   constructor(

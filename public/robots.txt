@@ -1,5 +1,2 @@
-# Allow all web crawlers to index the site
 User-agent: *
-Allow: /
-
-Sitemap: https://www.spiderly.dev/sitemap.xml
+Disallow:
