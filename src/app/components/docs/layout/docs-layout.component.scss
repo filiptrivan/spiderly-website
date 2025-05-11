@@ -146,14 +146,6 @@
     list-style-type: none;
 
     .layout-root-menuitem {
-      >.layout-menuitem-root-text {
-          font-size: .857rem;
-          text-transform: uppercase;
-          font-weight: 700;
-          color: var(--surface-900);
-          margin: .75rem 0;
-      }
-
       >a {
           display: none;
       }
@@ -205,11 +197,11 @@
 
             &.active-route {
                 font-weight: 700;
-                color: var(--primary-color);
+                color: var(--p-primary-color);
             }
 
             &:hover {
-                background-color: var(--p-surface-hover);
+                background-color: var(--p-surface-800);
             }
 
             &:focus {

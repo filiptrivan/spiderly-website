@@ -6,8 +6,6 @@ import { CommonModule } from '@angular/common';
 import { DocsLayoutService } from '../docs-layout.service';
 
 export interface DocsSpiderlyMenuItem extends MenuItem{
-    hasPermission?: (permissionCodes: string[]) => boolean;
-    showPartnerDialog?: boolean; 
 }
 
 @Component({
