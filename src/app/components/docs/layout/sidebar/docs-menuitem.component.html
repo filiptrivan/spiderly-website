@@ -41,4 +41,6 @@
     </ul>
 </ng-container>
 
-<li *ngIf="item.separator" class="gray-separator" style="margin-top: 11px; margin-bottom: 11px;"></li>
+<ng-container *ngIf="item.separator">
+    <li class="gray-separator" style="margin-top: 11px; margin-bottom: 11px;"></li>
+</ng-container>

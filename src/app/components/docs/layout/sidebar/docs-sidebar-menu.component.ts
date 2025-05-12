@@ -1,4 +1,4 @@
-import { ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ElementRef, Input, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenuitemComponent } from './docs-menuitem.component';

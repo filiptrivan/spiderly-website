@@ -24,8 +24,6 @@ export class DocsLayoutComponent implements OnDestroy {
 
     menuOutsideClickListener: any;
 
-    profileMenuOutsideClickListener: any;
-
     @ViewChild(DocsSidebarMenuComponent) appSidebar!: DocsSidebarMenuComponent;
 
     @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
@@ -38,6 +36,8 @@ export class DocsLayoutComponent implements OnDestroy {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
+                    console.log(this.appSidebar)
+                    console.log(this.appTopbar)
                     const isOutsideClicked = !(
                         this.appSidebar.el.nativeElement.isSameNode(event.target) || 
                         this.appSidebar.el.nativeElement.contains(event.target) ||
@@ -55,7 +55,6 @@ export class DocsLayoutComponent implements OnDestroy {
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
                 this.hideMenu();
-                this.hideProfileMenu();
             });
     }
 
@@ -70,15 +69,6 @@ export class DocsLayoutComponent implements OnDestroy {
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
-        }
-    }
-
-    hideProfileMenu() {
-        this.layoutService.state.profileSidebarVisible = false;
-
-        if (this.profileMenuOutsideClickListener) {
-            this.profileMenuOutsideClickListener();
-            this.profileMenuOutsideClickListener = null;
         }
     }
 

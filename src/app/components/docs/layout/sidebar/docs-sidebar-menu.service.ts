@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class SidebarMenuService {
+export class DocsSidebarMenuService {
     private menuSource = new Subject<MenuChangeEvent>();
     private resetSource = new Subject();
 

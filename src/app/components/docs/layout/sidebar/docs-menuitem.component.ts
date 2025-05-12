@@ -1,10 +1,10 @@
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { DocsLayoutService } from '../docs-layout.service';
 import { DocsSpiderlyMenuItem } from './docs-sidebar-menu.component';
-import { SidebarMenuService } from './docs-sidebar-menu.service';
+import { DocsSidebarMenuService } from './docs-sidebar-menu.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -42,7 +42,7 @@ export class MenuitemComponent implements OnInit, OnDestroy {
 
     constructor(
         public layoutService: DocsLayoutService, 
-        private menuService: SidebarMenuService, 
+        private menuService: DocsSidebarMenuService, 
         private router: Router,
     ) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {

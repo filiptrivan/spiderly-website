@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { SpiderlyMenuItem } from '../../components/playground/web-app/sidebar/playground-sidebar-menu.component';
 import { DocsLayoutComponent } from '../../components/docs/layout/docs-layout.component';
+import { DocsSpiderlyMenuItem } from '../../components/docs/layout/sidebar/docs-sidebar-menu.component';
 
 @Component({
   selector: 'app-docs',
@@ -13,7 +13,7 @@ import { DocsLayoutComponent } from '../../components/docs/layout/docs-layout.co
 ],
 })
 export class DocsComponent {
-    menu: SpiderlyMenuItem[] = [
+    menu: DocsSpiderlyMenuItem[] = [
       {
         items: [
           {
