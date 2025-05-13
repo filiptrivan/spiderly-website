@@ -13,9 +13,6 @@ import { DocsLayoutService } from '../docs-layout.service';
     standalone: true,
     imports: [
       CommonModule,
-      AvatarModule,
-      BadgeModule,
-      ButtonModule
     ]
 })
 export class DocsAppTopBarComponent {

@@ -36,8 +36,6 @@ export class DocsLayoutComponent implements OnDestroy {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                    console.log(this.appSidebar)
-                    console.log(this.appTopbar)
                     const isOutsideClicked = !(
                         this.appSidebar.el.nativeElement.isSameNode(event.target) || 
                         this.appSidebar.el.nativeElement.contains(event.target) ||
