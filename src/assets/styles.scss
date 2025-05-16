@@ -133,5 +133,12 @@ a {
 .code-block{
   padding: 0.4px 4px;
   background-color: var(--p-surface-700);
+  border-radius: 4px;
+}
+
+.card{
+  padding: 18px;
+  border: 1px solid var(--p-surface-700);
   border-radius: var(--p-content-border-radius);
+  overflow: auto;
 }

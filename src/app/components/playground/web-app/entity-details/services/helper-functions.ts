@@ -267,4 +267,9 @@ export function getParentUrl(currentUrl: string){
     return dropdownOptions;
   }
 
+  export function capitalizeFirstChar(str: string): string {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   export type Ctor<T> = new (...args: any[]) => T;

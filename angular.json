@@ -29,8 +29,12 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/assets/styles.scss"],
-            "scripts": [],
+            "styles": [
+              "src/assets/styles.scss",
+              "node_modules/highlight.js/styles/vs2015.css"
+            ],
+            "scripts": [
+            ],
             "server": "src/main.server.ts",
             "outputMode": "static",
             "prerender": true,
@@ -97,8 +101,12 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/assets/styles.scss"],
-            "scripts": []
+            "styles": [
+              "src/assets/styles.scss",
+              "node_modules/highlight.js/styles/vs2015.css"
+            ],
+            "scripts": [
+            ]
           }
         }
       }

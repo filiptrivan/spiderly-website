@@ -1,15 +1,20 @@
-import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { Component, ElementRef, Inject, Input, OnDestroy, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter, of, Subscription, switchMap } from 'rxjs';
 import { DocsAppTopBarComponent } from './topbar/docs-topbar.component';
 import { DocsLayoutService } from './docs-layout.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
+import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
+import hljs from 'highlight.js/lib/common';
+import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
 
 @Component({
     selector: 'app-docs-layout',
     templateUrl: './docs-layout.component.html',
     styleUrl: './docs-layout.component.scss',
+    standalone: true,
     imports: [
         CommonModule,
         RouterModule,
@@ -28,10 +33,20 @@ export class DocsLayoutComponent implements OnDestroy {
 
     @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
 
+    @ViewChild('HTMLContainer') HTMLContainer!: ElementRef;
+
+    docsHTML: SafeHtml;
+
     constructor(
         protected layoutService: DocsLayoutService, 
         protected renderer: Renderer2, 
         protected router: Router,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        private route: ActivatedRoute,
+        private http: HttpClient,
+        private title: Title,
+        private meta: Meta,
+        private sanitizer: DomSanitizer,
     ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
@@ -57,7 +72,39 @@ export class DocsLayoutComponent implements OnDestroy {
     }
 
     ngOnInit() {
-        
+        this.route.paramMap
+            .pipe(
+                switchMap((params) => {
+                    const slug = params.get('slug')!;
+                    // return of('<div>test</div>');
+                    return this.http.get(`assets/docs/${slug}.html`, { responseType: 'text' });
+                })
+            )
+            .subscribe((docsHTML) => {
+                this.docsHTML = this.sanitizer.bypassSecurityTrustHtml(docsHTML);
+
+                const slug = this.route.snapshot.paramMap.get('slug');
+                this.title.setTitle(this.formatTitle(slug));
+                this.meta.updateTag({
+                    name: 'description',
+                    content: `Documentation page for ${slug}`,
+                });
+
+                if (isPlatformBrowser(this.platformId)) {
+                    this.highlightCode();
+                }
+            });
+    }
+
+    formatTitle(slug: string | null): string {
+        return slug ? `${capitalizeFirstChar(slug.replace('-', ' '))} | Spiderly Docs` : 'Spiderly Docs';
+    }
+
+    highlightCode() {
+        setTimeout(() => {
+            const codeBlocks = this.HTMLContainer.nativeElement.querySelectorAll('pre code');
+            codeBlocks.forEach((block: HTMLElement) => hljs.highlightElement(block));
+        }, 500);
     }
 
     hideMenu() {

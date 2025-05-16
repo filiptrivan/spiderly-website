@@ -1,49 +1,45 @@
-<div>
-  <div class="header-wrapper">
-    <div class="header">
-      <div (click)="isSideMenuActive = false" [routerLink]="['/']" class="header-logo">
-        <app-logo style="display: flex; justify-content: center;"></app-logo>
-        <span style="font-weight: 400">SPIDERLY</span>
-      </div>
-
-      <nav class="header-desktop desktop-only">
-        <a [routerLink]="['/playground']" class="header-link">Playground</a>
-        <a [routerLink]="['/faq']" class="header-link">FAQ</a>
-        <a
-          href="https://github.com/filiptrivan/spiderly"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="header-link"
-          style="display: flex; align-items: center"
-        >
-          <i class="pi pi-github" style="font-size: 20px"></i>
-        </a>
-      </nav>
-
-      <nav class="mobile-only" style="display: flex; align-items: center">
-        @if(isSideMenuActive){
-        <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="header-link pi pi-times"></i>
-        } @else{
-        <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="header-link pi pi-bars"></i>
-        }
-      </nav>
+<div class="header-wrapper">
+  <div class="header">
+    <div (click)="isSideMenuActive = false" [routerLink]="['/']" class="header-logo">
+      <app-logo style="display: flex; justify-content: center;"></app-logo>
+      <span style="font-weight: 400">SPIDERLY</span>
     </div>
-  </div>
 
-  <div
-    class="side-menu mobile-only {{ isSideMenuActive ? 'side-menu-open' : '' }}"
+    <nav class="header-desktop desktop-only">
+      <a [routerLink]="['/playground']" class="header-link">Playground</a>
+      <a [routerLink]="['/faq']" class="header-link">FAQ</a>
+      <a
+        href="https://github.com/filiptrivan/spiderly"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="header-link"
+        style="display: flex; align-items: center"
+      >
+        <i class="pi pi-github" style="font-size: 20px"></i>
+      </a>
+    </nav>
+
+    <nav class="mobile-only" style="display: flex; align-items: center">
+      @if(isSideMenuActive){
+      <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="header-link pi pi-times"></i>
+      } @else{
+      <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="header-link pi pi-bars"></i>
+      }
+    </nav>
+  </div>
+</div>
+
+<div
+  class="side-menu mobile-only {{ isSideMenuActive ? 'side-menu-open' : '' }}"
+>
+  <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link">Playground</a>
+  <a (click)="isSideMenuActive = false" [routerLink]="['/faq']" class="side-menu-link">FAQ</a>
+  <a
+    href="https://github.com/filiptrivan/spiderly"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="side-menu-link"
   >
-    <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link">Playground</a>
-    <a (click)="isSideMenuActive = false" [routerLink]="['/faq']" class="side-menu-link">FAQ</a>
-    <a
-      href="https://github.com/filiptrivan/spiderly"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="side-menu-link"
-    >
-      <i class="pi pi-github" style="font-size: 20px"></i>
-    </a>
-  </div>
-
-  <div class="header-spacer"></div>
+    <i class="pi pi-github" style="font-size: 20px"></i>
+  </a>
 </div>

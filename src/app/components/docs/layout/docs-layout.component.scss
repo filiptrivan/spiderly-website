@@ -20,6 +20,7 @@
   left: 1rem;
 
   .layout-menu-button {
+    background-color: var(--p-surface-900);
     border-radius: 50%;
     width: 34px;
     height: 34px;
@@ -109,7 +110,7 @@
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-  padding-top: 3rem;
+  padding-top: 3.5rem;
   transition: margin-left 0.2s;
 }
 

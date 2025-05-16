@@ -2,7 +2,7 @@
 $header-height: 70px;
 
 .header-wrapper {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -57,7 +57,6 @@ $header-height: 70px;
 
 .side-menu {
   position: fixed;
-  top: $header-height;
   left: 0;
   width: 100%;
   background-color: var(--p-surface-950);
@@ -82,10 +81,6 @@ $header-height: 70px;
 .side-menu-link {
   @extend .header-link;
   width: fit-content;  
-}
-
-.header-spacer {
-  margin-top: $header-height;
 }
 
 @media (min-width: vars.$md) {
