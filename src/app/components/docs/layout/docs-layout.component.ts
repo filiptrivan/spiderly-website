@@ -10,7 +10,6 @@ import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
 import hljs from 'highlight.js/lib/common';
 import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
 import { GettingStartedComponent } from "../../homepage/getting-started/getting-started.component";
-import { CLIENT_RENEG_LIMIT } from 'tls';
 
 @Component({
     selector: 'app-docs-layout',
