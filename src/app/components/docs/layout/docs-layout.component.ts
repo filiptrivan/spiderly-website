@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
 import hljs from 'highlight.js/lib/common';
 import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
-import { GettingStartedComponent } from "../../homepage/getting-started/getting-started.component";
+import { GettingStartedComponent } from "../getting-started/getting-started.component";
 
 @Component({
     selector: 'app-docs-layout',
@@ -17,12 +17,12 @@ import { GettingStartedComponent } from "../../homepage/getting-started/getting-
     styleUrl: './docs-layout.component.scss',
     standalone: true,
     imports: [
-    CommonModule,
-    RouterModule,
-    DocsAppTopBarComponent,
-    DocsSidebarMenuComponent,
-    GettingStartedComponent
-]
+        CommonModule,
+        RouterModule,
+        DocsAppTopBarComponent,
+        DocsSidebarMenuComponent,
+        GettingStartedComponent
+    ]
 })
 export class DocsLayoutComponent implements OnDestroy {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
@@ -41,8 +41,8 @@ export class DocsLayoutComponent implements OnDestroy {
     isGettingStartedPage: boolean;
 
     constructor(
-        protected layoutService: DocsLayoutService, 
-        protected renderer: Renderer2, 
+        protected layoutService: DocsLayoutService,
+        protected renderer: Renderer2,
         protected router: Router,
         @Inject(PLATFORM_ID) private platformId: Object,
         private route: ActivatedRoute,
@@ -55,12 +55,12 @@ export class DocsLayoutComponent implements OnDestroy {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
                     const isOutsideClicked = !(
-                        this.appSidebar.el.nativeElement.isSameNode(event.target) || 
+                        this.appSidebar.el.nativeElement.isSameNode(event.target) ||
                         this.appSidebar.el.nativeElement.contains(event.target) ||
-                        this.appTopbar.menubutton.nativeElement.isSameNode(event.target) || 
+                        this.appTopbar.menubutton.nativeElement.isSameNode(event.target) ||
                         this.appTopbar.menubutton.nativeElement.contains(event.target)
                     );
-                    
+
                     if (isOutsideClicked) {
                         this.hideMenu();
                     }
@@ -83,7 +83,7 @@ export class DocsLayoutComponent implements OnDestroy {
                     if (slug === 'getting-started') {
                         return of('')
                     }
-                    else{
+                    else {
                         return this.http.get(`assets/docs/${slug}.html`, { responseType: 'text' });
                     }
                 })
