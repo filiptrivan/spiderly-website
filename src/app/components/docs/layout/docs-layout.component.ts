@@ -10,6 +10,7 @@ import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
 import hljs from 'highlight.js/lib/common';
 import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
 import { GettingStartedComponent } from "../../homepage/getting-started/getting-started.component";
+import { CLIENT_RENEG_LIMIT } from 'tls';
 
 @Component({
     selector: 'app-docs-layout',
@@ -78,7 +79,8 @@ export class DocsLayoutComponent implements OnDestroy {
         this.route.paramMap
             .pipe(
                 switchMap((params) => {
-                    const slug = params.get('slug')!;
+                    const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
+
                     if (slug === 'getting-started') {
                         return of('')
                     }
@@ -88,7 +90,7 @@ export class DocsLayoutComponent implements OnDestroy {
                 })
             )
             .subscribe((docsHTML) => {
-                const slug = this.route.snapshot.paramMap.get('slug');
+                const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
 
                 if (slug === 'getting-started') {
                     this.isGettingStartedPage = true;
