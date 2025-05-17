@@ -8,18 +8,8 @@
     <div class="layout-main-container">
         <div class="layout-main">
             <div style="padding: 0 18px;">
-                <div #HTMLContainer [innerHTML]="docsHTML"></div>
-                <!-- <h1 style="margin-bottom: 15px">
-                    <div class="gradient-title">
-                    Spiderly Docs
-                    </div>
-                    <div class="title">
-                    Learn Everything About Spiderly
-                    </div>
-                </h1>
-                <div class="text-below-title">
-                    Find answers to common questions about Spiderly.
-                </div> -->
+                <app-getting-started *ngIf="isGettingStartedPage === true"></app-getting-started>
+                <div *ngIf="isGettingStartedPage === false" #HTMLContainer [innerHTML]="docsHTML"></div>
             </div>
         </div>
     </div>

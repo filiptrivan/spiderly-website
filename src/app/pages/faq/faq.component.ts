@@ -22,11 +22,11 @@ export class FAQComponent {
     },
     {
       question: 'How to install Spiderly?',
-      answer: 'You can find the installation instructions <a href="/#get-started" target="_blank" rel="noopener">here</a>.'
+      answer: 'You can find the installation instructions <a href="/docs/getting-started" target="_blank" rel="noopener">here</a>.'
     },    
     {
       question: 'What are the prerequisites for using Spiderly?',
-      answer: 'The prerequisites are listed in the first step of the <a href="/#get-started" target="_blank" rel="noopener">get-started guide</a>.'
+      answer: 'The prerequisites are listed in the first step of the <a href="/docs/getting-started" target="_blank" rel="noopener">getting-started guide</a>.'
     },
     {
       question: 'What parts of the app does Spiderly Source Generators generate?',

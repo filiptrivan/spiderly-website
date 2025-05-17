@@ -3,7 +3,7 @@
 <head>
     <style>
         .toc { margin-bottom: 18px; }
-        h1 { margin-bottom: 15px; }
+        h1 { margin-bottom: 30px; }
         h2 { margin-bottom: 12px; }
         h3 { margin-bottom: 9px; }
         .doc-section { 
@@ -11,10 +11,42 @@
             padding-top: 80px;
             margin-top: -80px; /* HACK: Because of header and toc goto */
         }
-        pre { padding: 0 18px !important; margin: 0 !important; }
+        pre { padding: 12px 18px 0 18px !important; margin: 0 !important; position: relative; }
         code { padding: 0 !important; }
         .namespace { color: var(--p-surface-500); font-size: 0.9em; margin-bottom: 15px; }
+        .copy-button {
+          position: absolute;
+          top: 6px;
+          right: 6px;
+          padding: 4px 8px;
+          background: var(--p-surface-500);
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          opacity: 0.7;
+          transition: opacity 0.2s;
+        }
+        .copy-button:hover {
+          opacity: 1;
+        }
     </style>
+    <script>
+        function copyCode(button) {
+            const pre = button.parentElement;
+            const code = pre.querySelector('code');
+            const text = code.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
 </head>
 <body>
 <h1 class="gradient-title">Spiderly Attributes</h1>
@@ -76,7 +108,7 @@
     and access the file in Azure Storage. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [BlobName]
@@ -97,7 +129,7 @@ public class User : BusinessObject&lt;long&gt;
     - You want cascade delete but don't need the strict validation of <span class="code-block">[ManyToOneRequired]</span> <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Comment : BusinessObject&lt;long&gt;
 {
     [DisplayName]
@@ -120,7 +152,7 @@ public class Comment : BusinessObject&lt;long&gt;
     <h3>Default behavior without 'Controller' attribute:</h3> Controllers are named as <span class="code-block">'{EntityName}Controller'</span> <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [Controller("SecurityController")]
 public class User { }
 
@@ -139,7 +171,7 @@ public class Permission { }
     <div class="summary"><h3>Usage:</h3> Marks a class for custom object mapping implementation. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [CustomMapper]
 public static partial class Mapper
 {
@@ -159,7 +191,7 @@ public static partial class Mapper
     Multiple validation rules can be chained together using dot notation e.g. <span class="code-block">EmailAddress().Length(5, 10)</span> <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [CustomValidator("EmailAddress().Length(5, 50)")] // Validates email format and length
@@ -179,7 +211,7 @@ public class User : BusinessObject&lt;long&gt;
     - If no property or class is marked with this attribute: The entity's 'Id' will be used <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [DisplayName]
@@ -236,7 +268,7 @@ public class Employee : BusinessObject&lt;long&gt;
     display names for a collection property in the entity. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Project : BusinessObject&lt;long&gt;
 {
     [DisplayName]
@@ -284,7 +316,7 @@ public class User : BusinessObject&lt;long&gt;
     define the relationship management structure. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class RolePermission
 {
     [M2MMaintanceEntity(nameof(Role.Permissions))]
@@ -305,7 +337,7 @@ public class RolePermission
     the UI controls for managing the <span class="code-block">many-to-many</span> relationship. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class RolePermission
 {
     [M2MMaintanceEntity(nameof(Role.Permissions))]
@@ -331,7 +363,7 @@ public class RolePermission
     - Generates required validation rules for both backend and frontend <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [ManyToOneRequired]
@@ -357,7 +389,7 @@ public class User : BusinessObject&lt;long&gt;
     <div class="summary"><h3>Usage:</h3> Specifies custom mapping configuration when projecting an entity to its DTO. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
 public class Achievement : BusinessObject&lt;long&gt;
 {
@@ -394,7 +426,7 @@ public class Achievement : BusinessObject&lt;long&gt;
     - The operation runs in the background <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [HttpGet]
 [SkipSpinner]
 public async Task SendNotificationEmail(long notificationId)
@@ -415,7 +447,7 @@ public async Task SendNotificationEmail(long notificationId)
     - If <span class="code-block">TranslatePluralEn</span> is not available, uses <span class="code-block">'{class_name}List'</span> <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [TranslateExcelEn("Users_Excel")]
 public class User : BusinessObject&lt;long&gt;
 {
@@ -436,7 +468,7 @@ public class User : BusinessObject&lt;long&gt;
     - If <span class="code-block">TranslatePluralSrLatnRS</span> is not available, uses <span class="code-block">'{class_name}List'</span> <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [TranslateExcelSrLatnRS("Korisnici_Excel")]
 public class User : BusinessObject&lt;long&gt;
 {
@@ -457,7 +489,7 @@ public class User : BusinessObject&lt;long&gt;
     - Excel export filenames (when <span class="code-block">TranslateExcelEn</span> is not specified) <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [TranslatePluralEn("User points")]
 public class UserPoint : BusinessObject&lt;long&gt;
 {
@@ -479,7 +511,7 @@ public class UserPoint : BusinessObject&lt;long&gt;
     - Excel export filenames (when <span class="code-block">TranslateExcelSrLatnRS</span> is not specified) <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [TranslatePluralSrLatnRS("Korisnički poeni")]
 public class UserPoint : BusinessObject&lt;long&gt;
 {
@@ -500,7 +532,7 @@ public class UserPoint : BusinessObject&lt;long&gt;
     - Used in base form details UI component title <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [TranslateSingularEn("User point")]
 public class UserPoint : BusinessObject&lt;long&gt;
 {
@@ -515,7 +547,7 @@ public class UserPoint : BusinessObject&lt;long&gt;
     - Used in server validation messages (e.g., <span class="code-block">Field 'Email address' can not be empty"</span>) <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [TranslateSingularEn("Email address")]
@@ -534,7 +566,7 @@ public class User : BusinessObject&lt;long&gt;
     - Used in base form details UI component title <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 [TranslateSingularSrLatnRS("Korisnički poen")]
 public class UserPoint : BusinessObject&lt;long&gt;
 {
@@ -549,7 +581,7 @@ public class UserPoint : BusinessObject&lt;long&gt;
     - Used in server validation messages (e.g., <span class="code-block">Polje 'Email adresa' ne sme biti prazno"</span>) <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [TranslateSingularSrLatnRS("Email adresa")]
@@ -591,7 +623,7 @@ public class User : BusinessObject&lt;long&gt;
     - <span class="code-block">many-to-one</span>: <span class="code-block">Autocomplete</span> <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
@@ -620,7 +652,7 @@ public class User : BusinessObject&lt;long&gt;
     - <span class="code-block">"col-12 md:col-6"</span> for all other controls <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Article : &lt;long&gt;
 {
     [UIControlWidth("col-12")]
@@ -643,7 +675,7 @@ public class Article : &lt;long&gt;
     <div class="summary"><h3>Usage:</h3> Excludes a property from being generated in the UI main form component. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     public string Name { get; set; }
@@ -664,7 +696,7 @@ public class User : BusinessObject&lt;long&gt;
     <div class="summary"><h3>Usage:</h3> Enables management of child entities through an ordered list in the parent entity's main UI form component. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Course : BusinessObject&lt;long&gt;
 {
     [DisplayName]
@@ -698,7 +730,7 @@ public class CourseItem : BusinessObject&lt;long&gt;
     By default, all controls are inside the <span class="code-block">"Details"</span> panel. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class User : BusinessObject&lt;long&gt;
 {
     [DisplayName]
@@ -723,7 +755,7 @@ public class User : BusinessObject&lt;long&gt;
     which are always displayed last in their declaration order. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Article : BusinessObject&lt;long&gt;
 {
     [UIPropertyBlockOrder("1")]
@@ -748,7 +780,7 @@ public class Article : BusinessObject&lt;long&gt;
     Must be used in combination with <span class="code-block">[SimpleManyToManyTableLazyLoad]</span> attribute. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Partner : BusinessObject&lt;long&gt;
 {
     [DisplayName]
@@ -778,7 +810,7 @@ public class Partner : BusinessObject&lt;long&gt;
     enabling proper relationship configuration and navigation in both directions. <br/> <br/>
 
     <h3>Example:</h3>
-    <pre class="card"><code class="language-csharp">
+    <pre class="card"><button class="copy-button" onclick="copyCode(this)">Copy</button><code class="language-csharp">
 public class Course : BusinessObject&lt;long&gt;
 {
     public virtual List&lt;Student&gt; Students { get; set; } = new();

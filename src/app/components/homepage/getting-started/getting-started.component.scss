@@ -22,7 +22,6 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
   font-size: 0.875rem;
-  background-color: var(--p-surface-900);
   border: 1px solid var(--p-surface-700);
   border-radius: var(--p-content-border-radius);
   line-height: 1.5;
@@ -49,7 +48,7 @@
 
 //#region Steps
 
-.get-started-card {
+.getting-started-card {
   overflow: auto;
   width: 100%;
   padding: 9px;
@@ -65,14 +64,14 @@
   }
 }
 
-.get-started-wrapper {
+.getting-started-wrapper {
   display: flex;
   flex-direction: row;
   gap: 18px;
 }
 
 @media (max-width: vars.$md) {
-  .get-started-wrapper {
+  .getting-started-wrapper {
     flex-direction: column;
   }
 }

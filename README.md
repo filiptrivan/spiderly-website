@@ -6,7 +6,7 @@
 
 It was hard to explain what Spiderly does, so I made this <a href="https://www.spiderly.dev" target="_blank" rel="noopener noreferrer">website</a> with a playground where you can just try it out yourself.
 
-The website also has a brief "Get Started" section that explains how to begin using Spiderly.
+The website also has a brief "Getting Started" section that explains how to begin using Spiderly.
 
 If you notice anything on the website that could be explained better, want to add more feature demos to the playground page, or find any bugs, feel free to contribute, open an issue, start a discussion, or submit a pull request.
 

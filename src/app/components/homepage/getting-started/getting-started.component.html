@@ -1,0 +1,67 @@
+<div>
+  <h1 style="margin-bottom: 30px;">
+    <div class="gradient-title">
+      Spiderly Getting Started
+    </div>
+  </h1>
+</div>
+<div style="display: flex; gap: 18px; flex-direction: column; margin-bottom: 18px;">
+  @for (step of getStartedSteps; track $index; let index = $index) {
+    <div class="carousel-item-wrapper">
+      <div class="getting-started-card">
+        <h2 class="title">
+          <span class="index">{{index + 1}}.</span> {{step.title}}
+        </h2>
+        <div [innerHTML]="step.description">
+        </div>
+      </div>
+      <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
+        <div class="terminal-wrapper">
+          <div style="margin-bottom: 1rem; display: flex;">
+            <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
+            <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
+            <div class="terminal-circle" style="background-color: var(--p-secondary-color); margin-left: 1rem;"></div>
+          </div>
+          @for (terminalMessage of step.terminalMessages; track $index) {
+            <code style="margin-top: 1rem; display: flex; align-items: center;">
+              <span class="terminal-message">
+                <div>
+                  <span style="color: var(--p-primary-400);">$</span>
+                    {{terminalMessage.text}}
+                  </div>
+                  <p-button (onClick)="copyTerminalMessageToClipboard(terminalMessage)" *ngIf="terminalMessage.showCopyButton" [icon]="terminalMessage.icon ?? 'pi pi-copy'" [outlined]="true" size="small" severity="secondary">
+                  </p-button>
+                </span>
+            </code>
+          }
+        </div>
+      </div>
+      <div *ngIf="step.additionalDescription != null" style="width: 100%; height: fit-content;">
+        <div class="terminal-wrapper">
+          <div>
+            <h3 class="title">Mandatory Prerequisites</h3>
+            <ul style="margin-bottom: 20px;">
+              <li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" rel="noopener noreferrer">SQL Server (Free Developer Edition)</a></li>
+              <li><a href="https://nodejs.org/en/download/" target="_blank" rel="noopener noreferrer">Node.js</a></li>
+              <li>Angular CLI: <span class="code-block">npm install -g &#64;angular/cli</span></li>
+              <li>
+                Code Editors (Recommended):
+                <ul>
+                  <li>Backend: <a href="https://visualstudio.microsoft.com/downloads/" target="_blank" rel="noopener noreferrer">Visual Studio (Community Edition)</a></li>
+                  <li>Frontend: <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener noreferrer">Visual Studio Code</a></li>
+                </ul>
+              </li>
+              <li><a href="https://dotnet.microsoft.com/en-us/download" target="_blank" rel="noopener noreferrer">.NET 9.0</a> (skip if you have installed Visual Studio)</li>
+              <li>EF Core CLI: <span class="code-block">dotnet tool install -g dotnet-ef</span></li>
+            </ul>
+            <h3 class="title">Optional Recommended Tools</h3>
+            <ul style="margin-bottom: 5px;">
+              <li><a href="https://learn.microsoft.com/en-us/ssms/download-sql-server-management-studio-ssms#download-ssms" target="_blank" rel="noopener noreferrer">SQL Server Management Studio</a></li>
+              <li>Visual Studio Code Extension: <a href="https://marketplace.visualstudio.com/items?itemName=Angular.ng-template" target="_blank" rel="noopener noreferrer">Angular Language Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

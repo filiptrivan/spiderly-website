@@ -17,9 +17,9 @@ export class DocsComponent {
       {
         items: [
           {
-            label: 'Docs home', 
+            label: 'Getting Started', 
             icon: 'pi pi-fw pi-home', 
-            routerLink: '/docs/home',
+            routerLink: '/docs/getting-started',
           },
           {
             separator: true,

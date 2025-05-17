@@ -1,22 +1,20 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.component';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'app-get-started',
-  templateUrl: './get-started.component.html',
-  styleUrl: './get-started.component.scss',
+  selector: 'app-getting-started',
+  templateUrl: './getting-started.component.html',
+  styleUrl: './getting-started.component.scss',
   standalone: true,
   imports: [
     CommonModule, 
     RouterModule,
-    SectionWrapperComponent,
     ButtonModule,
   ]
 })
-export class GetStartedComponent {
+export class GettingStartedComponent {
   lastSelectedStepIndex: number = 0;
 
   getStartedSteps: GetStartedStep[] = [
