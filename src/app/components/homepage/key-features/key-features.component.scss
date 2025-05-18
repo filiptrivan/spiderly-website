@@ -1,12 +1,12 @@
 @use "../../../../assets/variables.scss" as vars;
 
-.key-benefits-wrapper{
+.key-features-wrapper{
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
 }
 
-.key-benefit-card {
+.key-feature-card {
   width: 32.218%;
   // width: 49.165%;
   padding: 18px;
@@ -26,7 +26,11 @@
 }
 
 @media (max-width: 1130px) {
-  .key-benefit-card{
+  .key-feature-card{
     width: 100%;
   }
+}
+
+::ng-deep ul { 
+  margin-bottom: 0px !important;
 }

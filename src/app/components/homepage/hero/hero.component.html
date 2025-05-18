@@ -5,14 +5,19 @@
       <div class="title">Forget Boilerplate Code.</div>
     </h1>
     <div class="text-below-title" style="margin-bottom: 30px">
-      Spiderly is a .NET (C#) library that turns C# classes into a
-      complete .NET (C#) + Angular web apps, automatically updating all the
-      boilerplate code as your classes evolve. You're free to add your own logic
-      and customize the generated app exactly how you want.
+      Spiderly is a .NET (C#) code generation library that transforms an EF Core
+      model into a fully customizable .NET (C#) + Angular web application,
+      automatically updating all repetitive boilerplate code as your model
+      evolves.
     </div>
-    <div style="display: flex; gap: 12px;">
+    <div style="display: flex; gap: 12px">
       <p-button [routerLink]="['/playground']" label="Try Live Demo"></p-button>
-      <p-button [routerLink]="['/docs/getting-started']" label="Get Started" [outlined]="true" severity="secondary"></p-button>
+      <p-button
+        [routerLink]="['/docs/getting-started']"
+        label="Get Started"
+        [outlined]="true"
+        severity="secondary"
+      ></p-button>
     </div>
   </div>
 </app-section-wrapper>

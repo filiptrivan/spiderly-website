@@ -45,9 +45,9 @@ export class KeyBenefitsComponent {
       icon: 'pi pi-wrench'
     },
     {
-      title: 'Core Features Focus',
+      title: 'Business Logic Focus',
       description:
-        'Forget boilerplate code and focus on core features that matter and deliver real value to your customers.',
+        'With Spiderly handling the scaffolding, you can forget about boilerplate code and focus on the core business logic that truly matters.',
       icon: 'pi pi-star'
     },
   ];
