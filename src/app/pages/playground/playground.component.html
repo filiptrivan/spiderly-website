@@ -1,84 +1,88 @@
-<app-section-wrapper textAlign="center" >
+<app-section-wrapper textAlign="center">
   <div>
     <h1 style="margin-bottom: 15px">
-      <div class="gradient-title">
-        Welcome to Playground.
-      </div>
-      <div class="title">
-        Try Spiderly Live.
-      </div>
+      <div class="gradient-title">Welcome to Playground.</div>
+      <div class="title">Try Spiderly Live.</div>
     </h1>
     <div class="text-below-title">
-      Here you can test and explore Spiderly's features. Please note that the available features on this page are quite limited compared to the full product.
+      Here you can test and explore Spiderly's features. Please note that the
+      available features on this page are quite limited compared to the full
+      product.
     </div>
   </div>
 </app-section-wrapper>
 
-<app-section-wrapper parts="one" textAlign="left" backgroundColor="light">
+<app-section-wrapper backgroundColor="light">
   <div>
-    <h2 style="margin-bottom: 15px;">
-      <div class="subtitle">
-        App Demo
-      </div>
+    <h2 style="margin-bottom: 15px">
+      <div class="subtitle">App Demo</div>
     </h2>
     <div class="text-below-subtitle">
-      Here is the result of the C# classes initialized in the 'Describing the App' section below. 
-      Change the classes yourself, save them and see live changes here.
+      Here is the result of the C# classes initialized in the 'Describing the
+      App' section below. Change the classes yourself, save them and see live
+      changes here.
     </div>
   </div>
-  
+
   <div class="web-app">
-    <app-playground-layout [menu]="menu" [entities]="entities"></app-playground-layout>
+    <app-playground-layout
+      [menu]="menu"
+      [entities]="entities"
+    ></app-playground-layout>
   </div>
 </app-section-wrapper>
 
-<app-section-wrapper parts="one" textAlign="left">
-
+<app-section-wrapper>
   <div>
-    <h2 style="margin-bottom: 15px;">
-      <div class="subtitle">
-        Describing the App
-      </div>
+    <h2 style="margin-bottom: 15px">
+      <div class="subtitle">Describing the App</div>
     </h2>
     <div class="text-below-subtitle">
-      Here, we are describing the app using C# classes, properties and attributes.
-      After the class save, any changes made here will be reflected in the 'App Demo' section above. 
-      We helped you a little bit with 1. User and 2. Gender classes, but if you want delete them and start fresh.
+      Here, we are describing the app using C# classes, properties and
+      attributes. After the class save, any changes made here will be reflected
+      in the 'App Demo' section above. We helped you a little bit with 1. User
+      and 2. Gender classes, but if you want delete them and start fresh.
     </div>
   </div>
 
-  <form style="width: 100%;">
-    @for (entityFormGroup of getFormArrayGroups(entitiesFormArray); track $index; let entityIndex = $index) {
-      <index-card 
-      [index]="entityIndex" 
-      [last]="false" 
-      [crudMenu]="entitiesCrudMenu" 
+  <form style="width: 100%">
+    @for (entityFormGroup of getFormArrayGroups(entitiesFormArray); track
+    $index; let entityIndex = $index) {
+    <index-card
+      [index]="entityIndex"
+      [last]="false"
+      [crudMenu]="entitiesCrudMenu"
       (onMenuIconClick)="lastEntitiesMenuIconIndexClicked.index = $event"
       [collapsed]="entityFormGroup.controls.collapsed.value"
-      >
-        <div class="playground-code-block-wrapper">
-
-          <div style="width: 100%;">
-            <app-class-form
+    >
+      <div class="playground-code-block-wrapper">
+        <div style="width: 100%">
+          <app-class-form
             [entities]="entities"
             [menu]="menu"
             [entityFormGroup]="entityFormGroup"
             [entityIndex]="entityIndex"
             [cSharpDataTypeOptions]="cSharpDataTypeOptions"
-            ></app-class-form>
-          </div>
-
-          <div class="class-code-editor">
-            <app-class-code-editor
-            [entityFormGroup]="entityFormGroup"
-            ></app-class-code-editor>
-          </div>
-
+          ></app-class-form>
         </div>
-        <p-button (onClick)="saveEntityFormGroup(entityFormGroup, entityIndex)" label="Save" icon="pi pi-save"></p-button>
-      </index-card>
-    }
-    <p-button (onClick)="addNewEntity()" label="Add new class" icon="pi pi-plus"></p-button>
-  </form>
 
+        <div class="class-code-editor">
+          <app-class-code-editor
+            [entityFormGroup]="entityFormGroup"
+          ></app-class-code-editor>
+        </div>
+      </div>
+      <p-button
+        (onClick)="saveEntityFormGroup(entityFormGroup, entityIndex)"
+        label="Save"
+        icon="pi pi-save"
+      ></p-button>
+    </index-card>
+    }
+    <p-button
+      (onClick)="addNewEntity()"
+      label="Add new class"
+      icon="pi pi-plus"
+    ></p-button>
+  </form>
 </app-section-wrapper>

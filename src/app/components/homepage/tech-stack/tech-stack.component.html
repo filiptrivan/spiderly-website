@@ -1,27 +1,31 @@
-<app-section-wrapper
-  parts="one"
-  textAlign="left"
-  id="key-features"
->
+<app-section-wrapper id="key-features">
   <div>
-    <h2 style="margin-bottom: 15px;">
+    <h2 style="margin-bottom: 15px">
       <div class="subtitle">Generated App Tech Stack</div>
     </h2>
     <div class="text-below-subtitle">
-      The code generator is driven by attributes applied to EF Core entities and their properties. Implemented using C# Source Generators, it triggers generation on every keystroke for classes within the specified namespace, so it doesn't slow down your build by generating all files at once.
+      The code generator is driven by attributes applied to EF Core entities and
+      their properties. Implemented using C# Source Generators, it triggers
+      generation on every keystroke for classes within the specified namespace,
+      so it doesn't slow down your build by generating all files at once.
     </div>
   </div>
   <div class="tech-stack-grid">
     @for (tech of techStack; let index = $index; track $index) {
-    <div class="card" style="display: flex; align-items: center;">
-      <div style="display: flex; gap: 12px; align-items: center;">
-        <img [src]="'assets/tech-stack/' + tech.logoUrl" [alt]="tech.subtitle" [title]="tech.subtitle" style="display: flex; align-items: center;"/>
+    <div class="card" style="display: flex; align-items: center">
+      <div style="display: flex; gap: 12px; align-items: center">
+        <img
+          [src]="'assets/tech-stack/' + tech.logoUrl"
+          [alt]="tech.subtitle"
+          [title]="tech.subtitle"
+          style="display: flex; align-items: center"
+        />
         <div class="vertical-separator"></div>
-        <div style="margin-left: 2px;">
-          <h3 style="margin-bottom: 4px;">
+        <div style="margin-left: 2px">
+          <h3 style="margin-bottom: 4px">
             {{ tech.title }}
           </h3>
-          <h4 style="font-weight: normal;">
+          <h4 style="font-weight: normal">
             {{ tech.subtitle }}
           </h4>
         </div>
