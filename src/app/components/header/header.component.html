@@ -6,25 +6,16 @@
     </div>
 
     <nav class="header-desktop desktop-only">
-      <a [routerLink]="['/playground']" class="header-link">Playground</a>
-      <a [routerLink]="['/faq']" class="header-link">FAQ</a>
-      <a [routerLink]="['/docs/getting-started']" class="header-link">Docs</a>
-      <a
-        href="https://github.com/filiptrivan/spiderly"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="header-link"
-        style="display: flex; align-items: center"
-      >
-        <i class="pi pi-github" style="font-size: 20px"></i>
-      </a>
+      <a [routerLink]="['/playground']" class="icon-link" title="Go to Playground">Playground</a>
+      <a [routerLink]="['/faq']" class="icon-link" title="Go to FAQ">FAQ</a>
+      <a [routerLink]="['/docs/getting-started']" class="icon-link" title="Go to Docs">Docs</a>
     </nav>
 
     <nav class="mobile-only" style="display: flex; align-items: center">
       @if(isSideMenuActive){
-      <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="header-link pi pi-times"></i>
+      <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="icon-link pi pi-times"></i>
       } @else{
-      <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="header-link pi pi-bars"></i>
+      <i (click)="toggleSideMenu()" style="font-size: 1.2rem;" class="icon-link pi pi-bars"></i>
       }
     </nav>
   </div>
@@ -33,15 +24,7 @@
 <div
   class="side-menu mobile-only {{ isSideMenuActive ? 'side-menu-open' : '' }}"
 >
-  <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link">Playground</a>
-  <a (click)="isSideMenuActive = false" [routerLink]="['/faq']" class="side-menu-link">FAQ</a>
-  <a (click)="isSideMenuActive = false" [routerLink]="['/docs/getting-started']" class="side-menu-link">Docs</a>
-  <a
-    href="https://github.com/filiptrivan/spiderly"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="side-menu-link"
-  >
-    <i class="pi pi-github" style="font-size: 20px"></i>
-  </a>
+  <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link" title="Go to Playground">Playground</a>
+  <a (click)="isSideMenuActive = false" [routerLink]="['/faq']" class="side-menu-link" title="Go to FAQ">FAQ</a>
+  <a (click)="isSideMenuActive = false" [routerLink]="['/docs/getting-started']" class="side-menu-link" title="Go to Docs">Docs</a>
 </div>

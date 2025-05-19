@@ -51,8 +51,8 @@ export class GettingStartedComponent {
       title: 'Configure app settings',
       description: `In <span class="code-block">{your_app_name}\\API\\{your_app_name}.WebAPI\\appsettings.json</span>, set the following fields: <span class="code-block">"EmailSender"</span>, <span class="code-block">"EmailSenderPassword"</span>, <span class="code-block">"UnhandledExceptionRecipients"</span>, and <span class="code-block">"GoogleClientId"</span>. 
       <p>In <span class="code-block">{your_app_name}\\Angular\\src\\environments\\environment.ts</span>, set the <span class="code-block">"GoogleClientId"</span> field.</p>
-      <p><a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="noopener">How to make "EmailSenderPassword"?</a></p>
-      <div><a href="https://youtu.be/C9EQcMOy5c4?si=781--PodiMHf6Hrl" target="_blank" rel="noopener">How to make "GoogleClientId"?</a></div>
+      <p><a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="nofollow noopener noreferrer" title="How to make EmailSenderPassword?">How to make "EmailSenderPassword"?</a></p>
+      <div><a href="https://youtu.be/C9EQcMOy5c4?si=781--PodiMHf6Hrl" target="_blank" rel="nofollow noopener noreferrer" title="How to make GoogleClientId?">How to make "GoogleClientId"?</a></div>
       `,
     },
     {

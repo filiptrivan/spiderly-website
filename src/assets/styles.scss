@@ -147,3 +147,18 @@ ul {
   padding-left: 25px;
   margin-top: 8px !important;
 }
+
+.icon-link {
+  cursor: pointer;
+  transition: color 100ms ease;
+  color: var(--p-surface-400);
+
+  &:hover {
+    color: var(--p-text-color);
+  }
+}
+
+.side-menu-link {
+  @extend .icon-link;
+  width: fit-content;  
+}

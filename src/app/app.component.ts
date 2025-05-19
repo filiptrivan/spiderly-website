@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FooterComponent } from "./components/footer/footer.component";
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     HeaderComponent,
     ToastModule,
     ConfirmDialogModule,
+    FooterComponent
 ],
   templateUrl: './app.component.html',
 })

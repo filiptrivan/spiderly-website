@@ -22,11 +22,11 @@ export class FAQComponent {
     },
     {
       question: 'How to install Spiderly?',
-      answer: 'You can find the installation instructions <a href="/docs/getting-started" target="_blank" rel="noopener">here</a>.'
+      answer: 'You can find the installation instructions <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Installation Instructions">here</a>.'
     },    
     {
       question: 'What are the prerequisites for using Spiderly?',
-      answer: 'The prerequisites are listed in the first step of the <a href="/docs/getting-started" target="_blank" rel="noopener">getting-started guide</a>.'
+      answer: 'The prerequisites are listed in the first step of the <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Getting Started Guide">getting-started guide</a>.'
     },
     {
       question: 'What parts of the app does Spiderly Source Generators generate?',
@@ -50,7 +50,7 @@ export class FAQComponent {
     },
     {
       question: 'Is Spiderly open-source?',
-      answer: 'Yes, Spiderly is <a href="https://github.com/filiptrivan/spiderly" target="_blank" rel="noopener noreferrer">open-source</a> and released under the MIT License. You\'re free to use it in personal, commercial, or open-source projects.'
+      answer: 'Yes, Spiderly is <a href="https://github.com/filiptrivan/spiderly" target="_blank" rel="noopener noreferrer" title="Go to GitHub Repository">open-source</a> and released under the MIT License. You\'re free to use it in personal, commercial, or open-source projects.'
     },
     {
       question: 'Does Spiderly work on Linux operating systems?',

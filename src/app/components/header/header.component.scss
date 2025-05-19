@@ -45,16 +45,6 @@ $header-height: 70px;
   }
 }
 
-.header-link {
-  cursor: pointer;
-  transition: color 100ms ease;
-  color: var(--p-surface-400);
-
-  &:hover {
-    color: var(--p-text-color);
-  }
-}
-
 .side-menu {
   position: fixed;
   left: 0;
@@ -76,11 +66,6 @@ $header-height: 70px;
 
 .side-menu-open {
   transform: translateY(0);
-}
-
-.side-menu-link {
-  @extend .header-link;
-  width: fit-content;  
 }
 
 @media (min-width: vars.$md) {
