@@ -6,13 +6,14 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
 @Component({
   selector: 'app-key-benefits',
   templateUrl: './key-benefits.component.html',
-  styleUrl: './key-benefits.component.scss',
+  styleUrls: [
+    './key-benefits.component.scss',
+    '../../../pages/homepage/homepage.component.scss'
+  ],
   standalone: true,
   imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
 export class KeyBenefitsComponent {
-  lastSelectedStepIndex: number = 0;
-
   keyBenefits: KeyBenefit[] = [
     {
       title: 'Faster Development',
@@ -53,7 +54,7 @@ export class KeyBenefitsComponent {
   ];
 }
 
-export interface KeyBenefit {
+interface KeyBenefit {
   title: string;
   description: string;
   icon: string;

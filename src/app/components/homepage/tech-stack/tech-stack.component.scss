@@ -1,0 +1,24 @@
+.tech-stack-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+@media (max-width: 1080px) {
+    .tech-stack-grid {
+        gap: 12px;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .tech-stack-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .tech-stack-grid {
+        grid-template-columns: 1fr;
+    }
+}

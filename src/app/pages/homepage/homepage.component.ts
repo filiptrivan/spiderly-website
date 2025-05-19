@@ -5,17 +5,19 @@ import { KeyBenefitsComponent } from "../../components/homepage/key-benefits/key
 import { WordFromAFounderComponent } from "../../components/homepage/word-from-a-founder/word-from-a-founder.component";
 import { Meta, Title } from '@angular/platform-browser';
 import { KeyFeaturesComponent } from "../../components/homepage/key-features/key-features.component";
+import { TechStackComponent } from "../../components/homepage/tech-stack/tech-stack.component";
 
 @Component({
   selector: 'app-homepage',
   template: ` 
   <app-hero/>
   <app-key-features/>
+  <app-tech-stack/>
   <app-key-benefits/>
   <app-word-from-a-founder/>
   `,
   standalone: true,
-  imports: [CommonModule, HeroComponent, KeyBenefitsComponent, WordFromAFounderComponent, KeyFeaturesComponent],
+  imports: [CommonModule, HeroComponent, KeyBenefitsComponent, WordFromAFounderComponent, KeyFeaturesComponent, TechStackComponent],
 })
 export class HomepageComponent {
   

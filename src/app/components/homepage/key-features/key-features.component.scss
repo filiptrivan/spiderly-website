@@ -1,18 +1,4 @@
-@use "../../../../assets/variables.scss" as vars;
-
-.key-features-wrapper{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-
 .key-feature-card {
-  width: 32.218%;
-  // width: 49.165%;
-  padding: 18px;
-  border-radius: var(--p-content-border-radius);
-  border: 1px solid var(--p-surface-700);
-
   .title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -25,12 +11,25 @@
   }
 }
 
-@media (max-width: 1130px) {
-  .key-feature-card{
-    width: 100%;
-  }
-}
-
 ::ng-deep ul { 
   margin-bottom: 0px !important;
+}
+
+.key-feature-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 1080px) {
+    .key-feature-grid {
+        gap: 12px;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .key-feature-grid {
+        grid-template-columns: 1fr;
+    }
 }

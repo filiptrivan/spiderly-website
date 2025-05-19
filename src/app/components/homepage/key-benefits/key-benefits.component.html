@@ -1,4 +1,4 @@
-<app-section-wrapper parts="one" textAlign="left" id="key-benefits">
+<app-section-wrapper parts="one" textAlign="left" backgroundColor="light" id="key-benefits">
   <div>
     <h2>
       <div class="subtitle">
@@ -6,9 +6,9 @@
       </div>
     </h2>
   </div>
-  <div class="key-benefits-wrapper">
+  <div class="key-benefit-grid">
     @for (keyBenefit of keyBenefits; let index = $index; track $index) {
-      <div class="key-benefit-card">
+      <div class="key-benefit-card card">
         <div style="display: flex; gap: 8px;">
           <i class="icon {{keyBenefit.icon}}"></i>
           <h3 class="title">
