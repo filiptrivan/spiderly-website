@@ -59,8 +59,8 @@ export class PlaygroundComponent {
     private titleService: Title, 
     private metaService: Meta
   ) {
-    this.titleService.setTitle('Try and Explore Spiderly Live | Spiderly Playground');
-    this.metaService.updateTag({ name: 'description', content: 'Explore the Spiderly Playground to instantly generate .NET (C#) + Angular web apps from your C# classes. Test and experiment with automatic boilerplate code updates.' });
+    this.titleService.setTitle('Try Spiderly Online Demo Live | Spiderly Playground');
+    this.metaService.updateTag({ name: 'description', content: 'Try the Spiderly Playground live to generate a .NET (C#) + Angular web app from your EF Core entities. Test automatic boilerplate code updates online.' });
     this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
   }
 

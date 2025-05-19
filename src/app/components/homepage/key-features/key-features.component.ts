@@ -21,7 +21,7 @@ export class KeyFeaturesComponent {
         <ul>
           <li>CRUD UI</li>
           <li>API client</li>
-          <li>.NET controllers</li>
+          <li>Controllers</li>
           <li>Service methods — database interaction</li>
         </ul>`,
       icon: 'pi pi-pencil',

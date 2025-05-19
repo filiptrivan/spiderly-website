@@ -16,7 +16,7 @@ export class NotFoundComponent {
     private metaService: Meta
   ) {
     this.titleService.setTitle('404 Page Not Found | Spiderly');
-    this.metaService.updateTag({ name: 'description', content: 'The page you\'re looking for doesn\'t exist. Return to the Spiderly homepage to generate your .NET (C#) + Angular web apps.' });
+    this.metaService.updateTag({ name: 'description', content: 'The page you\'re looking for doesn\'t exist. Return to the Spiderly homepage to generate your .NET (C#) + Angular web app.' });
     this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
   }
 } 

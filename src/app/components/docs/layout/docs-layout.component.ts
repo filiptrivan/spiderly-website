@@ -103,7 +103,7 @@ export class DocsLayoutComponent implements OnDestroy {
                     this.isGettingStartedPage = false;
                     this.meta.updateTag({
                         name: 'description',
-                        content: `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, Auth, Validations, Mappings, and UI for your web apps.`,
+                        content: `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
                     });
                     if (isPlatformBrowser(this.platformId)) {
                         this.highlightCode();

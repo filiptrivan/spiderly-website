@@ -25,8 +25,8 @@ export class HomepageComponent {
     private titleService: Title,
     private metaService: Meta
   ) {
-    this.titleService.setTitle('Spiderly - .NET (C#) + Angular Web Apps Code Generator');
-    this.metaService.updateTag({ name: 'description', content: 'Spiderly is a .NET (C#) code generation tool that turns EF Core model into fully customizable .NET (C#) + Angular web apps. No more boilerplate code - focus only on business logic.' });
+    this.titleService.setTitle('Spiderly - .NET (C#) + Angular Web App Code Generator');
+    this.metaService.updateTag({ name: 'description', content: 'Spiderly is a free open-source .NET (C#) boilerplate code generator that turns EF Core model into fully customizable .NET (C#) + Angular web application.' });
     this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
   }
 

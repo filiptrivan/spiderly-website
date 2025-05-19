@@ -33,14 +33,19 @@ export class FAQComponent {
       answer: `
         <h3>Frontend (UI)</h3>
         <ul>
-          <li>Admin pages</li>
-          <li>Controllers</li>
+          <li>TypeScript classes with strongly typed constructors</li> 
+          <li>Table view pages — records with sorting, filtering, and pagination</li> 
+          <li>Admin pages — forms for creating and editing records</li> 
+          <li>Angular reactive form validators</li> 
+          <li>API client</li>
         </ul>
         <h3>Backend (API)</h3>
         <ul>
+          <li>Partial DTO classes</li>
           <li>Controllers</li>
-          <li>Services (CRUD operations, table filtering, Excel export)</li>
-          <li>Mappings (Entities <-> DTO)</li>
+          <li>FluentValidation rules</li>
+          <li>CRUD service methods — database interaction</li>
+          <li>Object mapping configuration</li>
         </ul>`
     },
     {
@@ -62,7 +67,7 @@ export class FAQComponent {
     private metaService: Meta
   ) {
     this.titleService.setTitle('Frequently Asked Questions | Spiderly FAQ');
-    this.metaService.updateTag({ name: 'description', content: 'Find answers to common questions about Spiderly - the powerful tool that instantly generates full-stack .NET (C#) + Angular applications from your C# classes.'});
+    this.metaService.updateTag({ name: 'description', content: 'Find answers to common questions about Spiderly. Our FAQ covers pricing, OS support, tech stack, code generation scope, prerequisites, installation guide.'});
     this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
   }
 

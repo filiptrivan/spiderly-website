@@ -64,7 +64,7 @@ export class TechStackComponent {
         logoUrl: 'fluent-validation-logo.svg',
       },
       {
-        title: 'Mapping',
+        title: 'Object Mapping',
         subtitle: 'Mapster',
         logoUrl: 'mapster-logo.svg',
       },
