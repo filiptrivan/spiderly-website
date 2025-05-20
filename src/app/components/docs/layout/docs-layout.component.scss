@@ -283,4 +283,12 @@
   }
 }
 
+:host ::ng-deep {
+  .layout-menu {
+    a:hover {
+      text-decoration: none !important;
+    }
+  }
+}
+
 //#endregion

@@ -27,7 +27,7 @@ collapseIcon="pi pi-chevron-down"
         <div *ngIf="showCrudMenu && crudMenu">
             <i class="pi pi-ellipsis-h icon-hover" (click)="menuItemClick(index, $event)"></i>
             <!-- FT: [tabindex]="undefined": https://github.com/primefaces/primeng/issues/13934 -->
-            <p-menu #menu [model]="crudMenu" [popup]="true" [tabindex]="undefined" appendTo="body"></p-menu>
+            <p-menu #menu [model]="crudMenu" [popup]="true" [tabindex]="undefined" appendTo="body" styleClass="no-underline-menu"></p-menu>
         </div>
         <div *ngIf="showRemoveIcon">
             <i class="pi pi-minus icon-hover error-color-light" (click)="removeItemClick()"></i>

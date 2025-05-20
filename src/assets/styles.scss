@@ -162,3 +162,16 @@ ul {
   @extend .icon-link;
   width: fit-content;  
 }
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.no-underline:hover {
+  text-decoration: none;
+}
+

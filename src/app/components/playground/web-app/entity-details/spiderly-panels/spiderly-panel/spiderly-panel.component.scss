@@ -8,3 +8,12 @@
 .icon-hover:hover {
 	background-color: var(--p-surface-800);
 }
+
+::ng-deep .no-underline-menu {
+  .p-menuitem a.p-menuitem-link:hover,
+  .p-menu-item a.p-menu-item-link:hover,
+  a.p-menuitem-link:hover,
+  a.p-menu-item-link:hover {
+    text-decoration: none !important;
+  }
+}
