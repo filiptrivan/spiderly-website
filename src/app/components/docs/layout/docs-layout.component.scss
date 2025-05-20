@@ -125,13 +125,13 @@
 .layout-sidebar {
   position: fixed;
   width: 220px;
-  height: calc(100% - 8.5rem);
+  height: calc(100% - 9rem);
   overflow-y: auto;
   user-select: none;
   top: 7.75rem;
-  left: 1rem;
+  left: 18px;
   transition: transform 0.2s, left 0.2s;
-  background-color: var(--p-surface-900);
+  background-color: var(--p-surface-950);
   box-shadow: 0 0 1px 1px var(--p-surface-700) !important;
   border-radius: var(--p-content-border-radius);
   padding: 1rem;
