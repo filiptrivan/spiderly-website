@@ -202,6 +202,7 @@
 
             &:hover {
                 background-color: var(--p-surface-800);
+                text-decoration: none;
             }
 
             &:focus {
@@ -275,6 +276,7 @@
   
     &:hover {
       background-color: var(--p-surface-800);
+      text-decoration: none;
     }
   
     &:focus {
@@ -282,13 +284,4 @@
     }
   }
 }
-
-:host ::ng-deep {
-  .layout-menu {
-    a:hover {
-      text-decoration: none !important;
-    }
-  }
-}
-
 //#endregion
