@@ -43,6 +43,10 @@ $header-height: 70px;
   @media (min-width: vars.$md) {
     gap: 4rem;           
   }
+  
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 .side-menu {
@@ -62,6 +66,10 @@ $header-height: 70px;
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: var(--p-surface-800);
+  
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 .side-menu-open {

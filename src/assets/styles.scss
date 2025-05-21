@@ -162,3 +162,36 @@ ul {
   @extend .icon-link;
   width: fit-content;  
 }
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.p-menu .p-menuitem-link:hover,
+.p-menubar .p-menuitem-link:hover,
+.p-tieredmenu .p-menuitem-link:hover,
+.p-contextmenu .p-menuitem-link:hover,
+.p-megamenu .p-menuitem-link:hover,
+.p-slidemenu .p-menuitem-link:hover,
+.p-panelmenu .p-menuitem-link:hover,
+.p-menu a:hover,
+.p-menubar a:hover,
+.p-tieredmenu a:hover,
+.p-contextmenu a:hover,
+.p-megamenu a:hover,
+.p-slidemenu a:hover,
+.p-panelmenu a:hover,
+.p-menu .p-menuitem a:hover,
+.p-menubar .p-menuitem a:hover,
+.p-tieredmenu .p-menuitem a:hover,
+.p-contextmenu .p-menuitem a:hover,
+.p-megamenu .p-menuitem a:hover,
+.p-slidemenu .p-menuitem a:hover,
+.p-panelmenu .p-menuitem a:hover {
+  text-decoration: none !important;
+}
+
