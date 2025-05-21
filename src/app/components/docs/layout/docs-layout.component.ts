@@ -1,12 +1,12 @@
-import { Component, ElementRef, Inject, Input, OnDestroy, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, of, Subscription, switchMap } from 'rxjs';
 import { DocsAppTopBarComponent } from './topbar/docs-topbar.component';
 import { DocsLayoutService } from './docs-layout.service';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
+import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
 import { AttributesDocsComponent } from "../attributes/attributes.component";
@@ -72,39 +72,27 @@ export class DocsLayoutComponent implements OnDestroy {
     }
 
     ngOnInit() {
-        this.route.paramMap
-            .pipe(
-                switchMap((params) => {
-                    const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
+        const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path ?? '';
 
-                    if (slug === 'getting-started') {
-                        return of('')
-                    }
-                    else {
-                        return this.http.get(`assets/docs/${slug}.html`, { responseType: 'text' });
-                    }
-                })
-            )
-            .subscribe((docsHTML) => {
-                const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
+        const metaDescriptions: Record<string, string> = {
+            'getting-started': `Discover Spiderly prerequisites, installation steps, and structure setup using Spiderly.CLI. Start building fast, scalable web apps with ease.`,
+            'attributes': `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
+        };
 
-                if (slug === 'getting-started') {
-                    this.isGettingStartedPage = true;
-                    this.meta.updateTag({
-                        name: 'description',
-                        content: `Discover Spiderly prerequisites, installation steps, and structure setup using Spiderly.CLI. Start building fast, scalable web apps with ease.`,
-                    });
-                }
-                else if (slug === 'attributes') {
-                    this.isAttributesDocsPage = true;
-                    this.meta.updateTag({
-                        name: 'description',
-                        content: `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
-                    });
-                }
+        if (slug === 'getting-started') {
+            this.isGettingStartedPage = true;
+        } else if (slug === 'attributes') {
+            this.isAttributesDocsPage = true;
+        }
 
-                this.title.setTitle(this.formatTitle(slug));
+        if (metaDescriptions[slug]) {
+            this.meta.updateTag({
+                name: 'description',
+                content: metaDescriptions[slug],
             });
+        }
+
+        this.title.setTitle(this.formatTitle(slug));
     }
 
     formatTitle(slug: string): string {

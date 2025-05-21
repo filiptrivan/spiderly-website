@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { Highlight } from 'ngx-highlightjs';
 import { CopyButtonComponent } from '../../copy-button/copy-button.component';
+import { HighlightModule } from 'ngx-highlightjs';
+
 
 @Component({
   selector: 'app-attributes-docs',
@@ -13,7 +14,7 @@ import { CopyButtonComponent } from '../../copy-button/copy-button.component';
     CommonModule,
     RouterModule,
     ButtonModule,
-    Highlight,
+    HighlightModule,
     CopyButtonComponent
 ]
 })
