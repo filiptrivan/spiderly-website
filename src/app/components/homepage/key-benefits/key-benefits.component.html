@@ -6,12 +6,12 @@
       </div>
     </h2>
   </div>
-  <div class="key-benefit-grid">
+  <div class="key-grid">
     @for (keyBenefit of keyBenefits; let index = $index; track $index) {
-      <div class="key-benefit-card card">
-        <div style="display: flex; gap: 8px;">
-          <i class="icon {{keyBenefit.icon}}"></i>
-          <h3 class="title">
+      <div class="key-card card">
+        <div class="key-title-wrapper">
+          <i class="key-icon {{keyBenefit.icon}}"></i>
+          <h3 class="key-title">
             {{keyBenefit.title}}
           </h3>
         </div>

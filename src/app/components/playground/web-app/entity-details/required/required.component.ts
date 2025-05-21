@@ -4,7 +4,6 @@ import { Component } from "@angular/core";
   selector: 'required',
   templateUrl: './required.component.html',
   styles: [],
-  standalone: true,
 })
 export class RequiredComponent {
 

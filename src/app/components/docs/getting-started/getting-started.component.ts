@@ -7,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-getting-started',
   templateUrl: './getting-started.component.html',
   styleUrl: './getting-started.component.scss',
-  standalone: true,
   imports: [
     CommonModule, 
     RouterModule,
@@ -15,8 +14,6 @@ import { ButtonModule } from 'primeng/button';
   ]
 })
 export class GettingStartedComponent {
-  lastSelectedStepIndex: number = 0;
-
   getStartedSteps: GetStartedStep[] = [
     {
       title: 'Install Prerequisites',

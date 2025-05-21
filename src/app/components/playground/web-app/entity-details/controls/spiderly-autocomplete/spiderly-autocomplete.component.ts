@@ -10,7 +10,6 @@ import { TooltipModule } from 'primeng/tooltip';
     selector: 'spiderly-autocomplete',
     templateUrl: './spiderly-autocomplete.component.html',
     styles: [],
-    standalone: true,
     imports: [
         ReactiveFormsModule,
         FormsModule,

@@ -10,7 +10,6 @@ import { InputTextModule } from 'primeng/inputtext';
     selector: 'spiderly-textbox',
     templateUrl: './spiderly-textbox.component.html',
     styles: [],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

@@ -17,7 +17,6 @@ import { PrimengOption } from '../entity-details/entities/primeng-option';
     selector: 'app-playground-layout',
     templateUrl: './playground-layout.component.html',
     styleUrl: './playground-layout.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         RouterModule,

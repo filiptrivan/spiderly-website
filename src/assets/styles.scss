@@ -1,5 +1,6 @@
 @use "./variables.scss" as vars;
 @import "primeicons/primeicons.css";
+@import "./spiderly-code-highlight.css";
 
 :root {
   --background-color: #0a0a0a;
@@ -59,6 +60,10 @@ pre {
 a {
   text-decoration: none;
   color: var(--p-primary-400);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .quotation {
@@ -145,7 +150,7 @@ a {
 
 ul {
   padding-left: 25px;
-  margin-top: 8px !important;
+  margin-top: 8px;
 }
 
 .icon-link {
@@ -155,6 +160,7 @@ ul {
 
   &:hover {
     color: var(--p-text-color);
+    text-decoration: none;
   }
 }
 
@@ -163,35 +169,9 @@ ul {
   width: fit-content;  
 }
 
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.p-menu .p-menuitem-link:hover,
-.p-menubar .p-menuitem-link:hover,
-.p-tieredmenu .p-menuitem-link:hover,
-.p-contextmenu .p-menuitem-link:hover,
-.p-megamenu .p-menuitem-link:hover,
-.p-slidemenu .p-menuitem-link:hover,
-.p-panelmenu .p-menuitem-link:hover,
-.p-menu a:hover,
-.p-menubar a:hover,
-.p-tieredmenu a:hover,
-.p-contextmenu a:hover,
-.p-megamenu a:hover,
-.p-slidemenu a:hover,
-.p-panelmenu a:hover,
-.p-menu .p-menuitem a:hover,
-.p-menubar .p-menuitem a:hover,
-.p-tieredmenu .p-menuitem a:hover,
-.p-contextmenu .p-menuitem a:hover,
-.p-megamenu .p-menuitem a:hover,
-.p-slidemenu .p-menuitem a:hover,
-.p-panelmenu .p-menuitem a:hover {
+.p-menuitem a.p-menuitem-link:hover,
+.p-menu-item a.p-menu-item-link:hover,
+a.p-menuitem-link:hover,
+a.p-menu-item-link:hover {
   text-decoration: none !important;
 }
-

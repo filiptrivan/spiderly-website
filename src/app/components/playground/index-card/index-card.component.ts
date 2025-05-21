@@ -9,7 +9,6 @@ import { SpiderlyPanelComponent } from '../web-app/entity-details/spiderly-panel
     selector: 'index-card',
     templateUrl: './index-card.component.html',
     styleUrl: './index-card.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         SpiderlyPanelComponent,

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { BaseAutocompleteControl } from '../base-autocomplete-control';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,6 @@ import { TooltipModule } from 'primeng/tooltip';
     selector: 'spiderly-multiautocomplete',
     templateUrl: './spiderly-multiautocomplete.component.html',
     styles: [],
-    standalone: true,
     imports: [
         ReactiveFormsModule,
         FormsModule,

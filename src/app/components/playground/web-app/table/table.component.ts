@@ -33,7 +33,6 @@ import { PrimengOption } from '../entity-details/entities/primeng-option';
         }
       }
     `],
-    standalone: true,
     imports: [
         CommonModule,
         TableModule,

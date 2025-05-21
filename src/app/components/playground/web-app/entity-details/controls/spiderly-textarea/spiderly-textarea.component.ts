@@ -10,7 +10,6 @@ import { TooltipModule } from 'primeng/tooltip';
     selector: 'spiderly-textarea',
     templateUrl: './spiderly-textarea.component.html',
     styles: [],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

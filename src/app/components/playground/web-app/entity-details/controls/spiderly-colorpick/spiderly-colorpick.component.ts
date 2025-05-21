@@ -11,7 +11,6 @@ import { InputTextModule } from 'primeng/inputtext';
     selector: 'spiderly-colorpick',
     templateUrl: './spiderly-colorpick.component.html',
     styles: [],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

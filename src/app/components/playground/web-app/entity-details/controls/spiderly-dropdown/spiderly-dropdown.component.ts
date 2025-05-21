@@ -5,14 +5,12 @@ import { RequiredComponent } from '../../required/required.component';
 import { BaseDropdownControl } from '../base-dropdown-control';
 
 import { SelectChangeEvent, SelectModule } from 'primeng/select';
-// import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'spiderly-dropdown',
     templateUrl: './spiderly-dropdown.component.html',
     styles: [],
-    standalone: true,
     imports: [
         ReactiveFormsModule,
         FormsModule,
@@ -20,7 +18,6 @@ import { TooltipModule } from 'primeng/tooltip';
         CommonModule,
         RequiredComponent,
         SelectModule,
-        // DropdownModule,
     ]
 })
 export class SpiderlyDropdownComponent extends BaseDropdownControl implements OnInit {

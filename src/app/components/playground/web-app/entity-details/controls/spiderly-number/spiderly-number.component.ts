@@ -10,7 +10,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
     selector: 'spiderly-number',
     templateUrl: './spiderly-number.component.html',
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

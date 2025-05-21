@@ -1,0 +1,64 @@
+.hljs {
+  color: var(--p-text-color);
+  font-size: 14px;
+}
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-symbol,
+.hljs-name {
+  color: var(--p-primary-500);
+}
+.hljs-link {
+  color: var(--p-primary-500);
+  text-decoration: underline;
+}
+
+.hljs-built_in,
+.hljs-type {
+  color: var(--p-secondary-color);
+}
+
+.hljs-number,
+.hljs-class {
+  color: var(--p-primary-300);
+}
+
+.hljs-string,
+.hljs-meta .hljs-string {
+  color: var(--p-primary-300);
+}
+
+.hljs-regexp,
+.hljs-template-tag {
+  color: #9A5334;
+}
+
+.hljs-subst,
+.hljs-function,
+.hljs-title,
+.hljs-params,
+.hljs-formula {
+  color: var(--p-text-color);
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--p-surface-400);
+  font-style: italic;
+}
+
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+
+.hljs-tag {
+  color: var(--p-surface-200);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}

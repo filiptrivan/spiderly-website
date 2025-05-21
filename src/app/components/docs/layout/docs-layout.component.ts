@@ -7,22 +7,22 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, Meta, SafeHtml, Title } from '@angular/platform-browser';
-import hljs from 'highlight.js/lib/common';
 import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
+import { AttributesDocsComponent } from "../attributes/attributes.component";
 
 @Component({
     selector: 'app-docs-layout',
     templateUrl: './docs-layout.component.html',
     styleUrl: './docs-layout.component.scss',
-    standalone: true,
     imports: [
-        CommonModule,
-        RouterModule,
-        DocsAppTopBarComponent,
-        DocsSidebarMenuComponent,
-        GettingStartedComponent
-    ]
+    CommonModule,
+    RouterModule,
+    DocsAppTopBarComponent,
+    DocsSidebarMenuComponent,
+    GettingStartedComponent,
+    AttributesDocsComponent
+]
 })
 export class DocsLayoutComponent implements OnDestroy {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
@@ -35,16 +35,13 @@ export class DocsLayoutComponent implements OnDestroy {
 
     @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
 
-    @ViewChild('HTMLContainer') HTMLContainer!: ElementRef;
-
-    docsHTML: SafeHtml;
     isGettingStartedPage: boolean;
+    isAttributesDocsPage: boolean;
 
     constructor(
         protected layoutService: DocsLayoutService,
         protected renderer: Renderer2,
         protected router: Router,
-        @Inject(PLATFORM_ID) private platformId: Object,
         private route: ActivatedRoute,
         private http: HttpClient,
         private title: Title,
@@ -99,15 +96,11 @@ export class DocsLayoutComponent implements OnDestroy {
                     });
                 }
                 else if (slug === 'attributes') {
-                    this.docsHTML = this.sanitizer.bypassSecurityTrustHtml(docsHTML);
-                    this.isGettingStartedPage = false;
+                    this.isAttributesDocsPage = true;
                     this.meta.updateTag({
                         name: 'description',
                         content: `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
                     });
-                    if (isPlatformBrowser(this.platformId)) {
-                        this.highlightCode();
-                    }
                 }
 
                 this.title.setTitle(this.formatTitle(slug));
@@ -116,13 +109,6 @@ export class DocsLayoutComponent implements OnDestroy {
 
     formatTitle(slug: string): string {
         return `${capitalizeFirstChar(slug.replace('-', ' '))} | Spiderly Docs`;
-    }
-
-    highlightCode() {
-        setTimeout(() => {
-            const codeBlocks = this.HTMLContainer.nativeElement.querySelectorAll('pre code');
-            codeBlocks.forEach((block: HTMLElement) => hljs.highlightElement(block));
-        }, 500);
     }
 
     hideMenu() {

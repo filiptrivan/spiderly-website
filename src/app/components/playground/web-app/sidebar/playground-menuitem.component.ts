@@ -12,7 +12,6 @@ import { PlaygroundSidebarMenuService } from './playground-sidebar-menu.service'
     selector: '[menuitem]',
     templateUrl: './playground-menuitem.component.html',
     styleUrl: '../layout/playground-layout.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         RouterModule,

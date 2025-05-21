@@ -16,7 +16,6 @@ import { TechStackComponent } from "../../components/homepage/tech-stack/tech-st
   <app-key-benefits/>
   <app-word-from-a-founder/>
   `,
-  standalone: true,
   imports: [CommonModule, HeroComponent, KeyBenefitsComponent, WordFromAFounderComponent, KeyFeaturesComponent, TechStackComponent],
 })
 export class HomepageComponent {

@@ -16,7 +16,6 @@ export interface SpiderlyMenuItem extends MenuItem{
     selector: 'playground-sidebar-menu', // FT: Don't change selector to 'menu', because other style will apply to it
     templateUrl: './playground-sidebar-menu.component.html',
     styleUrl: '../layout/playground-layout.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         MenuitemComponent

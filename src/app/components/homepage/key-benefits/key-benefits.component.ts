@@ -7,10 +7,8 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
   selector: 'app-key-benefits',
   templateUrl: './key-benefits.component.html',
   styleUrls: [
-    './key-benefits.component.scss',
     '../../../pages/homepage/homepage.component.scss'
   ],
-  standalone: true,
   imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
 export class KeyBenefitsComponent {

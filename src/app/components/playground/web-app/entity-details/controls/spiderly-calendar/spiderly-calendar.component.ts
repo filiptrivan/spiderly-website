@@ -11,7 +11,6 @@ import { DatePickerModule } from 'primeng/datepicker';
     templateUrl: './spiderly-calendar.component.html',
     styles: [
     ],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

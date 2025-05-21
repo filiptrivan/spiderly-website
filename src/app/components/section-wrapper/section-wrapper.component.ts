@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-section-wrapper',
   templateUrl: './section-wrapper.component.html',
   styleUrl: './section-wrapper.component.scss',
-  standalone: true,
   imports: [CommonModule]
 })
 export class SectionWrapperComponent {

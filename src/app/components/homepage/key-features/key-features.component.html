@@ -10,12 +10,12 @@
       so it doesn't slow down your build by generating all files at once.
     </div>
   </div>
-  <div class="key-feature-grid">
+  <div class="key-grid">
     @for (keyFeature of keyFeatures; let index = $index; track $index) {
-    <div class="key-feature-card card">
-      <div style="display: flex; gap: 8px">
-        <i class="icon {{ keyFeature.icon }}"></i>
-        <h3 class="title">
+    <div class="key-card card">
+      <div class="key-title-wrapper">
+        <i class="key-icon {{keyFeature.icon}}"></i>
+        <h3 class="key-title">
           {{ keyFeature.title }}
         </h3>
       </div>

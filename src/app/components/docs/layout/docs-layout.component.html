@@ -9,7 +9,7 @@
         <div class="layout-main">
             <div style="padding: 0 18px;">
                 <app-getting-started *ngIf="isGettingStartedPage === true"></app-getting-started>
-                <div *ngIf="isGettingStartedPage === false" #HTMLContainer [innerHTML]="docsHTML"></div>
+                <app-attributes-docs *ngIf="isAttributesDocsPage === true"></app-attributes-docs>
             </div>
         </div>
     </div>

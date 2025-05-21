@@ -16,7 +16,7 @@ import { CSharpDataTypeCodes, PropertyAttributeCodes, UIControlTypeCodes } from 
 import { PrimengOption } from './entities/primeng-option';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { MessageService } from 'primeng/api';
-import { firstCharToUpper, getEntityDisplayProperty, getSuccessMessageOptions, initDropdownOptions, splitPascalCase } from './services/helper-functions';
+import { firstCharToUpper, getSuccessMessageOptions, initDropdownOptions, splitPascalCase } from './services/helper-functions';
 import { notEmptyValidator, setValidators } from './services/validator-functions';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -24,7 +24,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     selector: 'app-entity-details',
     templateUrl: './entity-details.component.html',
     styleUrl: './entity-details.component.scss',
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

@@ -30,8 +30,7 @@
               }
             ],
             "styles": [
-              "src/assets/styles.scss",
-              "node_modules/highlight.js/styles/vs2015.css"
+              "src/assets/styles.scss"
             ],
             "scripts": [
             ],
@@ -102,8 +101,7 @@
               }
             ],
             "styles": [
-              "src/assets/styles.scss",
-              "node_modules/highlight.js/styles/vs2015.css"
+              "src/assets/styles.scss"
             ],
             "scripts": [
             ]

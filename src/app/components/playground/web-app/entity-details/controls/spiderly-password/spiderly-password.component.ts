@@ -10,7 +10,6 @@ import { TooltipModule } from 'primeng/tooltip';
     selector: 'spiderly-password',
     templateUrl: './spiderly-password.component.html',
     styles: [],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { BaseControl } from '../base-control';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RequiredComponent } from '../../required/required.component';
@@ -13,7 +13,6 @@ import { Tooltip } from 'primeng/tooltip';
     templateUrl: './spiderly-editor.component.html',
     styleUrl: '../../../../../../pages/playground/playground.component.scss',
     styles: [],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

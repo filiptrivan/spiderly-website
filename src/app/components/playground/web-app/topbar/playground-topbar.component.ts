@@ -19,7 +19,6 @@ interface SpiderlyMenuItem {
     selector: 'playground-topbar',
     templateUrl: './playground-topbar.component.html',
     styleUrl: '../layout/playground-layout.component.scss',
-    standalone: true,
     imports: [
       CommonModule,
       AvatarModule,

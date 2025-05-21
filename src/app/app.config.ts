@@ -9,6 +9,7 @@ import { providePrimeNG } from 'primeng/config';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { DarkThemePreset } from '../assets/dark-theme';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHighlightOptions } from 'ngx-highlightjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +23,12 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: '.dark'
         }
       }
+    }),
+    provideHighlightOptions({
+      coreLibraryLoader: () => import('highlight.js/lib/core'),
+      languages: {
+        csharp: () => import('highlight.js/lib/languages/csharp'),
+      },
     }),
     provideRouter(
       routes,

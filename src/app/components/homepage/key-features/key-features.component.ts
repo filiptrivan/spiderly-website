@@ -10,7 +10,6 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
     './key-features.component.scss',
     '../../../pages/homepage/homepage.component.scss'
   ],
-  standalone: true,
   imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
 export class KeyFeaturesComponent {

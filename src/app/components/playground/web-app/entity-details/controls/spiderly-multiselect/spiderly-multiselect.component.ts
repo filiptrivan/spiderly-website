@@ -11,7 +11,6 @@ import { TooltipModule } from 'primeng/tooltip';
     templateUrl: './spiderly-multiselect.component.html',
     styles: [
     ],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,

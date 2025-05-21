@@ -7,7 +7,6 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
   selector: 'app-word-from-a-founder',
   templateUrl: './word-from-a-founder.component.html',
   styleUrl: './word-from-a-founder.component.scss',
-  standalone: true,
   imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
 export class WordFromAFounderComponent {
