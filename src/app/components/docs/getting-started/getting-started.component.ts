@@ -32,22 +32,25 @@ export class GettingStartedComponent {
       description: "Run this command in the folder where you want your app to be located. By using the Spiderly CLI, you properly initialize the app, allowing all other Spiderly libraries to function.",
       terminalMessages: [
         {text: 'spiderly init', showCopyButton: true},
-        {text: 'App name without spaces: SpiderlyDemoApp'},
-        {text: 'Basic Spiderly app structure created!'},
+        {text: 'App name without spaces (e.g., YourAppName): YourAppName'},
+        {text: 'App initialized successfully!'},
       ],
     },
     {
-      title: 'Start the app',
-      description: 'After app base initialization, open both, the backend (<span class="code-block">{your_app_name}\\API\\{your_app_name}.sln</span>) and the frontend (<span class="code-block">{your_app_name}\\Angular</span>) in your preferred code editors, then start both using the scripts shown in the terminal.',
+      title: 'Start the Backend',
+      description: 'Open the backend solution located at <span class="code-block">your-app-name\\API\\your-app-name.sln</span> using Visual Studio and click the <span class="code-block">IIS Express</span> run button to start the backend.',
+    },
+    {
+      title: 'Start the Frontend',
+      description: 'Open the frontend project located at <span class="code-block">your-app-name\\Angular</span> using Visual Studio Code. Then open a new Visual Studio Code terminal (<span class="code-block">Ctrl + Shift + `</span>) and run the command.',
       terminalMessages: [
-        {text: 'dotnet run', showCopyButton: true},
         {text: 'npm start', showCopyButton: true},
       ],
     },
     {
       title: 'Configure app settings',
-      description: `In <span class="code-block">{your_app_name}\\API\\{your_app_name}.WebAPI\\appsettings.json</span>, set the following fields: <span class="code-block">"EmailSender"</span>, <span class="code-block">"EmailSenderPassword"</span>, <span class="code-block">"UnhandledExceptionRecipients"</span>, and <span class="code-block">"GoogleClientId"</span>. 
-      <p>In <span class="code-block">{your_app_name}\\Angular\\src\\environments\\environment.ts</span>, set the <span class="code-block">"GoogleClientId"</span> field.</p>
+      description: `In <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span>, set the following fields: <span class="code-block">"EmailSender"</span>, <span class="code-block">"EmailSenderPassword"</span>, <span class="code-block">"UnhandledExceptionRecipients"</span>, and <span class="code-block">"GoogleClientId"</span>. 
+      <p>In <span class="code-block">your-app-name\\Angular\\src\\environments\\environment.ts</span>, set the <span class="code-block">"GoogleClientId"</span> field.</p>
       <p><a href="https://itsupport.umd.edu/itsupport?id=kb_article_view&sysparm_article=KB0015112" target="_blank" rel="nofollow noopener noreferrer" title="How to make EmailSenderPassword?">How to make "EmailSenderPassword"?</a></p>
       <div><a href="https://youtu.be/C9EQcMOy5c4?si=781--PodiMHf6Hrl" target="_blank" rel="nofollow noopener noreferrer" title="How to make GoogleClientId?">How to make "GoogleClientId"?</a></div>
       `,
@@ -58,7 +61,7 @@ export class GettingStartedComponent {
     },
     {
       title: 'Assign admin permissions',
-      description: 'Run the script located at <span class="code-block">{your_app_name}/Data/initialize-script.sql</span> using SQL Server Management Studio to assign admin permissions to the previously registered user.',
+      description: 'Run the script located at <span class="code-block">your-app-name/Data/initialize-script.sql</span> using SQL Server Management Studio to assign admin permissions to the previously registered user.',
     },
   ];
 
