@@ -12,8 +12,7 @@
         <h2 class="title">
           <span class="index">{{index + 1}}.</span> {{step.title}}
         </h2>
-        <div [innerHTML]="step.description">
-        </div>
+        <div [innerHTML]="step.description"></div>
       </div>
       <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
         <div class="terminal-wrapper">
@@ -42,7 +41,7 @@
           }
         </div>
       </div>
-      <div *ngIf="step.additionalDescription != null" style="width: 100%; height: fit-content;">
+      <div *ngIf="step.prerequisites === true" style="width: 100%; height: fit-content;">
         <div class="terminal-wrapper">
           <div>
             <h3 class="title">Mandatory Prerequisites</h3>
@@ -66,6 +65,11 @@
               <li>Visual Studio Code Extension: <a href="https://marketplace.visualstudio.com/items?itemName=Angular.ng-template" target="_blank" rel="nofollow noopener noreferrer" title="Download Angular Language Service">Angular Language Service</a></li>
             </ul>
           </div>
+        </div>
+      </div>
+      <div *ngIf="step.video != null" style="width: 100%; height: fit-content;">
+        <div class="terminal-wrapper" style="padding: 0px;">
+          <div [innerHTML]="step.video"></div>
         </div>
       </div>
     </div>

@@ -1,12 +1,11 @@
 import { Component, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, of, Subscription, switchMap } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { DocsAppTopBarComponent } from './topbar/docs-topbar.component';
 import { DocsLayoutService } from './docs-layout.service';
 import { CommonModule } from '@angular/common';
 import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
-import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
 import { AttributesDocsComponent } from "../attributes/attributes.component";
@@ -43,10 +42,8 @@ export class DocsLayoutComponent implements OnDestroy {
         protected renderer: Renderer2,
         protected router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient,
         private title: Title,
         private meta: Meta,
-        private sanitizer: DomSanitizer,
     ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
