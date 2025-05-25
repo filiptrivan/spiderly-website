@@ -22,7 +22,7 @@ export class GettingStartedComponent {
       {
         title: 'Install Prerequisites',
         description:
-          'All prerequisite commands are global and should be executed in the terminal.',
+          'Before getting started with Spiderly, make sure you have the following prerequisites installed.',
         prerequisites: true,
       },
       {
@@ -98,7 +98,7 @@ export class GettingStartedComponent {
       {
         title: 'Assign Admin Permissions',
         description:
-          'Run the script located at <span class="code-block">your-app-name/Data/initialize-script.sql</span> using SQL Server Management Studio to assign admin permissions to the previously registered user.',
+          'Execute the script located at <span class="code-block">your-app-name/Data/initialize-script.sql</span> using SQL Server Management Studio to assign admin permissions to the previously registered user.',
       },
     ];
   }

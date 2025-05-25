@@ -154,6 +154,10 @@ ul {
   margin-bottom: 10px;
 }
 
+li:not(:last-child) {
+  margin-bottom: 8px;
+}
+
 .icon-link {
   cursor: pointer;
   transition: color 100ms ease;
