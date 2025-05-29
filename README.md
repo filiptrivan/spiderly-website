@@ -3,11 +3,25 @@
 </div>
 
 # Spiderly Website
+This is the official website for Spiderly. For the full source code of the Spiderly product itself, please visit the main [Spiderly GitHub repository](https://github.com/filiptrivan/spiderly).
 
-It was hard to explain what Spiderly does, so I made this <a href="https://www.spiderly.dev" target="_blank" rel="noopener noreferrer">website</a> with a playground where you can just try it out yourself.
+The website features:
+- Getting Started Guide – Learn how to install and use Spiderly.
+- Interactive Playground – Try out Spiderly in your browser.
+- Docs – Detailed explanations of Spiderly’s core concepts, components, and integration steps.
+- FAQ – Get quick answers to common questions about how Spiderly works and how to use it effectively.
 
-The website also has a brief "Getting Started" section that explains how to begin using Spiderly.
+## Contributing
+While the core logic lives in the main Spiderly repo, contributions to the website are also very welcome — whether it’s improving the docs, fixing UI bugs, or enhancing the playground experience.
 
-If you notice anything on the website that could be explained better, want to add more feature demos to the playground page, or find any bugs, feel free to contribute, open an issue, start a discussion, or submit a pull request.
+- Open an issue to report bugs or suggest enhancements
+- Submit a pull request with your proposed changes
+- Start a discussion to explore ideas or ask questions
+  
+Every contribution is appreciated and helps make this project better for everyone.
 
-Check out <a href="https://github.com/filiptrivan/spiderly" target="_blank" rel="noopener noreferrer">Spiderly on GitHub</a>.
+### Good First Issues
+To help you get your feet wet and get you familiar with our contribution process, we have a [list of good first issues](https://github.com/filiptrivan/spiderly-website/issues?q=is%3Aissue%20state%3Aopen%20label%3A"good%20first%20issue"), this is a great place to get started.
+
+### License
+Spiderly and Spiderly Website are MIT licensed.
