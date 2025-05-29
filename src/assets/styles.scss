@@ -189,16 +189,3 @@ app-root {
 router-outlet ~ app-footer {
   margin-top: auto;
 }
-app-not-found {
-  display: flex;
-  flex-direction: column;
-  flex: 1; 
-}
-
-
-app-not-found app-section-wrapper {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-}
