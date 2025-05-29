@@ -9,10 +9,10 @@
   @for (step of getStartedSteps; track $index; let index = $index) {
     <div class="carousel-item-wrapper">
       <div class="getting-started-card">
-        <h2 class="title">
+        <h2 class="index-title">
           <span class="index">{{index + 1}}.</span> {{step.title}}
         </h2>
-        <div [innerHTML]="step.description"></div>
+        <div class="description" [innerHTML]="step.description"></div>
       </div>
       <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
         <div class="terminal-wrapper">

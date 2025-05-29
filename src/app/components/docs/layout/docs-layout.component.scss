@@ -64,12 +64,12 @@
 
     &.layout-static {
       .layout-main-container {
-        margin-left: 238px;
+        margin-left: 318px;
       }
 
       &.layout-static-inactive {
         .layout-sidebar {
-          transform: translateX(-330%);
+          transform: translateX(-200%);
           left: 0;
         }
 
@@ -89,7 +89,7 @@
     }
 
     .layout-sidebar {
-      transform: translateX(-330%);
+      transform: translateX(-200%);
       left: 0;
       top: 0;
       height: 100%;
@@ -124,7 +124,7 @@
 
 .layout-sidebar {
   position: fixed;
-  width: 220px;
+  width: 300px;
   height: calc(100% - 9rem);
   overflow-y: auto;
   user-select: none;

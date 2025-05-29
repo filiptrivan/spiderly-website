@@ -9,20 +9,11 @@
   border-radius: var(--p-content-border-radius);
 }
 
-@media (max-width: vars.$md) {
-  .carousel-item-wrapper {
-    flex-direction: column;
-  }
-}
-
 .terminal-wrapper {
   padding: 18px;
 
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
   font-size: 0.875rem;
-  border: 1px solid var(--p-surface-700);
+  border: 1px solid var(--p-surface-800);
   border-radius: var(--p-content-border-radius);
   line-height: 1.5;
   overflow: hidden;
@@ -50,29 +41,39 @@
 
 .getting-started-card {
   overflow: auto;
-  width: 100%;
+  width: 110%;
   padding: 9px;
+}
 
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+.description {
+  font-size: 18px;
+}
 
-    .index{
-      color: var(--p-secondary-color);
-    }
+.index-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+
+  .index{
+    color: var(--p-secondary-color);
   }
 }
 
-.getting-started-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 18px;
-}
-
 @media (max-width: vars.$md) {
+  .carousel-item-wrapper {
+    flex-direction: column;
+  }
+
   .getting-started-wrapper {
     flex-direction: column;
+  }
+
+  .index-title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 16px;
   }
 }
 
