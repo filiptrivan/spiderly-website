@@ -180,3 +180,12 @@ a.p-menuitem-link:hover,
 a.p-menu-item-link:hover {
   text-decoration: none !important;
 }
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+router-outlet ~ app-footer {
+  margin-top: auto;
+}
