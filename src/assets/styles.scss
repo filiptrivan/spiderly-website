@@ -181,10 +181,10 @@ a.p-menu-item-link:hover {
   text-decoration: none !important;
 }
 
-app-root {
+.main-and-footer-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: calc(100vh - 70px);
 }
 
 app-footer {
