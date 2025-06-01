@@ -1,6 +1,11 @@
 @use "../../../../assets/variables.scss" as vars;
 
-.carousel-item-wrapper {
+.getting-started-section {
+  padding-top: 80px;
+  margin-top: -80px; /* HACK: Because of header and toc goto */
+}
+
+.getting-started-wrapper {
   display: flex;
   flex-direction: row;
   gap: 18px;
@@ -60,10 +65,6 @@
 }
 
 @media (max-width: vars.$md) {
-  .carousel-item-wrapper {
-    flex-direction: column;
-  }
-
   .getting-started-wrapper {
     flex-direction: column;
   }

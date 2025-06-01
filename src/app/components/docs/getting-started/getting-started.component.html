@@ -7,65 +7,67 @@
 </div>
 <div style="display: flex; gap: 18px; flex-direction: column; margin-bottom: 18px;">
   @for (step of getStartedSteps; track $index; let index = $index) {
-    <div class="carousel-item-wrapper">
-      <div class="getting-started-card">
-        <h2 class="index-title">
-          <span class="index">{{index + 1}}.</span> {{step.title}}
-        </h2>
-        <div class="description" [innerHTML]="step.description"></div>
-      </div>
-      <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
-        <div class="terminal-wrapper">
-          <div style="margin-bottom: 1rem; display: flex;">
-            <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
-            <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
-            <div class="terminal-circle" style="background-color: var(--p-secondary-color); margin-left: 1rem;"></div>
-          </div>
-          @for (terminalMessage of step.terminalMessages; track $index) {
-            <code style="margin-top: 1rem; display: flex; align-items: center;">
-              <span class="terminal-message">
-                <div>
-                  <span style="color: var(--p-primary-400);">$</span>
-                    {{terminalMessage.text}}
-                  </div>
-                  <p-button 
-                  (onClick)="copyTerminalMessageToClipboard(terminalMessage)" 
-                  *ngIf="terminalMessage.showCopyButton" 
-                  [icon]="terminalMessage.icon ?? 'pi pi-copy'" 
-                  [outlined]="true" 
-                  size="small" 
-                  severity="secondary">
-                  </p-button>
-                </span>
-            </code>
-          }
+    <div class="getting-started-section" [id]="'step-' + (index + 1)">
+      <div class="getting-started-wrapper">
+        <div class="getting-started-card">
+          <h2 class="index-title">
+            <span class="index">{{index + 1}}.</span> {{step.title}}
+          </h2>
+          <div class="description" [innerHTML]="step.description"></div>
         </div>
-      </div>
-      <div *ngIf="step.prerequisites === true" style="width: 100%; height: fit-content;">
-        <div class="terminal-wrapper">
-          <div>
-            <h3 class="title">Prerequisites</h3>
-            <ul style="margin-bottom: 5px !important;">
-              <li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" rel="nofollow noopener noreferrer" title="Download SQL Server 2022 Developer">SQL Server 2022 Developer</a> (if you already have SQL Server Express installed, no need to install the Developer edition)</li>
-              <li><a href="https://nodejs.org/en/download/" target="_blank" rel="nofollow noopener noreferrer" title="Download Node.js">Node.js</a></li>
-              <li>
-                Code Editors (Recommended):
-                <ul>
-                  <li>Backend: <a href="https://visualstudio.microsoft.com/downloads/" target="_blank" rel="nofollow noopener noreferrer" title="Download Visual Studio (Community Edition)">Visual Studio (Community Edition)</a></li>
-                  <li>Frontend: <a href="https://code.visualstudio.com/download" target="_blank" rel="nofollow noopener noreferrer" title="Download Visual Studio Code">Visual Studio Code</a></li>
-                </ul>
-              </li>
-              <li>Skip this step if you installed Visual Studio in a previous step - <a href="https://dotnet.microsoft.com/en-us/download" target="_blank" rel="nofollow noopener noreferrer" title="Download .NET 9.0">.NET 9.0</a></li>
-              <li>Run the global Angular CLI and EF Core CLI installation command from any location in the terminal: <span class="code-block">npm install -g &#64;angular/cli && dotnet tool install -g dotnet-ef</span></li>
-              <li><a href="https://learn.microsoft.com/en-us/ssms/release-notes-21#current-sql-server-management-studio-release" target="_blank" rel="nofollow noopener noreferrer" title="Download SQL Server Management Studio (SSMS)">SQL Server Management Studio (SSMS)</a></li>
-              <li>Visual Studio Code Extension: <a href="https://marketplace.visualstudio.com/items?itemName=Angular.ng-template" target="_blank" rel="nofollow noopener noreferrer" title="Download Angular Language Service">Angular Language Service</a></li>
-            </ul>
+        <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
+          <div class="terminal-wrapper">
+            <div style="margin-bottom: 1rem; display: flex;">
+              <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
+              <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
+              <div class="terminal-circle" style="background-color: var(--p-secondary-color); margin-left: 1rem;"></div>
+            </div>
+            @for (terminalMessage of step.terminalMessages; track $index) {
+              <code style="margin-top: 1rem; display: flex; align-items: center;">
+                <span class="terminal-message">
+                  <div>
+                    <span style="color: var(--p-primary-400);">$</span>
+                      {{terminalMessage.text}}
+                    </div>
+                    <p-button 
+                    (onClick)="copyTerminalMessageToClipboard(terminalMessage)" 
+                    *ngIf="terminalMessage.showCopyButton" 
+                    [icon]="terminalMessage.icon ?? 'pi pi-copy'" 
+                    [outlined]="true" 
+                    size="small" 
+                    severity="secondary">
+                    </p-button>
+                  </span>
+              </code>
+            }
           </div>
         </div>
-      </div>
-      <div *ngIf="step.video != null" style="width: 100%; height: fit-content;">
-        <div class="terminal-wrapper" style="padding: 0px;">
-          <div [innerHTML]="step.video"></div>
+        <div *ngIf="step.prerequisites === true" style="width: 100%; height: fit-content;">
+          <div class="terminal-wrapper">
+            <div>
+              <h3 class="title">Prerequisites</h3>
+              <ul style="margin-bottom: 5px !important;">
+                <li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" rel="nofollow noopener noreferrer" title="Download SQL Server 2022 Developer">SQL Server 2022 Developer</a> (if you already have SQL Server Express installed, no need to install the Developer edition)</li>
+                <li><a href="https://nodejs.org/en/download/" target="_blank" rel="nofollow noopener noreferrer" title="Download Node.js">Node.js</a></li>
+                <li>
+                  Code Editors (Recommended):
+                  <ul>
+                    <li>Backend: <a href="https://visualstudio.microsoft.com/downloads/" target="_blank" rel="nofollow noopener noreferrer" title="Download Visual Studio (Community Edition)">Visual Studio (Community Edition)</a></li>
+                    <li>Frontend: <a href="https://code.visualstudio.com/download" target="_blank" rel="nofollow noopener noreferrer" title="Download Visual Studio Code">Visual Studio Code</a></li>
+                  </ul>
+                </li>
+                <li>Skip this step if you installed Visual Studio in a previous step - <a href="https://dotnet.microsoft.com/en-us/download" target="_blank" rel="nofollow noopener noreferrer" title="Download .NET 9.0">.NET 9.0</a></li>
+                <li>Run the global Angular CLI and EF Core CLI installation command from any location in the terminal: <span class="code-block">npm install -g &#64;angular/cli && dotnet tool install -g dotnet-ef</span></li>
+                <li><a href="https://learn.microsoft.com/en-us/ssms/release-notes-21#current-sql-server-management-studio-release" target="_blank" rel="nofollow noopener noreferrer" title="Download SQL Server Management Studio (SSMS)">SQL Server Management Studio (SSMS)</a></li>
+                <li>Visual Studio Code Extension: <a href="https://marketplace.visualstudio.com/items?itemName=Angular.ng-template" target="_blank" rel="nofollow noopener noreferrer" title="Download Angular Language Service">Angular Language Service</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="step.video != null" style="width: 100%; height: fit-content;">
+          <div class="terminal-wrapper" style="padding: 0px;">
+            <div [innerHTML]="step.video"></div>
+          </div>
         </div>
       </div>
     </div>
