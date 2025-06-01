@@ -68,12 +68,6 @@ export class GettingStartedComponent {
         `),
       },
       {
-        title: 'Set Up Unhandled Exception Recipients',
-        description: `
-        In the solution opened with Visual Studio, locate the <span class="code-block">your-app-name.WebAPI\\appsettings.json</span> file and set the value for the <span class="code-block">"UnhandledExceptionRecipients"</span> to an array containing the same email address used for <span class="code-block">"EmailSender"</span>.
-        `,
-      },
-      {
         title: 'Set Up Google Authentication',
         description: `
         After following the video tutorial, you will obtain the Google Client ID. Once you have it, make sure to set it in the following two places:
