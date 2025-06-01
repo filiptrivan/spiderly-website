@@ -70,7 +70,7 @@ export class GettingStartedComponent {
       {
         title: 'Set Up Unhandled Exception Recipients',
         description: `
-        In the <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span> file, start by setting the value for the <span class="code-block">"UnhandledExceptionRecipients"</span> key to an array containing the same email address used for <span class="code-block">"EmailSender"</span>. This field is an array, so you can add multiple email addresses to receive alerts about unhandled exceptions.
+        In the <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span> file, start by setting the value for the <span class="code-block">"UnhandledExceptionRecipients"</span> key to an array containing the same email address used for <span class="code-block">"EmailSender"</span>.
         `,
       },
       {
