@@ -36,11 +36,9 @@ export class GettingStartedComponent {
       {
         title: 'Initialize the App',
         description:
-          'Run this command in the folder where you want your app to be located. By using the Spiderly CLI, you properly initialize the app, allowing all other Spiderly libraries to function.',
+          'Run this command in the folder where you want your app to be located.',
         terminalMessages: [
           { text: 'spiderly init', showCopyButton: true },
-          { text: 'App name without spaces (e.g., YourAppName): YourAppName' },
-          { text: 'App initialized successfully!' },
         ],
       },
       {
@@ -94,6 +92,28 @@ export class GettingStartedComponent {
         title: 'Register the User',
         description:
           'Use the UI of your generated app to register the user via email or Google.',
+      },
+      {
+        title: 'Connect to SQL Server',
+        description: `
+        <ol class="margin-bottom-0">
+          <li>Open <b>SQL Server Management Studio (SSMS)</b>.</li>
+        
+          <li>
+            In the <b>Connect to Server window</b>, fill in the fields as follows:
+            <ul>
+              <li><b>Server Name</b>: <span class="code-block">localhost</span></li>
+              <li><b>Authentication</b>: <span class="code-block">Windows Authentication</span></li>
+              <li><b>Database Name</b>: <span class="code-block">&lt;default&gt;</span></li>
+              <li><b>Encrypt</b>: <span class="code-block">Mandatory</span></li>
+              <li><b>Trust Server Certificate</b>: <span class="code-block">True</span></li>
+              <li><b>Color</b>: <span class="code-block">&lt;default&gt;</span></li>
+            </ul>
+          </li>
+
+          <li>Click the <b>Connect button</b>.</li>
+        </ol>
+        `,
       },
       {
         title: 'Assign Admin Permissions',
