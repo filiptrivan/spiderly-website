@@ -28,7 +28,7 @@ export class GettingStartedComponent {
       {
         title: 'Install the Spiderly CLI',
         description:
-          'Run the Global Spiderly CLI installation command from any location in the terminal.',
+          'Run the Global Spiderly CLI installation command from <b>any location in the terminal</b>.',
         terminalMessages: [
           { text: 'dotnet tool install -g Spiderly.CLI', showCopyButton: true },
         ],
@@ -36,7 +36,7 @@ export class GettingStartedComponent {
       {
         title: 'Initialize the App',
         description:
-          'Run this command in the folder where you want your app to be located.',
+          'Run this command in the folder <b>where you want your app to be located</b>.',
         terminalMessages: [
           { text: 'spiderly init', showCopyButton: true },
         ],
@@ -49,16 +49,16 @@ export class GettingStartedComponent {
       {
         title: 'Start the Frontend',
         description:
-          'Open the frontend project located at <span class="code-block">your-app-name\\Angular</span> using Visual Studio Code. Then open a new Visual Studio Code terminal (<span class="code-block">Ctrl + Shift + `</span>) and run the command.',
+          'Open the frontend project located at <span class="code-block">your-app-name\\Angular</span> using Visual Studio Code. Then open a new <b>Visual Studio Code terminal</b> (<span class="code-block">Ctrl + Shift + `</span>) and run the command.',
         terminalMessages: [{ text: 'npm start', showCopyButton: true }],
       },
       {
         title: 'Set Up Emailing',
         description: `
-        In the <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span> file, set the following fields:
+        In the solution opened with Visual Studio, locate the <span class="code-block">your-app-name.WebAPI\\appsettings.json</span> file and set the following fields:
         <ul>
-          <li><span class="code-block">"EmailSender"</span> - Set this to the existing email address you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.</li>
-          <li><span class="code-block">"EmailSenderPassword"</span> - This must be the App Password for the same email account specified in <span class="code-block">"EmailSender"</span>. Do not use your regular Gmail password. Follow the video tutorial to see how to generate an App Password from your Google account.</li>
+          <li><span class="code-block">"EmailSender"</span> - Set this to the <b>existing email address</b> you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.</li>
+          <li><span class="code-block">"EmailSenderPassword"</span> - <b>Do not</b> use your regular Gmail password. This must be the <b>Gmail App Password</b> for the same email account specified in <span class="code-block">"EmailSender"</span>. Follow the video tutorial to see how to generate an Gmail App Password from your Google account.</li>
         </ul>
         `,
         video: this.sanitizer.bypassSecurityTrustHtml(`
@@ -70,7 +70,7 @@ export class GettingStartedComponent {
       {
         title: 'Set Up Unhandled Exception Recipients',
         description: `
-        In the <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span> file, start by setting the value for the <span class="code-block">"UnhandledExceptionRecipients"</span> key to an array containing the same email address used for <span class="code-block">"EmailSender"</span>.
+        In the solution opened with Visual Studio, locate the <span class="code-block">your-app-name.WebAPI\\appsettings.json</span> file and set the value for the <span class="code-block">"UnhandledExceptionRecipients"</span> to an array containing the same email address used for <span class="code-block">"EmailSender"</span>.
         `,
       },
       {
@@ -78,8 +78,8 @@ export class GettingStartedComponent {
         description: `
         After following the video tutorial, you will obtain the Google Client ID. Once you have it, make sure to set it in the following two places:
         <ul>
-          <li>In the <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span> file, set the value for the <span class="code-block">"GoogleClientId"</span> key.</li>
-          <li>In the <span class="code-block">your-app-name\\Angular\\src\\environments\\environment.ts</span> file, set the value for the <span class="code-block">"GoogleClientId"</span> variable.</li>
+          <li>In the solution opened with Visual Studio, locate the <span class="code-block">your-app-name.WebAPI\\appsettings.json</span> file and set the value for the <span class="code-block">"GoogleClientId"</span>.</li>
+          <li>In the project opened with Visual Studio Code, locate the <span class="code-block">src\\environments\\environment.ts</span> file and set the value for the <span class="code-block">"GoogleClientId"</span>.</li>
         </ul>
         `,
         video: this.sanitizer.bypassSecurityTrustHtml(`
