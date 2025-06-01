@@ -28,7 +28,7 @@ export class GettingStartedComponent {
       {
         title: 'Install the Spiderly CLI',
         description:
-          'Command is global and should be executed in the terminal.',
+          'Run the Global Spiderly CLI installation command from any location in the terminal.',
         terminalMessages: [
           { text: 'dotnet tool install -g Spiderly.CLI', showCopyButton: true },
         ],
@@ -57,7 +57,7 @@ export class GettingStartedComponent {
         description: `
         In the <span class="code-block">your-app-name\\API\\your-app-name.WebAPI\\appsettings.json</span> file, set the following fields:
         <ul>
-          <li><span class="code-block">"EmailSender"</span> - Set this to the email address you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.</li>
+          <li><span class="code-block">"EmailSender"</span> - Set this to the existing email address you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.</li>
           <li><span class="code-block">"EmailSenderPassword"</span> - This must be the App Password for the same email account specified in <span class="code-block">"EmailSender"</span>. Do not use your regular Gmail password. Follow the video tutorial to see how to generate an App Password from your Google account.</li>
         </ul>
         `,
