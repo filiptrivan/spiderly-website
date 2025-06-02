@@ -60,6 +60,7 @@
   margin-bottom: 16px;
 
   .index{
+    font-size: 2rem;
     color: var(--p-secondary-color);
   }
 }
@@ -71,6 +72,10 @@
 
   .index-title {
     font-size: 1.5rem;
+
+    .index {
+      font-size: 1.5rem;
+    }
   }
 
   .description {
