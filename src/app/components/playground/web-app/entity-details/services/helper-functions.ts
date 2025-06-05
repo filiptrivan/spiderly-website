@@ -272,4 +272,11 @@ export function getParentUrl(currentUrl: string){
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  export function kebabToTitleCase(input: string): string {
+    return input
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
   export type Ctor<T> = new (...args: any[]) => T;

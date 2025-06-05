@@ -4,12 +4,16 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CopyButtonComponent } from '../../copy-button/copy-button.component';
 import { HighlightModule } from 'ngx-highlightjs';
+import { copyToClipboard } from '../../helpers/helper-functions';
 
 
 @Component({
   selector: 'app-attributes-docs',
   templateUrl: './attributes.component.html',
-  styleUrl: './attributes.component.scss',
+  styleUrls: [
+    './attributes.component.scss',
+    '../layout/docs-layout.component.scss'
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -35,13 +39,7 @@ export class AttributesDocsComponent {
     const codeElement = wrapper?.querySelector('code');
     const code = codeElement?.textContent?.trim() || '';
     
-    this.copyToClipboard(code);
-  }
-
-  copyToClipboard(text: string): void {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text);
-    }
+    copyToClipboard(code);
   }
 
 }

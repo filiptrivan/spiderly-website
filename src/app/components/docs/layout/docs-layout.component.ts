@@ -5,10 +5,12 @@ import { DocsAppTopBarComponent } from './topbar/docs-topbar.component';
 import { DocsLayoutService } from './docs-layout.service';
 import { CommonModule } from '@angular/common';
 import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-sidebar-menu.component';
-import { Meta, Title } from '@angular/platform-browser';
-import { capitalizeFirstChar } from '../../playground/web-app/entity-details/services/helper-functions';
+import { Meta, SafeHtml, Title } from '@angular/platform-browser';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
 import { AttributesDocsComponent } from "../attributes/attributes.component";
+import { kebabToTitleCase } from '../../playground/web-app/entity-details/services/helper-functions';
+import { HowToAddNewEntityComponent } from '../how-to-add-new-entity/how-to-add-new-entity.component';
+import { TerminalMessage } from '../terminal/terminal.component';
 
 @Component({
     selector: 'app-docs-layout',
@@ -20,7 +22,8 @@ import { AttributesDocsComponent } from "../attributes/attributes.component";
     DocsAppTopBarComponent,
     DocsSidebarMenuComponent,
     GettingStartedComponent,
-    AttributesDocsComponent
+    AttributesDocsComponent,
+    HowToAddNewEntityComponent
 ]
 })
 export class DocsLayoutComponent implements OnDestroy {
@@ -35,6 +38,7 @@ export class DocsLayoutComponent implements OnDestroy {
     @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
 
     isGettingStartedPage: boolean;
+    isHowToAddEntity: boolean;
     isAttributesDocsPage: boolean;
 
     constructor(
@@ -72,12 +76,15 @@ export class DocsLayoutComponent implements OnDestroy {
         const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path ?? '';
 
         const metaDescriptions: Record<string, string> = {
-            'getting-started': `Discover Spiderly prerequisites, installation steps, and structure setup using Spiderly.CLI. Start building fast, scalable web apps with ease.`,
+            'getting-started': `Follow this quick start guide to configure and initialize your Spiderly app. Once complete, you'll be ready to use all features and build with its full power.`,
+            'how-to-add-new-entity': `The EF Core entity and its attributes are the core of Spiderly. In this step-by-step guide, you'll learn how to create a new entity in your project.`,
             'attributes': `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
         };
 
         if (slug === 'getting-started') {
             this.isGettingStartedPage = true;
+        } else if (slug === 'how-to-add-new-entity') {
+            this.isHowToAddEntity = true;
         } else if (slug === 'attributes') {
             this.isAttributesDocsPage = true;
         }
@@ -93,7 +100,7 @@ export class DocsLayoutComponent implements OnDestroy {
     }
 
     formatTitle(slug: string): string {
-        return `${capitalizeFirstChar(slug.replace('-', ' '))} | Spiderly Docs`;
+        return `${kebabToTitleCase(slug)} | Spiderly Docs`;
     }
 
     hideMenu() {
@@ -109,8 +116,6 @@ export class DocsLayoutComponent implements OnDestroy {
     get containerClass() {
         return {
             'layout-overlay': this.layoutService.layoutConfig.menuMode === 'overlay',
-            'layout-static': this.layoutService.layoutConfig.menuMode === 'static',
-            'layout-static-inactive': this.layoutService.state.staticMenuDesktopInactive && this.layoutService.layoutConfig.menuMode === 'static',
             'layout-overlay-active': this.layoutService.state.overlayMenuActive,
             'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
             'p-ripple-disabled': true
@@ -126,4 +131,16 @@ export class DocsLayoutComponent implements OnDestroy {
             this.menuOutsideClickListener();
         }
     }
+}
+
+export interface DocsStep {
+  title: string;
+  description: SafeHtml;
+  description2?: SafeHtml;
+  terminalMessages?: TerminalMessage[];
+  terminalMessages2?: TerminalMessage[];
+  prerequisites?: boolean;
+  video?: SafeHtml;
+  codeExample?: string;
+  codeExample2?: string;
 }

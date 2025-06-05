@@ -1,0 +1,48 @@
+<div style="margin-bottom: 30px">
+  <h1 style="margin-bottom: 15px">
+    <div class="gradient-title">How to Add New Entity </div>
+    <div class="title">With Spiderly and EF Core</div>
+  </h1>
+  <div class="text-below-title">
+    The EF Core entity and its attributes form the foundation of everything in
+    Spiderly. All other components are built and generated based on these
+    entities. In this step-by-step guide, you'll learn how to create a new
+    entity in your project. This includes adding it to the backend, updating the
+    database, and generating the corresponding frontend code.
+  </div>
+</div>
+<div class="section-wrapper">
+  @for (step of howToAddNewEntitySteps; track $index; let index = $index) {
+  <div [id]="'step-' + (index + 1)">
+    <div class="wrapper">
+      <h2 class="index-title">
+        <span class="index">{{ index + 1 }}.</span> {{ step.title }}
+      </h2>
+      <div class="description" [innerHTML]="step.description"></div>
+      <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content">
+        <app-terminal [messages]="step.terminalMessages"></app-terminal>
+      </div>
+
+      <div
+        *ngIf="step.codeExample != null"
+        class="code-snippet-wrapper example-wrapper"
+      >
+        <div class="copy-button-wrapper">
+          <app-copy-button
+            (onClick)="copyToClipboard(step.codeExample)"
+          ></app-copy-button>
+        </div>
+        <pre><code [highlightAuto]="step.codeExample">
+        </code></pre>
+      </div>
+
+      <div *ngIf="step.description2" class="description" [innerHTML]="step.description2"></div>
+
+      <div *ngIf="step.terminalMessages2 != null" style="width: 100%; height: fit-content">
+        <app-terminal [messages]="step.terminalMessages2"></app-terminal>
+      </div>
+
+    </div>
+  </div>
+  }
+</div>

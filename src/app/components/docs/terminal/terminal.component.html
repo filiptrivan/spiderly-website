@@ -1,0 +1,34 @@
+<div class="example-wrapper">
+  <div style="margin-bottom: 1rem; display: flex">
+    <div
+      class="terminal-circle"
+      style="background-color: var(--p-primary-color)"
+    ></div>
+    <div
+      class="terminal-circle"
+      style="background-color: #fbbf24; margin-left: 1rem"
+    ></div>
+    <div
+      class="terminal-circle"
+      style="background-color: var(--p-secondary-color); margin-left: 1rem"
+    ></div>
+  </div>
+  @for (message of messages; track $index) {
+  <code style="margin-top: 1rem; display: flex; align-items: center">
+    <span class="terminal-message">
+      <div>
+        <span style="color: var(--p-primary-400)">$</span>
+        {{ message.text }}
+      </div>
+      <p-button
+        (onClick)="copyTerminalMessageToClipboard(message)"
+        *ngIf="message.showCopyButton"
+        [icon]="message.icon ?? 'pi pi-copy'"
+        [outlined]="true"
+        size="small"
+        severity="secondary"
+      ></p-button>
+    </span>
+  </code>
+  }
+</div>

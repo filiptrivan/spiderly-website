@@ -12,31 +12,10 @@ h3 {
 }
 .doc-section {
   margin-bottom: 18px;
-  padding-top: 80px;
-  margin-top: -80px; /* HACK: Because of header and toc goto */
 }
 
 .namespace {
   color: var(--p-surface-500);
   font-size: 0.9em;
   margin-bottom: 15px;
-}
-
-.code-snippet-wrapper {
-  position: relative;
-}
-
-.copy-button-wrapper {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-}
-
-pre {
-  margin: 0 !important;
-}
-
-code {
-  padding: 0 !important;
-  background-color: transparent !important;
 }

@@ -7,8 +7,9 @@
 
     <div class="layout-main-container">
         <div class="layout-main">
-            <div style="padding: 0 18px;">
+            <div style="padding: 0 12px;">
                 <app-getting-started *ngIf="isGettingStartedPage === true"></app-getting-started>
+                <app-how-to-add-new-entity *ngIf="isHowToAddEntity === true"></app-how-to-add-new-entity>
                 <app-attributes-docs *ngIf="isAttributesDocsPage === true"></app-attributes-docs>
             </div>
         </div>

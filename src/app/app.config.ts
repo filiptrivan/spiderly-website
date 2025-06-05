@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes, scrollConfig } from './app.routes';
@@ -28,11 +28,12 @@ export const appConfig: ApplicationConfig = {
       coreLibraryLoader: () => import('highlight.js/lib/core'),
       languages: {
         csharp: () => import('highlight.js/lib/languages/csharp'),
+        ts: () => import('highlight.js/lib/languages/typescript'),
       },
     }),
     provideRouter(
       routes,
-      withInMemoryScrolling(scrollConfig)
+      withInMemoryScrolling(scrollConfig),
     ), 
     provideClientHydration(withEventReplay()),
     MessageService,

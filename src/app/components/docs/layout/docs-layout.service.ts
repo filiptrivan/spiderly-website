@@ -1,6 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Subject } from 'rxjs';
-import { isPlatformBrowser } from '@angular/common';
 
 export interface AppConfig {
     menuMode: string;
@@ -21,7 +20,7 @@ export interface LayoutState {
 })
 export class DocsLayoutService {
     layoutConfig: AppConfig = {
-        menuMode: 'static',
+        menuMode: 'overlay',
         scale: 14,
         color: `var(--p-primary-600)`,
     };
@@ -76,10 +75,6 @@ export class DocsLayoutService {
     }
 
     isDesktop() {
-        if (isPlatformBrowser(this.platformId)) {
-            return window.innerWidth > 991;
-        }
-
         return false;
     }
 

@@ -1,64 +1,40 @@
-<div>
-  <h1 style="margin-bottom: 30px;">
-    <div class="gradient-title">
-      Spiderly Getting Started
-    </div>
+<div style="margin-bottom: 30px;">
+  <h1 style="margin-bottom: 15px;">
+    <div class="gradient-title">Getting Started With Spiderly</div>
   </h1>
+  <div class="text-below-title">
+    Follow this quick start guide to configure and initialize your Spiderly app. Once complete, you'll be ready to use all features and build with its full power.
+  </div>
 </div>
-<div style="display: flex; gap: 18px; flex-direction: column; margin-bottom: 18px;">
-  <div class="getting-started-wrapper">
-    <div class="getting-started-card">
-      <h2 class="index-title">
-        <i class="index pi pi-youtube"></i> Prefer Watching Instead?
-      </h2>
-      <div class="description">
-        You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you've already completed the first step — installing the prerequisites.
-      </div>
+<div class="section-wrapper">
+  <div class="wrapper">
+    <h2 class="index-title">
+      <i class="index pi pi-youtube"></i> Prefer Watching Instead?
+    </h2>
+    <div class="text-below-subtitle">
+      You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you've already completed the first step — installing the prerequisites.
     </div>
-    <div class="terminal-wrapper" style="padding: 0px; width: 100%; height: fit-content;">
+    <br/>
+    <div class="example-wrapper" style="padding: 0px; width: 100%; height: fit-content;">
       <div class="video-wrapper">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/1EIzcJMf1IY?si=S98rD7Da_T-k2Vm2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/1EIzcJMf1IY?si=S98rD7Da_T-k2Vm2&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
     </div>
   </div>
   @for (step of getStartedSteps; track $index; let index = $index) {
-    <div class="getting-started-section" [id]="'step-' + (index + 1)">
-      <div class="getting-started-wrapper">
-        <div class="getting-started-card">
-          <h2 class="index-title">
-            <span class="index">{{index + 1}}.</span> {{step.title}}
-          </h2>
-          <div class="description" [innerHTML]="step.description"></div>
-        </div>
+    <div [id]="'step-' + (index + 1)">
+      <div class="wrapper">
+        <h2 class="index-title">
+          <span class="index">{{index + 1}}.</span> {{step.title}}
+        </h2>
+        <div class="text-below-subtitle" [innerHTML]="step.description"></div>
+        
         <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
-          <div class="terminal-wrapper">
-            <div style="margin-bottom: 1rem; display: flex;">
-              <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
-              <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
-              <div class="terminal-circle" style="background-color: var(--p-secondary-color); margin-left: 1rem;"></div>
-            </div>
-            @for (terminalMessage of step.terminalMessages; track $index) {
-              <code style="margin-top: 1rem; display: flex; align-items: center;">
-                <span class="terminal-message">
-                  <div>
-                    <span style="color: var(--p-primary-400);">$</span>
-                      {{terminalMessage.text}}
-                    </div>
-                    <p-button 
-                    (onClick)="copyTerminalMessageToClipboard(terminalMessage)" 
-                    *ngIf="terminalMessage.showCopyButton" 
-                    [icon]="terminalMessage.icon ?? 'pi pi-copy'" 
-                    [outlined]="true" 
-                    size="small" 
-                    severity="secondary">
-                    </p-button>
-                  </span>
-              </code>
-            }
-          </div>
+          <app-terminal [messages]="step.terminalMessages"></app-terminal>
         </div>
+
         <div *ngIf="step.prerequisites === true" style="width: 100%; height: fit-content;">
-          <div class="terminal-wrapper">
+          <div class="example-wrapper">
             <div>
               <h3 class="title">Prerequisites</h3>
               <ul style="margin-bottom: 5px !important;">
@@ -79,8 +55,9 @@
             </div>
           </div>
         </div>
+
         <div *ngIf="step.video != null" style="width: 100%; height: fit-content;">
-          <div class="terminal-wrapper" style="padding: 0px;">
+          <div class="example-wrapper" style="padding: 0px;">
             <div [innerHTML]="step.video"></div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FooterComponent } from "./components/footer/footer.component";
+import { ViewportScroller } from "@angular/common";
 
 @Component({
   selector: 'app-root',
@@ -12,14 +13,16 @@ import { FooterComponent } from "./components/footer/footer.component";
     HeaderComponent,
     ToastModule,
     ConfirmDialogModule,
-    FooterComponent
+    FooterComponent,
 ],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
 
-  constructor() {
-        
+  constructor(
+    private viewportScroller: ViewportScroller
+  ) {
+    viewportScroller.setOffset([0, 88]);
   }
 
 }
