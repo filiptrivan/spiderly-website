@@ -29,6 +29,7 @@ export const appConfig: ApplicationConfig = {
       languages: {
         csharp: () => import('highlight.js/lib/languages/csharp'),
         ts: () => import('highlight.js/lib/languages/typescript'),
+        sql: () => import('highlight.js/lib/languages/sql'),
       },
     }),
     provideRouter(

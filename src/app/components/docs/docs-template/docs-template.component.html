@@ -3,9 +3,7 @@
     <div class="gradient-title">{{gradientTitle}}</div>
     <div *ngIf="whiteTitle" class="title">{{whiteTitle}}</div>
   </h1>
-  <div *ngIf="textBelowTitle" class="text-below-title">
-    {{textBelowTitle}}
-  </div>
+  <div *ngIf="textBelowTitle" class="text-below-title" [innerHtml]="textBelowTitle"></div>
 </div>
 <div class="section-wrapper">
   <div *ngIf="sanitizedPreferWatchingInstedVideo" class="wrapper">

@@ -30,6 +30,11 @@ export class DocsComponent {
             routerLink: '/docs/how-to-add-new-entity',
           },
           {
+            label: 'How to Set Up Entity Authorization', 
+            icon: 'pi pi-fw pi-key', 
+            routerLink: '/docs/how-to-set-up-entity-authorization',
+          },
+          {
             label: 'Attributes', 
             icon: 'pi pi-fw pi-tag', 
             routerLink: '/docs/attributes',

@@ -11,6 +11,7 @@ import { AttributesDocsComponent } from "../attributes/attributes.component";
 import { kebabToTitleCase } from '../../playground/web-app/entity-details/services/helper-functions';
 import { HowToAddNewEntityComponent } from '../how-to-add-new-entity/how-to-add-new-entity.component';
 import { TerminalMessage } from '../terminal/terminal.component';
+import { HowToSetUpEntityAuthorizationComponent } from "../how-to-set-up-entity-authorization/how-to-set-up-entity-authorization.component";
 
 @Component({
     selector: 'app-docs-layout',
@@ -23,7 +24,8 @@ import { TerminalMessage } from '../terminal/terminal.component';
     DocsSidebarMenuComponent,
     GettingStartedComponent,
     AttributesDocsComponent,
-    HowToAddNewEntityComponent
+    HowToAddNewEntityComponent,
+    HowToSetUpEntityAuthorizationComponent
 ]
 })
 export class DocsLayoutComponent implements OnDestroy {
@@ -40,6 +42,7 @@ export class DocsLayoutComponent implements OnDestroy {
     isGettingStartedPage: boolean;
     isHowToAddEntity: boolean;
     isAttributesDocsPage: boolean;
+    isHowToSetUpEntityAuthorization: boolean;
 
     constructor(
         protected layoutService: DocsLayoutService,
@@ -78,14 +81,20 @@ export class DocsLayoutComponent implements OnDestroy {
         const metaDescriptions: Record<string, string> = {
             'getting-started': `Follow this quick start guide to configure and initialize your Spiderly app. Once complete, you'll be ready to use all features and build with its full power.`,
             'how-to-add-new-entity': `The EF Core entity and its attributes are the core of Spiderly. In this step-by-step guide, you'll learn how to create a new entity in your project.`,
+            'how-to-set-up-entity-authorization': `Configure entity authorization by adding permissions and assigning them to roles, or disable authorization using the [DoNotAuthorize] attribute.`,
             'attributes': `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
         };
 
         if (slug === 'getting-started') {
             this.isGettingStartedPage = true;
-        } else if (slug === 'how-to-add-new-entity') {
+        } 
+        else if (slug === 'how-to-add-new-entity') {
             this.isHowToAddEntity = true;
-        } else if (slug === 'attributes') {
+        } 
+        else if (slug === 'how-to-set-up-entity-authorization') {
+            this.isHowToSetUpEntityAuthorization = true;
+        } 
+        else if (slug === 'attributes') {
             this.isAttributesDocsPage = true;
         }
 
