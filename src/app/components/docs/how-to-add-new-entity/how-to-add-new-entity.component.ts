@@ -2,33 +2,40 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { DomSanitizer } from '@angular/platform-browser';
 import { DocsStep } from '../layout/docs-layout.component';
-import { TerminalComponent } from '../terminal/terminal.component';
 import { HighlightModule } from 'ngx-highlightjs';
-import { CopyButtonComponent } from '../../copy-button/copy-button.component';
-import { copyToClipboard } from '../../helpers/helper-functions';
+import { DocsTemplateComponent } from "../docs-template/docs-template.component";
 
 @Component({
   selector: 'app-how-to-add-new-entity',
   templateUrl: './how-to-add-new-entity.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
   imports: [
-    CommonModule, 
-    RouterModule, 
-    ButtonModule, 
-    TerminalComponent,
+    CommonModule,
+    RouterModule,
+    ButtonModule,
     HighlightModule,
-    CopyButtonComponent
-  ],
+    DocsTemplateComponent
+],
 })
 export class HowToAddNewEntityComponent {
-  howToAddNewEntitySteps: DocsStep[];
+  steps: DocsStep[];
+  gradientTitle = 'How to Add New Entity '
+  whiteTitle = 'With Spiderly and EF Core'
+  textBelowTitle = `
+  The EF Core entity and its attributes form the foundation of everything in
+  Spiderly. All other components are built and generated based on these
+  entities. In this step-by-step guide, you'll learn how to create a new
+  entity in your project. This includes adding it to the backend, updating the
+  database, and generating the corresponding frontend code.
+  `
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor() {
+
+  }
 
   ngOnInit() {
-    this.howToAddNewEntitySteps = [
+    this.steps = [
       {
         title: 'Open the Backend',
         description:
@@ -53,7 +60,7 @@ export class HowToAddNewEntityComponent {
         <ol>
           <li>Open <b>Package Manager Console</b> via <em>View → Other Windows → Package Manager Console</em> (or press <span class="code-block">Ctrl + \`</span>).</li>
           <li>Inside opened <b>Package Manager Console</b> window set <span class="code-block">YourAppName.Infrastructure</span> as the <b>Default Project</b> in the dropdown.</li>
-          <li>Run the command in the following terminal panel to create a migration:</li>
+          <li>Run the command to create a migration:</li>
         </ol>
         `,
         terminalMessages: [
@@ -61,7 +68,7 @@ export class HowToAddNewEntityComponent {
         ],
         description2: `
         <ol start="4">
-          <li>Run the command in the following terminal panel to apply the migration to the database:</li>
+          <li>Run the command to apply the migration to the database:</li>
         </ol>
         `,
         terminalMessages2: [
@@ -135,10 +142,6 @@ export class HowToAddNewEntityComponent {
 `
       },
     ];
-  }
-
-  copyToClipboard(text: string): void {
-    copyToClipboard(text);
   }
   
 }

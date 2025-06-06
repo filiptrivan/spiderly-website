@@ -1,67 +1,7 @@
-<div style="margin-bottom: 30px;">
-  <h1 style="margin-bottom: 15px;">
-    <div class="gradient-title">Getting Started With Spiderly</div>
-  </h1>
-  <div class="text-below-title">
-    Follow this quick start guide to configure and initialize your Spiderly app. Once complete, you'll be ready to use all features and build with its full power.
-  </div>
-</div>
-<div class="section-wrapper">
-  <div class="wrapper">
-    <h2 class="index-title">
-      <i class="index pi pi-youtube"></i> Prefer Watching Instead?
-    </h2>
-    <div class="text-below-subtitle">
-      You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you've already completed the first step — installing the prerequisites.
-    </div>
-    <br/>
-    <div class="example-wrapper" style="padding: 0px; width: 100%; height: fit-content;">
-      <div class="video-wrapper">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/1EIzcJMf1IY?si=S98rD7Da_T-k2Vm2&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-  @for (step of getStartedSteps; track $index; let index = $index) {
-    <div [id]="'step-' + (index + 1)">
-      <div class="wrapper">
-        <h2 class="index-title">
-          <span class="index">{{index + 1}}.</span> {{step.title}}
-        </h2>
-        <div class="text-below-subtitle" [innerHTML]="step.description"></div>
-        
-        <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
-          <app-terminal [messages]="step.terminalMessages"></app-terminal>
-        </div>
-
-        <div *ngIf="step.prerequisites === true" style="width: 100%; height: fit-content;">
-          <div class="example-wrapper">
-            <div>
-              <h3 class="title">Prerequisites</h3>
-              <ul style="margin-bottom: 5px !important;">
-                <li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads" target="_blank" rel="nofollow noopener noreferrer" title="Download SQL Server 2022 Developer">SQL Server 2022 Developer</a> (if you already have SQL Server Express installed, no need to install the Developer edition)</li>
-                <li><a href="https://nodejs.org/en/download/" target="_blank" rel="nofollow noopener noreferrer" title="Download Node.js">Node.js</a></li>
-                <li>
-                  Code Editors (Recommended):
-                  <ul>
-                    <li>Backend: <a href="https://visualstudio.microsoft.com/downloads/" target="_blank" rel="nofollow noopener noreferrer" title="Download Visual Studio (Community Edition)">Visual Studio (Community Edition)</a></li>
-                    <li>Frontend: <a href="https://code.visualstudio.com/download" target="_blank" rel="nofollow noopener noreferrer" title="Download Visual Studio Code">Visual Studio Code</a></li>
-                  </ul>
-                </li>
-                <li>Skip this step if you installed Visual Studio in a previous step - <a href="https://dotnet.microsoft.com/en-us/download" target="_blank" rel="nofollow noopener noreferrer" title="Download .NET 9.0">.NET 9.0</a></li>
-                <li>Run the global Angular CLI and EF Core CLI installation command from any location in the terminal: <span class="code-block">npm install -g &#64;angular/cli && dotnet tool install -g dotnet-ef</span></li>
-                <li><a href="https://learn.microsoft.com/en-us/ssms/release-notes-21#current-sql-server-management-studio-release" target="_blank" rel="nofollow noopener noreferrer" title="Download SQL Server Management Studio (SSMS)">SQL Server Management Studio (SSMS)</a></li>
-                <li>Visual Studio Code Extension: <a href="https://marketplace.visualstudio.com/items?itemName=Angular.ng-template" target="_blank" rel="nofollow noopener noreferrer" title="Download Angular Language Service">Angular Language Service</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="step.video != null" style="width: 100%; height: fit-content;">
-          <div class="example-wrapper" style="padding: 0px;">
-            <div [innerHTML]="step.video"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
-</div>
+<app-docs-template
+  [steps]="steps"
+  [gradientTitle]="gradientTitle"
+  [textBelowTitle]="textBelowTitle"
+  [preferWatchingInstedText]="preferWatchingInstedText"
+  [sanitizedPreferWatchingInstedVideo]="sanitizedPreferWatchingInstedVideo"
+></app-docs-template>
