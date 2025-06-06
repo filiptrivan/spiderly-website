@@ -7,8 +7,8 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { DocsTemplateComponent } from "../docs-template/docs-template.component";
 
 @Component({
-  selector: 'app-how-to-set-up-entity-authorization',
-  templateUrl: './how-to-set-up-entity-authorization.component.html',
+  selector: 'app-entity-authorization',
+  templateUrl: './entity-authorization.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
   imports: [
     CommonModule,
@@ -18,9 +18,9 @@ import { DocsTemplateComponent } from "../docs-template/docs-template.component"
     DocsTemplateComponent
 ],
 })
-export class HowToSetUpEntityAuthorizationComponent {
+export class EntityAuthorizationComponent {
   steps: DocsStep[];
-  gradientTitle = 'How to Set Up Entity Authorization'
+  gradientTitle = 'Entity Authorization: Create, Read, Update, Delete';
   textBelowTitle = `
   By default, all entities require authorization for Create, Read, Update, and Delete operations. 
   If your code encounters an authorization issue (e.g., an <span class="code-block">UnauthorizedException - You don\'t have the necessary rights to perform the operation.</span>), it means the current user lacks the necessary permissions.

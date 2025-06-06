@@ -7,8 +7,8 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { DocsTemplateComponent } from "../docs-template/docs-template.component";
 
 @Component({
-  selector: 'app-how-to-add-new-entity',
-  templateUrl: './how-to-add-new-entity.component.html',
+  selector: 'app-add-new-entity',
+  templateUrl: './add-new-entity.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
   imports: [
     CommonModule,
@@ -18,10 +18,10 @@ import { DocsTemplateComponent } from "../docs-template/docs-template.component"
     DocsTemplateComponent
 ],
 })
-export class HowToAddNewEntityComponent {
+export class AddNewEntityComponent {
   steps: DocsStep[];
-  gradientTitle = 'How to Add New Entity '
-  whiteTitle = 'With Spiderly and EF Core'
+  gradientTitle = 'Add New EF Core Entity '
+  whiteTitle = 'With Spiderly'
   textBelowTitle = `
   The EF Core entity and its attributes form the foundation of everything in
   Spiderly. All other components are built and generated based on these

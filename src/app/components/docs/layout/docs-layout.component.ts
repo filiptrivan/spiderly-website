@@ -9,9 +9,10 @@ import { Meta, SafeHtml, Title } from '@angular/platform-browser';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
 import { AttributesDocsComponent } from "../attributes/attributes.component";
 import { kebabToTitleCase } from '../../playground/web-app/entity-details/services/helper-functions';
-import { HowToAddNewEntityComponent } from '../how-to-add-new-entity/how-to-add-new-entity.component';
+import { AddNewEntityComponent } from '../add-new-entity/add-new-entity.component';
 import { TerminalMessage } from '../terminal/terminal.component';
-import { HowToSetUpEntityAuthorizationComponent } from "../how-to-set-up-entity-authorization/how-to-set-up-entity-authorization.component";
+import { EntityAuthorizationComponent } from "../entity-authorization/entity-authorization.component";
+import { UICustomizationComponent } from "../ui-customization/ui-customization.component";
 
 @Component({
     selector: 'app-docs-layout',
@@ -24,8 +25,9 @@ import { HowToSetUpEntityAuthorizationComponent } from "../how-to-set-up-entity-
     DocsSidebarMenuComponent,
     GettingStartedComponent,
     AttributesDocsComponent,
-    HowToAddNewEntityComponent,
-    HowToSetUpEntityAuthorizationComponent
+    AddNewEntityComponent,
+    EntityAuthorizationComponent,
+    UICustomizationComponent
 ]
 })
 export class DocsLayoutComponent implements OnDestroy {
@@ -40,9 +42,10 @@ export class DocsLayoutComponent implements OnDestroy {
     @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
 
     isGettingStartedPage: boolean;
-    isHowToAddEntity: boolean;
+    isAddNewEntity: boolean;
+    isSetUpEntityAuthorization: boolean;
+    isUiCustomization: boolean;
     isAttributesDocsPage: boolean;
-    isHowToSetUpEntityAuthorization: boolean;
 
     constructor(
         protected layoutService: DocsLayoutService,
@@ -80,19 +83,23 @@ export class DocsLayoutComponent implements OnDestroy {
 
         const metaDescriptions: Record<string, string> = {
             'getting-started': `Follow this quick start guide to configure and initialize your Spiderly app. Once complete, you'll be ready to use all features and build with its full power.`,
-            'how-to-add-new-entity': `The EF Core entity and its attributes are the core of Spiderly. In this step-by-step guide, you'll learn how to create a new entity in your project.`,
-            'how-to-set-up-entity-authorization': `Configure entity authorization by adding permissions and assigning them to roles, or disable authorization using the [DoNotAuthorize] attribute.`,
+            'add-new-entity': `The EF Core entity and its attributes are the core of Spiderly. In this step-by-step guide, you'll learn how to create a new entity in your project.`,
+            'entity-authorization': `Configure entity authorization by adding permissions and assigning them to roles, or disable authorization using the [DoNotAuthorize] attribute.`,
+            'ui-customization': `This step-by-step guide will show you how to customize key UI elements of your Spiderly app, including: app name, logo, favicon, and theme colors.`,
             'attributes': `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
         };
 
         if (slug === 'getting-started') {
             this.isGettingStartedPage = true;
         } 
-        else if (slug === 'how-to-add-new-entity') {
-            this.isHowToAddEntity = true;
+        else if (slug === 'add-new-entity') {
+            this.isAddNewEntity = true;
         } 
-        else if (slug === 'how-to-set-up-entity-authorization') {
-            this.isHowToSetUpEntityAuthorization = true;
+        else if (slug === 'entity-authorization') {
+            this.isSetUpEntityAuthorization = true;
+        } 
+        else if (slug === 'ui-customization') {
+            this.isUiCustomization = true;
         } 
         else if (slug === 'attributes') {
             this.isAttributesDocsPage = true;

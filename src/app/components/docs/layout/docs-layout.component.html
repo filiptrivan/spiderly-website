@@ -9,8 +9,9 @@
         <div class="layout-main">
             <div style="padding: 0 12px;">
                 <app-getting-started *ngIf="isGettingStartedPage === true"></app-getting-started>
-                <app-how-to-add-new-entity *ngIf="isHowToAddEntity === true"></app-how-to-add-new-entity>
-                <app-how-to-set-up-entity-authorization *ngIf="isHowToSetUpEntityAuthorization === true"></app-how-to-set-up-entity-authorization>
+                <app-add-new-entity *ngIf="isAddNewEntity === true"></app-add-new-entity>
+                <app-entity-authorization *ngIf="isSetUpEntityAuthorization === true"></app-entity-authorization>
+                <app-ui-customization *ngIf="isUiCustomization === true"></app-ui-customization>
                 <app-attributes-docs *ngIf="isAttributesDocsPage === true"></app-attributes-docs>
             </div>
         </div>

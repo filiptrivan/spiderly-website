@@ -25,14 +25,19 @@ export class DocsComponent {
             separator: true,
           },
           {
-            label: 'How to Add Entity', 
+            label: 'Add New Entity', 
             icon: 'pi pi-fw pi-compass', 
-            routerLink: '/docs/how-to-add-new-entity',
+            routerLink: '/docs/add-new-entity',
           },
           {
-            label: 'How to Set Up Entity Authorization', 
-            icon: 'pi pi-fw pi-key', 
-            routerLink: '/docs/how-to-set-up-entity-authorization',
+            label: 'Entity Authorization', 
+            icon: 'pi pi-fw pi-shield', 
+            routerLink: '/docs/entity-authorization',
+          },
+          {
+            label: 'Customize UI', 
+            icon: 'pi pi-fw pi-palette', 
+            routerLink: '/docs/ui-customization',
           },
           {
             label: 'Attributes', 
