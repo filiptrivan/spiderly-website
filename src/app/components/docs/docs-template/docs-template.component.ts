@@ -29,6 +29,8 @@ export class DocsTemplateComponent {
   @Input() textBelowTitle: string;
   @Input() preferWatchingInstedText: string;
   @Input() sanitizedPreferWatchingInstedVideo: SafeHtml;
+  @Input() showOrderNumbers: boolean = true;
+  @Input() showTableOfContents: boolean = false;
 
   constructor() {
   }

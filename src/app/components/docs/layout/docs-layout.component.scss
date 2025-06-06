@@ -289,6 +289,9 @@
 }
 
 .index-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 16px;

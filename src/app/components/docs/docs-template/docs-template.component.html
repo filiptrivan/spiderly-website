@@ -6,6 +6,16 @@
   <div *ngIf="textBelowTitle" class="text-below-title" [innerHtml]="textBelowTitle"></div>
 </div>
 <div class="section-wrapper">
+  <div *ngIf="showTableOfContents" class="wrapper">
+    <h2 class="index-title">
+      <i class="index pi pi-list"></i> Table of Contents
+    </h2>
+    <ul>
+      @for (step of steps; track $index; let index = $index) {
+        <li routerLink="/docs/ui-customization" [fragment]="'step-' + index">{{step.title}}</li>
+      }
+    </ul>
+  </div>
   <div *ngIf="sanitizedPreferWatchingInstedVideo" class="wrapper">
     <h2 class="index-title">
       <i class="index pi pi-youtube"></i> Prefer Watching Instead?
@@ -24,7 +34,7 @@
   <div [id]="'step-' + (index + 1)">
     <div class="wrapper">
       <h2 class="index-title">
-        <span class="index">{{ index + 1 }}.</span> {{ step.title }}
+        <span *ngIf="showOrderNumbers" class="index">{{ index + 1 }}.</span> {{ step.title }}
       </h2>
       <div class="description" [innerHTML]="step.description"></div>
       <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content">
