@@ -1,4 +1,4 @@
-<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+<div class="flex flex-column gap-sm">
   <div *ngIf="getTranslatedLabel() != '' && getTranslatedLabel() != null">
     <label>{{getTranslatedLabel()}}</label>
     <required *ngIf="control?.required"></required>
@@ -27,8 +27,8 @@
     [emptyMessage]="emptyMessage"
     [lazy]="true"
     />
-    <span *ngIf="showAddon" (click)="addonClick()" class="p-inputgroup-addon" style="cursor: pointer; background-color: var(--primary-color); border-color: var(--primary-color);">
-      <i class="{{addonIcon}}" style="color: #fff;"></i>
+    <span *ngIf="showAddon" (click)="addonClick()" class="p-inputgroup-addon primary">
+      <i class="{{addonIcon}}"></i>
     </span>
   </div>
 </div>

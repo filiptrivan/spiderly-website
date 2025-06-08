@@ -6,7 +6,7 @@
       </div>
     </h2>
   </div>
-  <div style="display: flex; gap: 18px; flex-direction: column;">
+  <div class="flex flex-column gap-lg">
     @for (step of getStartedSteps; track $index; let index = $index) {
       <div class="carousel-item-wrapper">
         <div class="get-started-card">
@@ -16,15 +16,15 @@
           <div [innerHTML]="step.description">
           </div>
         </div>
-        <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content;">
+        <div *ngIf="step.terminalMessages != null" class="w-100">
           <div class="terminal-wrapper">
-            <div style="margin-bottom: 1rem; display: flex;">
+            <div class="flex mb-md">
               <div class="terminal-circle" style="background-color: var(--p-primary-color);"></div>
-              <div class="terminal-circle" style="background-color: #FBBF24; margin-left: 1rem;"></div>
-              <div class="terminal-circle" style="background-color: var(--p-secondary-color); margin-left: 1rem;"></div>
+              <div class="terminal-circle ml-sm" style="background-color: #FBBF24;"></div>
+              <div class="terminal-circle ml-sm" style="background-color: var(--p-secondary-color);"></div>
             </div>
             @for (terminalMessage of step.terminalMessages; track $index) {
-              <code style="margin-top: 1rem; display: flex; align-items: center;">
+              <code class="flex flex-align-center mt-sm">
                 <span class="terminal-message">
                   <div>
                     <span style="color: var(--p-primary-400);">$</span>

@@ -1,4 +1,4 @@
-<code style="height: 100%;">
+<code class="h-100">
   @for (attributeFormGroup of baseFormService.getFormArrayGroups(entityFormGroup.controls.attributes); track $index; let entityAttributeIndex = $index) {
     <div>
       [<span class="punct">{{attributeFormGroup.controls.name.value}}</span>
@@ -10,9 +10,9 @@
     <span class="kw">public class</span> <span class="punct"> {{entityFormGroup.controls.name.value}}</span> {{ocb}}
   </div>
 
-  <div style="margin-bottom: 20px;"></div>
+  <div class="mb-lg"></div>
 
-  <div style="margin-left: 20px;">
+  <div class="ml-md">
     @for (propertyFormGroup of baseFormService.getFormArrayGroups(entityFormGroup.controls.properties); track $index; let propertyIndex = $index) {
       @for (attributeFormGroup of baseFormService.getFormArrayGroups(propertyFormGroup.controls.attributes); track $index; let propertyAttributeIndex = $index) {
         <div>
@@ -25,10 +25,9 @@
         <span class="kw">public {{propertyFormGroup.controls.dataType.value}}</span> {{propertyFormGroup.controls.name.value}} {{ocb}} <span class="kw">get</span>; <span class="kw">set</span>; {{ccb}} 
       </div>
 
-      <div style="margin-bottom: 20px;"></div>
+      <div class="mb-lg"></div>
     }
   </div>
 
   {{ccb}}
-  
 </code>

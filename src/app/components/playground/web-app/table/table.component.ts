@@ -17,22 +17,7 @@ import { PrimengOption } from '../entity-details/entities/primeng-option';
     selector: 'app-table',
     templateUrl: './table.component.html',
     styleUrl: './table.component.scss',
-    styles: [`
-      :host {
-        ::ng-deep {
-          .p-datatable-thead{
-            position: unset !important;
-          }
-          .p-datatable-header{
-            border-radius: 6px 6px 0 0;
-          }
-          .p-datatable {
-            border-radius: var(--p-content-border-radius);
-            border: 1px solid var(--p-surface-700);
-          }
-        }
-      }
-    `],
+    styles: [],
     standalone: true,
     imports: [
         CommonModule,

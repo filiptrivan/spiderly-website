@@ -135,3 +135,155 @@ a {
   background-color: var(--p-surface-700);
   border-radius: var(--p-content-border-radius);
 }
+
+// Common styles
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-sm {
+  gap: 0.5rem;
+}
+
+.gap-md {
+  gap: 14px;
+}
+
+.gap-lg {
+  gap: 18px;
+}
+
+.mb-sm {
+  margin-bottom: 0.5rem;
+}
+
+.mb-md {
+  margin-bottom: 14px;
+}
+
+.mb-lg {
+  margin-bottom: 20px;
+}
+
+.ml-md {
+  margin-left: 20px;
+}
+
+.mt-sm {
+  margin-top: 1rem;
+}
+
+.ml-sm {
+  margin-left: 1rem;
+}
+
+.ml-4px {
+  margin-left: 4px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-red {
+  color: red;
+}
+
+// Component specific styles
+.terminal-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.p-inputgroup-addon {
+  &.primary {
+    cursor: pointer;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    
+    i {
+      color: #fff;
+    }
+  }
+}
+
+// Panel styles
+.p-panel {
+  overflow: hidden;
+  
+  &-icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  &-header {
+    cursor: pointer;
+  }
+}
+
+// Table styles
+.p-datatable {
+  border-radius: var(--p-content-border-radius);
+  border: 1px solid var(--p-surface-700);
+  
+  &-thead {
+    position: unset !important;
+  }
+  
+  &-header {
+    border-radius: 6px 6px 0 0;
+  }
+}
+
+// File upload styles
+.p-fileupload-header {
+  padding: 12px 18px !important;
+}
+
+// Number circle styles
+.number-circle {
+  border-radius: 50%;
+  width: 33px;
+  height: 33px;
+  padding: 5px;
+  background: var(--p-primary-color);
+  border: 1px solid var(--p-primary-color);
+  color: white;
+  text-align: center;
+  display: inline-block;
+}
