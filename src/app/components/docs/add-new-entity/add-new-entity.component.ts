@@ -78,48 +78,51 @@ export class AddNewEntityComponent {
       {
         title: 'Generate Components',
         description: `
-          Use the <b>Spiderly CLI</b> to generate a default template for your new entity. You can customize the generated files afterwards. 
+        Use the <b>Spiderly CLI</b> to generate a default template for your new entity. You can customize the generated files afterwards. <br/> <br/>
 
-          Running the following command in your terminal will generate:
+        Run the following command from the root of your application: <br/> <br/>
+        `,
+        terminalMessages: [
+          {text: 'spiderly add-new-page', showCopyButton: true},
+        ],
+        description2: `
+        <br/>
+        This will generate the following files:
 
-          <ol>
-            <li>
-              <b>API Controller</b> - Located in your backend project opened with Visual Studio:<br>
-              <span class="code-block">YourAppName.WebAPI\\Controllers\\YourEntityNameController.cs</span>
-            </li>
-            <li>
-              <b>Details Page</b> - In your Angular project (opened with Visual Studio Code):<br>
-              <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.ts</span><br>
-              <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.html</span>
-            </li>
-            <li>
-              <b>List Page</b> - Also in your Angular project:<br>
-              <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-table.component.ts</span><br>
-              <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-table.component.html</span>
-            </li>
-          </ol>
-          `,
-          terminalMessages: [
-            {text: 'spiderly add-new-page', showCopyButton: true},
-          ]
+        <ol>
+          <li>
+            <b>API Controller</b> - Located in your backend project opened with Visual Studio:<br>
+            <span class="code-block">YourAppName.WebAPI\\Controllers\\YourEntityNameController.cs</span>
+          </li>
+          <li>
+            <b>Details Page</b> - In your Angular project (opened with Visual Studio Code):<br>
+            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.ts</span><br>
+            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.html</span>
+          </li>
+          <li>
+            <b>List Page</b> - Also in your Angular project:<br>
+            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-table.component.ts</span><br>
+            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-table.component.html</span>
+          </li>
+        </ol>
+        `
       },
       {
         title: 'Define Routes for Your Page',
         description: `
         In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\app\\app.routes.ts</span> file 
-        and add new child routes under the layout component's <span class="code-block">children</span> array. 
-        Typically, you'll want to define two routes: one for the list view (e.g., a table) and another for the detail view.
+        and add new child routes under the layout component's <span class="code-block">children</span> array:
         <br/> <br/>
         `,
         codeExample: `
 {
-    path: 'your-entity-name',
-    loadComponent: () => import('./pages/your-entity-name-table.component').then(c => c.YourEntityNameTableComponent),
+    path: 'your-entity-name', // URL for the list page (e.g., /your-entity-name)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-table.component').then(c => c.YourEntityNameTableComponent),
     canActivate: [AuthGuard],
 },
 {
-    path: 'your-entity-name/:id', // :id is mandatory
-    loadComponent: () => import('./pages/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
+    path: 'your-entity-name/:id', // URL for the details page (e.g., /your-entity-name/123)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
     canActivate: [AuthGuard],
 },
 `
@@ -127,16 +130,17 @@ export class AddNewEntityComponent {
       {
         title: 'Add the Page to the Navigation Menu',
         description: `
-        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\app\\business\\layout\\layout.component.ts</span> file and add a new menu item.
-        <br/> <br/>
-        <a href="https://primeng.org/icons#list" target="_blank" rel="nofollow noopener noreferrer">Browse available PrimeNG icons</a> to select a suitable icon for your menu item.
-        <br/> <br/>
+        In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\business\\layout\\layout.component.ts</span> file.
+        
+        Locate the <span class="code-block">this.menu</span> array and add a new menu item object for your entity. 
+        Use the following structure as a reference:
+        <br/><br/>
         `,
         codeExample: `
 { 
     label: this.translocoService.translate('YourEntityName'), 
-    icon: 'pi pi-fw pi-question', // https://primeng.org/icons#list
-    routerLink: ['your-entity-name'],
+    icon: 'pi pi-fw pi-question', // Refer to https://primeng.org/icons#list for available icons
+    routerLink: ['your-entity-name'], // Must match the list page path defined in app.routes.ts
     visible: true,
 },
 `
