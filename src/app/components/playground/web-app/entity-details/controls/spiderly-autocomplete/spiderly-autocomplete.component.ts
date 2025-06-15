@@ -20,11 +20,10 @@ import { TooltipModule } from 'primeng/tooltip';
     ]
 })
 export class SpiderlyAutocompleteComponent extends BaseAutocompleteControl implements OnInit {
-    // @Input() required: boolean = true; // TODO FT: delete if you don't need through whole app
     @Input() appendTo: any = 'body';
     @Input() showClear: boolean = true;
     @Input() emptyMessage: string;
-    @Input() displayName: string; // FT: Added because when we initialize the object options are null
+    @Input() displayName: string; // Added because when we initialize the object options are null
 
     constructor(
         @Inject(PLATFORM_ID) protected override platformId: Object

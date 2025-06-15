@@ -12,7 +12,11 @@
     </h2>
     <ul>
       @for (step of steps; track $index; let index = $index) {
-        <li routerLink="/docs/ui-customization" [fragment]="'step-' + index">{{step.title}}</li>
+        <li>
+          <a routerLink="/docs/ui-customization" [fragment]="'step-' + (index + 1)">
+            {{step.title}}
+          </a>
+        </li>
       }
     </ul>
   </div>
@@ -41,10 +45,7 @@
         <app-terminal [messages]="step.terminalMessages"></app-terminal>
       </div>
 
-      <div
-        *ngIf="step.codeExample != null"
-        class="code-snippet-wrapper example-wrapper"
-      >
+      <div *ngIf="step.codeExample != null" class="code-snippet-wrapper example-wrapper">
         <div class="copy-button-wrapper">
           <app-copy-button
             (onClick)="copyToClipboard(step.codeExample)"
@@ -55,6 +56,16 @@
       </div>
 
       <div *ngIf="step.description2" class="description" [innerHTML]="step.description2"></div>
+
+      <div *ngIf="step.codeExample2" class="code-snippet-wrapper example-wrapper">
+        <div class="copy-button-wrapper">
+          <app-copy-button
+            (onClick)="copyToClipboard(step.codeExample2)"
+          ></app-copy-button>
+        </div>
+        <pre><code [highlightAuto]="step.codeExample2">
+        </code></pre>
+      </div>
 
       <div *ngIf="step.terminalMessages2 != null" style="width: 100%; height: fit-content">
         <app-terminal [messages]="step.terminalMessages2"></app-terminal>
