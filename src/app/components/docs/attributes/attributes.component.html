@@ -284,6 +284,13 @@
     This property will contain the unique identifier (<span class="code-block">blob name</span>) used to locate
     and access the file in Azure Storage. <br/> <br/>
 
+    When you add a property decorated with the <span class="code-block">BlobNameAttribute</span> inside your entity, 
+    Spiderly will automatically generate an additional property in the corresponding DTO (e.g., <span class="code-block">ProfilePictureData</span>). This new property will contain the Base64-encoded string of the file.
+    To display this image in your HTML, use the Spiderly helper method <span class="code-block">getHtmlImgDisplayString64</span> and pass its result as the <span class="code-block">src</span> attribute of an 
+    <span class="code-block">&lt;img&gt;</span> tag.
+    
+    <br/> <br/>
+
     <h3>Example:</h3>
     <div class="code-snippet-wrapper card">
     <div class="copy-button-wrapper">
@@ -293,7 +300,7 @@
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     [BlobName]
-    public string ProfilePictureBlobName &lbrace; get; set; &rbrace;
+    public string ProfilePicture &lbrace; get; set; &rbrace;
 &rbrace;
 `">
     </code></pre>

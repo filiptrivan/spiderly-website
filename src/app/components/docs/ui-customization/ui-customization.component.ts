@@ -150,7 +150,20 @@ export class ConfigService extends ConfigBaseService {
         <br/> <br/>
         `,
         codeExample2: `
-// ...
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { Filter, DataViewCardBody, Role, SpiderlyControlsModule, SpiderlyDataViewComponent, SpiderlyTemplateTypeDirective } from 'spiderly';
+
+@Component({
+    selector: 'your-component-name',
+    templateUrl: './your-component-name.component.html',
+    imports: [
+        SpiderlyTemplateTypeDirective,
+        SpiderlyDataViewComponent,
+        SpiderlyControlsModule,
+    ]
+})
 export class YourEntityNameDataViewComponent implements OnInit {
     templateType?: DataViewCardBody<YourEntityName>;
     filters: Filter<YourEntityName>[];
