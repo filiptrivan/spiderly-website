@@ -18,7 +18,7 @@
 
 .layout-topbar {
   position: fixed;
-  z-index: 1002;
+  z-index: 1000;
   top: 88px;
   left: 18px;
 
@@ -162,6 +162,7 @@
             padding: .75rem 1rem;
             border-radius: 12px;
             transition: background-color 100, box-shadow 100;
+            text-decoration: none;
 
             .layout-menuitem-icon {
                 margin-right: .5rem;
@@ -253,7 +254,6 @@
   
     &:hover {
       background-color: var(--p-surface-800);
-      text-decoration: none;
     }
   
     &:focus {
@@ -276,9 +276,8 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  // gap: 18px;
   padding: 18px;
-  border: 1px solid var(--p-surface-700);
+  border: 1px solid var(--p-content-border-color);
   border-radius: var(--p-content-border-radius);
 }
 
@@ -313,6 +312,19 @@
 }
 
 ::ng-deep {
+  h1 {
+    margin-bottom: 30px;
+  }
+  h2 {
+    margin-bottom: 12px;
+  }
+  h3 {
+    margin-bottom: 9px;
+  }
+  h4 {
+    margin-bottom: 7px;
+  }
+
   .video-wrapper {
     position: relative;
     padding-bottom: 56.25%;
@@ -336,9 +348,8 @@
 
 .example-wrapper {
   padding: 18px;
-
   font-size: 0.875rem;
-  border: 1px solid var(--p-surface-800);
+  border: 1px solid var(--p-content-border-color);
   border-radius: var(--p-content-border-radius);
   line-height: 1.5;
   overflow: auto;

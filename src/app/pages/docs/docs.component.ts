@@ -25,19 +25,35 @@ export class DocsComponent {
             separator: true,
           },
           {
-            label: 'Add New Entity', 
-            icon: 'pi pi-fw pi-compass', 
-            routerLink: '/docs/add-new-entity',
-          },
-          {
-            label: 'Entity Authorization', 
-            icon: 'pi pi-fw pi-shield', 
-            routerLink: '/docs/entity-authorization',
+            label: 'Entity',
+            icon: 'pi pi-fw pi-building',
+            items: [
+              {
+                label: 'Add New Entity', 
+                icon: 'pi pi-fw pi-file-plus', 
+                routerLink: '/docs/add-new-entity',
+              },
+              {
+                label: 'Entity Validation', 
+                icon: 'pi pi-fw pi-shield', 
+                routerLink: '/docs/entity-validation',
+              },
+              {
+                label: 'Entity Authorization', 
+                icon: 'pi pi-fw pi-lock', 
+                routerLink: '/docs/entity-authorization',
+              },
+            ]
           },
           {
             label: 'Customize UI', 
             icon: 'pi pi-fw pi-palette', 
             routerLink: '/docs/ui-customization',
+          },
+          {
+            label: 'Translate Spiderly App', 
+            icon: 'pi pi-fw pi-flag', 
+            routerLink: '/docs/translate-spiderly-app',
           },
           {
             label: 'Attributes', 

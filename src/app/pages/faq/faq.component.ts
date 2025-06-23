@@ -53,6 +53,53 @@ export class FAQComponent {
       answer: 'Yes, Spiderly is <a href="https://github.com/filiptrivan/spiderly" target="_blank" rel="noopener noreferrer" title="Go to GitHub Repository">open-source</a> and released under the MIT License. You\'re free to use it in personal, commercial, or open-source projects.'
     },
     {
+      question: 'How does Spiderly compare to the ABP Framework?',
+      answer: `
+In most scenarios, Spiderly is the better choice—especially if you're building a typical business or admin-style app with .NET and Angular. 
+It's much simpler to set up, requires less boilerplate, and is completely free under the MIT license. 
+You get full CRUD, API, Angular UI, validation, mapping, and even DTOs generated automatically from your EF Core model. <br/><br/>
+
+<table class="docs-table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Spiderly</th>
+      <th>ABP Framework</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>End-to-end code generation</strong></td>
+      <td>Yes — from EF Core to UI + API client + validation</td>
+      <td>No — you build modules manually</td>
+    </tr>
+    <tr>
+      <td><strong>License & cost</strong></td>
+      <td>Fully free (MIT)</td>
+      <td>Free + commercial tiers</td>
+    </tr>
+    <tr>
+      <td><strong>Auto-sync on changes</strong></td>
+      <td>Real-time generation on code change</td>
+      <td>Manual updates required</td>
+    </tr>
+    <tr>
+      <td><strong>Tech stack</strong></td>
+      <td>
+        .NET + Angular (with EF Core, PrimeNG, FluentValidation, Serilog...)<br>
+      </td>
+      <td>Modular with flexibility (Blazor, Angular, MVC…)</td>
+    </tr>
+    <tr>
+      <td><strong>OS support</strong></td>
+      <td>Windows only</td>
+      <td>Cross-platform (Windows, Linux, macOS)</td>
+    </tr>
+  </tbody>
+</table>
+`,
+    },
+    {
       question: 'Does Spiderly work on Linux operating systems?',
       answer: 'No, Spiderly is currently not compatible with Linux. We are focusing on Windows support for now, but Linux support may be added in the future.'
     },

@@ -22,7 +22,7 @@ export class AppComponent {
   constructor(
     private viewportScroller: ViewportScroller
   ) {
-    viewportScroller.setOffset([0, 88]);
+    viewportScroller.setOffset([0, 130]);
   }
 
 }

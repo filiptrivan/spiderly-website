@@ -58,24 +58,14 @@ export class DocsLayoutService {
             }
         }
         
-        if (this.isDesktop()) {
-            this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-        }
-        else {
-            this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
+        this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
-            if (this.state.staticMenuMobileActive) {
-                this.overlayOpen.next(null);
-            }
+        if (this.state.staticMenuMobileActive) {
+            this.overlayOpen.next(null);
         }
     }
 
     isOverlay() {
         return this.layoutConfig.menuMode === 'overlay';
     }
-
-    isDesktop() {
-        return false;
-    }
-
 }

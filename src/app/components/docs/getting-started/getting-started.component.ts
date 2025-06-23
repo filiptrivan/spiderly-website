@@ -37,6 +37,7 @@ export class GettingStartedComponent {
     this.steps = [
       {
         title: 'Install Prerequisites',
+        fragment: 'install-prerequisite',
         description: this.sanitizer.bypassSecurityTrustHtml(`
         Before getting started with Spiderly, make sure you have the following prerequisites installed: <br/>
         <div class="example-wrapper">
@@ -63,6 +64,7 @@ export class GettingStartedComponent {
       },
       {
         title: 'Install the Spiderly CLI',
+        fragment: 'install-the-spiderly-cli',
         description:
           'Run the Global Spiderly CLI installation command from <b>any location in the terminal</b>: <br/> <br/>',
         terminalMessages: [
@@ -71,6 +73,7 @@ export class GettingStartedComponent {
       },
       {
         title: 'Initialize the App',
+        fragment: 'initialize-the-app',
         description:
           'Run this command in the folder <b>where you want your app to be located</b>: <br/> <br/>',
         terminalMessages: [
@@ -79,17 +82,20 @@ export class GettingStartedComponent {
       },
       {
         title: 'Start the Backend',
+        fragment: 'start-the-backend',
         description:
           'Open the backend project located at <span class="code-block">your-app-name\\Backend\\YourAppName.sln</span> using Visual Studio and click the <span class="code-block">IIS Express</span> run button to start the backend.',
       },
       {
         title: 'Start the Frontend',
+        fragment: 'start-the-frontend',
         description:
           'Open the frontend project located at <span class="code-block">your-app-name\\Frontend</span> using Visual Studio Code. Then open a new <b>Visual Studio Code terminal</b> via <em>Terminal -> New Terminal</em> (or press <span class="code-block">Ctrl + Shift + `</span>) and run the command: <br/> <br/>',
         terminalMessages: [{ text: 'npm start', showCopyButton: true }],
       },
       {
         title: 'Set Up Emailing',
+        fragment: 'set-up-emailing',
         description: `
         In the backend project opened with Visual Studio, locate the <span class="code-block">YourAppName.WebAPI\\appsettings.json</span> file and set the following fields:
         <ul>
@@ -105,11 +111,12 @@ export class GettingStartedComponent {
       },
       {
         title: 'Set Up Google Authentication',
+        fragment: 'set-up-google-authentication',
         description: `
         After following the video tutorial, you will obtain the Google Client ID. Once you have it, make sure to set it in the following two places:
         <ul>
           <li>In the backend project opened with Visual Studio, locate the <span class="code-block">YourAppName.WebAPI\\appsettings.json</span> file and set the value for the <span class="code-block">"GoogleClientId"</span>.</li>
-          <li>In the project opened with Visual Studio Code, locate the <span class="code-block">src\\environments\\environment.ts</span> file and set the value for the <span class="code-block">"GoogleClientId"</span>.</li>
+          <li>In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\environments\\environment.ts</span> file and set the value for the <span class="code-block">"GoogleClientId"</span>.</li>
         </ul>
         `,
         video: this.sanitizer.bypassSecurityTrustHtml(`
@@ -120,11 +127,13 @@ export class GettingStartedComponent {
       },
       {
         title: 'Register the User',
+        fragment: 'register-the-user',
         description:
           'Use the UI of your generated app to register the user via email or Google.',
       },
       {
         title: 'Connect to SQL Server',
+        fragment: 'connect-to-sql-server',
         description: `
         <ol class="margin-bottom-0">
           <li>Open <b>SQL Server Management Studio (SSMS)</b>.</li>
@@ -147,6 +156,7 @@ export class GettingStartedComponent {
       },
       {
         title: 'Assign Admin Permissions',
+        fragment: 'assign-admin-permissions',
         description:
           'Execute the script located at <span class="code-block">your-app-name\\Database\\initialize-script.sql</span> using SQL Server Management Studio to assign admin permissions to the previously registered user.',
       },
