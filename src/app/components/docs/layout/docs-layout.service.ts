@@ -11,7 +11,7 @@ export interface LayoutState {
     staticMenuDesktopInactive: boolean;
     overlayMenuActive: boolean;
     profileSidebarVisible: boolean;
-    profileDropdownSidebarVisible:boolean;
+    profileDropdownSidebarVisible: boolean;
     staticMenuMobileActive: boolean;
 }
 
@@ -27,10 +27,10 @@ export class DocsLayoutService {
 
     state: LayoutState = {
         staticMenuDesktopInactive: false,
-        overlayMenuActive: false,
+        overlayMenuActive: true,
         profileSidebarVisible: false,
         profileDropdownSidebarVisible: false,
-        staticMenuMobileActive: false,
+        staticMenuMobileActive: true,
     };
 
     private overlayOpen = new Subject<any>();
@@ -40,7 +40,7 @@ export class DocsLayoutService {
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object
     ) {
-        
+
     }
 
     showProfileDropdownSidebar() {
@@ -50,6 +50,11 @@ export class DocsLayoutService {
         }
     }
 
+      closeSidebar() {
+        this.state.staticMenuMobileActive = false;
+        this.state.profileSidebarVisible = false;
+    }
+
     onMenuToggle() {
         if (this.isOverlay()) {
             this.state.overlayMenuActive = !this.state.overlayMenuActive;
@@ -57,7 +62,7 @@ export class DocsLayoutService {
                 this.overlayOpen.next(null);
             }
         }
-        
+
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
         }
@@ -77,5 +82,4 @@ export class DocsLayoutService {
     isDesktop() {
         return false;
     }
-
 }

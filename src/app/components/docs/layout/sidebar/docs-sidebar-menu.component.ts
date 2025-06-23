@@ -5,7 +5,7 @@ import { MenuitemComponent } from './docs-menuitem.component';
 import { CommonModule } from '@angular/common';
 import { DocsLayoutService } from '../docs-layout.service';
 
-export interface DocsSpiderlyMenuItem extends MenuItem{
+export interface DocsSpiderlyMenuItem extends MenuItem {
 }
 
 @Component({
@@ -21,15 +21,19 @@ export class DocsSidebarMenuComponent implements OnInit {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
 
     constructor(
-        public layoutService: DocsLayoutService, 
+        public layoutService: DocsLayoutService,
         public el: ElementRef
     ) {
-        
+
     }
 
     ngOnInit() {
     }
 
+    closeSidebar(event: MouseEvent): void {
+        event.stopPropagation();
+        this.layoutService.closeSidebar();
+    }
 
     ngOnDestroy(): void {
 

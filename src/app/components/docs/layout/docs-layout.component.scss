@@ -368,4 +368,28 @@ code {
   background-color: transparent !important;
 }
 
+.sidebar-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    color: #666;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    float: right;
+    margin-top: 2px;
+}
+
+.sidebar-close-btn:hover {
+    color: #727272;
+}
+
+@media (max-width: 768px) {
+    .sidebar-close-btn {
+        display: none;
+    }
+}
+
+
 //#endregion

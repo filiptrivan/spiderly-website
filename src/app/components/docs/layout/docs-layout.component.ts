@@ -19,16 +19,16 @@ import { UICustomizationComponent } from "../ui-customization/ui-customization.c
     templateUrl: './docs-layout.component.html',
     styleUrl: './docs-layout.component.scss',
     imports: [
-    CommonModule,
-    RouterModule,
-    DocsAppTopBarComponent,
-    DocsSidebarMenuComponent,
-    GettingStartedComponent,
-    AttributesDocsComponent,
-    AddNewEntityComponent,
-    EntityAuthorizationComponent,
-    UICustomizationComponent
-]
+        CommonModule,
+        RouterModule,
+        DocsAppTopBarComponent,
+        DocsSidebarMenuComponent,
+        GettingStartedComponent,
+        AttributesDocsComponent,
+        AddNewEntityComponent,
+        EntityAuthorizationComponent,
+        UICustomizationComponent
+    ]
 })
 export class DocsLayoutComponent implements OnDestroy {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
@@ -56,7 +56,8 @@ export class DocsLayoutComponent implements OnDestroy {
         private meta: Meta,
     ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-            if (!this.menuOutsideClickListener) {
+            const isDesktop = window.innerWidth < 600;
+            if (isDesktop && !this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
                     const isOutsideClicked = !(
                         this.appSidebar.el.nativeElement.isSameNode(event.target) ||
@@ -79,6 +80,11 @@ export class DocsLayoutComponent implements OnDestroy {
     }
 
     ngOnInit() {
+        if (typeof window !== 'undefined' && window.innerWidth > 991) {
+            this.layoutService.state.overlayMenuActive = true;
+            this.layoutService.state.staticMenuMobileActive = true
+        }
+
         const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path ?? '';
 
         const metaDescriptions: Record<string, string> = {
@@ -91,16 +97,16 @@ export class DocsLayoutComponent implements OnDestroy {
 
         if (slug === 'getting-started') {
             this.isGettingStartedPage = true;
-        } 
+        }
         else if (slug === 'add-new-entity') {
             this.isAddNewEntity = true;
-        } 
+        }
         else if (slug === 'entity-authorization') {
             this.isSetUpEntityAuthorization = true;
-        } 
+        }
         else if (slug === 'ui-customization') {
             this.isUiCustomization = true;
-        } 
+        }
         else if (slug === 'attributes') {
             this.isAttributesDocsPage = true;
         }
@@ -150,13 +156,13 @@ export class DocsLayoutComponent implements OnDestroy {
 }
 
 export interface DocsStep {
-  title: string;
-  description: SafeHtml;
-  description2?: SafeHtml;
-  terminalMessages?: TerminalMessage[];
-  terminalMessages2?: TerminalMessage[];
-  prerequisites?: boolean;
-  video?: SafeHtml;
-  codeExample?: string;
-  codeExample2?: string;
+    title: string;
+    description: SafeHtml;
+    description2?: SafeHtml;
+    terminalMessages?: TerminalMessage[];
+    terminalMessages2?: TerminalMessage[];
+    prerequisites?: boolean;
+    video?: SafeHtml;
+    codeExample?: string;
+    codeExample2?: string;
 }

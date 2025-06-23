@@ -41,8 +41,8 @@ export class MenuitemComponent implements OnInit, OnDestroy {
     private menuResetSubscription: Subscription;
 
     constructor(
-        public layoutService: DocsLayoutService, 
-        private menuService: DocsSidebarMenuService, 
+        public layoutService: DocsLayoutService,
+        private menuService: DocsSidebarMenuService,
         private router: Router,
     ) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
@@ -72,7 +72,6 @@ export class MenuitemComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.key = this.parentKey ? this.parentKey + '-' + this.index : String(this.index);
-        
         if (this.item.routerLink) {
             this.updateActiveStateFromRoute();
         }
@@ -98,7 +97,7 @@ export class MenuitemComponent implements OnInit, OnDestroy {
         return this.root ? 'expanded' : (this.active ? 'expanded' : 'collapsed');
     }
 
-    @HostBinding('class.active-menuitem') 
+    @HostBinding('class.active-menuitem')
     get activeClass() {
         return this.active && !this.root;
     }
