@@ -1,4 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
 
 export interface AppConfig {
@@ -50,9 +51,11 @@ export class DocsLayoutService {
         }
     }
 
-      closeSidebar() {
+    closeSidebar() {
         this.state.staticMenuMobileActive = false;
+        this.state.overlayMenuActive = false;
         this.state.profileSidebarVisible = false;
+        this.state.profileDropdownSidebarVisible = false;
     }
 
     onMenuToggle() {
@@ -65,7 +68,7 @@ export class DocsLayoutService {
 
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-        }
+        }        
         else {
             this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
@@ -80,6 +83,9 @@ export class DocsLayoutService {
     }
 
     isDesktop() {
+        if (isPlatformBrowser(this.platformId)) {
+            return window.innerWidth >= 1200;
+        }
         return false;
     }
 }

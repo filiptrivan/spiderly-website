@@ -56,8 +56,7 @@ export class DocsLayoutComponent implements OnDestroy {
         private meta: Meta,
     ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-            const isDesktop = window.innerWidth < 600;
-            if (isDesktop && !this.menuOutsideClickListener) {
+            if (!this.layoutService.isDesktop() && !this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
                     const isOutsideClicked = !(
                         this.appSidebar.el.nativeElement.isSameNode(event.target) ||
@@ -67,7 +66,7 @@ export class DocsLayoutComponent implements OnDestroy {
                     );
 
                     if (isOutsideClicked) {
-                        this.hideMenu();
+                        this.closeSidebar();
                     }
                 });
             }
@@ -75,12 +74,14 @@ export class DocsLayoutComponent implements OnDestroy {
 
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
-                this.hideMenu();
+                if (!this.layoutService.isDesktop()) {
+                    this.closeSidebar();
+                  }
             });
     }
 
     ngOnInit() {
-        if (typeof window !== 'undefined' && window.innerWidth > 991) {
+        if (this.layoutService.isDesktop()) {
             this.layoutService.state.overlayMenuActive = true;
             this.layoutService.state.staticMenuMobileActive = true
         }
@@ -125,10 +126,9 @@ export class DocsLayoutComponent implements OnDestroy {
         return `${kebabToTitleCase(slug)} | Spiderly Docs`;
     }
 
-    hideMenu() {
-        this.layoutService.state.staticMenuMobileActive = false;
-        this.layoutService.state.overlayMenuActive = false;
-
+    closeSidebar() {
+        this.layoutService.closeSidebar();
+        
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
