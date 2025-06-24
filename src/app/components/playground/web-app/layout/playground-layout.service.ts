@@ -1,7 +1,15 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { AppConfig, LayoutState } from '../../../docs/layout/docs-layout.service';
+import { AppConfig } from '../../../docs/layout/docs-layout.service';
+
+interface LayoutState {
+    staticMenuDesktopInactive: boolean;
+    overlayMenuActive: boolean;
+    profileSidebarVisible: boolean;
+    profileDropdownSidebarVisible: boolean;
+    staticMenuMobileActive: boolean;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -45,6 +53,7 @@ export class PlaygroundLayoutService {
                 this.overlayOpen.next(null);
             }
         }
+        
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
         }

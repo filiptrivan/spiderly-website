@@ -38,9 +38,11 @@ export class DocsLayoutComponent implements OnDestroy {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
 
     overlayMenuOpenSubscription: Subscription;
+    navigationEndSubscription: Subscription;
 
     menuOutsideClickListener: any;
 
+    animateSidebar: boolean = true;
     @ViewChild(DocsSidebarMenuComponent) appSidebar!: DocsSidebarMenuComponent;
 
     @ViewChild(DocsAppTopBarComponent) appTopbar!: DocsAppTopBarComponent;
@@ -78,19 +80,19 @@ export class DocsLayoutComponent implements OnDestroy {
             }
         });
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+        this.navigationEndSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
-                if (!this.layoutService.isDesktop()) {
+                if (this.layoutService.isDesktop()) {
+                    this.animateSidebar = false;
+                    setTimeout(() => this.animateSidebar = true, 10);
+                }
+                else {
                     this.closeSidebar();
-                  }
+                }
             });
     }
 
     ngOnInit() {
-        if (this.layoutService.isDesktop()) {
-            this.layoutService.state.staticMenuMobileActive = true
-        }
-
         const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path ?? '';
 
         const metaDescriptions: Record<string, string> = {
@@ -148,18 +150,13 @@ export class DocsLayoutComponent implements OnDestroy {
         }
     }
 
-    get containerClass() {
-        return {
-            'layout-overlay': this.layoutService.layoutConfig.menuMode === 'overlay',
-            'layout-overlay-active': this.layoutService.state.overlayMenuActive,
-            'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
-            'p-ripple-disabled': true
-        }
-    }
-
     ngOnDestroy() {
         if (this.overlayMenuOpenSubscription) {
             this.overlayMenuOpenSubscription.unsubscribe();
+        }
+
+        if (this.navigationEndSubscription) {
+            this.navigationEndSubscription.unsubscribe();
         }
 
         if (this.menuOutsideClickListener) {

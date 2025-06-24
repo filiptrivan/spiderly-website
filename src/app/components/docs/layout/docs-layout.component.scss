@@ -108,16 +108,16 @@
   user-select: none;
   top: 7.75rem;
   left: 18px;
-  transition: transform 0.2s, left 0.2s;
   background-color: var(--p-surface-950);
   box-shadow: 0 0 1px 1px var(--p-surface-700) !important;
   border-radius: var(--p-content-border-radius);
   padding: 1rem;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05),
     0px 1px 4px rgba(0, 0, 0, 0.08);
-  @media (min-width: 992px) {
-    transition: none !important;
-  }
+}
+
+.with-transition {
+  transition: transform 0.2s, left 0.2s;
 }
 
 ::ng-deep {
@@ -382,14 +382,16 @@ code {
   background-color: transparent !important;
 }
 
-.sidebar-close-btn {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  z-index: 10;
+.sidebar-close-btn-wrapper {
+  display: flex;
 }
 
-@media (max-width: 768px) {
+.sidebar-close-btn {
+  margin-left: auto;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 1730px) {
   .sidebar-close-btn {
     display: none;
   }

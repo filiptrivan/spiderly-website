@@ -8,11 +8,8 @@ export interface AppConfig {
     color: string;
 }
 
-export interface LayoutState {
-    staticMenuDesktopInactive: boolean;
+interface LayoutState {
     overlayMenuActive: boolean;
-    profileSidebarVisible: boolean;
-    profileDropdownSidebarVisible: boolean;
     staticMenuMobileActive: boolean;
 }
 
@@ -27,10 +24,7 @@ export class DocsLayoutService {
     };
 
     state: LayoutState = {
-        staticMenuDesktopInactive: false,
         overlayMenuActive: true,
-        profileSidebarVisible: false,
-        profileDropdownSidebarVisible: false,
         staticMenuMobileActive: true,
     };
 
@@ -44,47 +38,29 @@ export class DocsLayoutService {
 
     }
 
-    showProfileDropdownSidebar() {
-        this.state.profileDropdownSidebarVisible = !this.state.profileDropdownSidebarVisible;
-        if (this.state.profileDropdownSidebarVisible) {
-            this.overlayOpen.next(null);
-        }
-    }
-
     closeSidebar() {
         this.state.staticMenuMobileActive = false;
         this.state.overlayMenuActive = false;
-        this.state.profileSidebarVisible = false;
-        this.state.profileDropdownSidebarVisible = false;
     }
 
     onMenuToggle() {
-        if (this.isOverlay()) {
-            this.state.overlayMenuActive = !this.state.overlayMenuActive;
-            if (this.state.overlayMenuActive) {
+        this.state.overlayMenuActive = !this.state.overlayMenuActive;
+        if (this.state.overlayMenuActive) {
+            this.overlayOpen.next(null);
+        }
+
+        this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
+
+        if (this.isDesktop()) {
+            if (this.state.staticMenuMobileActive) {
                 this.overlayOpen.next(null);
             }
         }
-
-        if (this.isDesktop()) {
-            this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-        }
-        else {
-            this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
-          
-            if (this.state.staticMenuMobileActive) {
-              this.overlayOpen.next(null);
-            }
-        }
-    }
-
-    isOverlay() {
-        return this.layoutConfig.menuMode === 'overlay';
     }
 
     isDesktop() {
         if (isPlatformBrowser(this.platformId)) {
-            return window.innerWidth >= 1536;
+            return window.innerWidth >= 1730;
         }
         return false;
     }

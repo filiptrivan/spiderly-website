@@ -1,7 +1,7 @@
-<div class="layout-wrapper" [ngClass]="containerClass">
+<div class="layout-wrapper p-ripple-disabled {{layoutService.state.staticMenuMobileActive ? 'layout-mobile-active' : ''}}">
     <docs-topbar></docs-topbar>
 
-    <div class="layout-sidebar">
+    <div class="layout-sidebar {{animateSidebar ? 'with-transition' : ''}}">
         <docs-sidebar-menu [menu]="menu"></docs-sidebar-menu>
     </div>
 
