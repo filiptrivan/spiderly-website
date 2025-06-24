@@ -62,7 +62,7 @@ export class DocsLayoutComponent implements OnDestroy {
         private meta: Meta,
     ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-            if (!this.menuOutsideClickListener) {
+            if (!this.layoutService.isDesktop() && !this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
                     const isOutsideClicked = !(
                         this.appSidebar.el.nativeElement.isSameNode(event.target) ||
@@ -72,7 +72,7 @@ export class DocsLayoutComponent implements OnDestroy {
                     );
 
                     if (isOutsideClicked) {
-                        this.hideMenu();
+                        this.closeSidebar();
                     }
                 });
             }
@@ -80,11 +80,17 @@ export class DocsLayoutComponent implements OnDestroy {
 
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
-                this.hideMenu();
+                if (!this.layoutService.isDesktop()) {
+                    this.closeSidebar();
+                  }
             });
     }
 
     ngOnInit() {
+        if (this.layoutService.isDesktop()) {
+            this.layoutService.state.staticMenuMobileActive = true
+        }
+
         const slug = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path ?? '';
 
         const metaDescriptions: Record<string, string> = {
@@ -99,7 +105,7 @@ export class DocsLayoutComponent implements OnDestroy {
 
         if (slug === 'getting-started') {
             this.isGettingStartedPage = true;
-        } 
+        }
         else if (slug === 'add-new-entity') {
             this.isAddNewEntity = true;
         } 
@@ -133,10 +139,9 @@ export class DocsLayoutComponent implements OnDestroy {
         return `${kebabToTitleCase(slug)} | Spiderly Docs`;
     }
 
-    hideMenu() {
-        this.layoutService.state.staticMenuMobileActive = false;
-        this.layoutService.state.overlayMenuActive = false;
-
+    closeSidebar() {
+        this.layoutService.closeSidebar();
+        
         if (this.menuOutsideClickListener) {
             this.menuOutsideClickListener();
             this.menuOutsideClickListener = null;
