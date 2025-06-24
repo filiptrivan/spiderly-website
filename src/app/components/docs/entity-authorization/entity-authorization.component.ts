@@ -40,6 +40,7 @@ export class EntityAuthorizationComponent {
     this.steps = [
       {
         title: 'Insert Permissions into the Database',
+        fragment: 'insert-permissions-into-the-database',
         description: `
         <ol>
           <li>Open <b>SQL Server Management Studio (SSMS)</b>.</li>
@@ -62,6 +63,7 @@ COMMIT;
       },
       {
         title: 'Assign Permissions to a Role',
+        fragment: 'assign-permissions-to-a-role',
         description: `
         In the application UI:
         <ol>

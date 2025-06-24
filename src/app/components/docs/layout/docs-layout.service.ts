@@ -69,15 +69,11 @@ export class DocsLayoutService {
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
         }
-        if (!this.isDesktop()) {
-            this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
-        }
-        
         else {
             this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
-
+          
             if (this.state.staticMenuMobileActive) {
-                this.overlayOpen.next(null);
+              this.overlayOpen.next(null);
             }
         }
     }
@@ -92,4 +88,5 @@ export class DocsLayoutService {
         }
         return false;
     }
+
 }

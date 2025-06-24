@@ -41,13 +41,6 @@
             </li>
             <li>
                 <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'custom-validator-attribute'"
-                    title="Go to CustomValidatorAttribute">
-                    CustomValidatorAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
                     [fragment]="'display-name-attribute'"
                     title="Go to DisplayNameAttribute">
                     DisplayNameAttribute
@@ -83,13 +76,6 @@
             </li>
             <li>
                 <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'greater-than-or-equal-to-attribute'"
-                    title="Go to GreaterThanOrEqualToAttribute">
-                    GreaterThanOrEqualToAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
                     [fragment]="'include-in-dto-attribute'"
                     title="Go to IncludeInDTOAttribute">
                     IncludeInDTOAttribute
@@ -97,23 +83,16 @@
             </li>
             <li>
                 <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'m2m-entity-attribute'"
-                    title="Go to M2MEntityAttribute">
-                    M2MEntityAttribute
+                    [fragment]="'m2m-attribute'"
+                    title="Go to M2MAttribute">
+                    M2MAttribute
                 </a>
             </li>
             <li>
                 <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'m2m-maintance-entity-attribute'"
-                    title="Go to M2MMaintanceEntityAttribute">
-                    M2MMaintanceEntityAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'many-to-one-required-attribute'"
-                    title="Go to ManyToOneRequiredAttribute">
-                    ManyToOneRequiredAttribute
+                    [fragment]="'m2m-with-many-attribute'"
+                    title="Go to M2MWithManyAttribute">
+                    M2MWithManyAttribute
                 </a>
             </li>
             <li>
@@ -149,48 +128,6 @@
                     [fragment]="'skip-spinner-attribute'"
                     title="Go to SkipSpinnerAttribute">
                     SkipSpinnerAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'translate-excel-en-attribute'"
-                    title="Go to TranslateExcelEnAttribute">
-                    TranslateExcelEnAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'translate-excel-sr-latn-rs-attribute'"
-                    title="Go to TranslateExcelSrLatnRSAttribute">
-                    TranslateExcelSrLatnRSAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'translate-plural-en-attribute'"
-                    title="Go to TranslatePluralEnAttribute">
-                    TranslatePluralEnAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'translate-plural-sr-latn-rs-attribute'"
-                    title="Go to TranslatePluralSrLatnRSAttribute">
-                    TranslatePluralSrLatnRSAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'translate-singular-en-attribute'"
-                    title="Go to TranslateSingularEnAttribute">
-                    TranslateSingularEnAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'translate-singular-sr-latn-rs-attribute'"
-                    title="Go to TranslateSingularSrLatnRSAttribute">
-                    TranslateSingularSrLatnRSAttribute
                 </a>
             </li>
             <li>
@@ -278,7 +215,7 @@
     <section id="blob-name-attribute" class="doc-section">
         <div class="card">
             <h2>BlobNameAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Marks a string property as a reference to a file stored in Azure Blob Storage.
     This property will contain the unique identifier (<span class="code-block">blob name</span>) used to locate
@@ -300,6 +237,7 @@
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     [BlobName]
+    [StringLength(80, MinimumLength = 30)] // GUID length
     public string ProfilePicture &lbrace; get; set; &rbrace;
 &rbrace;
 `">
@@ -311,14 +249,13 @@ public class User : BusinessObject&lt;long&gt;
     <section id="cascade-delete-attribute" class="doc-section">
         <div class="card">
             <h2>CascadeDeleteAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Implements cascade delete behavior in <span class="code-block">many-to-one</span> relationships. When the referenced entity is deleted,
     all entities that reference it will automatically be deleted as well. <br/> <br/>
 
     <h3>This attribute is useful when:</h3>
-    - Child entities should not exist without their parent<br/>
-    - You want cascade delete but don't need the strict validation of <span class="code-block">[ManyToOneRequired]</span> <br/> <br/>
+    - Child entities should not exist without their parent<br/> <br/>
 
     <h3>Example:</h3>
     <div class="code-snippet-wrapper card">
@@ -344,7 +281,7 @@ public class Comment : BusinessObject&lt;long&gt;
     <section id="controller-attribute" class="doc-section">
         <div class="card">
             <h2>ControllerAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies a custom controller name for an entity, overriding the default naming convention.
     This attribute allows grouping multiple related entities under a single controller. <br/> <br/>
@@ -398,35 +335,10 @@ public static partial class Mapper
             </div>
         </div>
     </section>
-    <section id="custom-validator-attribute" class="doc-section">
-        <div class="card">
-            <h2>CustomValidatorAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies a custom validation rule to be applied to the decorated property. <br/>
-    Multiple validation rules can be chained together using dot notation e.g. <span class="code-block">EmailAddress().Length(5, 10)</span> <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-public class User : BusinessObject&lt;long&gt;
-&lbrace;
-    [CustomValidator(&quot;EmailAddress().Length(5, 50)&quot;)] // Validates email format and length
-    public string Email &lbrace; get; set; &rbrace;
-&rbrace;
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
     <section id="display-name-attribute" class="doc-section">
         <div class="card">
             <h2>DisplayNameAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3>
     Specifies which property should be used as the display name for an entity in UI elements: <br/>
@@ -460,7 +372,7 @@ public class Employee : BusinessObject&lt;long&gt;
     <section id="do-not-authorize-attribute" class="doc-section">
         <div class="card">
             <h2>DoNotAuthorizeAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Disables authorization checks for CRUD operations on the decorated entity.
     By default, all entities require authorization for CRUD operations. <br/> <br/>
@@ -473,7 +385,7 @@ public class Employee : BusinessObject&lt;long&gt;
     <section id="exclude-from-dto-attribute" class="doc-section">
         <div class="card">
             <h2>ExcludeFromDTOAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies that a property should be excluded from the generated DTO.
             </div>
@@ -482,7 +394,7 @@ public class Employee : BusinessObject&lt;long&gt;
     <section id="exclude-service-methods-from-generation-attribute" class="doc-section">
         <div class="card">
             <h2>ExcludeServiceMethodsFromGenerationAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Prevents the generation of standard business service methods for the decorated property
     in the <span class="code-block">BusinessServiceGenerated</span> class. <br/> <br/>
@@ -500,7 +412,7 @@ public class Employee : BusinessObject&lt;long&gt;
     <section id="generate-comma-separated-display-name-attribute" class="doc-section">
         <div class="card">
             <h2>GenerateCommaSeparatedDisplayNameAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Generates a string property in the DTO containing comma-separated
     display names for a collection property in the entity. <br/> <br/>
@@ -534,20 +446,10 @@ public class User : BusinessObject&lt;long&gt;
             </div>
         </div>
     </section>
-    <section id="greater-than-or-equal-to-attribute" class="doc-section">
-        <div class="card">
-            <h2>GreaterThanOrEqualToAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
-            <div class="summary">
-<h3>Usage:</h3> Validates that a numeric property value is greater than or equal to a specified number.
-    This attribute provides both <span class="code-block">server-side</span> and <span class="code-block">client-side</span> validation.
-            </div>
-        </div>
-    </section>
     <section id="include-in-dto-attribute" class="doc-section">
         <div class="card">
             <h2>IncludeInDTOAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies that a property should be included in the generated DTO.
     This attribute is particularly useful for enumerable properties, which are not included in DTOs by default. <br/> <br/>
@@ -556,14 +458,12 @@ public class User : BusinessObject&lt;long&gt;
             </div>
         </div>
     </section>
-    <section id="m2m-entity-attribute" class="doc-section">
+    <section id="m2m-attribute" class="doc-section">
         <div class="card">
-            <h2>M2MEntityAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <h2>M2MAttribute</h2>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
-<h3>Usage:</h3> Marks a property in a <span class="code-block">many-to-many</span> relationship where the administration of the relationship
-    should NOT be performed. This attribute is used in conjunction with <span class="code-block">M2MMaintanceEntity</span> to
-    define the relationship management structure. <br/> <br/>
+<h3>Usage:</h3> Indicates that the entity represents a helper table for a <span class="code-block">many-to-many</span> (M2M) relationship. <br/> <br/>
 
     <h3>Example:</h3>
     <div class="code-snippet-wrapper card">
@@ -571,12 +471,13 @@ public class User : BusinessObject&lt;long&gt;
         <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
     </div>
     <pre><code language="csharp" [highlight]="`
+[M2M]
 public class RolePermission
 &lbrace;
-    [M2MMaintanceEntity(nameof(Role.Permissions))]
+    [M2MWithMany(nameof(Role.Permissions))]
     public virtual Role Role &lbrace; get; set; &rbrace;
 
-    [M2MEntity(nameof(Permission.Roles))]
+    [M2MWithMany(nameof(Permission.Roles))]
     public virtual Permission Permission &lbrace; get; set; &rbrace;
 &rbrace;
 `">
@@ -585,14 +486,12 @@ public class RolePermission
             </div>
         </div>
     </section>
-    <section id="m2m-maintance-entity-attribute" class="doc-section">
+    <section id="m2m-with-many-attribute" class="doc-section">
         <div class="card">
-            <h2>M2MMaintanceEntityAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <h2>M2MWithManyAttribute</h2>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
-<h3>Usage:</h3> Marks a property in a <span class="code-block">many-to-many</span> relationship where the administration of the relationship
-    should be performed. This attribute indicates that the current entity's page will contain
-    the UI controls for managing the <span class="code-block">many-to-many</span> relationship. <br/> <br/>
+<h3>Usage:</h3> Marks a property in a <span class="code-block">many-to-many</span> (M2M) relationship. <br/> <br/>
 
     <h3>Example:</h3>
     <div class="code-snippet-wrapper card">
@@ -600,45 +499,14 @@ public class RolePermission
         <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
     </div>
     <pre><code language="csharp" [highlight]="`
+[M2M]
 public class RolePermission
 &lbrace;
-    [M2MMaintanceEntity(nameof(Role.Permissions))]
+    [M2MWithMany(nameof(Role.Permissions))]
     public virtual Role Role &lbrace; get; set; &rbrace;
 
-    [M2MEntity(nameof(Permission.Roles))]
+    [M2MWithMany(nameof(Permission.Roles))]
     public virtual Permission Permission &lbrace; get; set; &rbrace;
-&rbrace;
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
-    <section id="many-to-one-required-attribute" class="doc-section">
-        <div class="card">
-            <h2>ManyToOneRequiredAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies that a <span class="code-block">many-to-one</span> relationship property is required and should trigger cascade delete.
-    This attribute generates both backend and frontend validation rules to ensure the relationship
-    is always present. <br/> <br/>
-
-    <h3>When applied to a property:</h3>
-    - Enforces that the parent entity cannot exist without this relationship <br/>
-    - Implements cascade delete behavior <br/>
-    - Generates required validation rules for both backend and frontend <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-public class User : BusinessObject&lt;long&gt;
-&lbrace;
-    [ManyToOneRequired]
-    [WithMany(nameof(Gender.Users))]
-    public virtual Gender Gender &lbrace; get; set; &rbrace;
 &rbrace;
 `">
     </code></pre>
@@ -660,7 +528,7 @@ public class User : BusinessObject&lt;long&gt;
     <section id="project-to-dto-attribute" class="doc-section">
         <div class="card">
             <h2>ProjectToDTOAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies custom mapping configuration when projecting an entity to its DTO. <br/> <br/>
 
@@ -684,7 +552,7 @@ public class Achievement : BusinessObject&lt;long&gt;
     <section id="set-null-attribute" class="doc-section">
         <div class="card">
             <h2>SetNullAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies that the property should be set to <span class="code-block">null</span> when the parent entity is deleted. <br/>
     Apply this attribute to a <span class="code-block">many-to-one</span> relationship property.
@@ -694,7 +562,7 @@ public class Achievement : BusinessObject&lt;long&gt;
     <section id="simple-many-to-many-table-lazy-load-attribute" class="doc-section">
         <div class="card">
             <h2>SimpleManyToManyTableLazyLoadAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies that a table items for the <span class="code-block">many-to-many</span> relationship administration
     should be loaded lazily (on-demand) rather than eagerly.
@@ -731,224 +599,10 @@ public async Task SendNotificationEmail(long notificationId)
             </div>
         </div>
     </section>
-    <section id="translate-excel-en-attribute" class="doc-section">
-        <div class="card">
-            <h2>TranslateExcelEnAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.Translation</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the English name for the exported Excel file. <br/> <br/>
-
-    <h3>If not specified:</h3>
-    - First tries to use <span class="code-block">TranslatePluralEn</span> value <br/>
-    - If <span class="code-block">TranslatePluralEn</span> is not available, uses <span class="code-block">'&lbrace;class_name&rbrace;List'</span> <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-[TranslateExcelEn(&quot;Users_Excel&quot;)]
-public class User : BusinessObject&lt;long&gt;
-&lbrace;
-    // Class properties
-&rbrace;
-// Will generate: Users_Excel.xlsx
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
-    <section id="translate-excel-sr-latn-rs-attribute" class="doc-section">
-        <div class="card">
-            <h2>TranslateExcelSrLatnRSAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.Translation</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the Serbian Latin name for the exported Excel file. <br/> <br/>
-
-    <h3>If not specified:</h3>
-    - First tries to use <span class="code-block">TranslatePluralSrLatnRS</span> value <br/>
-    - If <span class="code-block">TranslatePluralSrLatnRS</span> is not available, uses <span class="code-block">'&lbrace;class_name&rbrace;List'</span> <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-[TranslateExcelSrLatnRS(&quot;Korisnici_Excel&quot;)]
-public class User : BusinessObject&lt;long&gt;
-&lbrace;
-    // Class properties
-&rbrace;
-// Will generate: Korisnici_Excel.xlsx
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
-    <section id="translate-plural-en-attribute" class="doc-section">
-        <div class="card">
-            <h2>TranslatePluralEnAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.Translation</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the English plural form translation for a class. <br/> <br/>
-
-    <h3>This translation is used for:</h3>
-    - Table titles <br/>
-    - Excel export filenames (when <span class="code-block">TranslateExcelEn</span> is not specified) <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-[TranslatePluralEn(&quot;User points&quot;)]
-public class UserPoint : BusinessObject&lt;long&gt;
-&lbrace;
-    // Class properties
-&rbrace;
-// Will show as &quot;User points&quot; in table headers
-// Will export as &quot;User points.xlsx&quot; if TranslateExcelEn is not specified
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
-    <section id="translate-plural-sr-latn-rs-attribute" class="doc-section">
-        <div class="card">
-            <h2>TranslatePluralSrLatnRSAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.Translation</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the Serbian Latin plural form translation for a class. <br/> <br/>
-
-    <h3>This translation is used for:</h3>
-    - Table titles <br/>
-    - Excel export filenames (when <span class="code-block">TranslateExcelSrLatnRS</span> is not specified) <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-[TranslatePluralSrLatnRS(&quot;Korisnički poeni&quot;)]
-public class UserPoint : BusinessObject&lt;long&gt;
-&lbrace;
-    // Class properties
-&rbrace;
-// Will show as &quot;Korisnički poeni&quot; in table headers
-// Will export as &quot;Korisnički poeni.xlsx&quot; if TranslateExcelSrLatnRS is not specified
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
-    <section id="translate-singular-en-attribute" class="doc-section">
-        <div class="card">
-            <h2>TranslateSingularEnAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.Translation</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the English singular form translation for a class or property. <br/> <br/>
-
-    <h3>When applied to a class:</h3>
-    - Used in base form details UI component title <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-[TranslateSingularEn(&quot;User point&quot;)]
-public class UserPoint : BusinessObject&lt;long&gt;
-&lbrace;
-    // Class properties
-&rbrace;
-`">
-    </code></pre>
-</div>
-
-    <br/> <br/>
-
-    <h3>When applied to a property:</h3>
-    - Used as UI field label <br/>
-    - Used in server validation messages (e.g., <span class="code-block">Field 'Email address' can not be empty"</span>) <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-public class User : BusinessObject&lt;long&gt;
-&lbrace;
-    [TranslateSingularEn(&quot;Email address&quot;)]
-    public string Email &lbrace; get; set; &rbrace;
-&rbrace;
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
-    <section id="translate-singular-sr-latn-rs-attribute" class="doc-section">
-        <div class="card">
-            <h2>TranslateSingularSrLatnRSAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.Translation</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the Serbian Latin singular form translation for a class or property. <br/> <br/>
-
-    <h3>When applied to a class:</h3>
-    - Used in base form details UI component title <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-[TranslateSingularSrLatnRS(&quot;Korisnički poen&quot;)]
-public class UserPoint : BusinessObject&lt;long&gt;
-&lbrace;
-    // Class properties
-&rbrace;
-`">
-    </code></pre>
-</div>
-
-    <br/> <br/>
-
-    <h3>When applied to a property:</h3>
-    - Used as UI field label <br/>
-    - Used in server validation messages (e.g., <span class="code-block">Polje 'Email adresa' ne sme biti prazno"</span>) <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
-public class User : BusinessObject&lt;long&gt;
-&lbrace;
-    [TranslateSingularSrLatnRS(&quot;Email adresa&quot;)]
-    public string Email &lbrace; get; set; &rbrace;
-&rbrace;
-`">
-    </code></pre>
-</div>
-            </div>
-        </div>
-    </section>
     <section id="ui-additional-permission-code-for-insert-attribute" class="doc-section">
         <div class="card">
             <h2>UIAdditionalPermissionCodeForInsertAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies additional permission requirements for inserting entities in the UI.
     The user must have ONE of the specified permissions to perform the insert operation.
@@ -959,7 +613,7 @@ public class User : BusinessObject&lt;long&gt;
     <section id="ui-additional-permission-code-for-update-attribute" class="doc-section">
         <div class="card">
             <h2>UIAdditionalPermissionCodeForUpdateAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies additional permission requirements for updating entities in the UI.
     The user must have ONE of the specified permissions to perform the update operation.
@@ -970,7 +624,7 @@ public class User : BusinessObject&lt;long&gt;
     <section id="ui-control-type-attribute" class="doc-section">
         <div class="card">
             <h2>UIControlTypeAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.UI</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies the UI control type for a property. <br/> <br/>
 
@@ -1011,7 +665,7 @@ public class User : BusinessObject&lt;long&gt;
     <section id="ui-control-width-attribute" class="doc-section">
         <div class="card">
             <h2>UIControlWidthAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.UI</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies the width of a UI field using PrimeNG (PrimeFlex) column classes. <br/> <br/>
 
@@ -1046,7 +700,7 @@ public class Article : &lt;long&gt;
     <section id="ui-do-not-generate-attribute" class="doc-section">
         <div class="card">
             <h2>UIDoNotGenerateAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.UI</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
             <div class="summary">
 <h3>Usage:</h3> Excludes a property from being generated in the UI main form component. <br/> <br/>
 
@@ -1075,7 +729,7 @@ public class User : BusinessObject&lt;long&gt;
     <section id="ui-ordered-one-to-many-attribute" class="doc-section">
         <div class="card">
             <h2>UIOrderedOneToManyAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.UI</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
             <div class="summary">
 <h3>Usage:</h3> Enables management of child entities through an ordered list in the parent entity's main UI form component. <br/> <br/>
 
@@ -1103,7 +757,7 @@ public class CourseItem : BusinessObject&lt;long&gt;
     [Required]
     public int OrderNumber &lbrace; get; set; &rbrace; // Needs to be called OrderNumber
 
-    [ManyToOneRequired] // The course item can&#39;t exist without the course
+    [Required] // The course item can&#39;t exist without the course
     [WithMany(nameof(Course.CourseItems))]
     public virtual Course Course &lbrace; get; set; &rbrace;
 &rbrace;
@@ -1116,7 +770,7 @@ public class CourseItem : BusinessObject&lt;long&gt;
     <section id="ui-panel-attribute" class="doc-section">
         <div class="card">
             <h2>UIPanelAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies in which panel the UI control will be located.
     By default, all controls are inside the <span class="code-block">"Details"</span> panel. <br/> <br/>
@@ -1147,7 +801,7 @@ public class User : BusinessObject&lt;long&gt;
     <section id="ui-property-block-order-attribute" class="doc-section">
         <div class="card">
             <h2>UIPropertyBlockOrderAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.UI</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies the display order of UI controls.
     Controls are displayed in the order of property declaration, except for:
@@ -1182,7 +836,7 @@ public class Article : BusinessObject&lt;long&gt;
     <section id="ui-table-column-attribute" class="doc-section">
         <div class="card">
             <h2>UITableColumnAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF.UI</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies which columns should be displayed in a table view for a <span class="code-block">many-to-many</span> relationship.
     Must be used in combination with <span class="code-block">[SimpleManyToManyTableLazyLoad]</span> attribute. <br/> <br/>
@@ -1217,7 +871,7 @@ public class Partner : BusinessObject&lt;long&gt;
     <section id="with-many-attribute" class="doc-section">
         <div class="card">
             <h2>WithManyAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.EF</div>
+            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
             <div class="summary">
 <h3>Usage:</h3> Specifies the collection navigation property name in a related entity for establishing
     a bidirectional relationship in Entity Framework. <br/> <br/>

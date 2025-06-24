@@ -35,18 +35,20 @@ export class UICustomizationComponent {
     this.steps = [
       {
         title: 'Change the App Name',
+        fragment: 'change-app-name',
         description: `
-        In the project opened with Visual Studio Code, locate the <span class="code-block">src\\environments\\environment.ts</span> file and 
+        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\environments\\environment.ts</span> file and 
         change the value of <span class="code-block">companyName</span> to your the desired app name.
         `,
       },
       {
         title: 'Change the Logo',
+        fragment: 'change-logo',
         description: `
-        In the project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\images\\logo\\logo.svg</span> file and 
+        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\images\\logo\\logo.svg</span> file and 
         replace it with your own <span class="code-block">logo.svg</span>.
         <br/> <br/>
-        ℹ️ <b>NOTE:</b> If you want to change the logo's <i>path</i>, <i>filename</i>, or <i>file extension</i>, open 
+        ℹ️ If you want to change the logo's <i>path</i>, <i>filename</i>, or <i>file extension</i>, open 
         <span class="code-block">src\\app\\business\\services\\config.service.ts</span> and override the logo path like this: <br/> <br/>
         `,
         codeExample: `
@@ -59,15 +61,17 @@ export class ConfigService extends ConfigBaseService {
       },
       {
         title: 'Change the Favicon',
+        fragment: 'change-favicon',
         description: `
-        In the project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\images\\logo\\favicon.ico</span> file and 
+        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\images\\logo\\favicon.ico</span> file and 
         change it with your own <span class="code-block">favicon.ico</span>.
         `,
       },
       {
         title: 'Change Theme Colors',
+        fragment: 'change-theme-colors',
         description: `
-        In the project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\primeng-theme.ts</span> file and 
+        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\primeng-theme.ts</span> file and 
         edit the theme values, such as the <span class="code-block">primary</span>.
         <br/> <br/>
         To enable the <b>dark theme</b>, open the <span class="code-block">src\index.html</span> file and 
@@ -87,9 +91,10 @@ export class ConfigService extends ConfigBaseService {
       },
       {
         title: 'Displaying Time in Calendar Control on the Details Page',
+        fragment: 'calendar-control-show-time',
         description: `
         <ol>
-          <li>In the project opened with Visual Studio Code, open the <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.html</span> file.</li>
+          <li>In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.html</span> file.</li>
           <li>In your details component template (<span class="code-block">&lt;your-entity-name-base-details&gt;</span>), add the following Angular output binding:</li>
         </ol>
         `,
@@ -102,11 +107,12 @@ export class ConfigService extends ConfigBaseService {
       },
       {
         title: 'Switching to a Top Menu Layout',
+        fragment: 'top-menu-layout',
         description: `
         By default, Spiderly generates your app with a side menu layout. However, if you'd prefer a top menu layout and either forgot to use the <span class="code-block">--top-menu</span> flag during 
         <span class="code-block">spiderly init</span> or changed your mind later in development, you can easily update it by following these steps:
         <ol>
-          <li>In the project opened with Visual Studio Code, open the <span class="code-block">src\\app\\business\\layout\\layout.component.html</span> file.</li>
+          <li>In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\business\\layout\\layout.component.html</span> file.</li>
           <li>Update the layout component by setting the <span class="code-block">[isSideMenuLayout]</span> attribute to <span class="code-block">false</span>:</li>
         </ol>
         `,
@@ -128,6 +134,7 @@ export class ConfigService extends ConfigBaseService {
       },
       {
         title: 'Using the Spiderly Data View Component',
+        fragment: 'data-view-component',
         description: `
         If you want to display data in a cleaner, card-based layout instead of a plain table — while still keeping filtering capabilities — you can use the <span class="code-block">spiderly-data-view</span> Angular component.
         <br/> <br/>

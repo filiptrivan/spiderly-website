@@ -13,7 +13,7 @@
     <ul>
       @for (step of steps; track $index; let index = $index) {
         <li>
-          <a routerLink="/docs/ui-customization" [fragment]="'step-' + (index + 1)">
+          <a [routerLink]="[]" [fragment]="step.fragment">
             {{step.title}}
           </a>
         </li>
@@ -35,12 +35,14 @@
     </div>
   </div>
   @for (step of steps; track $index; let index = $index) {
-  <div [id]="'step-' + (index + 1)">
+  <div [id]="step.fragment">
     <div class="wrapper">
       <h2 class="index-title">
         <span *ngIf="showOrderNumbers" class="index">{{ index + 1 }}.</span> {{ step.title }}
       </h2>
+
       <div class="description" [innerHTML]="step.description"></div>
+
       <div *ngIf="step.terminalMessages != null" style="width: 100%; height: fit-content">
         <app-terminal [messages]="step.terminalMessages"></app-terminal>
       </div>
@@ -57,6 +59,10 @@
 
       <div *ngIf="step.description2" class="description" [innerHTML]="step.description2"></div>
 
+      <div *ngIf="step.terminalMessages2 != null" style="width: 100%; height: fit-content">
+        <app-terminal [messages]="step.terminalMessages2"></app-terminal>
+      </div>
+
       <div *ngIf="step.codeExample2" class="code-snippet-wrapper example-wrapper">
         <div class="copy-button-wrapper">
           <app-copy-button
@@ -67,8 +73,20 @@
         </code></pre>
       </div>
 
-      <div *ngIf="step.terminalMessages2 != null" style="width: 100%; height: fit-content">
-        <app-terminal [messages]="step.terminalMessages2"></app-terminal>
+      <div *ngIf="step.description3" class="description" [innerHTML]="step.description3"></div>
+
+      <div *ngIf="step.terminalMessages3 != null" style="width: 100%; height: fit-content">
+        <app-terminal [messages]="step.terminalMessages3"></app-terminal>
+      </div>
+
+      <div *ngIf="step.codeExample3" class="code-snippet-wrapper example-wrapper">
+        <div class="copy-button-wrapper">
+          <app-copy-button
+            (onClick)="copyToClipboard(step.codeExample3)"
+          ></app-copy-button>
+        </div>
+        <pre><code [highlightAuto]="step.codeExample3">
+        </code></pre>
       </div>
 
       <div *ngIf="step.video != null" style="width: 100%; height: fit-content;">

@@ -9,26 +9,30 @@ import { Meta, SafeHtml, Title } from '@angular/platform-browser';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
 import { AttributesDocsComponent } from "../attributes/attributes.component";
 import { kebabToTitleCase } from '../../playground/web-app/entity-details/services/helper-functions';
-import { AddNewEntityComponent } from '../add-new-entity/add-new-entity.component';
 import { TerminalMessage } from '../terminal/terminal.component';
 import { EntityAuthorizationComponent } from "../entity-authorization/entity-authorization.component";
 import { UICustomizationComponent } from "../ui-customization/ui-customization.component";
+import { AddNewEntityComponent } from '../add-new-entity/add-new-entity.component';
+import { TranslateSpiderlyAppComponent } from '../translate-spiderly-app/translate-spiderly-app.component';
+import { EntityValidationComponent } from '../entity-validation/entity-validation.component';
 
 @Component({
     selector: 'app-docs-layout',
     templateUrl: './docs-layout.component.html',
     styleUrl: './docs-layout.component.scss',
     imports: [
-        CommonModule,
-        RouterModule,
-        DocsAppTopBarComponent,
-        DocsSidebarMenuComponent,
-        GettingStartedComponent,
-        AttributesDocsComponent,
-        AddNewEntityComponent,
-        EntityAuthorizationComponent,
-        UICustomizationComponent
-    ]
+    CommonModule,
+    RouterModule,
+    DocsAppTopBarComponent,
+    DocsSidebarMenuComponent,
+    GettingStartedComponent,
+    AttributesDocsComponent,
+    EntityAuthorizationComponent,
+    UICustomizationComponent,
+    AddNewEntityComponent,
+    TranslateSpiderlyAppComponent,
+    EntityValidationComponent,
+]
 })
 export class DocsLayoutComponent implements OnDestroy {
     @Input() menu: DocsSpiderlyMenuItem[] = [];
@@ -43,8 +47,10 @@ export class DocsLayoutComponent implements OnDestroy {
 
     isGettingStartedPage: boolean;
     isAddNewEntity: boolean;
-    isSetUpEntityAuthorization: boolean;
+    isEntityValidation: boolean;
+    isEntityAuthorization: boolean;
     isUiCustomization: boolean;
+    isTranslateSpiderlyApp: boolean;
     isAttributesDocsPage: boolean;
 
     constructor(
@@ -91,7 +97,9 @@ export class DocsLayoutComponent implements OnDestroy {
             'getting-started': `Follow this quick start guide to configure and initialize your Spiderly app. Once complete, you'll be ready to use all features and build with its full power.`,
             'add-new-entity': `The EF Core entity and its attributes are the core of Spiderly. In this step-by-step guide, you'll learn how to create a new entity in your project.`,
             'entity-authorization': `Configure entity authorization by adding permissions and assigning them to roles, or disable authorization using the [DoNotAuthorize] attribute.`,
+            'entity-validation': `How to use Spiderly and EF Core validation attributes to automate backend, frontend, and database validation for your entity classes, with examples.`,
             'ui-customization': `This step-by-step guide will show you how to customize key UI elements of your Spiderly app, including: app name, logo, favicon, and theme colors.`,
+            'translate-spiderly-app': `Spiderly enables full-stack multilingual app translation. Customize input field labels, validation messages, and Excel export filenames.`,
             'attributes': `Learn how to use Spiderly Attributes on EF Core entities to auto-generate CRUD logic, auth, validations, mappings, and UI for your web apps.`,
         };
 
@@ -100,13 +108,19 @@ export class DocsLayoutComponent implements OnDestroy {
         }
         else if (slug === 'add-new-entity') {
             this.isAddNewEntity = true;
-        }
+        } 
+        else if (slug === 'entity-validation') {
+            this.isEntityValidation = true;
+        } 
         else if (slug === 'entity-authorization') {
-            this.isSetUpEntityAuthorization = true;
-        }
+            this.isEntityAuthorization = true;
+        } 
         else if (slug === 'ui-customization') {
             this.isUiCustomization = true;
-        }
+        } 
+        else if (slug === 'translate-spiderly-app') {
+            this.isTranslateSpiderlyApp = true;
+        } 
         else if (slug === 'attributes') {
             this.isAttributesDocsPage = true;
         }
@@ -155,13 +169,17 @@ export class DocsLayoutComponent implements OnDestroy {
 }
 
 export interface DocsStep {
-    title: string;
-    description: SafeHtml;
-    description2?: SafeHtml;
-    terminalMessages?: TerminalMessage[];
-    terminalMessages2?: TerminalMessage[];
-    prerequisites?: boolean;
-    video?: SafeHtml;
-    codeExample?: string;
-    codeExample2?: string;
+  title: string;
+  fragment: string;
+  description: SafeHtml;
+  description2?: SafeHtml;
+  description3?: SafeHtml;
+  terminalMessages?: TerminalMessage[];
+  terminalMessages2?: TerminalMessage[];
+  terminalMessages3?: TerminalMessage[];
+  prerequisites?: boolean;
+  video?: SafeHtml;
+  codeExample?: string;
+  codeExample2?: string;
+  codeExample3?: string;
 }

@@ -7,8 +7,10 @@ export const routes: Routes = [
   { path: 'faq', loadComponent: () => import('./pages/faq/faq.component').then(m => m.FAQComponent) },
   { path: 'docs/getting-started', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
   { path: 'docs/add-new-entity', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
+  { path: 'docs/entity-validation', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
   { path: 'docs/entity-authorization', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
   { path: 'docs/ui-customization', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
+  { path: 'docs/translate-spiderly-app', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
   { path: 'docs/attributes', loadComponent: () => import('./pages/docs/docs.component').then(m => m.DocsComponent) },
   { path: '404', loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent) },
   { path: '**', redirectTo: '404' }

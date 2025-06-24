@@ -25,7 +25,9 @@ export class AddNewEntityComponent {
   textBelowTitle = `
   The EF Core entity and its attributes form the foundation of everything in
   Spiderly. All other components are built and generated based on these
-  entities. In this step-by-step guide, you'll learn how to create a new
+  entities. <br/> <br/>
+  
+  In this step-by-step guide, you'll learn how to create a new
   entity in your project. This includes adding it to the backend, updating the
   database, and generating the corresponding frontend code.
   `
@@ -38,13 +40,15 @@ export class AddNewEntityComponent {
     this.steps = [
       {
         title: 'Open the Backend',
+        fragment: 'open-the-backend',
         description:
           'Open the backend project located at <span class="code-block">your-app-name\\Backend\\YourAppName.sln</span> using Visual Studio.',
       },
       {
         title: 'Add New Entity',
+        fragment: 'add-new-entity',
         description: `
-        In the backend project opened with Visual Studio, locate the <span class="code-block">Business\\YourAppName.Business\\Entities</span> 
+        In the backend project opened with Visual Studio, locate the <span class="code-block">YourAppName.Business\\Entities</span> 
         folder and add a new public class for your entity (e.g., <span class="code-block">YourEntityName.cs</span>).
         <br/> <br/>
         
@@ -55,6 +59,7 @@ export class AddNewEntityComponent {
       },
       {
         title: 'Add Your Entity to the Database',
+        fragment: 'add-your-entity-to-the-database',
         description: `
         In the backend project opened with Visual Studio:
         <ol>
@@ -77,6 +82,7 @@ export class AddNewEntityComponent {
       },
       {
         title: 'Generate Components',
+        fragment: 'generate-components',
         description: `
         Use the <b>Spiderly CLI</b> to generate a default template for your new entity. You can customize the generated files afterwards. <br/> <br/>
 
@@ -109,6 +115,7 @@ export class AddNewEntityComponent {
       },
       {
         title: 'Define Routes for Your Page',
+        fragment: 'define-routes-for-your-page',
         description: `
         In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\app\\app.routes.ts</span> file 
         and add new child routes under the layout component's <span class="code-block">children</span> array:
@@ -129,6 +136,7 @@ export class AddNewEntityComponent {
       },
       {
         title: 'Add the Page to the Navigation Menu',
+        fragment: 'add-the-page-to-the-navigation-menu',
         description: `
         In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\business\\layout\\layout.component.ts</span> file.
         

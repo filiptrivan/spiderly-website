@@ -10,8 +10,10 @@
             <div style="padding: 0 12px;">
                 <app-getting-started *ngIf="isGettingStartedPage === true"></app-getting-started>
                 <app-add-new-entity *ngIf="isAddNewEntity === true"></app-add-new-entity>
-                <app-entity-authorization *ngIf="isSetUpEntityAuthorization === true"></app-entity-authorization>
+                <app-entity-validation *ngIf="isEntityValidation === true"></app-entity-validation>
+                <app-entity-authorization *ngIf="isEntityAuthorization === true"></app-entity-authorization>
                 <app-ui-customization *ngIf="isUiCustomization === true"></app-ui-customization>
+                <app-translate-spiderly-app *ngIf="isTranslateSpiderlyApp === true"></app-translate-spiderly-app>
                 <app-attributes-docs *ngIf="isAttributesDocsPage === true"></app-attributes-docs>
             </div>
         </div>
