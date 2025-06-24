@@ -68,7 +68,11 @@ export class DocsLayoutService {
 
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-        }        
+        }
+        if (!this.isDesktop()) {
+            this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
+        }
+        
         else {
             this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
@@ -84,7 +88,7 @@ export class DocsLayoutService {
 
     isDesktop() {
         if (isPlatformBrowser(this.platformId)) {
-            return window.innerWidth >= 1200;
+            return window.innerWidth >= 1536;
         }
         return false;
     }

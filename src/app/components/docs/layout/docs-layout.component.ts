@@ -82,7 +82,6 @@ export class DocsLayoutComponent implements OnDestroy {
 
     ngOnInit() {
         if (this.layoutService.isDesktop()) {
-            this.layoutService.state.overlayMenuActive = true;
             this.layoutService.state.staticMenuMobileActive = true
         }
 
