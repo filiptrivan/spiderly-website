@@ -28,8 +28,6 @@
   border-radius: 50%;
   width: 34px;
   height: 34px;
-  padding-left: 1rem;
-  padding-right: 1rem;
   border: none;
   display: inline-flex;
   justify-content: center;
@@ -48,7 +46,6 @@
   }
 
   i {
-    font-size: 1.2rem;
   }
 }
 
@@ -387,8 +384,14 @@ code {
 }
 
 .sidebar-close-btn {
+  width: 30px !important;
+  height: 30px !important;
   margin-left: auto;
   margin-bottom: 8px;
+
+  i {
+    font-size: 0.9rem !important;
+  }
 }
 
 @media (max-width: 1730px) {

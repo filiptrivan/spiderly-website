@@ -74,7 +74,7 @@ export class ConfigService extends ConfigBaseService {
         In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\primeng-theme.ts</span> file and 
         edit the theme values, such as the <span class="code-block">primary</span>.
         <br/> <br/>
-        To enable the <b>dark theme</b>, open the <span class="code-block">src\index.html</span> file and 
+        To enable the <b>dark theme</b>, open the <span class="code-block">src\\index.html</span> file and 
         add the <span class="code-block">dark</span> class to the <span class="code-block">html</span> tag, like this:
         <br/> <br/>
         `,
