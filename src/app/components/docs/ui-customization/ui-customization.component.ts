@@ -37,7 +37,7 @@ export class UICustomizationComponent {
         title: 'Change the App Name',
         fragment: 'change-app-name',
         description: `
-        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\environments\\environment.ts</span> file and 
+        In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\environments\\environment.ts</span> file and 
         change the value of <span class="code-block">companyName</span> to your the desired app name.
         `,
       },
@@ -48,8 +48,10 @@ export class UICustomizationComponent {
         In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\images\\logo\\logo.svg</span> file and 
         replace it with your own <span class="code-block">logo.svg</span>.
         <br/> <br/>
-        ℹ️ If you want to change the logo's <i>path</i>, <i>filename</i>, or <i>file extension</i>, open 
-        <span class="code-block">src\\app\\business\\services\\config.service.ts</span> and override the logo path like this: <br/> <br/>
+        ℹ️ If your logo file is not named <span class="code-block">logo.svg</span> or you want to use a custom path,
+        open the <span class="code-block">src\\app\\business\\services\\config.service.ts</span> file
+        and override the logo path like this: 
+        <br/> <br/>
         `,
         codeExample: `
 export class ConfigService extends ConfigBaseService {
@@ -89,7 +91,7 @@ export class ConfigService extends ConfigBaseService {
 <!doctype html>
 <html lang="en" class="dark">
 <head>
-  <!-- ... -->
+  // ...
 </head>
 `,
         description2: `
@@ -98,18 +100,17 @@ export class ConfigService extends ConfigBaseService {
 `
       },
       {
-        title: 'Displaying Time in Calendar Control on the Details Page',
+        title: 'Displaying Time in Calendar Control on Details Page',
         fragment: 'calendar-control-show-time',
         description: `
-        <ol>
-          <li>In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.html</span> file.</li>
-          <li>In your details component template (<span class="code-block">&lt;your-entity-name-base-details&gt;</span>), add the following Angular output binding:</li>
-        </ol>
+        In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.html</span> file, 
+        locate the <span class="code-block">&lt;your-entity-name-base-details&gt;</span> component, and add the following Angular input attribute:
+        <br/><br/>
         `,
         codeExample: `
 <your-entity-base-details
 // ... other attributes
-(onAfterFormGroupInit)="yourEntityNameFormGroup.controls.yourDateProperty.showTime = true"
+[showTimeOn{{YourCalendarPropertyName}}For{{YourEntityName}}]="true"
 ></your-entity-base-details>
 `
       },
