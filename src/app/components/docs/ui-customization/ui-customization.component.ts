@@ -71,10 +71,17 @@ export class ConfigService extends ConfigBaseService {
         title: 'Change Theme Colors',
         fragment: 'change-theme-colors',
         description: `
-        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\assets\\primeng-theme.ts</span> file and 
+        In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\assets\\primeng-theme.ts</span> file and 
         edit the theme values, such as the <span class="code-block">primary</span>.
         <br/> <br/>
-        To enable the <b>dark theme</b>, open the <span class="code-block">src\\index.html</span> file and 
+        For more information and advanced theming options, visit the <a href="https://primeng.org/theming" target="_blank" rel="nofollow noopener noreferrer">PrimeNG Theming Guide</a>.
+        `,
+      },
+      {
+        title: 'Enable Dark Theme',
+        fragment: 'enable-dark-theme',
+        description: `
+        In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\index.html</span> file and 
         add the <span class="code-block">dark</span> class to the <span class="code-block">html</span> tag, like this:
         <br/> <br/>
         `,
@@ -82,12 +89,13 @@ export class ConfigService extends ConfigBaseService {
 <!doctype html>
 <html lang="en" class="dark">
 <head>
-// ...
+  <!-- ... -->
+</head>
 `,
         description2: `
         <br/>
-        For reference and advanced theming options, visit the <a href="https://primeng.org/theming" target="_blank" rel="nofollow noopener noreferrer">PrimeNG Theming Guide</a>.
-        `
+        For more information and advanced dark theme options, visit the <a href="https://primeng.org/theming#darkmode" target="_blank" rel="nofollow noopener noreferrer">PrimeNG Dark Theme Guide</a>.
+`
       },
       {
         title: 'Displaying Time in Calendar Control on the Details Page',
