@@ -190,3 +190,14 @@ a.p-menu-item-link:hover {
 app-footer {
   margin-top: auto;
 }
+
+.explanation-video-wrapper {
+  .p-dialog-header,
+  .p-dialog-content {
+    padding: 10px;
+
+    @media (min-width: vars.$md) {
+      padding: 18px;
+    }
+  }
+}
