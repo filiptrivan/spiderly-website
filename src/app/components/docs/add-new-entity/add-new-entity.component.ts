@@ -55,7 +55,26 @@ export class AddNewEntityComponent {
         The entity class must inherit from <span class="code-block">BusinessObject&lt;ID&gt;</span> if it supports create, read, update and delete operations, 
         or from <span class="code-block">ReadonlyObject&lt;ID&gt;</span> if it is read-only and does not support create, update, or delete 
         operations from the UI.
+        <br/> <br/>
+
+        <h3>Example of an entity:</h3>
         `,
+        codeExample: `
+namespace YourAppName.Business.Entities
+{
+    [TranslatePluralEn("Your entity plural name")]
+    public class YourEntityName : BusinessObject<long>
+    {
+        [StringLength(75, MinimumLength = 1)]
+        [Required]
+        public string Name { get; set; }
+
+        [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+        [StringLength(500, MinimumLength = 1)]
+        public string Description { get; set; }
+    }
+}
+`,
       },
       {
         title: 'Add Your Entity to the Database',
@@ -97,18 +116,14 @@ export class AddNewEntityComponent {
 
         <ol>
           <li>
-            <b>API Controller</b> - Located in your backend project opened with Visual Studio:<br>
-            <span class="code-block">YourAppName.WebAPI\\Controllers\\YourEntityNameController.cs</span>
+            <b>List Page</b> - In your Angular project (opened with Visual Studio Code):<br>
+            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-list.component.ts</span><br>
+            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-list.component.html</span>
           </li>
           <li>
-            <b>Details Page</b> - In your Angular project (opened with Visual Studio Code):<br>
+            <b>Details Page - Also in your Angular project:</b><br>
             <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.ts</span><br>
             <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.html</span>
-          </li>
-          <li>
-            <b>List Page</b> - Also in your Angular project:<br>
-            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-table.component.ts</span><br>
-            <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-table.component.html</span>
           </li>
         </ol>
         `
@@ -117,14 +132,14 @@ export class AddNewEntityComponent {
         title: 'Define Routes for Your Page',
         fragment: 'define-routes-for-your-page',
         description: `
-        In the frontend project opened with Visual Studio Code, locate the <span class="code-block">src\\app\\app.routes.ts</span> file 
-        and add new child routes under the layout component's <span class="code-block">children</span> array:
+        In the frontend project opened with Visual Studio Code, open the <span class="code-block">src\\app\\app.routes.ts</span> file 
+        and add new route objects to the <span class="code-block">layoutRoutes</span> array:
         <br/> <br/>
         `,
         codeExample: `
 {
     path: 'your-entity-name', // URL for the list page (e.g., /your-entity-name)
-    loadComponent: () => import('./pages/your-entity-name/your-entity-name-table.component').then(c => c.YourEntityNameTableComponent),
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-list.component').then(c => c.YourEntityNameListComponent),
     canActivate: [AuthGuard],
 },
 {
