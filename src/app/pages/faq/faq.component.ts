@@ -17,10 +17,6 @@ import { Meta, Title } from '@angular/platform-browser';
 export class FAQComponent {
   faqs: FAQ[] = [
     {
-      question: 'Is Spiderly free to use?',
-      answer: 'Yes, Spiderly is completely free, and every feature that was once free will always remain free!'
-    },
-    {
       question: 'How to install Spiderly?',
       answer: 'You can find the installation instructions <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Installation Instructions">here</a>.'
     },    
@@ -56,7 +52,7 @@ export class FAQComponent {
       question: 'How does Spiderly compare to the ABP Framework?',
       answer: `
 In most scenarios, Spiderly is the better choice—especially if you're building a typical business or admin-style app with .NET and Angular. 
-It's much simpler to set up, requires less boilerplate, and is completely free under the MIT license. 
+It's much simpler to set up, requires less boilerplate, under the MIT license. 
 You get full CRUD, API, Angular UI, validation, mapping, and even DTOs generated automatically from your EF Core model. <br/><br/>
 
 <table class="docs-table">
@@ -72,11 +68,6 @@ You get full CRUD, API, Angular UI, validation, mapping, and even DTOs generated
       <td><strong>End-to-end code generation</strong></td>
       <td>Yes — from EF Core to UI + API client + validation</td>
       <td>No — you build modules manually</td>
-    </tr>
-    <tr>
-      <td><strong>License & cost</strong></td>
-      <td>Fully free (MIT)</td>
-      <td>Free + commercial tiers</td>
     </tr>
     <tr>
       <td><strong>Auto-sync on changes</strong></td>
