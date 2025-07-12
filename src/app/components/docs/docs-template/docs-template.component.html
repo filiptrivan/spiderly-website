@@ -37,7 +37,8 @@
   @for (step of steps; track $index; let index = $index) {
   <div [id]="step.fragment">
     <div class="wrapper">
-      <h2 class="index-title">
+      <!-- Id is added for fragment navigation -->
+      <h2 class="index-title" [id]="'step-' + (index + 1)">
         <span *ngIf="showOrderNumbers" class="index">{{ index + 1 }}.</span> {{ step.title }}
       </h2>
 
