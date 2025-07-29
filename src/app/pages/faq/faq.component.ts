@@ -91,6 +91,56 @@ You get full CRUD, API, Angular UI, validation, mapping, and even DTOs generated
 `,
     },
     {
+  question: 'How does Spiderly compare to JHipster?',
+  answer: `
+For .NET developers building admin-style or business applications, Spiderly is often a more focused and streamlined solution than JHipster. 
+While JHipster is powerful and flexible, it comes with more complexity and is better suited for Java ecosystems. 
+Spiderly is easier to set up, requires less configuration, and gives you full-stack code generation directly from your EF Core model—all under the MIT license.<br/><br/>
+
+<table class="docs-table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Spiderly</th>
+      <th>JHipster</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>End-to-end code generation</strong></td>
+      <td>Yes — from EF Core to UI + API + validation + DTOs</td>
+      <td>Yes — from database to Spring Boot API + Angular/React UI</td>
+    </tr>
+    <tr>
+      <td><strong>Auto-sync on changes</strong></td>
+      <td>Real-time generation on model changes</td>
+      <td>Requires manual regeneration or CLI commands</td>
+    </tr>
+    <tr>
+      <td><strong>Tech stack</strong></td>
+      <td>.NET + Angular (EF Core, PrimeNG, FluentValidation, Serilog...)</td>
+      <td>Java + Spring Boot + Angular/React/Vue</td>
+    </tr>
+    <tr>
+      <td><strong>Setup complexity</strong></td>
+      <td>Minimal — works out of the box for CRUD apps</td>
+      <td>Higher — requires multiple tools and configuration steps</td>
+    </tr>
+    <tr>
+      <td><strong>License</strong></td>
+      <td>MIT — simple and permissive</td>
+      <td>Apache 2.0 — open source but more enterprise-focused</td>
+    </tr>
+    <tr>
+      <td><strong>OS support</strong></td>
+      <td>Windows only</td>
+      <td>Cross-platform (Windows, Linux, macOS)</td>
+    </tr>
+  </tbody>
+</table>
+`,
+    },
+    {
       question: 'Does Spiderly work on Linux operating systems?',
       answer: 'No, Spiderly is currently not compatible with Linux. We are focusing on Windows support for now, but Linux support may be added in the future.'
     },
