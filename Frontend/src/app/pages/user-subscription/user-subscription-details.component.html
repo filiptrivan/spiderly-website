@@ -1,0 +1,40 @@
+﻿<app-section-wrapper>
+    <user-subscription-base-details
+    [panelTitle]="userSubscriptionFormGroup.controls.stripeProductName?.value"
+    panelIcon="pi pi-star"
+    [formGroup]="formGroup" 
+    [userSubscriptionFormGroup]="userSubscriptionFormGroup" 
+    (onSave)="onSave()"
+    [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
+    >
+        <div class="col-8 spiderly-grid" style="padding: 0;" before>
+            <div *ngIf="userSubscriptionFormGroup.controls.apiKeyValue" class="col-8">
+                <spiderly-textbox [control]="control('apiKeyValue', userSubscriptionFormGroup)" (onButtonClick)="copyApiKey()" [showRequired]="false" [disabled]="true" [showButton]="true" [buttonIcon]="copyIcon"></spiderly-textbox>
+            </div>
+            <div *ngIf="userSubscriptionFormGroup.controls.validFrom" class="col-8 md:col-4">
+                <spiderly-calendar [control]="control('validFrom', userSubscriptionFormGroup)" [showRequired]="false" [disabled]="true" [showTime]="true"></spiderly-calendar>
+            </div>
+            <div *ngIf="userSubscriptionFormGroup.controls.validTo" class="col-8 md:col-4">
+                <spiderly-calendar 
+                [control]="control('validTo', userSubscriptionFormGroup)" 
+                [showRequired]="false" 
+                [disabled]="true" 
+                [showTime]="true"
+                [showTooltip]="true"
+                tooltipIcon="pi pi-info-circle"
+                tooltipText="Billing will occur two days earlier because we gave you a two-day grace period."
+                ></spiderly-calendar>
+            </div>
+        </div>
+
+        <div *ngIf="!userSubscriptionFormGroup.controls.canceled?.value" buttons>
+            <spiderly-button 
+            label="Cancel Subscription"
+            icon="pi pi-times"
+            (onClick)="this.openCancelSubscriptionConfirmationDialog()"
+            severity="secondary"
+            [outlined]="true"
+            ></spiderly-button>
+        </div>
+    </user-subscription-base-details>
+</app-section-wrapper>

@@ -1,0 +1,9 @@
+<div 
+[style]="'width: 100%;'"
+[style.background-color]="backgroundColor === 'light' ? 'var(--p-surface-900)' : ''"
+[style.background-image]="backgroundColor === 'light' ? 'radial-gradient(ellipse at top left, var(--p-surface-950), transparent 50%)' : 'radial-gradient(ellipse at top right, var(--p-surface-800), transparent 50%)'"
+>
+    <div class="container-one" [style]="{'text-align': 'left'}">
+        <ng-content></ng-content>
+    </div>
+</div>

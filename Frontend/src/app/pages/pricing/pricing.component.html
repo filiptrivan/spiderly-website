@@ -1,0 +1,77 @@
+<app-section-wrapper textAlign="center">
+  <div class="pricing-wrapper">
+    <div>
+      <h1 style="margin-bottom: 15px">
+        <div class="gradient-title">Simple Pricing.</div>
+        <div class="title">Full Access.</div>
+      </h1>
+      <div class="text-below-title" style="margin-bottom: 30px">
+        One plan. All features. Free for the first month—then just $69/month.
+      </div>
+    </div>
+    <div class="plans">
+      <div class="plan-card">
+        <div class="plan-price">
+          <span class="price">
+            <div style="text-decoration: line-through; margin-bottom: 5px;">$69 / month</div>
+            <div>
+              <span style="font-size: 40px;" class="secondary-gradient-title">$0</span>
+              for one month
+            </div>
+          </span>
+        </div>
+
+        <p-button label="Get Started" [fluid]="true" size="large" (onClick)="createCheckoutSession()"></p-button>
+
+        <hr />
+
+        <ul class="features-list">
+          <li><i class="pi pi-microchip"></i><strong>Full CRUD Generator Suite</strong></li>
+          <div>
+            <ul class="features-list">
+              <li><i class="pi pi-check"></i>List Views</li>
+              <li><i class="pi pi-check"></i>Details Page</li>
+              <li><i class="pi pi-check"></i>API Client</li>
+              <li><i class="pi pi-check"></i>Controllers</li>
+              <li><i class="pi pi-check"></i>Service Methods</li>
+              <li><i class="pi pi-check"></i>Server- and Client-side Validation</li>
+              <li><i class="pi pi-check"></i>DTOs and Enums</li>
+              <li><i class="pi pi-check"></i>TypeScript Models and Enums</li>
+              <li><i class="pi pi-check"></i>Server- and Client-side Translations</li>
+            </ul>
+          </div>
+
+          <hr/>
+
+          <li><i class="pi pi-shield"></i><strong>Security</strong></li>
+          <div>
+            <ul class="features-list">
+              <li><i class="pi pi-check"></i>Authentication</li>
+              <li><i class="pi pi-check"></i>Authorization</li>
+            </ul>
+          </div>
+          
+          <hr/>
+
+          <li><i class="pi pi-bolt"></i><strong>Spiderly CLI</strong></li>
+          <div>
+            <ul class="features-list">
+              <li><i class="pi pi-check"></i>App Starter Template Project Initialization</li>
+              <li><i class="pi pi-check"></i>Adding new page starter template components for newly created entity</li>
+            </ul>
+          </div>
+
+          <hr/>
+
+          <li><i class="pi pi-sparkles"></i><strong>Spiderly Angular</strong></li>
+          <div>
+            <ul class="features-list">
+              <li><i class="pi pi-check"></i>Ready-to-use frontend component library</li>
+            </ul>
+          </div>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</app-section-wrapper>

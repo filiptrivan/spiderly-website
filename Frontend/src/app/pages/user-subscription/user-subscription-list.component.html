@@ -1,0 +1,10 @@
+﻿<app-section-wrapper>
+    <spiderly-data-table 
+    tableTitle="Subscriptions" 
+    [cols]="cols" 
+    [getPaginatedListObservableMethod]="getPaginatedUserSubscriptionListObservableMethod" 
+    [exportListToExcelObservableMethod]="exportUserSubscriptionListToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteUserSubscriptionObservableMethod"
+    [showAddButton]="false"
+    ></spiderly-data-table>
+</app-section-wrapper>

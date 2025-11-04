@@ -1,0 +1,9 @@
+<ng-container *transloco="let t">
+    <spiderly-data-table 
+    [tableTitle]="t('RoleList')" 
+    [cols]="cols" 
+    [getPaginatedListObservableMethod]="getPaginatedRoleListObservableMethod" 
+    [exportListToExcelObservableMethod]="exportRoleListToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteRoleObservableMethod"
+    ></spiderly-data-table>
+</ng-container>

@@ -1,0 +1,30 @@
+<app-section-wrapper>
+  <div>
+    <h1 style="margin-bottom: 15px">
+      <div class="gradient-title">Frequently Asked Questions</div>
+      <div class="title">About Spiderly</div>
+    </h1>
+    <div class="text-below-title">
+      Find answers to common questions about Spiderly. Our FAQ covers pricing,
+      comparisons, OS support, tech stack, code generation scope, prerequisites,
+      installation guide, and more.
+    </div>
+  </div>
+</app-section-wrapper>
+
+<app-section-wrapper backgroundColor="light">
+  <div style="display: flex; flex-direction: column; gap: 18px">
+    @for (faq of faqs; track $index) {
+    <spiderly-panel [toggleable]="true" toggler="header" [collapsed]="true">
+      <div panelHeader>
+        <div>
+          <h2 style="font-size: 1.2rem">{{ faq.question }}</h2>
+        </div>
+      </div>
+      <panel-body style="overflow: auto;">
+        <div [innerHTML]="faq.answer"></div>
+      </panel-body>
+    </spiderly-panel>
+    }
+  </div>
+</app-section-wrapper>

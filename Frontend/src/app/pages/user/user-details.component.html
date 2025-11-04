@@ -1,0 +1,17 @@
+<ng-container *transloco="let t">
+    <app-section-wrapper>
+        <user-base-details
+        [panelTitle]="userFormGroup.getRawValue().email ?? null"
+        [showBigPanelTitle]="false"
+        panelIcon="pi pi-user"
+        [formGroup]="formGroup" 
+        [userFormGroup]="userFormGroup" 
+        (onSave)="onSave()" 
+        [showIsDisabledForUser]="showIsDisabledControl"
+        [showHasLoggedInWithExternalProviderForUser]="showHasLoggedInWithExternalProvider"
+        [showReturnButton]="false"
+        [authorizedForSaveObservable]="authorizedForSaveObservable"
+        (onIsAuthorizedForSaveChange)="isAuthorizedForSaveChange($event)"
+        ></user-base-details>
+    </app-section-wrapper>
+</ng-container>

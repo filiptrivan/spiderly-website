@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div class="main-and-footer-wrapper">
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+</div>
+<ng-container *transloco="let t">
+    <p-confirmDialog 
+    [acceptLabel]="t('Confirm')" 
+    [rejectLabel]="t('Cancel')" 
+    rejectButtonStyleClass="p-button-secondary" 
+    [style]="{width: '400px'}" 
+    [header]="t('AreYouSure')"
+    [message]="t('PleaseConfirmToProceed')"
+    icon="pi pi-exclamation-circle"
+    ></p-confirmDialog>
+</ng-container>
+
+<p-toast [breakpoints]="{ '600px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate-multiple" [fullScreen]="true"></ngx-spinner>

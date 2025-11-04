@@ -7,12 +7,12 @@ This is the official website for Spiderly. For the full source code of the Spide
 
 The website features:
 - Getting Started Guide – Learn how to install and use Spiderly.
-- Interactive Playground – Try out Spiderly in your browser.
 - Docs – Detailed explanations of Spiderly’s core concepts, components, and integration steps.
 - FAQ – Get quick answers to common questions about how Spiderly works and how to use it effectively.
+- Pricing and Charging – View detailed subscription plans for Spiderly libraries (NuGet and npm) with monthly recurring licenses. Subscribe and make payments directly on the website.
 
 ## Contributing
-While the core logic lives in the main Spiderly repo, contributions to the website are also very welcome — whether it’s improving the docs, fixing UI bugs, or enhancing the playground experience.
+Although the core logic resides in the main Spiderly repo, contributions to the website are equally welcome — whether it’s enhancing the documentation, fixing UI bugs, or adding new features.
 
 - Open an issue to report bugs or suggest enhancements
 - Submit a pull request with your proposed changes

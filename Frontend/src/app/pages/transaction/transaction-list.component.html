@@ -1,0 +1,10 @@
+<app-section-wrapper>
+    <spiderly-data-table 
+    tableTitle="Transactions" 
+    [cols]="cols" 
+    [getPaginatedListObservableMethod]="getPaginatedTransactionListObservableMethod" 
+    [exportListToExcelObservableMethod]="exportTransactionListToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteTransactionObservableMethod"
+    [showAddButton]="false"
+    ></spiderly-data-table>
+</app-section-wrapper>
