@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DocsStep } from '../layout/docs-layout.component';
 import { DocsTemplateComponent } from "../docs-template/docs-template.component";
 
@@ -29,7 +29,15 @@ export class GettingStartedComponent {
   
   constructor(private sanitizer: DomSanitizer) {
     this.sanitizedPreferWatchingInstedVideo = this.sanitizer.bypassSecurityTrustHtml(`
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/1EIzcJMf1IY?si=S98rD7Da_T-k2Vm2&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe
+        src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Initialize_Spiderly_App-2_sziwho&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762300788%2FCopy_of_Untitled_YouTube_Thumbnail_4_s9lkhn.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
+        width="640"
+        height="360" 
+        style="height: auto; width: 100%; aspect-ratio: 640 / 360;"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen
+        frameborder="0"
+      ></iframe>
     `)
   }
 
@@ -105,7 +113,15 @@ export class GettingStartedComponent {
         `,
         video: this.sanitizer.bypassSecurityTrustHtml(`
           <div class="video-wrapper">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/evSorSxb_J8?si=VaOkxTr4g0PudO7L&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe
+              src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Gmail_App_Password_s5a34m&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302352%2FCopy_of_Copy_of_Untitled_YouTube_Thumbnail_h23qle.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
+              width="640"
+              height="360" 
+              style="height: auto; width: 100%; aspect-ratio: 640 / 360;"
+              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+              allowfullscreen
+              frameborder="0"
+            ></iframe>
           </div>
         `),
       },
@@ -121,7 +137,15 @@ export class GettingStartedComponent {
         `,
         video: this.sanitizer.bypassSecurityTrustHtml(`
           <div class="video-wrapper">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/0yriLp-NEvk?si=Yn8Xq5DOFH8KYA0_&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe
+              src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Spiderly_Google_Auth_ujljuc&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302340%2FCopy_of_Untitled_YouTube_Thumbnail_2_t7d5bd.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
+              width="640"
+              height="360" 
+              style="height: auto; width: 100%; aspect-ratio: 640 / 360;"
+              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+              allowfullscreen
+              frameborder="0"
+            ></iframe>
           </div>
         `),
       },
