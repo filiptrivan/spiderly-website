@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { SectionWrapperComponent } from '../../components/section-wrapper/section-wrapper.component';
-import { SpiderlyPanelComponent } from '../../components/playground/web-app/entity-details/spiderly-panels/spiderly-panel/spiderly-panel.component';
 import { Meta, Title } from '@angular/platform-browser';
+import { PanelComponent } from '../../components/panel/panel.component';
 
 @Component({
   selector: 'app-faq',
@@ -11,7 +11,7 @@ import { Meta, Title } from '@angular/platform-browser';
   imports: [
     CommonModule,
     SectionWrapperComponent,
-    SpiderlyPanelComponent,
+    PanelComponent,
 ],
 })
 export class FAQComponent {

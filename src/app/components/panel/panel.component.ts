@@ -6,9 +6,9 @@ import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'spiderly-panel',
-  templateUrl: './spiderly-panel.component.html',
-  styleUrl: './spiderly-panel.component.scss',
+  selector: 'panel',
+  templateUrl: './panel.component.html',
+  styleUrl: './panel.component.scss',
   styles: [`
     :host {
       ::ng-deep {
@@ -31,7 +31,7 @@ import { CommonModule } from '@angular/common';
     MenuModule
   ]
 })
-export class SpiderlyPanelComponent implements OnInit {
+export class PanelComponent implements OnInit {
   @Input() isFirstMultiplePanel: boolean = false;
   @Input() isMiddleMultiplePanel: boolean = false;
   @Input() isLastMultiplePanel: boolean = false;

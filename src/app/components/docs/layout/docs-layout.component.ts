@@ -8,13 +8,13 @@ import { DocsSidebarMenuComponent, DocsSpiderlyMenuItem } from './sidebar/docs-s
 import { Meta, SafeHtml, Title } from '@angular/platform-browser';
 import { GettingStartedComponent } from "../getting-started/getting-started.component";
 import { AttributesDocsComponent } from "../attributes/attributes.component";
-import { kebabToTitleCase } from '../../playground/web-app/entity-details/services/helper-functions';
 import { TerminalMessage } from '../terminal/terminal.component';
 import { EntityAuthorizationComponent } from "../entity-authorization/entity-authorization.component";
 import { UICustomizationComponent } from "../ui-customization/ui-customization.component";
 import { AddNewEntityComponent } from '../add-new-entity/add-new-entity.component';
 import { TranslateSpiderlyAppComponent } from '../translate-spiderly-app/translate-spiderly-app.component';
 import { EntityValidationComponent } from '../entity-validation/entity-validation.component';
+import { kebabToTitleCase } from '../../../shared/helper-functions';
 
 @Component({
     selector: 'app-docs-layout',

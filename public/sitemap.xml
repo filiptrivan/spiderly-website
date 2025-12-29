@@ -9,12 +9,6 @@
   </url>
 
   <url>
-    <loc>https://www.spiderly.dev/playground</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
     <loc>https://www.spiderly.dev/faq</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

@@ -15,7 +15,7 @@
 <app-section-wrapper backgroundColor="light">
   <div style="display: flex; flex-direction: column; gap: 18px">
     @for (faq of faqs; track $index) {
-    <spiderly-panel [toggleable]="true" [collapsed]="true">
+    <panel [toggleable]="true" [collapsed]="true">
       <div class="panel-header-selector">
         <div style="cursor: pointer">
           <h2 style="font-size: 1.2rem">{{ faq.question }}</h2>
@@ -24,7 +24,7 @@
       <div style="overflow: auto;" class="panel-body-selector">
         <div [innerHTML]="faq.answer"></div>
       </div>
-    </spiderly-panel>
+    </panel>
     }
   </div>
 </app-section-wrapper>

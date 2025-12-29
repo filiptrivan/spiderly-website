@@ -6,7 +6,6 @@
     </div>
 
     <nav class="header-desktop desktop-only">
-      <a [routerLink]="['/playground']" class="icon-link" title="Go to Playground">Playground</a>
       <a [routerLink]="['/faq']" class="icon-link" title="Go to FAQ">FAQ</a>
       <a [routerLink]="['/docs/getting-started']" class="icon-link" title="Go to Docs">Docs</a>
     </nav>
@@ -24,7 +23,6 @@
 <div
   class="side-menu mobile-only {{ isSideMenuActive ? 'side-menu-open' : '' }}"
 >
-  <a (click)="isSideMenuActive = false" [routerLink]="['/playground']" class="side-menu-link" title="Go to Playground">Playground</a>
   <a (click)="isSideMenuActive = false" [routerLink]="['/faq']" class="side-menu-link" title="Go to FAQ">FAQ</a>
   <a (click)="isSideMenuActive = false" [routerLink]="['/docs/getting-started']" class="side-menu-link" title="Go to Docs">Docs</a>
 </div>
