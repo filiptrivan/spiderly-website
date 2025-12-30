@@ -8,5 +8,5 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class SectionWrapperComponent {
-    @Input() backgroundColor: 'light' | null;
+    @Input() backgroundColor: 'light' | 'dark' | null;
 }
