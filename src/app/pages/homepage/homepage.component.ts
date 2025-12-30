@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeroComponent } from '../../components/homepage/hero/hero.component';
 import { KeyBenefitsComponent } from "../../components/homepage/key-benefits/key-benefits.component";
@@ -9,7 +9,7 @@ import { TechStackComponent } from "../../components/homepage/tech-stack/tech-st
 
 @Component({
   selector: 'app-homepage',
-  template: ` 
+  template: `
   <app-hero/>
   <app-key-features/>
   <app-tech-stack/>
@@ -19,7 +19,7 @@ import { TechStackComponent } from "../../components/homepage/tech-stack/tech-st
   imports: [CommonModule, HeroComponent, KeyBenefitsComponent, WordFromAFounderComponent, KeyFeaturesComponent, TechStackComponent],
 })
 export class HomepageComponent {
-  
+
   constructor(
     private titleService: Title,
     private metaService: Meta
@@ -27,6 +27,19 @@ export class HomepageComponent {
     this.titleService.setTitle('.NET (C#) Web App Boilerplate Code Generator | Spiderly');
     this.metaService.updateTag({ name: 'description', content: 'Spiderly is a free open-source .NET (C#) boilerplate code generator that turns EF Core model into fully customizable .NET (C#) + Angular web application.' });
     this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
+  }
+
+  @HostListener('mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+      (card as HTMLElement).style.setProperty('--mouse-x', `${x}%`);
+      (card as HTMLElement).style.setProperty('--mouse-y', `${y}%`);
+    });
   }
 
 }

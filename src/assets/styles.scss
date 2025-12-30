@@ -146,6 +146,34 @@ a:hover {
   border: 1px solid var(--p-surface-700);
   border-radius: var(--p-content-border-radius);
   overflow: auto;
+  position: relative;
+  transition: border-color 300ms ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--p-content-border-radius);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(234, 51, 149, 0.08),
+      transparent 40%
+    );
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: rgba(234, 51, 149, 0.3);
+  }
 }
 
 ul, ol {
