@@ -8,9 +8,10 @@ import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.component.html',
+  styleUrl: './hero.component.scss',
   imports: [
-    CommonModule, 
-    SectionWrapperComponent, 
+    CommonModule,
+    SectionWrapperComponent,
     ButtonModule,
     RouterModule,
     DialogModule,
