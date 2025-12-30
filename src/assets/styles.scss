@@ -170,10 +170,6 @@ a:hover {
   &:hover::before {
     opacity: 1;
   }
-
-  &:hover {
-    border-color: rgba(234, 51, 149, 0.3);
-  }
 }
 
 ul, ol {
