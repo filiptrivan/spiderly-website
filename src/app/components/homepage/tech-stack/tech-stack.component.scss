@@ -1,7 +1,13 @@
 .tech-stack-grid {
     display: grid;
     gap: 18px;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 @media (max-width: 1080px) {

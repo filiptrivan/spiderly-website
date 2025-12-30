@@ -4,7 +4,7 @@
 
 :root {
   --background-color: #0a0a0a;
-  --p-secondary-color: #00f0b5;
+  --p-secondary-color: var(--p-pink-500);
 
   --p-inputtext-padding-y: 0.45rem !important;
   --p-form-field-background: var(--p-surface-900) !important;

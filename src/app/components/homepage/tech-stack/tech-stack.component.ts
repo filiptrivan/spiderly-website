@@ -25,52 +25,47 @@ export class TechStackComponent {
       {
         title: 'Backend',
         subtitle: '.NET (C#)',
-        logoUrl: 'dotnet-logo.svg'
+        logoUrls: ['dotnet-logo.svg']
       },
       {
         title: 'Frontend',
         subtitle: 'Angular',
-        logoUrl: 'angular-logo.svg'
+        logoUrls: ['angular-logo.svg']
       },
       {
         title: 'Database',
-        subtitle: 'Microsoft SQL Server',
-        logoUrl: 'microsoft-sql-server-logo.svg'
+        subtitle: 'SQL Server or PostgreSQL',
+        logoUrls: ['microsoft-sql-server-logo.svg', 'postgresql-logo.svg']
       },
       {
         title: 'ORM',
         subtitle: 'Entity Framework Core',
-        logoUrl: 'entity-framework-core-logo.svg'
-      },
-      {
-        title: 'Cloud Provider',
-        subtitle: 'Azure',
-        logoUrl: 'azure-logo.svg'
+        logoUrls: ['entity-framework-core-logo.svg']
       },
       {
         title: 'UI Components Library',
         subtitle: 'PrimeNG',
-        logoUrl: 'primeng-logo.svg',
+        logoUrls: ['primeng-logo.svg'],
       },
       {
         title: 'Logging',
         subtitle: 'Serilog',
-        logoUrl: 'serilog-logo.svg',
+        logoUrls: ['serilog-logo.svg'],
       },
       {
         title: 'Backend Validation',
         subtitle: 'FluentValidation',
-        logoUrl: 'fluent-validation-logo.svg',
+        logoUrls: ['fluent-validation-logo.svg'],
       },
       {
         title: 'Object Mapping',
         subtitle: 'Mapster',
-        logoUrl: 'mapster-logo.svg',
+        logoUrls: ['mapster-logo.svg'],
       },
       {
         title: 'Frontend Translations',
         subtitle: 'Transloco',
-        logoUrl: 'transloco-logo.svg',
+        logoUrls: ['transloco-logo.svg'],
       },
     ];
   }
@@ -79,5 +74,5 @@ export class TechStackComponent {
 export interface TechStack {
   title: string;
   subtitle: string;
-  logoUrl: string;
+  logoUrls: string[];
 }

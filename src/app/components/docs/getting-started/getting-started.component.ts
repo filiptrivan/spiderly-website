@@ -21,8 +21,7 @@ export class GettingStartedComponent {
   steps: DocsStep[];
   gradientTitle = 'Getting Started With Spiderly';
   textBelowTitle = `
-  Follow this quick start guide to configure and initialize your Spiderly app. 
-  Once complete, you'll be ready to use all features and build with its full power.
+  Follow this quick start guide to configure and initialize your Spiderly app.
   `;
   preferWatchingInstedText = 'You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you\'ve already completed the first step — installing the prerequisites.';
   sanitizedPreferWatchingInstedVideo: SafeHtml;
