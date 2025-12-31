@@ -1,30 +1,30 @@
 .tech-stack-grid {
-    display: grid;
-    gap: 18px;
-    grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 @media (max-width: 1080px) {
-    .tech-stack-grid {
-        gap: 12px;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+  .tech-stack-grid {
+    gap: 12px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 @media (max-width: 760px) {
-    .tech-stack-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+  .tech-stack-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 500px) {
-    .tech-stack-grid {
-        grid-template-columns: 1fr;
-    }
+  .tech-stack-grid {
+    grid-template-columns: 1fr;
+  }
 }

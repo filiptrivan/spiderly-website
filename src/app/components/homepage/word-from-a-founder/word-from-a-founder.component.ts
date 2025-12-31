@@ -9,6 +9,4 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
   styleUrl: './word-from-a-founder.component.scss',
   imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
-export class WordFromAFounderComponent {
-
-}
+export class WordFromAFounderComponent {}

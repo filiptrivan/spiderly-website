@@ -5,10 +5,10 @@
 
 .key-card {
   .key-title-wrapper {
-    display: flex; 
+    display: flex;
     gap: 8px;
 
-    .key-icon{
+    .key-icon {
       font-size: 1.5rem;
       color: var(--p-secondary-color);
     }
@@ -19,24 +19,23 @@
       margin-bottom: 10px;
     }
   }
-
 }
 
 .key-grid {
-    display: grid;
-    gap: 18px;
-    grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 @media (max-width: 1080px) {
-    .key-grid {
-        gap: 12px;
-        grid-template-columns: 1fr 1fr;
-    }
+  .key-grid {
+    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 760px) {
-    .key-grid {
-        grid-template-columns: 1fr;
-    }
+  .key-grid {
+    grid-template-columns: 1fr;
+  }
 }

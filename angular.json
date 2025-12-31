@@ -29,11 +29,8 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/assets/styles.scss"
-            ],
-            "scripts": [
-            ],
+            "styles": ["src/assets/styles.scss"],
+            "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "static",
             "prerender": true,
@@ -100,11 +97,8 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/assets/styles.scss"
-            ],
-            "scripts": [
-            ]
+            "styles": ["src/assets/styles.scss"],
+            "scripts": []
           }
         }
       }

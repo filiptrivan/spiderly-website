@@ -1,239 +1,304 @@
 <div>
-    <h1 class="gradient-title">Spiderly Attributes</h1>
-    
-    <div class="toc card">
-        <h2>Table of Contents</h2>
-        <ul>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'auth-guard-attribute'"
-                    title="Go to AuthGuardAttribute">
-                    AuthGuardAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'blob-name-attribute'"
-                    title="Go to BlobNameAttribute">
-                    BlobNameAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'cascade-delete-attribute'"
-                    title="Go to CascadeDeleteAttribute">
-                    CascadeDeleteAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'controller-attribute'"
-                    title="Go to ControllerAttribute">
-                    ControllerAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'custom-mapper-attribute'"
-                    title="Go to CustomMapperAttribute">
-                    CustomMapperAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'display-name-attribute'"
-                    title="Go to DisplayNameAttribute">
-                    DisplayNameAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'do-not-authorize-attribute'"
-                    title="Go to DoNotAuthorizeAttribute">
-                    DoNotAuthorizeAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'exclude-from-dto-attribute'"
-                    title="Go to ExcludeFromDTOAttribute">
-                    ExcludeFromDTOAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'exclude-service-methods-from-generation-attribute'"
-                    title="Go to ExcludeServiceMethodsFromGenerationAttribute">
-                    ExcludeServiceMethodsFromGenerationAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'generate-comma-separated-display-name-attribute'"
-                    title="Go to GenerateCommaSeparatedDisplayNameAttribute">
-                    GenerateCommaSeparatedDisplayNameAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'include-in-dto-attribute'"
-                    title="Go to IncludeInDTOAttribute">
-                    IncludeInDTOAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'m2m-attribute'"
-                    title="Go to M2MAttribute">
-                    M2MAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'m2m-with-many-attribute'"
-                    title="Go to M2MWithManyAttribute">
-                    M2MWithManyAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'output-attribute'"
-                    title="Go to OutputAttribute">
-                    OutputAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'project-to-dto-attribute'"
-                    title="Go to ProjectToDTOAttribute">
-                    ProjectToDTOAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'set-null-attribute'"
-                    title="Go to SetNullAttribute">
-                    SetNullAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'simple-many-to-many-table-lazy-load-attribute'"
-                    title="Go to SimpleManyToManyTableLazyLoadAttribute">
-                    SimpleManyToManyTableLazyLoadAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'skip-spinner-attribute'"
-                    title="Go to SkipSpinnerAttribute">
-                    SkipSpinnerAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-additional-permission-code-for-insert-attribute'"
-                    title="Go to UIAdditionalPermissionCodeForInsertAttribute">
-                    UIAdditionalPermissionCodeForInsertAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-additional-permission-code-for-update-attribute'"
-                    title="Go to UIAdditionalPermissionCodeForUpdateAttribute">
-                    UIAdditionalPermissionCodeForUpdateAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-control-type-attribute'"
-                    title="Go to UIControlTypeAttribute">
-                    UIControlTypeAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-control-width-attribute'"
-                    title="Go to UIControlWidthAttribute">
-                    UIControlWidthAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-do-not-generate-attribute'"
-                    title="Go to UIDoNotGenerateAttribute">
-                    UIDoNotGenerateAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-ordered-one-to-many-attribute'"
-                    title="Go to UIOrderedOneToManyAttribute">
-                    UIOrderedOneToManyAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-panel-attribute'"
-                    title="Go to UIPanelAttribute">
-                    UIPanelAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-property-block-order-attribute'"
-                    title="Go to UIPropertyBlockOrderAttribute">
-                    UIPropertyBlockOrderAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'ui-table-column-attribute'"
-                    title="Go to UITableColumnAttribute">
-                    UITableColumnAttribute
-                </a>
-            </li>
-            <li>
-                <a [routerLink]="['/docs', 'attributes']" 
-                    [fragment]="'with-many-attribute'"
-                    title="Go to WithManyAttribute">
-                    WithManyAttribute
-                </a>
-            </li>
-        </ul>
+  <h1 class="gradient-title">Spiderly Attributes</h1>
+
+  <div class="toc card">
+    <h2>Table of Contents</h2>
+    <ul>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'auth-guard-attribute'"
+          title="Go to AuthGuardAttribute"
+        >
+          AuthGuardAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'blob-name-attribute'"
+          title="Go to BlobNameAttribute"
+        >
+          BlobNameAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'cascade-delete-attribute'"
+          title="Go to CascadeDeleteAttribute"
+        >
+          CascadeDeleteAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'controller-attribute'"
+          title="Go to ControllerAttribute"
+        >
+          ControllerAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'custom-mapper-attribute'"
+          title="Go to CustomMapperAttribute"
+        >
+          CustomMapperAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'display-name-attribute'"
+          title="Go to DisplayNameAttribute"
+        >
+          DisplayNameAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'do-not-authorize-attribute'"
+          title="Go to DoNotAuthorizeAttribute"
+        >
+          DoNotAuthorizeAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'exclude-from-dto-attribute'"
+          title="Go to ExcludeFromDTOAttribute"
+        >
+          ExcludeFromDTOAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'exclude-service-methods-from-generation-attribute'"
+          title="Go to ExcludeServiceMethodsFromGenerationAttribute"
+        >
+          ExcludeServiceMethodsFromGenerationAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'generate-comma-separated-display-name-attribute'"
+          title="Go to GenerateCommaSeparatedDisplayNameAttribute"
+        >
+          GenerateCommaSeparatedDisplayNameAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'include-in-dto-attribute'"
+          title="Go to IncludeInDTOAttribute"
+        >
+          IncludeInDTOAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'m2m-attribute'"
+          title="Go to M2MAttribute"
+        >
+          M2MAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'m2m-with-many-attribute'"
+          title="Go to M2MWithManyAttribute"
+        >
+          M2MWithManyAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'output-attribute'"
+          title="Go to OutputAttribute"
+        >
+          OutputAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'project-to-dto-attribute'"
+          title="Go to ProjectToDTOAttribute"
+        >
+          ProjectToDTOAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'set-null-attribute'"
+          title="Go to SetNullAttribute"
+        >
+          SetNullAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'simple-many-to-many-table-lazy-load-attribute'"
+          title="Go to SimpleManyToManyTableLazyLoadAttribute"
+        >
+          SimpleManyToManyTableLazyLoadAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'skip-spinner-attribute'"
+          title="Go to SkipSpinnerAttribute"
+        >
+          SkipSpinnerAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-additional-permission-code-for-insert-attribute'"
+          title="Go to UIAdditionalPermissionCodeForInsertAttribute"
+        >
+          UIAdditionalPermissionCodeForInsertAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-additional-permission-code-for-update-attribute'"
+          title="Go to UIAdditionalPermissionCodeForUpdateAttribute"
+        >
+          UIAdditionalPermissionCodeForUpdateAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-control-type-attribute'"
+          title="Go to UIControlTypeAttribute"
+        >
+          UIControlTypeAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-control-width-attribute'"
+          title="Go to UIControlWidthAttribute"
+        >
+          UIControlWidthAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-do-not-generate-attribute'"
+          title="Go to UIDoNotGenerateAttribute"
+        >
+          UIDoNotGenerateAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-ordered-one-to-many-attribute'"
+          title="Go to UIOrderedOneToManyAttribute"
+        >
+          UIOrderedOneToManyAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-panel-attribute'"
+          title="Go to UIPanelAttribute"
+        >
+          UIPanelAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-property-block-order-attribute'"
+          title="Go to UIPropertyBlockOrderAttribute"
+        >
+          UIPropertyBlockOrderAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'ui-table-column-attribute'"
+          title="Go to UITableColumnAttribute"
+        >
+          UITableColumnAttribute
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/docs', 'attributes']"
+          [fragment]="'with-many-attribute'"
+          title="Go to WithManyAttribute"
+        >
+          WithManyAttribute
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <section id="auth-guard-attribute" class="doc-section">
+    <div class="card">
+      <h2>AuthGuardAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Provides authentication protection for API endpoints by validating JWT tokens in the
+        request.
+      </div>
     </div>
+  </section>
+  <section id="blob-name-attribute" class="doc-section">
+    <div class="card">
+      <h2>BlobNameAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Marks a string property as a reference to a file stored in Azure Blob Storage. This property
+        will contain the unique identifier (<span class="code-block">blob name</span>) used to
+        locate and access the file in Azure Storage. <br />
+        <br />
 
-    <section id="auth-guard-attribute" class="doc-section">
-        <div class="card">
-            <h2>AuthGuardAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
-            <div class="summary">
-<h3>Usage:</h3> Provides authentication protection for API endpoints by validating JWT tokens in the request.
-            </div>
-        </div>
-    </section>
-    <section id="blob-name-attribute" class="doc-section">
-        <div class="card">
-            <h2>BlobNameAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Marks a string property as a reference to a file stored in Azure Blob Storage.
-    This property will contain the unique identifier (<span class="code-block">blob name</span>) used to locate
-    and access the file in Azure Storage. <br/> <br/>
+        When you add a property decorated with the
+        <span class="code-block">BlobNameAttribute</span> inside your entity, Spiderly will
+        automatically generate an additional property in the corresponding DTO (e.g.,
+        <span class="code-block">ProfilePictureData</span>). This new property will contain the
+        Base64-encoded string of the file. To display this image in your HTML, use the Spiderly
+        helper method <span class="code-block">getHtmlImgDisplayString64</span> and pass its result
+        as the <span class="code-block">src</span> attribute of an
+        <span class="code-block">&lt;img&gt;</span> tag.
 
-    When you add a property decorated with the <span class="code-block">BlobNameAttribute</span> inside your entity, 
-    Spiderly will automatically generate an additional property in the corresponding DTO (e.g., <span class="code-block">ProfilePictureData</span>). This new property will contain the Base64-encoded string of the file.
-    To display this image in your HTML, use the Spiderly helper method <span class="code-block">getHtmlImgDisplayString64</span> and pass its result as the <span class="code-block">src</span> attribute of an 
-    <span class="code-block">&lt;img&gt;</span> tag.
-    
-    <br/> <br/>
+        <br />
+        <br />
 
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
-    </div>
-    <pre><code language="csharp" [highlight]="`
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     [BlobName]
@@ -242,27 +307,31 @@ public class User : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="cascade-delete-attribute" class="doc-section">
-        <div class="card">
-            <h2>CascadeDeleteAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Implements cascade delete behavior in <span class="code-block">many-to-one</span> relationships. When the referenced entity is deleted,
-    all entities that reference it will automatically be deleted as well. <br/> <br/>
-
-    <h3>This attribute is useful when:</h3>
-    - Child entities should not exist without their parent<br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="cascade-delete-attribute" class="doc-section">
+    <div class="card">
+      <h2>CascadeDeleteAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Implements cascade delete behavior in
+        <span class="code-block">many-to-one</span> relationships. When the referenced entity is
+        deleted, all entities that reference it will automatically be deleted as well. <br />
+        <br />
+
+        <h3>This attribute is useful when:</h3>
+        - Child entities should not exist without their parent<br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Comment : BusinessObject&lt;long&gt;
 &lbrace;
     [DisplayName]
@@ -274,26 +343,31 @@ public class Comment : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="controller-attribute" class="doc-section">
-        <div class="card">
-            <h2>ControllerAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies a custom controller name for an entity, overriding the default naming convention.
-    This attribute allows grouping multiple related entities under a single controller. <br/> <br/>
-
-    <h3>Default behavior without 'Controller' attribute:</h3> Controllers are named as <span class="code-block">'&lbrace;EntityName&rbrace;Controller'</span> <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="controller-attribute" class="doc-section">
+    <div class="card">
+      <h2>ControllerAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies a custom controller name for an entity, overriding the default naming convention.
+        This attribute allows grouping multiple related entities under a single controller. <br />
+        <br />
+
+        <h3>Default behavior without 'Controller' attribute:</h3>
+        Controllers are named as
+        <span class="code-block">'&lbrace;EntityName&rbrace;Controller'</span> <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 [Controller(&quot;SecurityController&quot;)]
 public class User &lbrace; &rbrace;
 
@@ -304,23 +378,25 @@ public class Role &lbrace; &rbrace;
 public class Permission &lbrace; &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="custom-mapper-attribute" class="doc-section">
-        <div class="card">
-            <h2>CustomMapperAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
-            <div class="summary">
-<h3>Usage:</h3> Marks a class for custom object mapping implementation. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="custom-mapper-attribute" class="doc-section">
+    <div class="card">
+      <h2>CustomMapperAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Marks a class for custom object mapping implementation. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 [CustomMapper]
 public static partial class Mapper
 &lbrace;
@@ -328,30 +404,37 @@ public static partial class Mapper
 &rbrace;
 `">
     </code></pre>
-</div> <br/>
-
-    <h3>Note:</h3> Use this attribute when you need to implement specialized mapping logic
-    that cannot be handled by the default mapping configuration.
-            </div>
         </div>
-    </section>
-    <section id="display-name-attribute" class="doc-section">
-        <div class="card">
-            <h2>DisplayNameAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3>
-    Specifies which property should be used as the display name for an entity in UI elements: <br/>
-    - When applied to a property: The property's value will be used to represent the entity <br/>
-    - When applied to a class: The specified property's value will be used to represent the entity <br/>
-    - If no property or class is marked with this attribute: The entity's 'Id' will be used <br/> <br/>
+        <br />
 
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+        <h3>Note:</h3>
+        Use this attribute when you need to implement specialized mapping logic that cannot be
+        handled by the default mapping configuration.
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="display-name-attribute" class="doc-section">
+    <div class="card">
+      <h2>DisplayNameAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies which property should be used as the display name for an entity in UI elements:
+        <br />
+        - When applied to a property: The property's value will be used to represent the entity
+        <br />
+        - When applied to a class: The specified property's value will be used to represent the
+        entity <br />
+        - If no property or class is marked with this attribute: The entity's 'Id' will be used
+        <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     [DisplayName]
@@ -365,64 +448,75 @@ public class Employee : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="do-not-authorize-attribute" class="doc-section">
-        <div class="card">
-            <h2>DoNotAuthorizeAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Disables authorization checks for CRUD operations on the decorated entity.
-    By default, all entities require authorization for CRUD operations. <br/> <br/>
-
-    <h3>Warning:</h3> This attribute bypasses security checks and should be used with extreme caution.
-    It is primarily intended for testing purposes and should generally be avoided in production environments.
-            </div>
-        </div>
-    </section>
-    <section id="exclude-from-dto-attribute" class="doc-section">
-        <div class="card">
-            <h2>ExcludeFromDTOAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies that a property should be excluded from the generated DTO.
-            </div>
-        </div>
-    </section>
-    <section id="exclude-service-methods-from-generation-attribute" class="doc-section">
-        <div class="card">
-            <h2>ExcludeServiceMethodsFromGenerationAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Prevents the generation of standard business service methods for the decorated property
-    in the <span class="code-block">BusinessServiceGenerated</span> class. <br/> <br/>
-
-    <h3>Use this attribute when you want to:</h3>
-    - Implement custom business logic instead of using generated methods <br/>
-    - Override the default generated behavior with your own implementation <br/>
-    - Exclude specific properties from the standard service method generation <br/> <br/>
-
-    <h3>Note:</h3> The property will still be part of the entity, but no service methods will be
-    generated for it in the <span class="code-block">BusinessServiceGenerated</span> class.
-            </div>
-        </div>
-    </section>
-    <section id="generate-comma-separated-display-name-attribute" class="doc-section">
-        <div class="card">
-            <h2>GenerateCommaSeparatedDisplayNameAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Generates a string property in the DTO containing comma-separated
-    display names for a collection property in the entity. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="do-not-authorize-attribute" class="doc-section">
+    <div class="card">
+      <h2>DoNotAuthorizeAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Disables authorization checks for CRUD operations on the decorated entity. By default, all
+        entities require authorization for CRUD operations. <br />
+        <br />
+
+        <h3>Warning:</h3>
+        This attribute bypasses security checks and should be used with extreme caution. It is
+        primarily intended for testing purposes and should generally be avoided in production
+        environments.
+      </div>
+    </div>
+  </section>
+  <section id="exclude-from-dto-attribute" class="doc-section">
+    <div class="card">
+      <h2>ExcludeFromDTOAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies that a property should be excluded from the generated DTO.
+      </div>
+    </div>
+  </section>
+  <section id="exclude-service-methods-from-generation-attribute" class="doc-section">
+    <div class="card">
+      <h2>ExcludeServiceMethodsFromGenerationAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Prevents the generation of standard business service methods for the decorated property in
+        the <span class="code-block">BusinessServiceGenerated</span> class. <br />
+        <br />
+
+        <h3>Use this attribute when you want to:</h3>
+        - Implement custom business logic instead of using generated methods <br />
+        - Override the default generated behavior with your own implementation <br />
+        - Exclude specific properties from the standard service method generation <br />
+        <br />
+
+        <h3>Note:</h3>
+        The property will still be part of the entity, but no service methods will be generated for
+        it in the <span class="code-block">BusinessServiceGenerated</span> class.
+      </div>
+    </div>
+  </section>
+  <section id="generate-comma-separated-display-name-attribute" class="doc-section">
+    <div class="card">
+      <h2>GenerateCommaSeparatedDisplayNameAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Generates a string property in the DTO containing comma-separated display names for a
+        collection property in the entity. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Project : BusinessObject&lt;long&gt;
 &lbrace;
     [DisplayName]
@@ -442,35 +536,43 @@ public class User : BusinessObject&lt;long&gt;
 // &quot;john@example.com, jane@example.com, bob@example.com&quot;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="include-in-dto-attribute" class="doc-section">
-        <div class="card">
-            <h2>IncludeInDTOAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies that a property should be included in the generated DTO.
-    This attribute is particularly useful for enumerable properties, which are not included in DTOs by default. <br/> <br/>
-
-    <h3>Note:</h3> This attribute only affects DTO generation and does not influence the mapping behavior (Entity &lt;-&gt; DTO).
-            </div>
-        </div>
-    </section>
-    <section id="m2m-attribute" class="doc-section">
-        <div class="card">
-            <h2>M2MAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Indicates that the entity represents a helper table for a <span class="code-block">many-to-many</span> (M2M) relationship. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="include-in-dto-attribute" class="doc-section">
+    <div class="card">
+      <h2>IncludeInDTOAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies that a property should be included in the generated DTO. This attribute is
+        particularly useful for enumerable properties, which are not included in DTOs by default.
+        <br />
+        <br />
+
+        <h3>Note:</h3>
+        This attribute only affects DTO generation and does not influence the mapping behavior
+        (Entity &lt;-&gt; DTO).
+      </div>
+    </div>
+  </section>
+  <section id="m2m-attribute" class="doc-section">
+    <div class="card">
+      <h2>M2MAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Indicates that the entity represents a helper table for a
+        <span class="code-block">many-to-many</span> (M2M) relationship. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 [M2M]
 public class RolePermission
 &lbrace;
@@ -482,23 +584,26 @@ public class RolePermission
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="m2m-with-many-attribute" class="doc-section">
-        <div class="card">
-            <h2>M2MWithManyAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Marks a property in a <span class="code-block">many-to-many</span> (M2M) relationship. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="m2m-with-many-attribute" class="doc-section">
+    <div class="card">
+      <h2>M2MWithManyAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Marks a property in a <span class="code-block">many-to-many</span> (M2M) relationship.
+        <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 [M2M]
 public class RolePermission
 &lbrace;
@@ -510,34 +615,39 @@ public class RolePermission
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="output-attribute" class="doc-section">
-        <div class="card">
-            <h2>OutputAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the output configuration for the Source Generator. <br/> <br/>
-
-    <h3>Note:</h3> This is a temporary solution and may be replaced in future versions.
-            </div>
-        </div>
-    </section>
-    <section id="project-to-dto-attribute" class="doc-section">
-        <div class="card">
-            <h2>ProjectToDTOAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies custom mapping configuration when projecting an entity to its DTO. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="output-attribute" class="doc-section">
+    <div class="card">
+      <h2>OutputAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies the output configuration for the Source Generator. <br />
+        <br />
+
+        <h3>Note:</h3>
+        This is a temporary solution and may be replaced in future versions.
+      </div>
+    </div>
+  </section>
+  <section id="project-to-dto-attribute" class="doc-section">
+    <div class="card">
+      <h2>ProjectToDTOAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies custom mapping configuration when projecting an entity to its DTO. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 [ProjectToDTO(&quot;.Map(dest =&gt; dest.TransactionPrice, src =&gt; src.Transaction.Price)&quot;)]
 public class Achievement : BusinessObject&lt;long&gt;
 &lbrace;
@@ -545,48 +655,56 @@ public class Achievement : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="set-null-attribute" class="doc-section">
-        <div class="card">
-            <h2>SetNullAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies that the property should be set to <span class="code-block">null</span> when the parent entity is deleted. <br/>
-    Apply this attribute to a <span class="code-block">many-to-one</span> relationship property.
-            </div>
-        </div>
-    </section>
-    <section id="simple-many-to-many-table-lazy-load-attribute" class="doc-section">
-        <div class="card">
-            <h2>SimpleManyToManyTableLazyLoadAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies that a table items for the <span class="code-block">many-to-many</span> relationship administration
-    should be loaded lazily (on-demand) rather than eagerly.
-            </div>
-        </div>
-    </section>
-    <section id="skip-spinner-attribute" class="doc-section">
-        <div class="card">
-            <h2>SkipSpinnerAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
-            <div class="summary">
-<h3>Usage:</h3> Indicates that the loading spinner should be skipped for the decorated controller method. <br/> <br/>
-
-    <h3>Use when:</h3>
-    - The operation is very quick and doesn't need a loading indicator <br/>
-    - You want to implement custom loading behavior <br/>
-    - The operation runs in the background <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="set-null-attribute" class="doc-section">
+    <div class="card">
+      <h2>SetNullAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies that the property should be set to <span class="code-block">null</span> when the
+        parent entity is deleted. <br />
+        Apply this attribute to a <span class="code-block">many-to-one</span> relationship property.
+      </div>
+    </div>
+  </section>
+  <section id="simple-many-to-many-table-lazy-load-attribute" class="doc-section">
+    <div class="card">
+      <h2>SimpleManyToManyTableLazyLoadAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies that a table items for the
+        <span class="code-block">many-to-many</span> relationship administration should be loaded
+        lazily (on-demand) rather than eagerly.
+      </div>
+    </div>
+  </section>
+  <section id="skip-spinner-attribute" class="doc-section">
+    <div class="card">
+      <h2>SkipSpinnerAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Indicates that the loading spinner should be skipped for the decorated controller method.
+        <br />
+        <br />
+
+        <h3>Use when:</h3>
+        - The operation is very quick and doesn't need a loading indicator <br />
+        - You want to implement custom loading behavior <br />
+        - The operation runs in the background <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 [HttpGet]
 [SkipSpinner]
 public async Task SendNotificationEmail(long notificationId)
@@ -595,53 +713,62 @@ public async Task SendNotificationEmail(long notificationId)
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-additional-permission-code-for-insert-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIAdditionalPermissionCodeForInsertAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies additional permission requirements for inserting entities in the UI.
-    The user must have ONE of the specified permissions to perform the insert operation.
-    Multiple instances of this attribute can be applied to a single entity.
-            </div>
-        </div>
-    </section>
-    <section id="ui-additional-permission-code-for-update-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIAdditionalPermissionCodeForUpdateAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies additional permission requirements for updating entities in the UI.
-    The user must have ONE of the specified permissions to perform the update operation.
-    Multiple instances of this attribute can be applied to a single entity.
-            </div>
-        </div>
-    </section>
-    <section id="ui-control-type-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIControlTypeAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the UI control type for a property. <br/> <br/>
-
-    If not specified, the control type is automatically determined based on the property type: <br/>
-    - <span class="code-block">string</span>: <span class="code-block">TextBox</span> (or <span class="code-block">TextArea</span> if <span class="code-block">[StringLength]</span> value is large) <br/>
-    - <span class="code-block">int/long</span>: <span class="code-block">Number</span> <br/>
-    - <span class="code-block">decimal</span>: <span class="code-block">Decimal</span> <br/>
-    - <span class="code-block">bool</span>: <span class="code-block">CheckBox</span> <br/>
-    - <span class="code-block">DateTime</span>: <span class="code-block">Calendar</span> <br/>
-    - <span class="code-block">many-to-one</span>: <span class="code-block">Autocomplete</span> <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-additional-permission-code-for-insert-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIAdditionalPermissionCodeForInsertAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies additional permission requirements for inserting entities in the UI. The user must
+        have ONE of the specified permissions to perform the insert operation. Multiple instances of
+        this attribute can be applied to a single entity.
+      </div>
+    </div>
+  </section>
+  <section id="ui-additional-permission-code-for-update-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIAdditionalPermissionCodeForUpdateAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies additional permission requirements for updating entities in the UI. The user must
+        have ONE of the specified permissions to perform the update operation. Multiple instances of
+        this attribute can be applied to a single entity.
+      </div>
+    </div>
+  </section>
+  <section id="ui-control-type-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIControlTypeAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies the UI control type for a property. <br />
+        <br />
+
+        If not specified, the control type is automatically determined based on the property type:
+        <br />
+        - <span class="code-block">string</span>: <span class="code-block">TextBox</span> (or
+        <span class="code-block">TextArea</span> if
+        <span class="code-block">[StringLength]</span> value is large) <br />
+        - <span class="code-block">int/long</span>: <span class="code-block">Number</span> <br />
+        - <span class="code-block">decimal</span>: <span class="code-block">Decimal</span> <br />
+        - <span class="code-block">bool</span>: <span class="code-block">CheckBox</span> <br />
+        - <span class="code-block">DateTime</span>: <span class="code-block">Calendar</span> <br />
+        - <span class="code-block">many-to-one</span>: <span class="code-block">Autocomplete</span>
+        <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
@@ -658,27 +785,30 @@ public class User : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-control-width-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIControlWidthAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the width of a UI field using PrimeNG (PrimeFlex) column classes. <br/> <br/>
-
-    <h3>Default values:</h3>
-    - <span class="code-block">"col-12"</span> for TextArea and Editor controls <br/>
-    - <span class="code-block">"col-12 md:col-6"</span> for all other controls <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-control-width-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIControlWidthAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies the width of a UI field using PrimeNG (PrimeFlex) column classes. <br />
+        <br />
+
+        <h3>Default values:</h3>
+        - <span class="code-block">"col-12"</span> for TextArea and Editor controls <br />
+        - <span class="code-block">"col-12 md:col-6"</span> for all other controls <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Article : &lt;long&gt;
 &lbrace;
     [UIControlWidth(&quot;col-12&quot;)]
@@ -693,23 +823,25 @@ public class Article : &lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-do-not-generate-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIDoNotGenerateAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
-            <div class="summary">
-<h3>Usage:</h3> Excludes a property from being generated in the UI main form component. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-do-not-generate-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIDoNotGenerateAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Excludes a property from being generated in the UI main form component. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     public string Name &lbrace; get; set; &rbrace;
@@ -722,23 +854,26 @@ public class User : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-ordered-one-to-many-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIOrderedOneToManyAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
-            <div class="summary">
-<h3>Usage:</h3> Enables management of child entities through an ordered list in the parent entity's main UI form component. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-ordered-one-to-many-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIOrderedOneToManyAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Enables management of child entities through an ordered list in the parent entity's main UI
+        form component. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Course : BusinessObject&lt;long&gt;
 &lbrace;
     [DisplayName]
@@ -763,24 +898,26 @@ public class CourseItem : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-panel-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIPanelAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies in which panel the UI control will be located.
-    By default, all controls are inside the <span class="code-block">"Details"</span> panel. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-panel-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIPanelAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies in which panel the UI control will be located. By default, all controls are inside
+        the <span class="code-block">"Details"</span> panel. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class User : BusinessObject&lt;long&gt;
 &lbrace;
     [DisplayName]
@@ -794,26 +931,29 @@ public class User : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-property-block-order-attribute" class="doc-section">
-        <div class="card">
-            <h2>UIPropertyBlockOrderAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the display order of UI controls.
-    Controls are displayed in the order of property declaration, except for:
-    <span class="code-block">'file'</span>, <span class="code-block">'text-area'</span>, <span class="code-block">'editor'</span>, and <span class="code-block">'table'</span> controls,
-    which are always displayed last in their declaration order. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-property-block-order-attribute" class="doc-section">
+    <div class="card">
+      <h2>UIPropertyBlockOrderAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies the display order of UI controls. Controls are displayed in the order of property
+        declaration, except for: <span class="code-block">'file'</span>,
+        <span class="code-block">'text-area'</span>, <span class="code-block">'editor'</span>, and
+        <span class="code-block">'table'</span> controls, which are always displayed last in their
+        declaration order. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Article : BusinessObject&lt;long&gt;
 &lbrace;
     [UIPropertyBlockOrder(&quot;1&quot;)]
@@ -829,24 +969,27 @@ public class Article : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="ui-table-column-attribute" class="doc-section">
-        <div class="card">
-            <h2>UITableColumnAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies which columns should be displayed in a table view for a <span class="code-block">many-to-many</span> relationship.
-    Must be used in combination with <span class="code-block">[SimpleManyToManyTableLazyLoad]</span> attribute. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="ui-table-column-attribute" class="doc-section">
+    <div class="card">
+      <h2>UITableColumnAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity.UI</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies which columns should be displayed in a table view for a
+        <span class="code-block">many-to-many</span> relationship. Must be used in combination with
+        <span class="code-block">[SimpleManyToManyTableLazyLoad]</span> attribute. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Partner : BusinessObject&lt;long&gt;
 &lbrace;
     [DisplayName]
@@ -864,27 +1007,31 @@ public class Partner : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
-    <section id="with-many-attribute" class="doc-section">
-        <div class="card">
-            <h2>WithManyAttribute</h2>
-            <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
-            <div class="summary">
-<h3>Usage:</h3> Specifies the collection navigation property name in a related entity for establishing
-    a bidirectional relationship in Entity Framework. <br/> <br/>
-
-    <h3>Purpose:</h3> This attribute is used to define the inverse navigation property in a relationship,
-    enabling proper relationship configuration and navigation in both directions. <br/> <br/>
-
-    <h3>Example:</h3>
-    <div class="code-snippet-wrapper card">
-    <div class="copy-button-wrapper">
-        <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+      </div>
     </div>
-    <pre><code language="csharp" [highlight]="`
+  </section>
+  <section id="with-many-attribute" class="doc-section">
+    <div class="card">
+      <h2>WithManyAttribute</h2>
+      <div class="namespace">Namespace: Spiderly.Shared.Attributes.Entity</div>
+      <div class="summary">
+        <h3>Usage:</h3>
+        Specifies the collection navigation property name in a related entity for establishing a
+        bidirectional relationship in Entity Framework. <br />
+        <br />
+
+        <h3>Purpose:</h3>
+        This attribute is used to define the inverse navigation property in a relationship, enabling
+        proper relationship configuration and navigation in both directions. <br />
+        <br />
+
+        <h3>Example:</h3>
+        <div class="code-snippet-wrapper card">
+          <div class="copy-button-wrapper">
+            <app-copy-button (onClick)="copyCodeSnippet($event)"></app-copy-button>
+          </div>
+          <pre><code language="csharp" [highlight]="`
 public class Course : BusinessObject&lt;long&gt;
 &lbrace;
     public virtual List&lt;Student&gt; Students &lbrace; get; set; &rbrace; = new();
@@ -897,8 +1044,8 @@ public class Student : BusinessObject&lt;long&gt;
 &rbrace;
 `">
     </code></pre>
-</div>
-            </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </div>

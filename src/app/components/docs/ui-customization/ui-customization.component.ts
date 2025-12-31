@@ -4,32 +4,24 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DocsStep } from '../layout/docs-layout.component';
 import { HighlightModule } from 'ngx-highlightjs';
-import { DocsTemplateComponent } from "../docs-template/docs-template.component";
+import { DocsTemplateComponent } from '../docs-template/docs-template.component';
 
 @Component({
   selector: 'app-ui-customization',
   templateUrl: './ui-customization.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
-  imports: [
-    CommonModule,
-    RouterModule,
-    ButtonModule,
-    HighlightModule,
-    DocsTemplateComponent
-],
+  imports: [CommonModule, RouterModule, ButtonModule, HighlightModule, DocsTemplateComponent],
 })
 export class UICustomizationComponent {
   steps: DocsStep[];
-  gradientTitle = 'Customizing Spiderly Application\'s UI'
+  gradientTitle = "Customizing Spiderly Application's UI";
   textBelowTitle = `
   Spiderly offers full flexibility when it comes to UI customization. While you're not required to use the default Angular-based UI or the Spiderly Angular library, doing so provides the best integration and experience.
   <br/> <br/>
   This step-by-step guide will show you how to customize key UI elements of your Spiderly app, including: app name, logo, favicon, theme colors, layout menu position, and displaying time in calendar control.
-  `
+  `;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {
     this.steps = [
@@ -59,7 +51,7 @@ export class ConfigService extends ConfigBaseService {
   override logoPath: string = 'assets/your-logo-path.png';
   // ...
 }
-`
+`,
       },
       {
         title: 'Change the Favicon',
@@ -97,7 +89,7 @@ export class ConfigService extends ConfigBaseService {
         description2: `
         <br/>
         For more information and advanced dark theme options, visit the <a href="https://primeng.org/theming#darkmode" target="_blank" rel="nofollow noopener noreferrer">PrimeNG Dark Theme Guide</a>.
-`
+`,
       },
       {
         title: 'Displaying Time in Calendar Control on Details Page',
@@ -112,7 +104,7 @@ export class ConfigService extends ConfigBaseService {
 // ... other attributes
 [showTimeOn{{YourCalendarPropertyName}}For{{YourEntityName}}]="true"
 ></your-entity-base-details>
-`
+`,
       },
       {
         title: 'Switching to a Top Menu Layout',
@@ -139,7 +131,7 @@ export class ConfigService extends ConfigBaseService {
         Your custom actions
     </div>
 </spiderly-layout>      
-`
+`,
       },
       {
         title: 'Using the Spiderly Data View Component',
@@ -203,5 +195,4 @@ export class YourEntityNameDataViewComponent implements OnInit {
       },
     ];
   }
-  
 }

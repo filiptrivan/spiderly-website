@@ -9,27 +9,25 @@ import { CommonModule } from '@angular/common';
   selector: 'panel',
   templateUrl: './panel.component.html',
   styleUrl: './panel.component.scss',
-  styles: [`
-    :host {
-      ::ng-deep {
-        .p-panel{
-          overflow: hidden;
-        }
-        .p-panel-icons{
-          display: flex;
-          align-items: center;
-        }
-        .p-panel-header{
-          cursor: pointer;
+  styles: [
+    `
+      :host {
+        ::ng-deep {
+          .p-panel {
+            overflow: hidden;
+          }
+          .p-panel-icons {
+            display: flex;
+            align-items: center;
+          }
+          .p-panel-header {
+            cursor: pointer;
+          }
         }
       }
-    }
-  `],
-  imports: [
-    CommonModule,
-    PanelModule,
-    MenuModule
-  ]
+    `,
+  ],
+  imports: [CommonModule, PanelModule, MenuModule],
 })
 export class PanelComponent implements OnInit {
   @Input() isFirstMultiplePanel: boolean = false;
@@ -47,20 +45,18 @@ export class PanelComponent implements OnInit {
   @Output() onRemoveIconClick: EventEmitter<null> = new EventEmitter();
 
   @ViewChild('menu') menu: Menu;
-  
-  constructor() { }
 
-  ngOnInit(): void {
-  }
+  constructor() {}
 
-  menuItemClick(index: number, event){
+  ngOnInit(): void {}
+
+  menuItemClick(index: number, event) {
     event.stopPropagation();
     this.menu.toggle(event);
     this.onMenuIconClick.next(index);
   }
 
-  removeItemClick(){
+  removeItemClick() {
     this.onRemoveIconClick.next(null);
   }
-
 }

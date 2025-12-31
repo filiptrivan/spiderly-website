@@ -4,18 +4,13 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DocsStep } from '../layout/docs-layout.component';
-import { DocsTemplateComponent } from "../docs-template/docs-template.component";
+import { DocsTemplateComponent } from '../docs-template/docs-template.component';
 
 @Component({
   selector: 'app-getting-started',
   templateUrl: './getting-started.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
-  imports: [
-    CommonModule, 
-    RouterModule, 
-    ButtonModule, 
-    DocsTemplateComponent
-  ],
+  imports: [CommonModule, RouterModule, ButtonModule, DocsTemplateComponent],
 })
 export class GettingStartedComponent {
   steps: DocsStep[];
@@ -23,9 +18,10 @@ export class GettingStartedComponent {
   textBelowTitle = `
   Follow this quick start guide to configure and initialize your Spiderly app.
   `;
-  preferWatchingInstedText = 'You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you\'ve already completed the first step — installing the prerequisites.';
+  preferWatchingInstedText =
+    "You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you've already completed the first step — installing the prerequisites.";
   sanitizedPreferWatchingInstedVideo: SafeHtml;
-  
+
   constructor(private sanitizer: DomSanitizer) {
     this.sanitizedPreferWatchingInstedVideo = this.sanitizer.bypassSecurityTrustHtml(`
       <iframe
@@ -37,7 +33,7 @@ export class GettingStartedComponent {
         allowfullscreen
         frameborder="0"
       ></iframe>
-    `)
+    `);
   }
 
   ngOnInit() {
@@ -74,18 +70,14 @@ export class GettingStartedComponent {
         fragment: 'install-the-spiderly-cli',
         description:
           'Run the Global Spiderly CLI installation command from <b>any location in the terminal</b>: <br/> <br/>',
-        terminalMessages: [
-          { text: 'dotnet tool install -g Spiderly.CLI', showCopyButton: true },
-        ],
+        terminalMessages: [{ text: 'dotnet tool install -g Spiderly.CLI', showCopyButton: true }],
       },
       {
         title: 'Initialize the App',
         fragment: 'initialize-the-app',
         description:
           'Run this command in the folder <b>where you want your app to be located</b>: <br/> <br/>',
-        terminalMessages: [
-          { text: 'spiderly init', showCopyButton: true },
-        ],
+        terminalMessages: [{ text: 'spiderly init', showCopyButton: true }],
       },
       {
         title: 'Start the Backend',
@@ -151,8 +143,7 @@ export class GettingStartedComponent {
       {
         title: 'Register the User',
         fragment: 'register-the-user',
-        description:
-          'Use the UI of your generated app to register the user via email or Google.',
+        description: 'Use the UI of your generated app to register the user via email or Google.',
       },
       {
         title: 'Connect to SQL Server',
@@ -185,6 +176,4 @@ export class GettingStartedComponent {
       },
     ];
   }
-
 }
-

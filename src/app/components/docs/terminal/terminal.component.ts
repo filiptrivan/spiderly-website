@@ -5,14 +5,8 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-terminal',
   templateUrl: './terminal.component.html',
-  styleUrls: [
-    '../layout/docs-layout.component.scss',
-    './terminal.component.scss',
-  ],
-  imports: [
-    CommonModule,
-    ButtonModule
-  ]
+  styleUrls: ['../layout/docs-layout.component.scss', './terminal.component.scss'],
+  imports: [CommonModule, ButtonModule],
 })
 export class TerminalComponent {
   @Input() messages: TerminalMessage[] = [];

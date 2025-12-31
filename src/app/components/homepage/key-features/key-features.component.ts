@@ -6,10 +6,7 @@ import { SectionWrapperComponent } from '../../section-wrapper/section-wrapper.c
 @Component({
   selector: 'app-key-features',
   templateUrl: './key-features.component.html',
-  styleUrls: [
-    './key-features.component.scss',
-    '../../../pages/homepage/homepage.component.scss'
-  ],
+  styleUrls: ['./key-features.component.scss', '../../../pages/homepage/homepage.component.scss'],
   imports: [CommonModule, RouterModule, SectionWrapperComponent],
 })
 export class KeyFeaturesComponent {

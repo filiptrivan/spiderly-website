@@ -14,9 +14,9 @@ import { SafeHtml } from '@angular/platform-browser';
   templateUrl: './docs-template.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
   imports: [
-    CommonModule, 
-    RouterModule, 
-    ButtonModule, 
+    CommonModule,
+    RouterModule,
+    ButtonModule,
     HighlightModule,
     TerminalComponent,
     CopyButtonComponent,
@@ -32,14 +32,11 @@ export class DocsTemplateComponent {
   @Input() showOrderNumbers: boolean = true;
   @Input() showTableOfContents: boolean = false;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   copyToClipboard(text: string): void {
     copyToClipboard(text);
   }
-  
 }

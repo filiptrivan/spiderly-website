@@ -13,16 +13,16 @@ import { provideHighlightOptions } from 'ngx-highlightjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), 
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     providePrimeNG({
       theme: {
         preset: DarkThemePreset,
         options: {
-          darkModeSelector: '.dark'
-        }
-      }
+          darkModeSelector: '.dark',
+        },
+      },
     }),
     provideHighlightOptions({
       coreLibraryLoader: () => import('highlight.js/lib/core'),
@@ -32,13 +32,9 @@ export const appConfig: ApplicationConfig = {
         sql: () => import('highlight.js/lib/languages/sql'),
       },
     }),
-    provideRouter(
-      routes,
-      withInMemoryScrolling(scrollConfig),
-    ), 
+    provideRouter(routes, withInMemoryScrolling(scrollConfig)),
     provideClientHydration(withEventReplay()),
     MessageService,
-    ConfirmationService
-  ]
+    ConfirmationService,
+  ],
 };
-

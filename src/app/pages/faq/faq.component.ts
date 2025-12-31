@@ -8,21 +8,19 @@ import { PanelComponent } from '../../components/panel/panel.component';
   selector: 'app-faq',
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',
-  imports: [
-    CommonModule,
-    SectionWrapperComponent,
-    PanelComponent,
-],
+  imports: [CommonModule, SectionWrapperComponent, PanelComponent],
 })
 export class FAQComponent {
   faqs: FAQ[] = [
     {
       question: 'How to install Spiderly?',
-      answer: 'You can find the installation instructions <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Installation Instructions">here</a>.'
-    },    
+      answer:
+        'You can find the installation instructions <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Installation Instructions">here</a>.',
+    },
     {
       question: 'What are the prerequisites for using Spiderly?',
-      answer: 'The prerequisites are listed in the first step of the <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Getting Started Guide">getting-started guide</a>.'
+      answer:
+        'The prerequisites are listed in the first step of the <a href="/docs/getting-started" target="_blank" rel="noopener" title="Go to Getting Started Guide">getting-started guide</a>.',
     },
     {
       question: 'What parts of the app does Spiderly Source Generators generate?',
@@ -42,11 +40,12 @@ export class FAQComponent {
           <li>FluentValidation rules</li>
           <li>CRUD service methods — database interaction</li>
           <li>Object mapping configuration</li>
-        </ul>`
+        </ul>`,
     },
     {
       question: 'Is Spiderly open-source?',
-      answer: 'Yes, Spiderly is <a href="https://github.com/filiptrivan/spiderly" target="_blank" rel="noopener noreferrer" title="Go to GitHub Repository">open-source</a> and released under the MIT License. You\'re free to use it in personal, commercial, or open-source projects.'
+      answer:
+        'Yes, Spiderly is <a href="https://github.com/filiptrivan/spiderly" target="_blank" rel="noopener noreferrer" title="Go to GitHub Repository">open-source</a> and released under the MIT License. You\'re free to use it in personal, commercial, or open-source projects.',
     },
     {
       question: 'How does Spiderly compare to the ABP Framework?',
@@ -91,8 +90,8 @@ You get full CRUD, API, Angular UI, validation, mapping, and even DTOs generated
 `,
     },
     {
-  question: 'How does Spiderly compare to JHipster?',
-  answer: `
+      question: 'How does Spiderly compare to JHipster?',
+      answer: `
 For .NET developers building admin-style or business applications, Spiderly is often a more focused and streamlined solution than JHipster. 
 While JHipster is powerful and flexible, it comes with more complexity and is better suited for Java ecosystems. 
 Spiderly is easier to set up, requires less configuration, and gives you full-stack code generation directly from your EF Core model—all under the MIT license.<br/><br/>
@@ -142,24 +141,28 @@ Spiderly is easier to set up, requires less configuration, and gives you full-st
     },
     {
       question: 'Does Spiderly work on Linux operating systems?',
-      answer: 'No, Spiderly is currently not compatible with Linux. We are focusing on Windows support for now, but Linux support may be added in the future.'
+      answer:
+        'No, Spiderly is currently not compatible with Linux. We are focusing on Windows support for now, but Linux support may be added in the future.',
     },
     {
       question: 'Does Spiderly work on macOS?',
-      answer: 'No, Spiderly is currently not compatible with macOS. We are focusing on Windows support for now, but macOS support may be added in the future.'
+      answer:
+        'No, Spiderly is currently not compatible with macOS. We are focusing on Windows support for now, but macOS support may be added in the future.',
     },
   ];
-  
+
   constructor(
-    private titleService: Title, 
-    private metaService: Meta
+    private titleService: Title,
+    private metaService: Meta,
   ) {
     this.titleService.setTitle('Frequently Asked Questions | Spiderly FAQ');
-    this.metaService.updateTag({ name: 'description', content: 'Find answers to common questions about Spiderly. Our FAQ covers pricing, OS support, tech stack, code generation scope, prerequisites, installation guide.'});
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Find answers to common questions about Spiderly. Our FAQ covers pricing, OS support, tech stack, code generation scope, prerequisites, installation guide.',
+    });
     this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
   }
-
-
 }
 
 export interface FAQ {

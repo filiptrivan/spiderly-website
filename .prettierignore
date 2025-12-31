@@ -1,0 +1,18 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+.angular
+out
+build
+
+# Coverage
+coverage
+
+# Misc
+.DS_Store
+*.log
+.env
+.env.local
+.env.production.local

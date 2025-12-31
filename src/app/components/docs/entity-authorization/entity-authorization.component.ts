@@ -4,19 +4,13 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DocsStep } from '../layout/docs-layout.component';
 import { HighlightModule } from 'ngx-highlightjs';
-import { DocsTemplateComponent } from "../docs-template/docs-template.component";
+import { DocsTemplateComponent } from '../docs-template/docs-template.component';
 
 @Component({
   selector: 'app-entity-authorization',
   templateUrl: './entity-authorization.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
-  imports: [
-    CommonModule,
-    RouterModule,
-    ButtonModule,
-    HighlightModule,
-    DocsTemplateComponent
-],
+  imports: [CommonModule, RouterModule, ButtonModule, HighlightModule, DocsTemplateComponent],
 })
 export class EntityAuthorizationComponent {
   steps: DocsStep[];
@@ -30,11 +24,9 @@ export class EntityAuthorizationComponent {
   This disables all security checks for that entity across all operations.
   <br/> <br/>
   If your entity requires access control, follow the steps in this tutorial to configure proper authorization.
-  `
+  `;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {
     this.steps = [
@@ -76,5 +68,4 @@ COMMIT;
       },
     ];
   }
-  
 }

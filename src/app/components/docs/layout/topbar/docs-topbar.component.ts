@@ -4,29 +4,21 @@ import { CommonModule } from '@angular/common';
 import { DocsLayoutService } from '../docs-layout.service';
 
 @Component({
-    selector: 'docs-topbar',
-    templateUrl: './docs-topbar.component.html',
-    styleUrl: '../docs-layout.component.scss',
-    imports: [
-      CommonModule,
-    ]
+  selector: 'docs-topbar',
+  templateUrl: './docs-topbar.component.html',
+  styleUrl: '../docs-layout.component.scss',
+  imports: [CommonModule],
 })
 export class DocsAppTopBarComponent {
   @ViewChild('menubutton') menubutton!: ElementRef;
 
   constructor(
-    public layoutService: DocsLayoutService, 
+    public layoutService: DocsLayoutService,
     public el: ElementRef,
     protected router: Router,
-  ) { 
-  }
+  ) {}
 
-  ngOnInit(){
-    
-  }
+  ngOnInit() {}
 
-  onDocumentClick(event: any) {
-    
-  }
-
+  onDocumentClick(event: any) {}
 }

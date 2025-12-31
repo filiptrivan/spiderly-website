@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-section-wrapper',
   templateUrl: './section-wrapper.component.html',
   styleUrl: './section-wrapper.component.scss',
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class SectionWrapperComponent {
-    @Input() backgroundColor: 'light' | 'dark' | null;
+  @Input() backgroundColor: 'light' | 'dark' | null;
 }

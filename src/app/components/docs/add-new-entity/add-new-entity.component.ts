@@ -4,24 +4,18 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DocsStep } from '../layout/docs-layout.component';
 import { HighlightModule } from 'ngx-highlightjs';
-import { DocsTemplateComponent } from "../docs-template/docs-template.component";
+import { DocsTemplateComponent } from '../docs-template/docs-template.component';
 
 @Component({
   selector: 'app-add-new-entity',
   templateUrl: './add-new-entity.component.html',
   styleUrl: '../layout/docs-layout.component.scss',
-  imports: [
-    CommonModule,
-    RouterModule,
-    ButtonModule,
-    HighlightModule,
-    DocsTemplateComponent
-],
+  imports: [CommonModule, RouterModule, ButtonModule, HighlightModule, DocsTemplateComponent],
 })
 export class AddNewEntityComponent {
   steps: DocsStep[];
-  gradientTitle = 'Add New EF Core Entity '
-  whiteTitle = 'With Spiderly'
+  gradientTitle = 'Add New EF Core Entity ';
+  whiteTitle = 'With Spiderly';
   textBelowTitle = `
   The EF Core entity and its attributes form the foundation of everything in
   Spiderly. All other components are built and generated based on these
@@ -30,11 +24,9 @@ export class AddNewEntityComponent {
   In this step-by-step guide, you'll learn how to create a new
   entity in your project. This includes adding it to the backend, updating the
   database, and generating the corresponding frontend code.
-  `
+  `;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {
     this.steps = [
@@ -87,17 +79,13 @@ namespace YourAppName.Business.Entities
           <li>Run the command to create a migration:</li>
         </ol>
         `,
-        terminalMessages: [
-          {text: 'add-migration YourMigrationScriptName', showCopyButton: true},
-        ],
+        terminalMessages: [{ text: 'add-migration YourMigrationScriptName', showCopyButton: true }],
         description2: `
         <ol start="4">
           <li>Run the command to apply the migration to the database:</li>
         </ol>
         `,
-        terminalMessages2: [
-          {text: 'update-database', showCopyButton: true}
-        ],
+        terminalMessages2: [{ text: 'update-database', showCopyButton: true }],
       },
       {
         title: 'Generate Components',
@@ -107,9 +95,7 @@ namespace YourAppName.Business.Entities
 
         Run the following command from the root of your application: <br/> <br/>
         `,
-        terminalMessages: [
-          {text: 'spiderly add-new-page', showCopyButton: true},
-        ],
+        terminalMessages: [{ text: 'spiderly add-new-page', showCopyButton: true }],
         description2: `
         <br/>
         This will generate the following files:
@@ -126,7 +112,7 @@ namespace YourAppName.Business.Entities
             <span class="code-block">src\\app\\pages\\your-entity-name\\your-entity-name-details.component.html</span>
           </li>
         </ol>
-        `
+        `,
       },
       {
         title: 'Define Routes for Your Page',
@@ -147,7 +133,7 @@ namespace YourAppName.Business.Entities
     loadComponent: () => import('./pages/your-entity-name/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
     canActivate: [AuthGuard],
 },
-`
+`,
       },
       {
         title: 'Add the Page to the Navigation Menu',
@@ -166,9 +152,8 @@ namespace YourAppName.Business.Entities
     routerLink: ['your-entity-name'], // Must match the list page path defined in app.routes.ts
     visible: true,
 },
-`
+`,
       },
     ];
   }
-  
 }
