@@ -14,16 +14,16 @@
         var(--p-surface-500) 0px,
         var(--p-surface-500) 1px,
         transparent 1px,
-        transparent 40px
+        transparent 50px
       ),
       repeating-linear-gradient(
         90deg,
         var(--p-surface-500) 0px,
         var(--p-surface-500) 1px,
         transparent 1px,
-        transparent 40px
+        transparent 50px
       );
-    background-size: 40px 40px;
+    background-size: 50px 50px;
     opacity: 0.1;
     pointer-events: none;
     z-index: 0;
