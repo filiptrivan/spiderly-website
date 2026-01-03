@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { AnimationContainer, Icons } from '@/components';
 import { TextHoverEffect } from '@/components/ui/text-hover-effect';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -138,13 +138,13 @@ const Footer = () => {
       <div className="mt-8 border-t border-border/40 pt-4 md:pt-8 md:flex md:items-center md:justify-between w-full">
         <AnimationContainer delay={0.6}>
           <p className="text-sm text-muted-foreground mt-8 md:mt-0">
-            &copy; {new Date().getFullYear()} Linkify INC. All rights reserved.
+            &copy; {new Date().getFullYear()} Spiderly INC. All rights reserved.
           </p>
         </AnimationContainer>
       </div>
 
       <div className="h-[20rem] lg:h-[20rem] hidden md:flex items-center justify-center">
-        <TextHoverEffect text="LINKIFY" />
+        <TextHoverEffect text="SPIDERLY" />
       </div>
     </footer>
   );
