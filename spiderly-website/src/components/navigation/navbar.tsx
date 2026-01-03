@@ -1,22 +1,20 @@
 'use client';
 
-import { buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn, NAV_LINKS } from '@/utils';
 import { LucideIcon, Star } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import AnimationContainer from '../global/animation-container';
 import MaxWidthWrapper from '../global/max-width-wrapper';
 import MobileNavbar from './mobile-navbar';
-import AnimationContainer from '../global/animation-container';
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -67,18 +65,19 @@ const Navbar = () => {
 
           <div className="hidden lg:flex items-center">
             <div className="flex items-center gap-x-4">
-              <Link
-                href="https://github.com/filiptrivan/spiderly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({ size: 'sm', variant: 'outline' })}
-              >
-                <Star className="size-4 mr-2" />
-                Star on GitHub
-                <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
-                  46
-                </span>
-              </Link>
+              <Button asChild size="sm" variant="outline">
+                <Link
+                  href="https://github.com/filiptrivan/spiderly"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Star className="size-4 mr-2" />
+                  Star on GitHub
+                  <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
+                    46
+                  </span>
+                </Link>
+              </Button>
             </div>
           </div>
 

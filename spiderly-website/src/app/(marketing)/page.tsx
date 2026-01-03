@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/card';
 import { LampContainer } from '@/components/ui/lamp';
 import MagicBadge from '@/components/ui/magic-badge';
-import MagicButton from '@/components/ui/magic-button';
 import MagicCard from '@/components/ui/magic-card';
 import { PROCESS } from '@/utils';
 import { REVIEWS } from '@/utils/constants/misc';
@@ -39,9 +38,9 @@ const HomePage = async () => {
               all boilerplate code as your model evolves.
             </p>
             <div className="flex items-center gap-4">
-              <Link href={'/docs/getting-started'}>
-                <MagicButton>Get Started</MagicButton>
-              </Link>
+              <Button asChild>
+                <Link href={'/docs/getting-started'}>Get Started</Link>
+              </Button>
               <Button variant={'outline'}>
                 <PlayIcon className="w-4 h-4 mr-2" />
                 Spiderly in 120 seconds
