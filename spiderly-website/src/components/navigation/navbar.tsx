@@ -37,12 +37,12 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        'sticky top-0 inset-x-0 h-14 w-full border-b border-transparent z-[99999] select-none',
+        'sticky top-0 inset-x-0 h-14 w-full border-b border-transparent z-[99999] select-none transition-all duration-300 ease-in-out',
         scroll && 'border-background/80 bg-background/40 backdrop-blur-md',
       )}
     >
       <AnimationContainer reverse delay={0.1} className="size-full">
-        <MaxWidthWrapper className="flex items-center justify-between">
+        <MaxWidthWrapper className="flex items-center justify-between h-full">
           <div className="flex items-center space-x-12">
             <Link href="/#home">
               <span className="text-lg font-bold font-heading !leading-none">Spiderly</span>

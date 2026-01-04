@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import MagicBadge from '@/components/ui/magic-badge';
 import MagicCard from '@/components/ui/magic-card';
 import { REVIEWS } from '@/utils/constants/misc';
 import { StarIcon } from 'lucide-react';
@@ -17,7 +16,6 @@ export const ReviewsSection = () => {
     <MaxWidthWrapper className="py-10">
       <AnimationContainer delay={0.1}>
         <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-          <MagicBadge title="Our Customers" />
           <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
             What our users are saying
           </h2>

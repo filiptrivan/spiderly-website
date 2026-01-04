@@ -125,19 +125,6 @@ const config = {
             'background-position': 'calc(100% + var(--shimmer-width)) 0',
           },
         },
-        'image-glow': {
-          '0%': {
-            opacity: '0',
-            'animation-timing-function': 'cubic-bezier(.74, .25, .76, 1)',
-          },
-          '10%': {
-            opacity: '0.5',
-            'animation-timing-function': 'cubic-bezier(.12, .01, .08, .99)',
-          },
-          '100%': {
-            opacity: '0.7',
-          },
-        },
         'border-beam': {
           '100%': {
             'offset-distance': '100%',
@@ -179,7 +166,6 @@ const config = {
         blink: 'blink 1.4s infinite both',
         shimmer: 'shimmer 5s infinite',
         'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
-        'image-glow': 'image-glow 4s ease-out 0.6s forwards',
         marquee: 'marquee var(--duration) linear infinite',
         flip: 'flip 6s infinite steps(2, end)',
         rotate: 'rotate 3s linear infinite both',

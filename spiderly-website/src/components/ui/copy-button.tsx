@@ -1,9 +1,7 @@
 'use client';
 
 import { cn } from '@/utils';
-import { Check, Copy, LucideIcon } from 'lucide-react';
-import React, { useState } from 'react';
-import { toast } from 'sonner';
+import { Copy, LucideIcon } from 'lucide-react';
 
 interface Props {
   text: string;
@@ -12,20 +10,7 @@ interface Props {
 }
 
 const CopyButton = ({ text, className, icon }: Props) => {
-  const [isCopied, setIsCopied] = useState<boolean>(false);
-
   const Comp = icon || Copy;
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setIsCopied(true);
-    navigator.clipboard.writeText(text).then(() => {
-      toast.success('Copied to clipboard!');
-    });
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-  };
 
   return (
     <button
@@ -35,11 +20,11 @@ const CopyButton = ({ text, className, icon }: Props) => {
       )}
     >
       <span className="sr-only">Copy</span>
-      {isCopied ? (
+      {/* {isCopied ? (
         <Check className="text-neutral-700 group-hover:text-accent" />
-      ) : (
-        <Comp className="text-neutral-700 group-hover:text-foreground" />
-      )}
+      ) : ( */}
+      <Comp className="text-neutral-700 group-hover:text-foreground" />
+      {/* )} */}
     </button>
   );
 };

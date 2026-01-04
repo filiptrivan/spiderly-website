@@ -1,5 +1,4 @@
 import { AnimationContainer, MaxWidthWrapper, PricingCards } from '@/components';
-import MagicBadge from '@/components/ui/magic-badge';
 import { CreditCardIcon } from 'lucide-react';
 
 export const PricingSection = () => {
@@ -7,7 +6,6 @@ export const PricingSection = () => {
     <MaxWidthWrapper className="py-10">
       <AnimationContainer delay={0.1}>
         <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-          <MagicBadge title="Simple Pricing" />
           <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
             Choose a plan that works for you
           </h2>

@@ -1,39 +1,37 @@
 // constants
 import {
-  LIST_ITEM_VARIANTS,
   CHILD_VARIANTS,
   FADE_IN_VARIANTS,
+  LIST_ITEM_VARIANTS,
   MODAL_VARIANTS,
 } from './constants/animation';
-import { DEFAULT_AVATAR_URL, PAGINATION_LIMIT, COMPANIES, PROCESS } from './constants/misc';
-import { PLANS, PRICING_FEATURES, WORKSPACE_LIMIT } from './constants/pricing';
-import { NAV_LINKS } from './constants/nav-links';
 import { aeonik, inter } from './constants/fonts';
+import { DEFAULT_AVATAR_URL, PAGINATION_LIMIT, PROCESS } from './constants/misc';
+import { NAV_LINKS } from './constants/nav-links';
+import { PLANS, PRICING_FEATURES, WORKSPACE_LIMIT } from './constants/pricing';
 
 // functions
 import { cn } from './functions/cn';
-import { isValidUrl } from './functions/urls';
 import { generateMetadata } from './functions/metadata';
+import { isValidUrl } from './functions/urls';
 
 export {
-  // constants
-  LIST_ITEM_VARIANTS,
+  aeonik,
   CHILD_VARIANTS,
+  // functions
+  cn,
   DEFAULT_AVATAR_URL,
   FADE_IN_VARIANTS,
+  generateMetadata,
+  inter,
+  isValidUrl,
+  // constants
+  LIST_ITEM_VARIANTS,
   MODAL_VARIANTS,
+  NAV_LINKS,
   PAGINATION_LIMIT,
   PLANS,
   PRICING_FEATURES,
-  WORKSPACE_LIMIT,
-  NAV_LINKS,
-  COMPANIES,
   PROCESS,
-  aeonik,
-  inter,
-
-  // functions
-  cn,
-  isValidUrl,
-  generateMetadata,
+  WORKSPACE_LIMIT,
 };
