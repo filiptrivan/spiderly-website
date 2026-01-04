@@ -1,16 +1,18 @@
 import {
-  HeroSection,
-  FeaturesSection,
-  ProcessSection,
-  PricingSection,
-  ReviewsSection,
   CTASection,
+  FeaturesSection,
+  HeroSection,
+  PricingSection,
+  ProcessSection,
+  ReviewsSection,
 } from '@/components/sections';
+import Companies from '@/components/sections/companies';
 
 const HomePage = async () => {
   return (
-    <div className="overflow-x-hidden scrollbar-hide size-full">
+    <div>
       <HeroSection />
+      <Companies />
       <FeaturesSection />
       <ProcessSection />
       <PricingSection />

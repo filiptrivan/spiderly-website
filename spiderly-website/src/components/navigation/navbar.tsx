@@ -13,7 +13,6 @@ import { LucideIcon, Star } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import AnimationContainer from '../global/animation-container';
-import MaxWidthWrapper from '../global/max-width-wrapper';
 import MobileNavbar from './mobile-navbar';
 
 const Navbar = () => {
@@ -42,7 +41,7 @@ const Navbar = () => {
       )}
     >
       <AnimationContainer reverse delay={0.1} className="size-full">
-        <MaxWidthWrapper className="flex items-center justify-between h-full">
+        <div className="flex items-center justify-between h-full w-full max-w-full md:max-w-screen-xl mx-auto px-4 md:px-12 lg:px-20">
           <div className="flex items-center space-x-12">
             <Link href="/#home">
               <span className="text-lg font-bold font-heading !leading-none">Spiderly</span>
@@ -82,7 +81,7 @@ const Navbar = () => {
           </div>
 
           <MobileNavbar />
-        </MaxWidthWrapper>
+        </div>
       </AnimationContainer>
     </header>
   );

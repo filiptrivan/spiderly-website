@@ -1,12 +1,12 @@
 import { TerminalIcon } from 'lucide-react';
 import Image from 'next/image';
 import AnimationContainer from '../global/animation-container';
-import MaxWidthWrapper from '../global/max-width-wrapper';
+import SectionContainer from '../global/max-width-wrapper';
 import { SectionHeading } from '../ui/section-heading';
 
 export const Explanation = () => {
   return (
-    <MaxWidthWrapper>
+    <SectionContainer>
       <AnimationContainer delay={0.2}>
         <SectionHeading
           title="Features"
@@ -56,6 +56,6 @@ export const Explanation = () => {
           <div className="absolute bottom-0 md:-bottom-8 inset-x-0 w-full h-1/4 bg-gradient-to-t from-background z-50"></div>
         </div>
       </AnimationContainer>
-    </MaxWidthWrapper>
+    </SectionContainer>
   );
 };

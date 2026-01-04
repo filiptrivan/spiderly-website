@@ -6,11 +6,11 @@ interface Props {
   children: React.ReactNode;
 }
 
-const MaxWidthWrapper = ({ className, children }: Props) => {
+const SectionContainer = ({ className, children }: Props) => {
   return (
     <section
       className={cn(
-        'mx-auto w-full max-w-full md:max-w-screen-xl px-4 md:px-12 lg:px-20 mb-36 md:mb-40 lg:mb-56',
+        'mx-auto md:max-w-screen-xl px-4 md:px-12 lg:px-20 py-16 md:py-20 lg:py-28',
         className,
       )}
     >
@@ -19,4 +19,4 @@ const MaxWidthWrapper = ({ className, children }: Props) => {
   );
 };
 
-export default MaxWidthWrapper;
+export default SectionContainer;
