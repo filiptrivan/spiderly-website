@@ -12,33 +12,15 @@ import { cn, NAV_LINKS } from '@/utils';
 import { LucideIcon, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AnimationContainer from '../global/animation-container';
 import MobileNavbar from './mobile-navbar';
 
 const Navbar = () => {
-  const [scroll, setScroll] = useState(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 8) {
-      setScroll(true);
-    } else {
-      setScroll(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
     <header
       className={cn(
-        'sticky top-0 inset-x-0 h-14 w-full border-b border-transparent z-[99999] select-none transition-all duration-300 ease-in-out',
-        scroll && 'border-background/80 bg-background/40 backdrop-blur-md',
+        'sticky top-0 inset-x-0 h-14 w-full border-b z-[99999] select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
       )}
     >
       <AnimationContainer reverse delay={0.1} className="size-full">

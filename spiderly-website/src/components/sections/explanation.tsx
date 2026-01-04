@@ -44,7 +44,7 @@ export const Explanation = () => {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (sectionRef.current) {
@@ -70,7 +70,7 @@ export const Explanation = () => {
             <div className="flex relative after:content-[''] after:absolute after:left-1/2 after:top-full after:w-0.5 after:h-10 after:border-l-2 after:border-dashed after:border-primary/40 md:after:left-full md:after:top-1/2 md:after:w-16 md:after:h-0.5 md:after:border-l-0 md:after:border-t-2">
               <div className="relative w-full md:w-[370px] rounded-lg border border-foreground/20 bg-black/80 backdrop-blur-sm shadow-2xl overflow-hidden">
                 {/* Terminal Header */}
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-foreground/10 bg-foreground/5">
+                <div className="flex px-4 h-10 border-b border-foreground/10 bg-foreground/5">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <TerminalIcon className="w-4 h-4" />
                     <span>Terminal</span>
@@ -114,22 +114,34 @@ export const Explanation = () => {
               </div>
             </div>
 
-            {/* Dashboard Image */}
+            {/* Dashboard Image Container */}
             <div className="w-full md:w-auto">
-              <div
-                className={`transition-all duration-700 ${
-                  isComplete ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                }`}
-              >
+              {/* Image Content */}
+              {isComplete && (
                 <Image
                   src="/assets/dashboard-dark.svg"
                   alt="Dashboard"
-                  width={896}
-                  height={896}
-                  quality={100}
+                  width={1000}
+                  height={1000}
                   className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border w-full h-auto"
                 />
-              </div>
+              )}
+              {!isComplete && (
+                <div className="rounded-md lg:rounded-xl ring-1 ring-border w-full h-full">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <p className="text-sm text-muted-foreground">Creating app...</p>
+                    <div className="flex items-center w-full my-auto rounded-full h-2 overflow-hidden">
+                      <div
+                        className="from- to- bg-white h-full transition-all duration-500 ease-out"
+                        style={{
+                          width: `${(visibleSteps.length / terminalSteps.length) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
