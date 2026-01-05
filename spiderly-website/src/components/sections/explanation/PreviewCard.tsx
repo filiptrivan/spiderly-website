@@ -1,5 +1,8 @@
-import { Hourglass, Loader2 } from 'lucide-react';
+import { ArrowRight, Bell, Database, Hourglass, Loader2, Lock, Shield } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRef, useState } from 'react';
+import { Feature } from './Feature';
 
 interface PreviewCardProps {
   isComplete: boolean;
@@ -7,10 +10,59 @@ interface PreviewCardProps {
   className?: string;
 }
 
+const starterFeatures = [
+  {
+    title: 'Database Initialization',
+    description: 'Complete database setup and configuration',
+    icon: Database,
+  },
+  {
+    title: 'Authentication',
+    description: 'Including third party (e.g., Google sign-in)',
+    icon: Shield,
+  },
+  {
+    title: 'Authorization',
+    description: 'Roles and permissions management',
+    icon: Lock,
+  },
+  {
+    title: 'Notifications',
+    description: 'Built-in notification system',
+    icon: Bell,
+  },
+];
+
 export const PreviewCard = ({ isComplete, isTriggered, className = '' }: PreviewCardProps) => {
+  const [showFeatures, setShowFeatures] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsLeaving(false);
+    setShowFeatures(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsLeaving(true);
+    timeoutRef.current = setTimeout(() => {
+      setShowFeatures(false);
+      setIsLeaving(false);
+      timeoutRef.current = null;
+    }, 300);
+  };
+
   if (isComplete && isTriggered) {
     return (
-      <div className={className}>
+      <div
+        className={`${className} relative group`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <Image
           src="/assets/dashboard-dark.svg"
           alt="Spiderly Dashboard"
@@ -18,6 +70,34 @@ export const PreviewCard = ({ isComplete, isTriggered, className = '' }: Preview
           height={1000}
           className="w-full h-full animate-in fade-in zoom-in-95 duration-700"
         />
+        {(showFeatures || isLeaving) && (
+          <div
+            className={`absolute inset-0 bg-background/95 backdrop-blur-sm transition-all duration-300 flex flex-col overflow-auto ${
+              showFeatures && !isLeaving ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <div className="flex-1 flex flex-col justify-center">
+              <div className="grid grid-cols-2">
+                {starterFeatures.map((feature, index) => (
+                  <Feature
+                    key={index}
+                    title={feature.title}
+                    description={feature.description}
+                    icon={feature.icon}
+                    index={index}
+                  />
+                ))}
+              </div>
+              <Link
+                href="/features/create-spiderly-app"
+                className="mt-1 lg:mt-2 mb-1 lg:mb-2 mx-auto flex items-center gap-2 text-xs lg:text-sm text-primary hover:text-primary/80 transition-colors group/link"
+              >
+                Learn more about Spiderly app initialization
+                <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 group-hover/link:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
