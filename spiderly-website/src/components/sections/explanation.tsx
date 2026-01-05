@@ -1,148 +1,156 @@
 'use client';
 
-import { TerminalIcon } from 'lucide-react';
+import { Hourglass, Loader2, TerminalIcon } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import AnimationContainer from '../global/animation-container';
 import SectionContainer from '../global/max-width-wrapper';
+import { Button } from '../ui/button';
 import { SectionHeading } from '../ui/section-heading';
 
 const terminalSteps = [
-  { id: 1, type: 'command', text: 'spiderly init' },
-  { id: 2, type: 'loading', text: 'Generating files for the app...' },
-  { id: 3, type: 'success', text: '[OK] Files generated successfully.' },
-  { id: 4, type: 'loading', text: 'Creating and updating the database...' },
-  { id: 5, type: 'success', text: '[OK] Created and updated the database successfully.' },
-  { id: 6, type: 'loading', text: 'Installing packages...' },
-  { id: 7, type: 'success', text: '[OK] Packages installed successfully.' },
-  { id: 8, type: 'success', text: '[OK] Spiderly app created successfully!' },
+  { type: 'loading', text: 'Generating files for the app...' },
+  { type: 'success', text: '[OK] Files generated successfully.' },
+  { type: 'loading', text: 'Creating and updating the database...' },
+  { type: 'success', text: '[OK] Created and updated the database successfully.' },
+  { type: 'loading', text: 'Installing packages...' },
+  { type: 'success', text: '[OK] Packages installed successfully.' },
+  { type: 'success', text: '[OK] Spiderly app created successfully!' },
 ];
 
 export const Explanation = () => {
   const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
   const [isComplete, setIsComplete] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [isTriggered, setIsTriggered] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const explanationCard = 'rounded-md lg:rounded-xl ring-1 ring-border shadow-lg';
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setHasAnimated(true);
-            // Start the animation sequence
-            terminalSteps.forEach((step, index) => {
-              setTimeout(() => {
-                setVisibleSteps((prev) => [...prev, step.id]);
+  const triggerAnimation = () => {
+    if (isTriggered) return;
 
-                // Mark as complete when last step is shown
-                if (index === terminalSteps.length - 1) {
-                  setTimeout(() => setIsComplete(true), 300);
-                }
-              }, index * 600); // 600ms delay between each step
-            });
-          }
-        });
-      },
-      { threshold: 0.2 },
-    );
+    setIsTriggered(true);
+    // Start the animation sequence
+    terminalSteps.forEach((_, index) => {
+      setTimeout(() => {
+        setVisibleSteps((prev) => [...prev, index]);
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasAnimated]);
+        // Mark as complete when last step is shown
+        if (index === terminalSteps.length - 1) {
+          setTimeout(() => setIsComplete(true), 300);
+        }
+      }, index * 1000); // delay between each step
+    });
+  };
 
   return (
     <SectionContainer>
       <AnimationContainer delay={0.2}>
         <SectionHeading
-          title="How Does Spiderly Works?"
+          title="How Does Spiderly Work?"
           description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus veritatis repellendus non excepturi."
         />
-        <div
-          ref={sectionRef}
-          className="rounded-xl p-2 ring-1 ring-inset ring-foreground/20 lg:rounded-2xl bg-opacity-50 backdrop-blur-3xl"
-        >
-          <div className="flex flex-col md:flex-row gap-10 md:gap-16">
-            {/* Terminal Window */}
-            <div className="flex relative after:content-[''] after:absolute after:left-1/2 after:top-full after:w-0.5 after:h-10 after:border-l-2 after:border-dashed after:border-primary/40 md:after:left-full md:after:top-1/2 md:after:w-16 md:after:h-0.5 md:after:border-l-0 md:after:border-t-2">
-              <div className="relative w-full md:w-[370px] rounded-lg border border-foreground/20 bg-black/80 backdrop-blur-sm shadow-2xl overflow-hidden">
-                {/* Terminal Header */}
-                <div className="flex px-4 h-10 border-b border-foreground/10 bg-foreground/5">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <TerminalIcon className="w-4 h-4" />
-                    <span>Terminal</span>
-                  </div>
-                </div>
-
-                {/* Terminal Content */}
-                <div className="p-6 font-mono text-sm min-h-[280px]">
-                  {terminalSteps.map((step, index) => {
-                    const isVisible = visibleSteps.includes(step.id);
-
-                    return (
-                      <div
-                        key={step.id}
-                        className={`transition-all duration-300 ${
-                          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                        }`}
-                      >
-                        {step.type === 'command' && (
-                          <>
-                            <div className="flex items-center gap-2">
-                              <span className="text-blue-400">$</span>
-                              <span className="text-white">{step.text}</span>
-                            </div>
-                            <div className="h-4" />
-                          </>
-                        )}
-                        {step.type === 'loading' && (
-                          <div className="text-neutral-400">{step.text}</div>
-                        )}
-                        {step.type === 'success' && (
-                          <>
-                            <div className="text-green-500">{step.text}</div>
-                            {index < terminalSteps.length - 1 && <div className="h-4" />}
-                          </>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+        <h3 className="text-muted-foreground font-bold text-xl md:text-3xl mb-5">01.</h3>
+        <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-[442px] gap-8">
+          {/* Terminal Window */}
+          <div className={`${explanationCard} w-full h-full lg:w-[450px] overflow-auto`}>
+            {/* Terminal Header */}
+            <div className="flex px-4 h-10 border-b border-border bg-foreground/5">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <TerminalIcon className="w-4 h-4" />
+                <span>Terminal</span>
               </div>
             </div>
 
-            {/* Dashboard Image Container */}
-            <div className="w-full md:w-auto">
-              {/* Image Content */}
-              {isComplete && (
-                <Image
-                  src="/assets/dashboard-dark.svg"
-                  alt="Dashboard"
-                  width={1000}
-                  height={1000}
-                  className="rounded-md lg:rounded-xl bg-foreground/10 ring-1 ring-border w-full h-auto"
-                />
+            {/* Terminal Content */}
+            <div className="p-6 font-mono text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-blue-400">$</span>
+                <span className="text-white">spiderly init</span>
+              </div>
+
+              <div className="h-4" />
+
+              {!isTriggered && (
+                <Button
+                  onClick={triggerAnimation}
+                  variant="primary"
+                  size="sm"
+                  className="w-full animate-pulse"
+                >
+                  Run Command
+                </Button>
               )}
-              {!isComplete && (
-                <div className="rounded-md lg:rounded-xl ring-1 ring-border w-full h-full">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                    <p className="text-sm text-muted-foreground">Creating app...</p>
-                    <div className="flex items-center w-full my-auto rounded-full h-2 overflow-hidden">
-                      <div
-                        className="from- to- bg-white h-full transition-all duration-500 ease-out"
-                        style={{
-                          width: `${(visibleSteps.length / terminalSteps.length) * 100}%`,
-                        }}
-                      />
-                    </div>
+              {terminalSteps.map((step, index) => {
+                const isVisible = visibleSteps.includes(index);
+
+                return (
+                  <div
+                    key={index}
+                    className={`transition-all duration-300 ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                    }`}
+                  >
+                    {step.type === 'loading' && (
+                      <div className="text-muted-foreground">{step.text}</div>
+                    )}
+                    {step.type === 'success' && (
+                      <>
+                        <div className="text-green-500">{step.text}</div>
+                        {index < terminalSteps.length - 1 && <div className="h-4" />}
+                      </>
+                    )}
                   </div>
-                </div>
-              )}
+                );
+              })}
             </div>
+          </div>
+          <div className={`${explanationCard} w-full h-full overflow-hidden`}>
+            {isComplete && isTriggered && (
+              <Image
+                src="/assets/dashboard-dark.svg"
+                alt="Spiderly Dashboard"
+                width={1000}
+                height={1000}
+                className={`w-full h-full animate-in fade-in zoom-in-95 duration-700`}
+              />
+            )}
+            {!isComplete && isTriggered && (
+              <div className="w-full h-full flex flex-col items-center justify-center gap-6 text-muted-foreground p-8 animate-in fade-in zoom-in-95 duration-500">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl animate-pulse" />
+                  <Loader2 className="w-16 h-16 relative text-primary animate-spin" />
+                </div>
+                <div className="text-center space-y-2">
+                  <h4 className="text-lg font-semibold text-foreground">
+                    Creating Your Application
+                  </h4>
+                  <p className="text-sm max-w-xs">
+                    Setting up your Spiderly project with all the necessary files and
+                    dependencies...
+                  </p>
+                </div>
+              </div>
+            )}
+            {!isComplete && !isTriggered && (
+              <div className="w-full h-full flex flex-col items-center justify-center gap-6 text-muted-foreground p-8">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl" />
+                  <Hourglass className="w-16 h-16 relative text-primary" />
+                </div>
+                <div className="text-center space-y-2">
+                  <h4 className="text-lg font-semibold text-foreground">
+                    Waiting For You to Run the Command
+                  </h4>
+                  <p className="text-sm max-w-xs">
+                    Run the{' '}
+                    <code className="px-1.5 py-0.5 rounded bg-muted text-foreground font-mono text-xs">
+                      spiderly init
+                    </code>{' '}
+                    command to generate the Spiderly application.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </AnimationContainer>
