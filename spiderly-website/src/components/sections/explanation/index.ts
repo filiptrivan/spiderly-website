@@ -1,3 +1,5 @@
-export { TerminalWindow } from './TerminalWindow';
-export { TerminalStep } from './TerminalStep';
+export { CodeWindow } from './CodeWindow';
 export { PreviewCard } from './PreviewCard';
+export { ProductPreview } from './ProductPreview';
+export { TerminalStep } from './TerminalStep';
+export { TerminalWindow } from './TerminalWindow';

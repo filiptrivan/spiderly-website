@@ -27,16 +27,13 @@ export const PreviewCard = ({ isComplete, isTriggered, className = '' }: Preview
       <div className={className}>
         <div className="w-full h-full flex flex-col items-center justify-center gap-6 text-muted-foreground p-8 animate-in fade-in zoom-in-95 duration-500">
           <div className="relative">
-            <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl animate-pulse" />
+            <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl" />
             <Loader2 className="w-16 h-16 relative text-primary animate-spin" />
           </div>
           <div className="text-center space-y-2">
-            <h4 className="text-lg font-semibold text-foreground">
-              Creating Your Application
-            </h4>
+            <h4 className="text-lg font-semibold text-foreground">Creating Your Application</h4>
             <p className="text-sm max-w-xs">
-              Setting up your Spiderly project with all the necessary files and
-              dependencies...
+              Setting up your Spiderly project with all the necessary files and dependencies...
             </p>
           </div>
         </div>

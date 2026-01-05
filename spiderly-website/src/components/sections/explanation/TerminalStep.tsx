@@ -11,9 +11,7 @@ export const TerminalStep = ({ step, isVisible, isLastStep }: TerminalStepProps)
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
       }`}
     >
-      {step.type === 'loading' && (
-        <div className="text-muted-foreground">{step.text}</div>
-      )}
+      {step.type === 'loading' && <div className="text-muted-foreground">{step.text}</div>}
       {step.type === 'success' && (
         <>
           <div className="text-green-500">{step.text}</div>
