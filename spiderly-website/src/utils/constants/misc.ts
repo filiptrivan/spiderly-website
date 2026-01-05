@@ -47,18 +47,25 @@ export const REVIEWS = [
 
 export const TECH_STACK = [
   {
-    name: '.NET (C#)',
     category: 'Backend',
-    logo: '/tech-stack/dotnet-logo.svg',
+    options: [
+      {
+        name: '.NET (C#)',
+        logo: '/tech-stack/dotnet-logo.svg',
+      },
+    ],
   },
   {
-    name: 'Angular',
     category: 'Frontend',
-    logo: '/tech-stack/angular-logo.svg',
+    options: [
+      {
+        name: 'Angular',
+        logo: '/tech-stack/angular-logo.svg',
+      },
+    ],
   },
   {
     category: 'Database',
-    isChoice: true,
     options: [
       {
         name: 'SQL Server',
@@ -71,33 +78,57 @@ export const TECH_STACK = [
     ],
   },
   {
-    name: 'Entity Framework Core',
     category: 'ORM',
-    logo: '/tech-stack/entity-framework-core-logo.svg',
+    options: [
+      {
+        name: 'Entity Framework Core',
+        logo: '/tech-stack/entity-framework-core-logo.svg',
+      },
+    ],
   },
   {
-    name: 'PrimeNG',
     category: 'UI Components Library',
-    logo: '/tech-stack/primeng-logo.svg',
+    options: [
+      {
+        name: 'PrimeNG',
+        logo: '/tech-stack/primeng-logo.svg',
+      },
+    ],
   },
   {
-    name: 'Serilog',
     category: 'Logging',
-    logo: '/tech-stack/serilog-logo.svg',
+    options: [
+      {
+        name: 'Serilog',
+        logo: '/tech-stack/serilog-logo.svg',
+      },
+    ],
   },
   {
-    name: 'FluentValidation',
     category: 'Backend Validation',
-    logo: '/tech-stack/fluent-validation-logo.svg',
+    options: [
+      {
+        name: 'FluentValidation',
+        logo: '/tech-stack/fluent-validation-logo.svg',
+      },
+    ],
   },
   {
-    name: 'Mapster',
     category: 'Object Mapping',
-    logo: '/tech-stack/mapster-logo.svg',
+    options: [
+      {
+        name: 'Mapster',
+        logo: '/tech-stack/mapster-logo.svg',
+      },
+    ],
   },
   {
-    name: 'Transloco',
     category: 'Frontend Translations',
-    logo: '/tech-stack/transloco-logo.svg',
+    options: [
+      {
+        name: 'Transloco',
+        logo: '/tech-stack/transloco-logo.svg',
+      },
+    ],
   },
 ] as const;

@@ -22,50 +22,35 @@ export const TechStackSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 py-10">
         {TECH_STACK.map((tech, index) => (
           <MagicCard key={index}>
-            {'isChoice' in tech && tech.isChoice ? (
-              <div className="flex flex-col items-center justify-center h-[160px] p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  {tech.options.map((option, optIndex) => (
-                    <>
-                      <div key={optIndex} className="flex items-center justify-center w-12 h-12">
-                        <Image
-                          src={option.logo}
-                          alt={option.name}
-                          width={48}
-                          height={48}
-                          className="object-contain"
-                        />
-                      </div>
-                      {optIndex < tech.options.length - 1 && (
-                        <span className="text-muted-foreground font-medium text-sm">or</span>
-                      )}
-                    </>
-                  ))}
-                </div>
-                <div className="text-center">
-                  <div className="font-medium text-lg mb-1">
-                    {tech.options.map((opt) => opt.name).join(' or ')}
-                  </div>
-                  <div className="text-muted-foreground text-sm">{tech.category}</div>
-                </div>
+            <div className="flex flex-col items-center justify-center h-[160px] p-6">
+              <div className="flex items-center gap-3 mb-4">
+                {tech.options.map((option, optIndex) => (
+                  <>
+                    <div
+                      key={optIndex}
+                      className="flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16"
+                    >
+                      <Image
+                        src={option.logo}
+                        alt={option.name}
+                        width={64}
+                        height={64}
+                        className="object-contain"
+                      />
+                    </div>
+                    {optIndex < tech.options.length - 1 && (
+                      <span className="text-muted-foreground font-medium text-sm">or</span>
+                    )}
+                  </>
+                ))}
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-[160px] p-6">
-                <div className="flex items-center justify-center w-16 h-16 mb-4">
-                  <Image
-                    src={tech.logo}
-                    alt={tech.name}
-                    width={64}
-                    height={64}
-                    className="object-contain"
-                  />
+              <div className="text-center">
+                <div className="font-medium text-lg mb-1">
+                  {tech.options.map((opt) => opt.name).join(' or ')}
                 </div>
-                <div className="text-center">
-                  <div className="font-medium text-lg mb-1">{tech.name}</div>
-                  <div className="text-muted-foreground text-sm">{tech.category}</div>
-                </div>
+                <div className="text-muted-foreground text-sm">{tech.category}</div>
               </div>
-            )}
+            </div>
           </MagicCard>
         ))}
       </div>
