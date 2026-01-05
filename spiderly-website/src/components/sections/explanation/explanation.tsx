@@ -1,13 +1,13 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import AnimationContainer from '../global/animation-container';
-import SectionContainer from '../global/max-width-wrapper';
-import { SectionHeading } from '../ui/section-heading';
-import { CodeWindow } from './explanation/CodeWindow';
-import { PreviewCard } from './explanation/PreviewCard';
-import { ProductPreview } from './explanation/ProductPreview';
-import { TerminalWindow } from './explanation/TerminalWindow';
+import AnimationContainer from '../../global/animation-container';
+import SectionContainer from '../../global/max-width-wrapper';
+import { SectionHeading } from '../../ui/section-heading';
+import { CodeWindow } from './CodeWindow';
+import { PreviewCard } from './PreviewCard';
+import { ProductPreview } from './ProductPreview';
+import { TerminalWindow } from './TerminalWindow';
 
 const terminalSteps = [
   { type: 'loading', text: 'Generating files for the app...' },
@@ -94,7 +94,7 @@ export const Explanation = () => {
         <h3 className="text-muted-foreground font-bold text-xl md:text-3xl mb-4 lg:mb-5">
           01. {/* Scaffold a new Spiderly application */}
         </h3>
-        <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-[442px] gap-4 lg:gap-6">
+        <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-[444px] gap-4 lg:gap-6">
           <TerminalWindow
             isTriggered={isTriggered}
             visibleSteps={visibleSteps}
@@ -117,7 +117,7 @@ export const Explanation = () => {
               02.{' '}
               {/* Incremental Generation of Everything for CRUD Operations On Class Creation/Edit */}
             </h3>
-            <div className="flex flex-col lg:flex-row lg:h-[442px] gap-4 lg:gap-6">
+            <div className="flex flex-col lg:flex-row lg:h-[444px] gap-4 lg:gap-6">
               <CodeWindow
                 isTriggered={step2Triggered}
                 onAddProperties={triggerStep2}

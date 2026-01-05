@@ -1,13 +1,6 @@
-import {
-  CTASection,
-  FeaturesSection,
-  HeroSection,
-  PricingSection,
-  ProcessSection,
-  ReviewsSection,
-} from '@/components/sections';
+import { CTASection, HeroSection, ReviewsSection } from '@/components/sections';
 import Companies from '@/components/sections/companies';
-import { Explanation } from '@/components/sections/explanation';
+import { Explanation } from '@/components/sections/explanation/explanation';
 
 const HomePage = async () => {
   return (
@@ -15,9 +8,6 @@ const HomePage = async () => {
       <HeroSection />
       <Companies />
       <Explanation />
-      <FeaturesSection />
-      <ProcessSection />
-      <PricingSection />
       <ReviewsSection />
       <CTASection />
     </div>

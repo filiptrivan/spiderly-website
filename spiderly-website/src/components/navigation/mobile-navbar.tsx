@@ -44,21 +44,18 @@ const MobileNavbar = () => {
                   <AccordionItem key={link.title} value={link.title} className="last:border-none">
                     {link.dropdown ? (
                       <>
-                        <AccordionTrigger className="py-4 font-medium text-muted-foreground hover:text-foreground">
-                          {link.title}
-                        </AccordionTrigger>
+                        <AccordionTrigger>{link.title}</AccordionTrigger>
                         <AccordionContent>
-                          <ul className="flex flex-col space-y-2 pl-4">
-                            {link.dropdown.map((item) => (
-                              <li key={item.title}>
-                                <Link
-                                  href={item.href}
-                                  onClick={handleClose}
-                                  className="block py-2 text-sm text-muted-foreground hover:text-foreground"
-                                >
-                                  {item.title}
-                                </Link>
-                              </li>
+                          <ul onClick={handleClose} className={cn('w-full')}>
+                            {link.dropdown.map((menuItem) => (
+                              <ListItem
+                                key={menuItem.title}
+                                title={menuItem.title}
+                                href={menuItem.href}
+                                icon={menuItem.icon}
+                              >
+                                {menuItem.tagline}
+                              </ListItem>
                             ))}
                           </ul>
                         </AccordionContent>

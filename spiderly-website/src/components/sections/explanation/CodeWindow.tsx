@@ -5,7 +5,11 @@ interface CodeWindowProps {
   isTriggered: boolean;
   onAddProperties: () => void;
   onUndo?: () => void;
-  properties: Array<{ name: string; type: string; attributes?: Array<{ name: string; value?: string }> }>;
+  properties: Array<{
+    name: string;
+    type: string;
+    attributes?: Array<{ name: string; value?: string }>;
+  }>;
   className?: string;
 }
 
@@ -19,8 +23,8 @@ export const CodeWindow = ({
   return (
     <div className={className}>
       {/* Code Header */}
-      <div className="flex items-center justify-between px-4 h-10 border-b border-border bg-foreground/5">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between px-4 h-10 border-b border-border bg-foreground/5 text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm">
           <CodeIcon className="w-4 h-4" />
           <span>Product.cs</span>
         </div>
@@ -50,7 +54,7 @@ export const CodeWindow = ({
                 size="sm"
                 className="w-full animate-pulse"
               >
-                Add dummy properties
+                Add Dummy Properties
               </Button>
             </div>
           )}
@@ -67,8 +71,7 @@ export const CodeWindow = ({
                   <div className="text-gray-500">
                     {prop.attributes.map((attr, attrIndex) => (
                       <div key={attrIndex}>
-                        [
-                        <span className="text-cyan-400">{attr.name}</span>
+                        [<span className="text-cyan-400">{attr.name}</span>
                         {attr.value && (
                           <>
                             (<span className="text-orange-400">&quot;{attr.value}&quot;</span>)

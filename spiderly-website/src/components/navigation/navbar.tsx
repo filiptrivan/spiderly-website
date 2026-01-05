@@ -3,12 +3,12 @@
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle,
   NavigationMenuTrigger,
-  NavigationMenuContent,
+  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn, NAV_LINKS } from '@/utils';
 import { LucideIcon, Star } from 'lucide-react';
@@ -41,18 +41,23 @@ const Navbar = () => {
                       <>
                         <NavigationMenuTrigger>{link.title}</NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4">
-                            {link.dropdown.map((item) => (
-                              <li key={item.title}>
-                                <NavigationMenuLink asChild>
-                                  <Link
-                                    href={item.href}
-                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                  >
-                                    <div className="text-sm font-medium leading-none">{item.title}</div>
-                                  </Link>
-                                </NavigationMenuLink>
-                              </li>
+                          <ul
+                            className={cn(
+                              'grid gap-1 p-4 md:w-[400px] lg:w-[500px] rounded-xl',
+                              link.title === 'Features'
+                                ? 'lg:grid-cols-[.75fr_1fr]'
+                                : 'lg:grid-cols-2',
+                            )}
+                          >
+                            {link.dropdown.map((menuItem) => (
+                              <ListItem
+                                key={menuItem.title}
+                                title={menuItem.title}
+                                href={menuItem.href}
+                                icon={menuItem.icon}
+                              >
+                                {menuItem.tagline}
+                              </ListItem>
                             ))}
                           </ul>
                         </NavigationMenuContent>

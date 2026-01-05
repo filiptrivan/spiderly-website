@@ -22,8 +22,8 @@ export const TerminalWindow = ({
   return (
     <div className={className}>
       {/* Terminal Header */}
-      <div className="flex items-center justify-between px-4 h-10 border-b border-border bg-foreground/5">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="flex items-center justify-between px-4 h-10 border-b border-border bg-foreground/5 text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm">
           <TerminalIcon className="w-4 h-4" />
           <span>Terminal</span>
         </div>
