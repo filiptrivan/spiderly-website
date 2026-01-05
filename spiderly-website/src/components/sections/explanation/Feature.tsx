@@ -14,7 +14,9 @@ export const Feature = ({
 }) => {
   return (
     <div className={cn('flex flex-col transform-gpu py-10 relative group/feature')}>
-      <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-neutral-80 from-violet-950/25 to-transparent pointer-events-none" />
+      <div
+        className={`opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full ${index >= 2 ? 'bg-gradient-to-b' : 'bg-gradient-to-t'} from-neutral-80 from-violet-950/25 to-transparent pointer-events-none`}
+      />
       <div className="group-hover/feature:-translate-y-1 transform-gpu transition-all duration-300 flex flex-col w-full">
         <div className="mb-4 relative z-10 px-10">
           <Icon
@@ -28,7 +30,7 @@ export const Feature = ({
             {title}
           </span>
         </div>
-        <p className="text-sm text-neutral-300 max-w-xs relative z-10 px-10">{description}</p>
+        <p className="text-sm text-neutral-300 max-w-s relative z-10 px-10">{description}</p>
       </div>
     </div>
   );

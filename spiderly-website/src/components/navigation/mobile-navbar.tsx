@@ -42,13 +42,36 @@ const MobileNavbar = () => {
               <Accordion type="single" collapsible className="!w-full">
                 {NAV_LINKS.map((link) => (
                   <AccordionItem key={link.title} value={link.title} className="last:border-none">
-                    <Link
-                      href={link.href}
-                      onClick={handleClose}
-                      className="flex items-center w-full py-4 font-medium text-muted-foreground hover:text-foreground"
-                    >
-                      <span>{link.title}</span>
-                    </Link>
+                    {link.dropdown ? (
+                      <>
+                        <AccordionTrigger className="py-4 font-medium text-muted-foreground hover:text-foreground">
+                          {link.title}
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <ul className="flex flex-col space-y-2 pl-4">
+                            {link.dropdown.map((item) => (
+                              <li key={item.title}>
+                                <Link
+                                  href={item.href}
+                                  onClick={handleClose}
+                                  className="block py-2 text-sm text-muted-foreground hover:text-foreground"
+                                >
+                                  {item.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </>
+                    ) : link.href ? (
+                      <Link
+                        href={link.href}
+                        onClick={handleClose}
+                        className="flex items-center w-full py-4 font-medium text-muted-foreground hover:text-foreground"
+                      >
+                        <span>{link.title}</span>
+                      </Link>
+                    ) : null}
                   </AccordionItem>
                 ))}
               </Accordion>

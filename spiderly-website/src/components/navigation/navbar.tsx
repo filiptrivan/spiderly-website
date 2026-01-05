@@ -7,6 +7,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
 import { cn, NAV_LINKS } from '@/utils';
 import { LucideIcon, Star } from 'lucide-react';
@@ -35,11 +37,33 @@ const Navbar = () => {
               <NavigationMenuList>
                 {NAV_LINKS.map((link) => (
                   <NavigationMenuItem key={link.title}>
-                    <Link href={link.href} legacyBehavior passHref>
-                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        {link.title}
-                      </NavigationMenuLink>
-                    </Link>
+                    {link.dropdown ? (
+                      <>
+                        <NavigationMenuTrigger>{link.title}</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid w-[400px] gap-3 p-4">
+                            {link.dropdown.map((item) => (
+                              <li key={item.title}>
+                                <NavigationMenuLink asChild>
+                                  <Link
+                                    href={item.href}
+                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                  >
+                                    <div className="text-sm font-medium leading-none">{item.title}</div>
+                                  </Link>
+                                </NavigationMenuLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
+                      </>
+                    ) : link.href ? (
+                      <Link href={link.href} legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                          {link.title}
+                        </NavigationMenuLink>
+                      </Link>
+                    ) : null}
                   </NavigationMenuItem>
                 ))}
               </NavigationMenuList>
