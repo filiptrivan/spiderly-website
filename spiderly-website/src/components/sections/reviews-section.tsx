@@ -1,5 +1,6 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
 import MagicCard from '@/components/ui/magic-card';
+import { SectionHeading } from '@/components/ui/section-heading';
 import { REVIEWS } from '@/utils/constants/misc';
 import Image from 'next/image';
 
@@ -7,14 +8,10 @@ export const ReviewsSection = () => {
   return (
     <MaxWidthWrapper className="py-10">
       <AnimationContainer delay={0.1}>
-        <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-          <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-            What our users are saying
-          </h2>
-          <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-            Here&apos;s what some of our users have to say about Spiderly.
-          </p>
-        </div>
+        <SectionHeading
+          title="What our users are saying"
+          description="Here's what some of our users have to say about Spiderly."
+        />
       </AnimationContainer>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 py-10">
         {REVIEWS.map((review, index) => (
