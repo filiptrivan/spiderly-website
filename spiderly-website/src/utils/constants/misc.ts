@@ -38,7 +38,7 @@ export const REVIEWS = [
   },
   {
     name: 'Denis Melekhin',
-    username: 'Software Engineer at Revolut',
+    username: 'ML Engineer at Revolut',
     avatar: 'https://randomuser.me/api/portraits/women/3.jpg',
     review:
       'Great app with a lot of potential. It has already saved me a lot of time. Looking forward to future updates and improvements.',

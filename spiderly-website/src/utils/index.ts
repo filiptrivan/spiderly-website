@@ -6,7 +6,7 @@ import {
   MODAL_VARIANTS,
 } from './constants/animation';
 import { aeonik, inter } from './constants/fonts';
-import { DEFAULT_AVATAR_URL, PAGINATION_LIMIT, PROCESS } from './constants/misc';
+import { DEFAULT_AVATAR_URL } from './constants/misc';
 import { NAV_LINKS } from './constants/nav-links';
 import { PLANS, PRICING_FEATURES, WORKSPACE_LIMIT } from './constants/pricing';
 
@@ -29,9 +29,7 @@ export {
   LIST_ITEM_VARIANTS,
   MODAL_VARIANTS,
   NAV_LINKS,
-  PAGINATION_LIMIT,
   PLANS,
   PRICING_FEATURES,
-  PROCESS,
   WORKSPACE_LIMIT,
 };
