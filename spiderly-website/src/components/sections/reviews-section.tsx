@@ -6,14 +6,14 @@ import Image from 'next/image';
 
 export const ReviewsSection = () => {
   return (
-    <MaxWidthWrapper className="py-10">
+    <MaxWidthWrapper>
       <AnimationContainer delay={0.1}>
         <SectionHeading
           title="What our users are saying"
           description="Here's what some of our users have to say about Spiderly."
         />
       </AnimationContainer>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
         {REVIEWS.map((review, index) => (
           <MagicCard key={index}>
             <div className="flex flex-col h-[200px]">

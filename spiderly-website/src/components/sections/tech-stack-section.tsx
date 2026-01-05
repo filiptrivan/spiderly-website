@@ -6,17 +6,17 @@ import Image from 'next/image';
 
 export const TechStackSection = () => {
   return (
-    <MaxWidthWrapper className="py-10">
+    <MaxWidthWrapper>
       <AnimationContainer delay={0.1}>
         <SectionHeading
           title="Generated App Tech Stack"
           description="The code generator is driven by attributes applied to EF Core entities and their properties. Implemented using C# Source Generators, it triggers generation on every keystroke for classes within the specified namespace, so it doesn't slow down your build by generating all files at once."
         />
       </AnimationContainer>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
         {TECH_STACK.map((tech, index) => (
           <MagicCard key={index}>
-            <div className="flex flex-col items-center justify-center h-[160px] p-6">
+            <div className="flex flex-col items-center justify-center h-[150px]">
               <div className="flex items-center gap-3 mb-4">
                 {tech.options.map((option, optIndex) => (
                   <>
@@ -27,8 +27,8 @@ export const TechStackSection = () => {
                       <Image
                         src={option.logo}
                         alt={option.name}
-                        width={64}
-                        height={64}
+                        width={60}
+                        height={60}
                         className="object-contain"
                       />
                     </div>

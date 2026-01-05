@@ -68,12 +68,12 @@ export const TECH_STACK = [
     category: 'Database',
     options: [
       {
-        name: 'SQL Server',
-        logo: '/tech-stack/microsoft-sql-server-logo.svg',
-      },
-      {
         name: 'PostgreSQL',
         logo: '/tech-stack/postgresql-logo.svg',
+      },
+      {
+        name: 'SQL Server',
+        logo: '/tech-stack/microsoft-sql-server-logo.svg',
       },
     ],
   },

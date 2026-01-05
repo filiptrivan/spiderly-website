@@ -8,8 +8,8 @@ export const HeroSection = () => {
     <div className="relative overflow-hidden">
       <MaxWidthWrapper>
         <div className="flex flex-col items-center justify-center w-full text-center">
-          <AnimationContainer className="flex flex-col items-center justify-center w-full text-center">
-            <h1 className="text-foreground text-center mb-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-7xl !leading-[1.15] w-full font-heading">
+          <AnimationContainer className="flex flex-col items-center justify-center w-full">
+            <h1 className="text-foreground mb-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-7xl !leading-[1.15] w-full font-heading">
               .NET (C#) Web App Boilerplate{' '}
               <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
                 Code Generator
