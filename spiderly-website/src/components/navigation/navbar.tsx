@@ -28,7 +28,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-12">
             <Link href="/#home" className="flex items-center gap-2">
               <Image src={'/icons/spiderly-logo.svg'} width={26} height={26} alt="Spiderly Logo" />
-              <span className="text-lg font-bol font-heading !leading-none">SPIDERLY</span>
+              <span className="text-lg">SPIDERLY</span>
             </Link>
 
             <NavigationMenu className="hidden lg:flex">
