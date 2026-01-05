@@ -72,34 +72,32 @@ export const ProductPreview = ({ hasProperties, className = '' }: ProductPreview
           />
         </div>
       </div>
-      {(showFeatures || isLeaving) && (
-        <div
-          className={`absolute inset-0 bg-background/95 backdrop-blur-sm transition-all duration-300 flex flex-col overflow-auto ${
-            showFeatures && !isLeaving ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-        >
-          <div className="flex-1 flex flex-col justify-center">
-            <div className="grid grid-cols-2">
-              {crudFeatures.map((feature, index) => (
-                <Feature
-                  key={index}
-                  title={feature.title}
-                  description={feature.description}
-                  icon={feature.icon}
-                  index={index}
-                />
-              ))}
-            </div>
-            <Link
-              href="/features/crud-generation"
-              className="mt-1 lg:mt-2 mb-1 lg:mb-2 mx-auto flex items-center gap-2 text-xs lg:text-sm text-primary hover:text-primary/80 transition-colors group/link"
-            >
-              Learn more about CRUD incremental generation
-              <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 group-hover/link:translate-x-1 transition-transform" />
-            </Link>
+      <div
+        className={`absolute inset-0 bg-background/95 backdrop-blur-sm transition-all duration-300 flex flex-col overflow-auto ${
+          showFeatures && !isLeaving ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+        }`}
+      >
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="grid grid-cols-2">
+            {crudFeatures.map((feature, index) => (
+              <Feature
+                key={index}
+                title={feature.title}
+                description={feature.description}
+                icon={feature.icon}
+                index={index}
+              />
+            ))}
           </div>
+          <Link
+            href="/features/crud-generation"
+            className="mt-1 lg:mt-2 mb-1 lg:mb-2 mx-auto flex items-center gap-2 text-xs lg:text-sm text-primary hover:text-primary/80 transition-colors group/link"
+          >
+            Learn more about CRUD incremental generation
+            <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 group-hover/link:translate-x-1 transition-transform" />
+          </Link>
         </div>
-      )}
+      </div>
     </div>
   );
 };

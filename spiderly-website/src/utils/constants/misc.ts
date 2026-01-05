@@ -44,3 +44,60 @@ export const REVIEWS = [
       'Great app with a lot of potential. It has already saved me a lot of time. Looking forward to future updates and improvements.',
   },
 ] as const;
+
+export const TECH_STACK = [
+  {
+    name: '.NET (C#)',
+    category: 'Backend',
+    logo: '/tech-stack/dotnet-logo.svg',
+  },
+  {
+    name: 'Angular',
+    category: 'Frontend',
+    logo: '/tech-stack/angular-logo.svg',
+  },
+  {
+    category: 'Database',
+    isChoice: true,
+    options: [
+      {
+        name: 'SQL Server',
+        logo: '/tech-stack/microsoft-sql-server-logo.svg',
+      },
+      {
+        name: 'PostgreSQL',
+        logo: '/tech-stack/postgresql-logo.svg',
+      },
+    ],
+  },
+  {
+    name: 'Entity Framework Core',
+    category: 'ORM',
+    logo: '/tech-stack/entity-framework-core-logo.svg',
+  },
+  {
+    name: 'PrimeNG',
+    category: 'UI Components Library',
+    logo: '/tech-stack/primeng-logo.svg',
+  },
+  {
+    name: 'Serilog',
+    category: 'Logging',
+    logo: '/tech-stack/serilog-logo.svg',
+  },
+  {
+    name: 'FluentValidation',
+    category: 'Backend Validation',
+    logo: '/tech-stack/fluent-validation-logo.svg',
+  },
+  {
+    name: 'Mapster',
+    category: 'Object Mapping',
+    logo: '/tech-stack/mapster-logo.svg',
+  },
+  {
+    name: 'Transloco',
+    category: 'Frontend Translations',
+    logo: '/tech-stack/transloco-logo.svg',
+  },
+] as const;
