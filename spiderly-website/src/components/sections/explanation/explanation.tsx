@@ -84,7 +84,7 @@ export const Explanation = () => {
 
   return (
     <SectionContainer>
-      <AnimationContainer delay={0.2}>
+      <AnimationContainer>
         <SectionHeading
           title="How Does Spiderly Work?"
           description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus veritatis repellendus non excepturi."

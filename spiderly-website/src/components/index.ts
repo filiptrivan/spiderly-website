@@ -9,9 +9,6 @@ import Navbar from './navigation/navbar';
 // providers
 import Providers from './providers/providers';
 
-// pricing
-import PricingCards from './pricing-cards';
-
 // ui
 import Glow from './ui/glow';
 
@@ -22,6 +19,5 @@ export {
   Icons,
   SectionContainer as MaxWidthWrapper,
   Navbar,
-  PricingCards,
   Providers,
 };

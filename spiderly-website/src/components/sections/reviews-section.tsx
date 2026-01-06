@@ -7,7 +7,7 @@ import { Card } from '../ui/card';
 export const ReviewsSection = () => {
   return (
     <MaxWidthWrapper>
-      <AnimationContainer className="relative">
+      <AnimationContainer>
         <SectionHeading
           title="What our users are saying"
           description="Here's what some of our users have to say about Spiderly."

@@ -1,38 +1,33 @@
 import { AnimationContainer, Glow, MaxWidthWrapper } from '@/components';
-import { Button } from '@/components/ui/button';
-import { PlayIcon } from 'lucide-react';
-import Link from 'next/link';
+import { ReactNode } from 'react';
 
-export const HeroSection = () => {
+interface HeroSectionProps {
+  title: ReactNode;
+  description: string;
+  buttons?: ReactNode;
+}
+
+export const HeroSection = ({ title, description, buttons }: HeroSectionProps) => {
   return (
-    <div className="relative overflow-hidden">
-      <MaxWidthWrapper>
-        <div className="flex flex-col items-center justify-center w-full text-center">
-          <AnimationContainer className="flex flex-col items-center justify-center w-full">
-            <h1 className="text-foreground mb-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-7xl !leading-[1.15] w-full font-heading">
-              .NET (C#) Web App Boilerplate{' '}
-              <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
-                Code Generator
-              </span>
-            </h1>
-            <p className="mb-12 text-lg tracking-tight text-muted-foreground md:text-xl text-balance">
-              Spiderly is an open-source .NET (C#) code generator that transforms an EF Core model
-              into a fully customizable .NET (C#) + Angular web application, automatically updating
-              all boilerplate code as your model evolves.
-            </p>
-            <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
-              <Button asChild>
-                <Link href={'/docs/getting-started'}>Get Started</Link>
-              </Button>
-              <Button variant={'subtle'}>
-                <PlayIcon className="w-4 h-4 mr-2" />
-                Spiderly in 120 Seconds
-              </Button>
+    <div className="relative overflow-hidden border-b border-border">
+      <AnimationContainer>
+        <MaxWidthWrapper>
+          <div className="flex flex-col items-center justify-center w-full text-center">
+            <div className="flex flex-col items-center justify-center w-full">
+              <h1 className="text-foreground mb-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-7xl !leading-[1.15] w-full font-heading">
+                {title}
+              </h1>
+              <p className="mb-6 text-lg tracking-tight text-muted-foreground md:text-xl text-balance max-w-4xl">
+                {description}
+              </p>
+              {buttons && (
+                <div className="mt-6 flex items-center gap-2 md:gap-3 lg:gap-4">{buttons}</div>
+              )}
             </div>
-          </AnimationContainer>
-        </div>
-      </MaxWidthWrapper>
-      <Glow />
+          </div>
+        </MaxWidthWrapper>
+        <Glow />
+      </AnimationContainer>
     </div>
   );
 };

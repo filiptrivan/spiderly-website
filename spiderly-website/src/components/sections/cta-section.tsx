@@ -5,7 +5,7 @@ import { ArrowRightIcon } from 'lucide-react';
 export const CTASection = () => {
   return (
     <MaxWidthWrapper>
-      <AnimationContainer delay={0.1}>
+      <AnimationContainer>
         <div className="flex flex-col items-center justify-center relative w-full text-center">
           <h2 className="bg-gradient-to-b from-neutral-200 to-neutral-400 py-4 bg-clip-text text-center text-4xl md:text-7xl !leading-[1.15] font-medium font-heading tracking-tight text-transparent">
             Try Spiderly Now.

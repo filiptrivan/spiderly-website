@@ -25,7 +25,7 @@ const Navbar = () => {
         'sticky top-0 inset-x-0 h-14 w-full border-b z-[99999] select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
       )}
     >
-      <AnimationContainer reverse delay={0.1} className="size-full">
+      <AnimationContainer reverse className="size-full">
         <div className="flex items-center justify-between h-full w-full max-w-full md:max-w-screen-xl mx-auto px-4 md:px-12 lg:px-20">
           <div className="flex items-center space-x-12">
             <Link href="/#home" className="flex items-center gap-2">

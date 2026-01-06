@@ -3,16 +3,14 @@ import AnimationContainer from '../global/animation-container';
 
 const Companies = () => {
   return (
-    <div className="border-b border-t border-border py-10">
+    <div className="border-b border-border py-10">
       <AnimationContainer>
         <div className="flex flex-col items-center justify-center">
           <h2 className="text-lg font-medium font-heading text-muted-foreground">
             Used by Developers From the Companies
           </h2>
         </div>
-      </AnimationContainer>
 
-      <AnimationContainer delay={0.1}>
         <div className="grid grid-cols-2 md:grid-cols-4 justify-items-center gap-10 md:gap28 lg:gap32 mx-auto mt-8 md:max-w-screen-lg">
           <Image
             src={'/companies/stridon-logo.svg'}

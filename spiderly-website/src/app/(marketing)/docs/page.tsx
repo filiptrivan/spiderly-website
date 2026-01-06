@@ -4,7 +4,7 @@ import React from 'react';
 const ChangeLogPage = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20">
-      <AnimationContainer delay={0.1}>
+      <AnimationContainer>
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold font-heading text-center mt-6 !leading-tight">
           Change Log
         </h1>

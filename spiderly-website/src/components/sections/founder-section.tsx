@@ -6,12 +6,10 @@ import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-
 export const FounderSection = () => {
   return (
     <MaxWidthWrapper>
-      <AnimationContainer delay={0.1} className="relative">
+      <AnimationContainer className="relative">
         <Quote className="absolute -top-8 -left-4 md:-left-8 w-32 h-32 md:w-48 md:h-48 text-muted-foreground/10 -z-10 pointer-events-none" />
         <SectionHeadingWithoutDescription title="A Word from the Founder" />
-      </AnimationContainer>
 
-      <AnimationContainer delay={0.2}>
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
           <div className="flex-1 space-y-4 md:space-y-5 text-base md:text-lg text-muted-foreground">
             <p>
