@@ -1,5 +1,4 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
-import MagicCard from '@/components/ui/magic-card';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { REVIEWS } from '@/utils/constants/misc';
 import Image from 'next/image';
@@ -13,22 +12,19 @@ export const ReviewsSection = () => {
           description="Here's what some of our users have to say about Spiderly."
         />
       </AnimationContainer>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 bg-border gap-[1px]">
         {REVIEWS.map((review, index) => (
-          <MagicCard key={index}>
-            <div className="flex flex-col h-[200px]">
-              <div className="space-y-4 pb-4">
-                <p>{review.review}</p>
-              </div>
-              <div className="mt-auto flex items-center gap-2">
-                <Image src={review.avatar} alt="" width={36} height={36} className="rounded-lg" />
-                <div className="text-sm">
-                  <div className="font-medium">{review.name}</div>
-                  <div className="text-muted-foreground">{review.username}</div>
-                </div>
+          <div key={index} className="flex flex-col h-[220px] px-2 md:px-4 py-4 bg-background ">
+            <p>{review.review}</p>
+
+            <div className="mt-auto flex items-center gap-2">
+              <Image src={review.avatar} alt="" width={36} height={36} className="rounded-lg" />
+              <div className="text-sm">
+                <div className="font-medium">{review.name}</div>
+                <div className="text-muted-foreground">{review.username}</div>
               </div>
             </div>
-          </MagicCard>
+          </div>
         ))}
       </div>
     </MaxWidthWrapper>

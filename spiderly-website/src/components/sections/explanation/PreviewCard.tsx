@@ -72,7 +72,9 @@ export const PreviewCard = ({ isComplete, isTriggered, className = '' }: Preview
         />
         <div
           className={`absolute inset-0 bg-background/95 backdrop-blur-sm transition-all duration-300 flex flex-col overflow-auto ${
-            showFeatures && !isLeaving ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+            showFeatures && !isLeaving
+              ? 'opacity-100 scale-100'
+              : 'opacity-0 scale-95 pointer-events-none'
           }`}
         >
           <div className="flex-1 flex flex-col justify-center">
