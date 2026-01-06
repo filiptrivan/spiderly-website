@@ -1,4 +1,4 @@
-import { ArrowRight, Settings, FileCode, CheckCircle, Server } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileCode, Server, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -64,7 +64,11 @@ export const ProductPreview = ({ hasProperties, className = '' }: ProductPreview
       <div className="grid place-items-center w-full h-full">
         <div className="w-full max-w-full transition-all duration-700 ease-in-out">
           <Image
-            src={hasProperties ? '/assets/product-page-with-properties.svg' : '/assets/product-page.svg'}
+            src={
+              hasProperties
+                ? '/assets/product-page-with-properties.svg'
+                : '/assets/product-page.svg'
+            }
             alt={hasProperties ? 'Product Page with Properties' : 'Product Page Preview'}
             width={1000}
             height={1000}
@@ -74,7 +78,9 @@ export const ProductPreview = ({ hasProperties, className = '' }: ProductPreview
       </div>
       <div
         className={`absolute inset-0 bg-background/95 backdrop-blur-sm transition-all duration-300 flex flex-col overflow-auto ${
-          showFeatures && !isLeaving ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+          showFeatures && !isLeaving
+            ? 'opacity-100 scale-100'
+            : 'opacity-0 scale-95 pointer-events-none'
         }`}
       >
         <div className="flex-1 flex flex-col justify-center">
@@ -85,7 +91,6 @@ export const ProductPreview = ({ hasProperties, className = '' }: ProductPreview
                 title={feature.title}
                 description={feature.description}
                 icon={feature.icon}
-                index={index}
               />
             ))}
           </div>

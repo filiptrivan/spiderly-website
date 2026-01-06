@@ -85,7 +85,6 @@ export const PreviewCard = ({ isComplete, isTriggered, className = '' }: Preview
                   title={feature.title}
                   description={feature.description}
                   icon={feature.icon}
-                  index={index}
                 />
               ))}
             </div>

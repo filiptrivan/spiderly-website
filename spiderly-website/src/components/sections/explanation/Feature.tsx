@@ -5,12 +5,10 @@ export const Feature = ({
   title,
   description,
   icon: Icon,
-  index,
 }: {
   title: string;
   description: string;
   icon: LucideIcon;
-  index: number;
 }) => {
   return (
     <div className={cn('flex flex-col py-10')}>

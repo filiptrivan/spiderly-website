@@ -13,7 +13,6 @@ export const FounderSection = () => {
 
       <AnimationContainer delay={0.2}>
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
-          {/* Content */}
           <div className="flex-1 space-y-4 md:space-y-5 text-base md:text-lg text-muted-foreground">
             <p>
               Through my work in companies and side projects, I saw the need for a tool to generate
