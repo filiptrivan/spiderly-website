@@ -4,7 +4,7 @@ import { Explanation } from '@/components/sections/explanation/explanation';
 
 const HomePage = async () => {
   return (
-    <div>
+    <div className="mb-16 md:mb-20 lg:mb-28">
       <HeroSection />
       <Companies />
       <Explanation />
