@@ -1,6 +1,5 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
 import { SectionHeading } from '@/components/ui/section-heading';
-import { TrendingUp } from 'lucide-react';
 import { Card } from '../ui/card';
 
 const BENEFITS: { title: string; description: string }[] = [
@@ -44,7 +43,6 @@ export const KeyBenefitsSection = () => {
           title="Key Benefits"
           description="Discover how Spiderly accelerates development and improves code quality."
         />
-        <TrendingUp className="absolute -top-28 -left-4 md:-left-8 w-32 h-32 md:w-48 md:h-48 text-muted-foreground/10 -z-10 pointer-events-none" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {BENEFITS.map((benefit, index) => {
             return (

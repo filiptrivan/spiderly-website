@@ -2,6 +2,7 @@ import { AnimationContainer, MaxWidthWrapper } from '@/components';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { TECH_STACK } from '@/utils/constants/misc';
 import Image from 'next/image';
+import { Card } from '../ui/card';
 
 export const TechStackSection = () => {
   return (
@@ -13,10 +14,7 @@ export const TechStackSection = () => {
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {TECH_STACK.map((tech, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center justify-center p-4 md:p-6 border border-border rounded-lg lg:rounded-xl"
-            >
+            <Card key={index} className="flex flex-col items-center justify-center p-6 md:p-8">
               <div className="flex items-center gap-3 mb-4">
                 {tech.options.map((option, optIndex) => (
                   <>
@@ -44,7 +42,7 @@ export const TechStackSection = () => {
                 </h3>
                 <div className="text-muted-foreground text-sm">{tech.category}</div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       </AnimationContainer>
