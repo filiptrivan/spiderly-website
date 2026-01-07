@@ -1,18 +1,15 @@
 export const FAQ = [
   {
-    id: 'item-1',
     question: 'How to install Spiderly?',
     answer: 'You can find the installation instructions here.',
     link: '/docs/getting-started',
   },
   {
-    id: 'item-2',
     question: 'What are the prerequisites for using Spiderly?',
     answer: 'The prerequisites are listed in the first step of the getting-started guide.',
     link: '/docs/getting-started',
   },
   {
-    id: 'item-3',
     question: 'What parts of the app does Spiderly Source Generators generate?',
     answer: '',
     sections: [
@@ -39,7 +36,6 @@ export const FAQ = [
     ],
   },
   {
-    id: 'item-4',
     question: 'Is Spiderly open-source?',
     answer:
       "Yes, Spiderly is open-source and released under the MIT License. You're free to use it in personal, commercial, or open-source projects.",
@@ -47,7 +43,6 @@ export const FAQ = [
     externalLink: true,
   },
   {
-    id: 'item-5',
     question: 'How does Spiderly compare to the ABP Framework?',
     answer:
       "In most scenarios, Spiderly is the better choice—especially if you're building a typical business or admin-style app with .NET and Angular. It's much simpler to set up, requires less boilerplate, under the MIT license. You get full CRUD, API, Angular UI, validation, mapping, and even DTOs generated automatically from your EF Core model.",
@@ -78,7 +73,6 @@ export const FAQ = [
     },
   },
   {
-    id: 'item-6',
     question: 'How does Spiderly compare to JHipster?',
     answer:
       'For .NET developers building admin-style or business applications, Spiderly is often a more focused and streamlined solution than JHipster. While JHipster is powerful and flexible, it comes with more complexity and is better suited for Java ecosystems. Spiderly is easier to set up, requires less configuration, and gives you full-stack code generation directly from your EF Core model—all under the MIT license.',
@@ -119,13 +113,11 @@ export const FAQ = [
     },
   },
   {
-    id: 'item-7',
     question: 'Does Spiderly work on Linux operating systems?',
     answer:
       'No, Spiderly is currently not compatible with Linux. We are focusing on Windows support for now, but Linux support may be added in the future.',
   },
   {
-    id: 'item-8',
     question: 'Does Spiderly work on macOS?',
     answer:
       'No, Spiderly is currently not compatible with macOS. We are focusing on Windows support for now, but macOS support may be added in the future.',
