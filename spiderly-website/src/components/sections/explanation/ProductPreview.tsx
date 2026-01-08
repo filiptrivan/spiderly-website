@@ -10,20 +10,24 @@ interface ProductPreviewProps {
 
 const crudFeatures = [
   {
+    title: 'UI pages',
+    description: 'Table view with sorting, filtering, pagination, and admin create/edit forms',
+  },
+  {
     title: 'Controllers',
-    description: 'Both for Frontend + Backend',
+    description: '.NET API controllers with matching Angular API client methods',
   },
   {
     title: 'DTOs and TypeScript classes',
-    description: 'C# partial classes + Angular TypeScript',
+    description: 'C# partial DTOs with matching Angular TypeScript classes',
   },
   {
     title: 'Backend + Frontend validations',
-    description: 'FluentValidation + reactive form validators',
+    description: 'FluentValidation rules with synced Angular reactive form validators',
   },
   {
     title: 'Service methods',
-    description: 'Database interaction',
+    description: 'Service-layer logic for database access',
   },
 ];
 
@@ -52,12 +56,7 @@ export const ProductPreview = ({ hasProperties, className = '' }: ProductPreview
         </div>
       </div>
       <FeatureOverlay show={showOverlay} isLeaving={isLeaving}>
-        <FeatureGrid
-          title="Generated Code For Class Summary"
-          features={crudFeatures}
-          learnMoreText="Learn more about CRUD generation"
-          learnMoreHref="/features/crud-generation"
-        />
+        <FeatureGrid title="Generated Code For Class Summary" features={crudFeatures} />
       </FeatureOverlay>
     </div>
   );

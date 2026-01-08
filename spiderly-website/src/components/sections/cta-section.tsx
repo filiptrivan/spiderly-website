@@ -1,6 +1,5 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
 import { Button } from '@/components/ui/button';
-import { ArrowRightIcon } from 'lucide-react';
 
 export const CTASection = () => {
   return (
@@ -11,10 +10,7 @@ export const CTASection = () => {
             Try Spiderly Now.
           </h2>
           <div className="mt-6">
-            <Button>
-              Get started
-              <ArrowRightIcon className="w-4 h-4 ml-2" />
-            </Button>
+            <Button>Get Started</Button>
           </div>
         </div>
       </AnimationContainer>

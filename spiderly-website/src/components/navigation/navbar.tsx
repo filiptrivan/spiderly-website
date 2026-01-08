@@ -28,7 +28,7 @@ const Navbar = () => {
       <AnimationContainer reverse className="size-full">
         <div className="flex items-center justify-between h-full w-full max-w-full md:max-w-screen-xl mx-auto px-4 md:px-12 lg:px-20">
           <div className="flex items-center space-x-12">
-            <Link href="/#home" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
               <Image src={'/icons/spiderly-logo.svg'} width={26} height={26} alt="Spiderly Logo" />
               <span className="text-lg">SPIDERLY</span>
             </Link>

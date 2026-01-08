@@ -47,12 +47,7 @@ export const PreviewCard = ({ isComplete, isTriggered, className = '' }: Preview
           className="w-full h-full animate-in fade-in zoom-in-95 duration-700"
         />
         <FeatureOverlay show={showOverlay} isLeaving={isLeaving}>
-          <FeatureGrid
-            title="Created App Summary"
-            features={starterFeatures}
-            learnMoreText="Learn more about Spiderly app creation"
-            learnMoreHref="/features/create-spiderly-app"
-          />
+          <FeatureGrid title="Created App Summary" features={starterFeatures} />
         </FeatureOverlay>
       </div>
     );

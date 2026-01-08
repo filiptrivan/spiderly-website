@@ -89,8 +89,11 @@ export const Explanation = () => {
           01. Create Spiderly Application
         </h3>
         <p className="mb-6 lg:mb-8 text-muted-foreground">
-          With its CLI tool, Spiderly helps you create a starter template application that is
-          suitable for further use of the Spiderly library.
+          With its CLI tool, Spiderly helps you create a starter template application suitable for
+          further use of the Spiderly library. It comes with pre-built UI components, authentication
+          (including third-party options such as Google sign-in), authorization (role and permission
+          management), a notification system, complete database setup and configuration, emailing,
+          global error handling, and more.
         </p>
         <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-[444px] gap-4 lg:gap-6">
           <TerminalWindow
@@ -112,12 +115,24 @@ export const Explanation = () => {
         {isComplete && (
           <div className="mt-12 lg:mt-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <h3 className="mb-2 lg:mb-4 md:text-3xl text-xl font-medium">02. Define Your Class</h3>
+            <p className="mb-2 lg:mb-4 text-muted-foreground">
+              Simply define your EF Core entities using properties and attributes. Spiderly’s code
+              generator reads those and automatically produces a complete CRUD stack for each
+              entity, including UI pages, service-layer database logic, API controllers and
+              corresponding strongly typed Angular API client.
+            </p>
+            <p className="mb-2 lg:mb-4 text-muted-foreground">
+              The generator also creates .NET FluentValidation validation rules and matching Angular
+              reactive form validators, along with C# DTOs and corresponding TypeScript classes.
+            </p>
+            <p className="mb-2 lg:mb-4 text-muted-foreground">
+              Built on C# Source Generators, Spiderly runs incrementally on file save for entities
+              within the configured namespace, providing instant generation without slowing down
+              your build by regenerating everything at once.
+            </p>
             <p className="mb-6 lg:mb-8 text-muted-foreground">
-              Simply define your class with properties and attributes. Spiderly generates everything
-              needed for CRUD operations, from frontend to backend. Spiderly generator is
-              implemented using C# Source Generators, it triggers generation on every file save for
-              classes within the specified namespace, so it doesn`t slow down your build by
-              generating all files at once.
+              Generated code uses the Template Method pattern, so everything generated is easy to
+              customize.
             </p>
             <div className="flex flex-col lg:flex-row lg:h-[444px] gap-4 lg:gap-6">
               <CodeWindow
