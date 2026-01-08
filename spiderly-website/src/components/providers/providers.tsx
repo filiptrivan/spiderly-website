@@ -1,5 +1,6 @@
 'use client';
 
+import { RootProvider } from 'fumadocs-ui/provider/next';
 import React from 'react';
 
 interface Props {
@@ -7,7 +8,15 @@ interface Props {
 }
 
 const Providers = ({ children }: Props) => {
-  return <>{children}</>;
+  return (
+    <RootProvider
+      theme={{
+        enabled: false,
+      }}
+    >
+      {children}
+    </RootProvider>
+  );
 };
 
 export default Providers;

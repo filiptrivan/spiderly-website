@@ -9,7 +9,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="scrollbar">
       <body
         className={cn(
-          'min-h-screen bg-background text-foreground antialiased !font-default overflow-x-hidden',
+          'min-h-screen bg-background text-foreground antialiased font-default! overflow-x-hidden',
           aeonik.variable,
           inter.variable,
         )}
