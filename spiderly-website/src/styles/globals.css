@@ -34,6 +34,13 @@
 
     --radius: 0.5rem;
 
+    /* Gradient colors for text-hover-effect */
+    --indigo-500: #6366f1;
+    --violet-500: #8b5cf6;
+    --purple-500: #a855f7;
+    --fuchsia-500: #d946ef;
+    --rose-500: #f43f5e;
+
     --gradient:
       from 230.29deg at 51.63% 52.16%, rgb(36, 0, 255) 0deg, rgb(0, 135, 255) 67.5deg,
       rgb(108, 39, 157) 198.75deg, rgb(24, 38, 163) 251.25deg, rgb(54, 103, 196) 301.88deg,
