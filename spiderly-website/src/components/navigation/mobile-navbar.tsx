@@ -9,7 +9,7 @@ import {
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn, NAV_LINKS } from '@/utils';
-import { LucideIcon, Menu, Star, X } from 'lucide-react';
+import { Menu, Star, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -52,7 +52,6 @@ const MobileNavbar = () => {
                                 key={menuItem.title}
                                 title={menuItem.title}
                                 href={menuItem.href}
-                                icon={menuItem.icon}
                               >
                                 {menuItem.tagline}
                               </ListItem>
@@ -96,8 +95,8 @@ const MobileNavbar = () => {
 
 const ListItem = React.forwardRef<
   React.ElementRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'> & { title: string; icon: LucideIcon }
->(({ className, title, href, icon: Icon, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<'a'> & { title: string }
+>(({ className, title, href, children, ...props }, ref) => {
   return (
     <li>
       <Link
@@ -110,15 +109,8 @@ const ListItem = React.forwardRef<
         {...props}
       >
         <div className="flex items-center space-x-2 text-foreground">
-          <Icon className="h-4 w-4" />
           <h6 className="text-sm !leading-none">{title}</h6>
         </div>
-        <p
-          title={children! as string}
-          className="line-clamp-1 text-sm leading-snug text-muted-foreground"
-        >
-          {children}
-        </p>
       </Link>
     </li>
   );

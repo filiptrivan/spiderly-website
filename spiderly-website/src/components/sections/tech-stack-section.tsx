@@ -9,6 +9,7 @@ export const TechStackSection = () => {
     <SectionContainer>
       <AnimationContainer>
         <SectionHeadingWithoutDescription title="Spiderly Tech Stack" />
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {TECH_STACK.map((tech, index) => (
             <Card key={index} className="flex flex-col items-center justify-center p-6 md:p-8">
