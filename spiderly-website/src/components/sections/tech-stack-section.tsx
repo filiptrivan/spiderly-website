@@ -1,6 +1,5 @@
 import { AnimationContainer, SectionContainer } from '@/components';
 import { TECH_STACK } from '@/utils/constants/misc';
-import Image from 'next/image';
 import { Card } from '../ui/card';
 import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-description';
 
@@ -16,17 +15,8 @@ export const TechStackSection = () => {
               <div className="flex items-center gap-3 mb-4">
                 {tech.options.map((option, optIndex) => (
                   <>
-                    <div
-                      key={optIndex}
-                      className="flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16"
-                    >
-                      <Image
-                        src={option.logo}
-                        alt={option.name}
-                        width={60}
-                        height={60}
-                        className="object-contain"
-                      />
+                    <div key={optIndex} className="flex justify-center w-12 h-12 lg:w-14 lg:h-14">
+                      <img src={option.logo} alt={option.name} title={`${option.name} Logo`} />
                     </div>
                     {optIndex < tech.options.length - 1 && (
                       <span className="text-muted-foreground font-medium text-sm">or</span>

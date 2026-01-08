@@ -45,7 +45,7 @@ export const KeyBenefitsSection = () => {
           {BENEFITS.map((benefit, index) => {
             return (
               <Card key={index} className="flex flex-col">
-                <h3 className="text-lg md:text-xl text-foreground mb-2">{benefit.title}</h3>
+                <h3 className="text-lg md:text-xl mb-2">{benefit.title}</h3>
                 <p className="text-sm md:text-base text-muted-foreground">{benefit.description}</p>
               </Card>
             );

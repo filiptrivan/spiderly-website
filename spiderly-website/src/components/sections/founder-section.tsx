@@ -44,14 +44,14 @@ export const FounderSection = () => {
                 <Image
                   src="/filip-trivan-profile-photo.webp"
                   alt="Founder Filip Trivan Profile Picture"
+                  title="Founder Filip Trivan Profile Picture"
                   fill
-                  className="rounded-xl object-cover shadow-lg"
-                  priority
+                  className="rounded-xl shadow-lg"
                 />
               </div>
               <div className="text-sm md:text-base">
                 <p className="text-foreground mb-[2px]">Filip Trivan</p>
-                <p>Founder & Creator of Spiderly</p>
+                <p>Founder of Spiderly</p>
               </div>
             </div>
           </div>

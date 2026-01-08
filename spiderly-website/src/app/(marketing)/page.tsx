@@ -3,7 +3,6 @@ import {
   FounderSection,
   HeroSection,
   KeyBenefitsSection,
-  ReviewsSection,
   TechStackSection,
 } from '@/components/sections';
 import Companies from '@/components/sections/companies';
@@ -38,7 +37,7 @@ const HomePage = async () => {
       <Explanation />
       <TechStackSection />
       <KeyBenefitsSection />
-      <ReviewsSection />
+      {/* <ReviewsSection /> */}
       <FounderSection />
       <CTASection />
     </div>

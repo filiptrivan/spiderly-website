@@ -1,21 +1,11 @@
 import { Card } from '@/components/ui/card';
 import { cn } from '@/utils';
-import { Check, LucideIcon } from 'lucide-react';
+import { Check } from 'lucide-react';
 
-interface BaseFeature {
+interface Feature {
   title: string;
   description: string;
 }
-
-interface FeatureWithIcon extends BaseFeature {
-  icon: LucideIcon;
-}
-
-interface FeatureWithCheck extends BaseFeature {
-  showCheck?: boolean;
-}
-
-type Feature = FeatureWithIcon | FeatureWithCheck;
 
 interface FeatureGridProps {
   features: Feature[];

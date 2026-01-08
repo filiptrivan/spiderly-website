@@ -8,7 +8,7 @@ const Companies = () => {
           Used by Developers From the Companies
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 justify-items-center gap-10 md:gap28 lg:gap32 mx-auto mt-8 md:max-w-screen-lg">
+        <div className="grid grid-cols-2 md:grid-cols-4 justify-items-center gap-10 md:gap-0 mx-auto mt-8 md:max-w-screen-lg">
           <img
             src="/companies/quiddita-logo.svg"
             alt="Quiddita Logo"
