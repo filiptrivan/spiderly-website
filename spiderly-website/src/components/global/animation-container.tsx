@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 interface AnimationContainerProps {
   children: React.ReactNode;
@@ -9,24 +9,41 @@ interface AnimationContainerProps {
   className?: string;
 }
 
-const AnimationContainer = ({ children, className, reverse, delay }: AnimationContainerProps) => {
+const AnimationContainer = ({ children, className = '', reverse, delay = 0 }: AnimationContainerProps) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: reverse ? -20 : 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false }}
-      transition={{
-        duration: 0.2,
-        delay: delay,
-        ease: 'easeInOut',
-        type: 'spring',
-        stiffness: 260,
-        damping: 20,
+    <div
+      ref={ref}
+      className={`transition-all duration-200 ease-in-out ${className}`}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : `translateY(${reverse ? '-20px' : '20px'})`,
+        transitionDelay: `${delay}s`,
       }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
