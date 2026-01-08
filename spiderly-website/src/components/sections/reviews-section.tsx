@@ -1,4 +1,4 @@
-import { AnimationContainer, MaxWidthWrapper } from '@/components';
+import { AnimationContainer, SectionContainer } from '@/components';
 import { REVIEWS } from '@/utils/constants/misc';
 import Image from 'next/image';
 import { Card } from '../ui/card';
@@ -6,7 +6,7 @@ import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-
 
 export const ReviewsSection = () => {
   return (
-    <MaxWidthWrapper>
+    <SectionContainer>
       <AnimationContainer>
         <SectionHeadingWithoutDescription title="Testimonials" />
 
@@ -26,6 +26,6 @@ export const ReviewsSection = () => {
           ))}
         </div>
       </AnimationContainer>
-    </MaxWidthWrapper>
+    </SectionContainer>
   );
 };

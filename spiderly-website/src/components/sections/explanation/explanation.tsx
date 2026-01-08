@@ -3,7 +3,7 @@
 import { SectionHeadingWithoutDescription } from '@/components/ui/section-heading-without-description';
 import { useRef, useState } from 'react';
 import AnimationContainer from '../../global/animation-container';
-import SectionContainer from '../../global/max-width-wrapper';
+import { SectionContainer } from '../../global/section-container';
 import { CodeWindow } from './CodeWindow';
 import { PreviewCard } from './PreviewCard';
 import { ProductPreview } from './ProductPreview';

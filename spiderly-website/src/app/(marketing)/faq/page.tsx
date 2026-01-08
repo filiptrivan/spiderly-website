@@ -1,4 +1,4 @@
-import { AnimationContainer, MaxWidthWrapper } from '@/components';
+import { AnimationContainer, SectionContainer } from '@/components';
 import { HeroSection } from '@/components/sections';
 import {
   Accordion,
@@ -24,7 +24,7 @@ const FAQPage = () => {
         description="Find answers to common questions about Spiderly. Our FAQ covers pricing, comparisons, OS support, tech stack, code generation scope, prerequisites, installation guide, and more."
       />
 
-      <MaxWidthWrapper>
+      <SectionContainer>
         <AnimationContainer>
           <div className="max-w-3xl mx-auto w-full">
             <Accordion type="single" collapsible>
@@ -107,7 +107,7 @@ const FAQPage = () => {
             </Accordion>
           </div>
         </AnimationContainer>
-      </MaxWidthWrapper>
+      </SectionContainer>
     </div>
   );
 };

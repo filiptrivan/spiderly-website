@@ -1,11 +1,11 @@
-import { AnimationContainer, MaxWidthWrapper } from '@/components';
+import { AnimationContainer, SectionContainer } from '@/components';
 import { Quote } from 'lucide-react';
 import Image from 'next/image';
 import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-description';
 
 export const FounderSection = () => {
   return (
-    <MaxWidthWrapper>
+    <SectionContainer>
       <AnimationContainer className="relative">
         <Quote className="absolute -top-8 -left-4 md:-left-8 w-32 h-32 md:w-48 md:h-48 text-muted-foreground/10 -z-10 pointer-events-none" />
         <SectionHeadingWithoutDescription title="A Word from the Founder" />
@@ -57,6 +57,6 @@ export const FounderSection = () => {
           </div>
         </div>
       </AnimationContainer>
-    </MaxWidthWrapper>
+    </SectionContainer>
   );
 };

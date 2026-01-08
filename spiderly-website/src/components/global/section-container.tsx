@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const SectionContainer = ({ className, children }: Props) => {
+export const SectionContainer = ({ className, children }: Props) => {
   return (
     <section
       className={cn(
@@ -18,5 +18,3 @@ const SectionContainer = ({ className, children }: Props) => {
     </section>
   );
 };
-
-export default SectionContainer;

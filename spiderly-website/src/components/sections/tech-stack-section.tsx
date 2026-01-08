@@ -1,4 +1,4 @@
-import { AnimationContainer, MaxWidthWrapper } from '@/components';
+import { AnimationContainer, SectionContainer } from '@/components';
 import { TECH_STACK } from '@/utils/constants/misc';
 import Image from 'next/image';
 import { Card } from '../ui/card';
@@ -6,7 +6,7 @@ import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-
 
 export const TechStackSection = () => {
   return (
-    <MaxWidthWrapper>
+    <SectionContainer>
       <AnimationContainer>
         <SectionHeadingWithoutDescription title="Spiderly Tech Stack" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
@@ -43,6 +43,6 @@ export const TechStackSection = () => {
           ))}
         </div>
       </AnimationContainer>
-    </MaxWidthWrapper>
+    </SectionContainer>
   );
 };
