@@ -1,0 +1,109 @@
+---
+title: Add New EF Core Entity With Spiderly
+description: Learn how to create a new entity in your project, including adding it to the backend, updating the database, and generating the corresponding frontend code.
+---
+
+## Overview
+
+The EF Core entity and its attributes form the foundation of everything in Spiderly. All other components are built and generated based on these entities.
+
+In this step-by-step guide, you'll learn how to create a new entity in your project. This includes adding it to the backend, updating the database, and generating the corresponding frontend code.
+
+## Open the Backend
+
+Open the backend project located at `your-app-name\Backend\YourAppName.sln` using Visual Studio.
+
+## Add New Entity
+
+In the backend project opened with Visual Studio, locate the `YourAppName.Business\Entities` folder and add a new public class for your entity (e.g., `YourEntityName.cs`).
+
+The entity class must inherit from `BusinessObject<ID>` if it supports create, read, update and delete operations, or from `ReadonlyObject<ID>` if it is read-only and does not support create, update, or delete operations from the UI.
+
+### Example of an entity:
+
+```csharp
+namespace YourAppName.Business.Entities
+{
+    [TranslatePluralEn("Your entity plural name")]
+    public class YourEntityName : BusinessObject<long>
+    {
+        [StringLength(75, MinimumLength = 1)]
+        [Required]
+        public string Name { get; set; }
+
+        [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+        [StringLength(500, MinimumLength = 1)]
+        public string Description { get; set; }
+    }
+}
+```
+
+## Add Your Entity to the Database
+
+In the backend project opened with Visual Studio:
+
+1. Open **Package Manager Console** via *View → Other Windows → Package Manager Console* (or press `Ctrl + \``).
+2. Inside opened **Package Manager Console** window set `YourAppName.Infrastructure` as the **Default Project** in the dropdown.
+3. Run the command to create a migration:
+
+```bash
+add-migration YourMigrationScriptName
+```
+
+4. Run the command to apply the migration to the database:
+
+```bash
+update-database
+```
+
+## Generate Components
+
+Use the **Spiderly CLI** to generate a default template for your new entity. You can customize the generated files afterwards.
+
+Run the following command from the root of your application:
+
+```bash
+spiderly add-new-page
+```
+
+This will generate the following files:
+
+1. **List Page** - In your Angular project (opened with Visual Studio Code):
+   - `src\app\pages\your-entity-name\your-entity-name-list.component.ts`
+   - `src\app\pages\your-entity-name\your-entity-name-list.component.html`
+
+2. **Details Page** - Also in your Angular project:
+   - `src\app\pages\your-entity-name\your-entity-name-details.component.ts`
+   - `src\app\pages\your-entity-name\your-entity-name-details.component.html`
+
+## Define Routes for Your Page
+
+In the frontend project opened with Visual Studio Code, open the `src\app\app.routes.ts` file and add new route objects to the `layoutRoutes` array:
+
+```typescript
+{
+    path: 'your-entity-name', // URL for the list page (e.g., /your-entity-name)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-list.component').then(c => c.YourEntityNameListComponent),
+    canActivate: [AuthGuard],
+},
+{
+    path: 'your-entity-name/:id', // URL for the details page (e.g., /your-entity-name/123)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
+    canActivate: [AuthGuard],
+},
+```
+
+## Add the Page to the Navigation Menu
+
+In the frontend project opened with Visual Studio Code, open the `src\app\business\layout\layout.component.ts` file.
+
+Locate the `this.menu` array and add a new menu item object for your entity. Use the following structure as a reference:
+
+```typescript
+{
+    label: this.translocoService.translate('YourEntityName'),
+    icon: 'pi pi-fw pi-question', // Refer to https://primeng.org/icons#list for available icons
+    routerLink: ['your-entity-name'], // Must match the list page path defined in app.routes.ts
+    visible: true,
+},
+```

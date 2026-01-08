@@ -1,0 +1,115 @@
+---
+title: Getting Started With Spiderly
+description: Follow this quick start guide to configure and initialize your Spiderly app.
+---
+
+## Overview
+
+Follow this quick start guide to configure and initialize your Spiderly app.
+
+You can follow along with the video walkthrough. It covers all the steps from this guide, assuming you've already completed the first step — installing the prerequisites.
+
+<iframe
+  src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Initialize_Spiderly_App-2_sziwho&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762300788%2FCopy_of_Untitled_YouTube_Thumbnail_4_s9lkhn.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
+  width="640"
+  height="360"
+  style={{height: 'auto', width: '100%', aspectRatio: '640 / 360'}}
+  allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+  allowFullScreen
+/>
+
+## Install Prerequisites
+
+Before getting started with Spiderly, make sure you have the following prerequisites installed:
+
+- [SQL Server 2022 Developer](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (if you already have SQL Server Express installed, no need to install the Developer edition)
+- [Node.js](https://nodejs.org/en/download/)
+- Code Editors (Recommended):
+  - Backend: [Visual Studio (Community Edition)](https://visualstudio.microsoft.com/downloads/)
+  - Frontend: [Visual Studio Code](https://code.visualstudio.com/download)
+- Skip this step if you installed Visual Studio in a previous step - [.NET 9.0](https://dotnet.microsoft.com/en-us/download)
+- Run the global Angular CLI and EF Core CLI installation command from any location in the terminal: `npm install -g @angular/cli && dotnet tool install -g dotnet-ef`
+- [SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/ssms/release-notes-21#current-sql-server-management-studio-release)
+- Visual Studio Code Extension: [Angular Language Service](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)
+
+## Install the Spiderly CLI
+
+Run the Global Spiderly CLI installation command from **any location in the terminal**:
+
+```bash
+dotnet tool install -g Spiderly.CLI
+```
+
+## Initialize the App
+
+Run this command in the folder **where you want your app to be located**:
+
+```bash
+spiderly init
+```
+
+## Start the Backend
+
+Open the backend project located at `your-app-name\Backend\YourAppName.sln` using Visual Studio and click the `IIS Express` run button to start the backend.
+
+## Start the Frontend
+
+Open the frontend project located at `your-app-name\Frontend` using Visual Studio Code. Then open a new **Visual Studio Code terminal** via *Terminal -> New Terminal* (or press `Ctrl + Shift + \``) and run the command:
+
+```bash
+npm start
+```
+
+## Set Up Emailing
+
+In the backend project opened with Visual Studio, locate the `YourAppName.WebAPI\appsettings.json` file and set the following fields:
+
+- `"EmailSender"` - Set this to the **existing email address** you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.
+- `"EmailSenderPassword"` - **Do not** use your regular Gmail password. This must be the **Gmail App Password** for the same email account specified in `"EmailSender"`. Follow the video tutorial to see how to generate an Gmail App Password from your Google account.
+
+<iframe
+  src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Gmail_App_Password_s5a34m&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302352%2FCopy_of_Copy_of_Untitled_YouTube_Thumbnail_h23qle.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
+  width="640"
+  height="360"
+  style={{height: 'auto', width: '100%', aspectRatio: '640 / 360'}}
+  allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+  allowFullScreen
+/>
+
+## Set Up Google Authentication
+
+After following the video tutorial, you will obtain the Google Client ID. Once you have it, make sure to set it in the following two places:
+
+- In the backend project opened with Visual Studio, locate the `YourAppName.WebAPI\appsettings.json` file and set the value for the `"GoogleClientId"`.
+- In the frontend project opened with Visual Studio Code, locate the `src\environments\environment.ts` file and set the value for the `"GoogleClientId"`.
+
+<iframe
+  src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Spiderly_Google_Auth_ujljuc&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302340%2FCopy_of_Untitled_YouTube_Thumbnail_2_t7d5bd.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
+  width="640"
+  height="360"
+  style={{height: 'auto', width: '100%', aspectRatio: '640 / 360'}}
+  allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+  allowFullScreen
+/>
+
+## Register the User
+
+Use the UI of your generated app to register the user via email or Google.
+
+## Connect to SQL Server
+
+1. Open **SQL Server Management Studio (SSMS)**.
+
+2. In the **Connect to Server window**, fill in the fields as follows:
+   - **Server Name**: `localhost`
+   - **Authentication**: `Windows Authentication`
+   - **Database Name**: `<default>`
+   - **Encrypt**: `Mandatory`
+   - **Trust Server Certificate**: `True`
+   - **Color**: `<default>`
+
+3. Click the **Connect button**.
+
+## Assign Admin Permissions
+
+Execute the script located at `your-app-name\Database\initialize-script.sql` using SQL Server Management Studio to assign admin permissions to the previously registered user.

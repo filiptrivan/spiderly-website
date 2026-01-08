@@ -1,0 +1,206 @@
+---
+title: Translate Spiderly App
+description: Learn how to implement internationalization in your Spiderly application using Transloco and .resx resource files.
+---
+
+## Overview
+
+Spiderly supports internationalization out of the box. On the frontend, translations are powered by [Transloco](https://github.com/jsverse/transloco) with `.json` files. On the backend, it uses standard `.resx` resource files in C#.
+
+Whether you're customizing labels in generated Angular forms, naming Excel exports, or displaying localized validation messages — Spiderly helps you streamline and unify translations across your full stack.
+
+## Translating Entities and Properties
+
+Spiderly lets you customize how entity and property names appear across the app — not just for multilingual support, but also for customizing labels in **generated Angular components**, **Excel export filenames**, and **validation messages**.
+
+These translations are automatically integrated into Spiderly's generated code, but you can also use them freely throughout your custom logic wherever needed.
+
+### Built-in Supported Languages:
+- English
+- Serbian (Latin)
+
+ℹ️ You can still add any other language manually — but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
+
+### `[Translate{LanguageTag}]` Attribute
+
+This attribute applies to both **entity classes** and their **properties**.
+
+#### When Applied to an Entity Class:
+- Generates translations for the `YourEntityName` key on both the frontend and backend.
+
+#### When Applied to a Property:
+- Generates translations for the `YourPropertyName` key on both the frontend and backend.
+- Used as the default input field label in the generated Angular form component.
+- Used in both server and client-side validation messages (e.g., *Field 'Email address' can not be empty*).
+
+#### Example:
+
+```csharp
+[TranslateEn("User")]
+[TranslateSrLatnRS("Korisnik")]
+public class UserExtended : BusinessObject<long>
+{
+    [TranslateEn("Email address")]
+    [TranslateSrLatnRS("Email adresa")]
+    public string Email { get; set; }
+}
+```
+
+### `[TranslatePlural{LanguageTag}]` Attribute
+
+This attribute is applied **only to entity classes** and defines the plural form of the entity's name for use throughout your app.
+
+#### Usage:
+- Generates translations for the `YourEntityNameList` key on both the frontend and backend.
+- Table titles (used by default when generating pages with the 'add-new-page' Spiderly command; this can be customized).
+- Excel export filenames (when `[TranslateExcel{LanguageTag}]` value is not specified).
+
+#### Example:
+
+```csharp
+[TranslatePluralEn("User points")]
+[TranslatePluralSrLatnRS("Korisnički poeni")]
+public class UserPoint : BusinessObject<long>
+{
+    // Entity properties
+}
+```
+
+### `[TranslateExcel{LanguageTag}]` Attribute
+
+This attribute is applied **only to entity classes** and specifies the filename used for exporting **that entity's data** to Excel throughout your app (e.g., from a Spiderly-generated data table view).
+
+#### Fallback Behavior:
+- First tries to use `[TranslatePlural{LanguageTag}]` value.
+- If `[TranslatePlural{LanguageTag}]` value is not available, uses `'YourEntityNameList'`.
+
+#### Example:
+
+```csharp
+[TranslateExcelEn("Users_Excel")] // Will generate: Users_Excel.xlsx
+public class User : BusinessObject<long>
+{
+    // Entity properties
+}
+```
+
+## Changing Default Language
+
+By default, Spiderly uses English (`en`) as the primary language. If you want to change the default language, you'll need to update the [language tag](https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags) in both your **backend** and **frontend** configurations.
+
+### Built-in Supported Language Tags:
+- `en`
+- `sr-Latn-RS`
+
+ℹ️ You can still add any other language tag manually — but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
+
+### Language Tag Update:
+
+1. In the backend project opened with Visual Studio, open the `YourAppName.WebAPI\Startup.cs` file and update the `SpiderlyConfigureServices` call by passing your desired language tag:
+
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.SpiderlyConfigureServices<YourAppNameApplicationDbContext>("your-language-tag");
+    }
+}
+```
+
+2. In the frontend project opened with Visual Studio Code, open the `src\app\app.config.ts` file and update the `provideSpiderlyTransloco` configuration:
+
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideSpiderlyTransloco({
+      preloadLangs: ['your-language-tag'],
+      availableLangs: [
+        'your-language-tag',
+        'your-language-tag.generated',
+      ],
+      defaultLang: 'your-language-tag',
+      fallbackLang: 'your-language-tag.generated',
+    }),
+  ]
+};
+```
+
+## Custom Frontend Translations for Multilingual Apps
+
+ℹ️ You only need to add custom frontend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+
+### Add a Translation Key-Value Pair
+
+In the frontend project opened with Visual Studio Code, open the appropriate language file under `src\assets\i18n` folder, for example: `en.json`.
+
+Then, add a new key-value entry like this anywhere in the file: `"KeyForTranslation": "Translated text"`.
+
+You can now reference this key in your TypeScript or HTML files.
+
+### Use Translation in TypeScript (`.ts`)
+
+Inject the `TranslocoService` and use its `translate` method:
+
+```typescript
+// ... other imports
+import { TranslocoService } from '@jsverse/transloco';
+
+@Component({
+  templateUrl: './your.component.html',
+})
+export class YourComponent {
+
+  constructor(
+    // ... other injections
+    private translocoService: TranslocoService
+  ) {}
+
+  ngOnInit() {
+    const translatedText = this.translocoService.translate('KeyForTranslation');
+  }
+}
+```
+
+### Use Translation in HTML (`.html`)
+
+Add `TranslocoDirective` into Angular component imports:
+
+```typescript
+@Component({
+  templateUrl: './your.component.html',
+  imports: [
+    // ... other imports
+    TranslocoDirective,
+  ],
+})
+export class YourComponent {
+  // ...
+}
+```
+
+Use the directive with Angular's `*transloco` syntax:
+
+```html
+<ng-container *transloco="let t">
+    {{t('KeyForTranslation')}}
+</ng-container>
+```
+
+## Custom Backend Translations for Multilingual Apps
+
+ℹ️ You only need to add custom backend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+
+### Use Case Example
+
+Let's say you want to throw a translated exception message, based on the active culture (e.g., English):
+
+```csharp
+throw new Exception(Terms.YourExceptionKey);
+```
+
+If that's the case, in the backend project opened with Visual Studio, open the `YourAppName.Shared\Resources\Terms.resx` file and add a new entry with the key `YourExceptionKey` and a culture-specific value, for example: `Your exception message.`
+
+Spiderly will automatically pick the correct translation at runtime based on the active culture settings.
+
+ℹ️ For easier management of translation keys across multiple `.resx` files, you can use [ResXManager](https://marketplace.visualstudio.com/items?itemName=TomEnglert.ResXManager) - a Visual Studio extension that simplifies working with localization resources.

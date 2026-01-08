@@ -1,0 +1,533 @@
+---
+title: Spiderly Attributes
+description: Complete reference for all Spiderly attributes used in entity configuration, UI generation, and authorization.
+---
+
+## AuthGuardAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+Provides authentication protection for API endpoints by validating JWT tokens in the request.
+
+## BlobNameAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Marks a string property as a reference to a file stored in Azure Blob Storage. This property will contain the unique identifier (`blob name`) used to locate and access the file in Azure Storage.
+
+When you add a property decorated with the `BlobNameAttribute` inside your entity, Spiderly will automatically generate an additional property in the corresponding DTO (e.g., `ProfilePictureData`). This new property will contain the Base64-encoded string of the file. To display this image in your HTML, use the Spiderly helper method `getHtmlImgDisplayString64` and pass its result as the `src` attribute of an `<img>` tag.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [BlobName]
+    [StringLength(80, MinimumLength = 30)] // GUID length
+    public string ProfilePicture { get; set; }
+}
+```
+
+## CascadeDeleteAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Implements cascade delete behavior in `many-to-one` relationships. When the referenced entity is deleted, all entities that reference it will automatically be deleted as well.
+
+### This attribute is useful when:
+- Child entities should not exist without their parent
+
+### Example:
+
+```csharp
+public class Comment : BusinessObject<long>
+{
+    [DisplayName]
+    public string Text { get; set; }
+
+    [CascadeDelete] // When the Post is deleted, all its Comments will be deleted
+    [WithMany(nameof(Post.Comments))]
+    public virtual Post Post { get; set; }
+}
+```
+
+## ControllerAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies a custom controller name for an entity, overriding the default naming convention. This attribute allows grouping multiple related entities under a single controller.
+
+### Default behavior without 'Controller' attribute:
+Controllers are named as `'{EntityName}Controller'`
+
+### Example:
+
+```csharp
+[Controller("SecurityController")]
+public class User { }
+
+[Controller("SecurityController")]
+public class Role { }
+
+[Controller("SecurityController")]
+public class Permission { }
+```
+
+## CustomMapperAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+Marks a class for custom object mapping implementation.
+
+### Example:
+
+```csharp
+[CustomMapper]
+public static partial class Mapper
+{
+    // Custom mapping methods
+}
+```
+
+### Note:
+Use this attribute when you need to implement specialized mapping logic that cannot be handled by the default mapping configuration.
+
+## DisplayNameAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies which property should be used as the display name for an entity in UI elements:
+- When applied to a property: The property's value will be used to represent the entity
+- When applied to a class: The specified property's value will be used to represent the entity
+- If no property or class is marked with this attribute: The entity's 'Id' will be used
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string FullName { get; set; } // Will be used in dropdowns and lists
+}
+
+[DisplayName("Department.Name")] // Uses related entity's property
+public class Employee : BusinessObject<long>
+{
+    public virtual Department Department { get; set; }
+}
+```
+
+## DoNotAuthorizeAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Disables authorization checks for CRUD operations on the decorated entity. By default, all entities require authorization for CRUD operations.
+
+### Warning:
+This attribute bypasses security checks and should be used with extreme caution. It is primarily intended for testing purposes and should generally be avoided in production environments.
+
+## ExcludeFromDTOAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies that a property should be excluded from the generated DTO.
+
+## ExcludeServiceMethodsFromGenerationAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Prevents the generation of standard business service methods for the decorated property in the `BusinessServiceGenerated` class.
+
+### Use this attribute when you want to:
+- Implement custom business logic instead of using generated methods
+- Override the default generated behavior with your own implementation
+- Exclude specific properties from the standard service method generation
+
+### Note:
+The property will still be part of the entity, but no service methods will be generated for it in the `BusinessServiceGenerated` class.
+
+## GenerateCommaSeparatedDisplayNameAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Generates a string property in the DTO containing comma-separated display names for a collection property in the entity.
+
+### Example:
+
+```csharp
+public class Project : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [GenerateCommaSeparatedDisplayName]
+    public virtual List<User> TeamMembers { get; set; } = new();
+}
+
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Email { get; set; }
+}
+
+// In the UI table, the TeamMembers column will show:
+// "john@example.com, jane@example.com, bob@example.com"
+```
+
+## IncludeInDTOAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies that a property should be included in the generated DTO. This attribute is particularly useful for enumerable properties, which are not included in DTOs by default.
+
+### Note:
+This attribute only affects DTO generation and does not influence the mapping behavior (Entity ↔ DTO).
+
+## M2MAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Indicates that the entity represents a helper table for a `many-to-many` (M2M) relationship.
+
+### Example:
+
+```csharp
+[M2M]
+public class RolePermission
+{
+    [M2MWithMany(nameof(Role.Permissions))]
+    public virtual Role Role { get; set; }
+
+    [M2MWithMany(nameof(Permission.Roles))]
+    public virtual Permission Permission { get; set; }
+}
+```
+
+## M2MWithManyAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Marks a property in a `many-to-many` (M2M) relationship.
+
+### Example:
+
+```csharp
+[M2M]
+public class RolePermission
+{
+    [M2MWithMany(nameof(Role.Permissions))]
+    public virtual Role Role { get; set; }
+
+    [M2MWithMany(nameof(Permission.Roles))]
+    public virtual Permission Permission { get; set; }
+}
+```
+
+## OutputAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+Specifies the output configuration for the Source Generator.
+
+### Note:
+This is a temporary solution and may be replaced in future versions.
+
+## ProjectToDTOAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies custom mapping configuration when projecting an entity to its DTO.
+
+### Example:
+
+```csharp
+[ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
+public class Achievement : BusinessObject<long>
+{
+    // Properties
+}
+```
+
+## SetNullAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies that the property should be set to `null` when the parent entity is deleted. Apply this attribute to a `many-to-one` relationship property.
+
+## SimpleManyToManyTableLazyLoadAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies that a table items for the `many-to-many` relationship administration should be loaded lazily (on-demand) rather than eagerly.
+
+## SkipSpinnerAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+Indicates that the loading spinner should be skipped for the decorated controller method.
+
+### Use when:
+- The operation is very quick and doesn't need a loading indicator
+- You want to implement custom loading behavior
+- The operation runs in the background
+
+### Example:
+
+```csharp
+[HttpGet]
+[SkipSpinner]
+public async Task SendNotificationEmail(long notificationId)
+{
+    await SendNotificationEmail(notificationId);
+}
+```
+
+## UIAdditionalPermissionCodeForInsertAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies additional permission requirements for inserting entities in the UI. The user must have ONE of the specified permissions to perform the insert operation. Multiple instances of this attribute can be applied to a single entity.
+
+## UIAdditionalPermissionCodeForUpdateAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies additional permission requirements for updating entities in the UI. The user must have ONE of the specified permissions to perform the update operation. Multiple instances of this attribute can be applied to a single entity.
+
+## UIControlTypeAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+Specifies the UI control type for a property.
+
+If not specified, the control type is automatically determined based on the property type:
+- `string`: `TextBox` (or `TextArea` if `[StringLength]` value is large)
+- `int/long`: `Number`
+- `decimal`: `Decimal`
+- `bool`: `CheckBox`
+- `DateTime`: `Calendar`
+- `many-to-one`: `Autocomplete`
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
+    public UserType Type { get; set; }
+
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Description { get; set; }
+
+    // Automatically becomes a TextBox
+    public string Name { get; set; }
+
+    // Automatically becomes a Number
+    public int Age { get; set; }
+}
+```
+
+## UIControlWidthAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+Specifies the width of a UI field using PrimeNG (PrimeFlex) column classes.
+
+### Default values:
+- `"col-12"` for TextArea and Editor controls
+- `"col-12 md:col-6"` for all other controls
+
+### Example:
+
+```csharp
+public class Article : <long>
+{
+    [UIControlWidth("col-12")]
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Content { get; set; }
+
+    [UIControlWidth("col-3")]
+    public string Author { get; set; }
+
+    // Uses default "col-12 md:col-6"
+    public string Title { get; set; }
+}
+```
+
+## UIDoNotGenerateAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+Excludes a property from being generated in the UI main form component.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    public string Name { get; set; }
+
+    [UIDoNotGenerate]
+    public DateTime LastLoginDate { get; set; } // Won't appear in the UI form
+
+    [UIDoNotGenerate]
+    public string InternalNotes { get; set; } // Won't appear in the UI form
+}
+```
+
+## UIOrderedOneToManyAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+Enables management of child entities through an ordered list in the parent entity's main UI form component.
+
+### Example:
+
+```csharp
+public class Course : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [UIOrderedOneToMany]
+    public virtual List<Course> Courses { get; set; } = new(); // Will be shown as an ordered list in the UI
+}
+
+public class CourseItem : BusinessObject<long>
+{
+    [DisplayName]
+    public string Title { get; set; }
+
+    [UIDoNotGenerate]
+    [Required]
+    public int OrderNumber { get; set; } // Needs to be called OrderNumber
+
+    [Required] // The course item can't exist without the course
+    [WithMany(nameof(Course.CourseItems))]
+    public virtual Course Course { get; set; }
+}
+```
+
+## UIPanelAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies in which panel the UI control will be located. By default, all controls are inside the `"Details"` panel.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; } // Goes to "Details" panel by default
+
+    [UIPanel("Security")]
+    public string Password { get; set; } // Goes to "Security" panel
+
+    [UIPanel("Preferences")]
+    public bool ReceiveNotifications { get; set; } // Goes to "Preferences" panel
+}
+```
+
+## UIPropertyBlockOrderAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+Specifies the display order of UI controls. Controls are displayed in the order of property declaration, except for: `'file'`, `'text-area'`, `'editor'`, and `'table'` controls, which are always displayed last in their declaration order.
+
+### Example:
+
+```csharp
+public class Article : BusinessObject<long>
+{
+    [UIPropertyBlockOrder("1")]
+    public string Title { get; set; }
+
+    [UIPropertyBlockOrder("2")]
+    public string Author { get; set; }
+
+    // Will be displayed last despite order number
+    [UIPropertyBlockOrder("0")]
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Content { get; set; }
+}
+```
+
+## UITableColumnAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+Specifies which columns should be displayed in a table view for a `many-to-many` relationship. Must be used in combination with `[SimpleManyToManyTableLazyLoad]` attribute.
+
+### Example:
+
+```csharp
+public class Partner : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    #region UITableColumn
+    [UITableColumn(nameof(PartnerUserDTO.UserDisplayName))]
+    [UITableColumn(nameof(PartnerUserDTO.Points))]
+    [UITableColumn(nameof(PartnerUserDTO.TierDisplayName))]
+    [UITableColumn(nameof(PartnerUserDTO.CheckedSegmentationItemsCommaSeparated), "Segmentation")] // Custom translation key
+    [UITableColumn(nameof(PartnerUserDTO.CreatedAt))]
+    #endregion
+    [SimpleManyToManyTableLazyLoad]
+    public virtual List<PartnerUser> Recipients { get; set; } = new(); // M2M relationship
+}
+```
+
+## WithManyAttribute
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+Specifies the collection navigation property name in a related entity for establishing a bidirectional relationship in Entity Framework.
+
+### Purpose:
+This attribute is used to define the inverse navigation property in a relationship, enabling proper relationship configuration and navigation in both directions.
+
+### Example:
+
+```csharp
+public class Course : BusinessObject<long>
+{
+    public virtual List<Student> Students { get; set; } = new();
+}
+
+public class Student : BusinessObject<long>
+{
+    [WithMany(nameof(Course.Students))]
+    public virtual Course Course { get; set; }
+}
+```

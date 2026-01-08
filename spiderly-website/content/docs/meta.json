@@ -1,0 +1,12 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "getting-started",
+    "add-new-entity",
+    "attributes",
+    "entity-validation",
+    "entity-authorization",
+    "ui-customization",
+    "translate-spiderly-app"
+  ]
+}

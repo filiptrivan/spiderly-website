@@ -1,0 +1,140 @@
+---
+title: Entity Validation With Spiderly Attributes
+description: Learn how to use validation attributes to automatically generate backend and frontend validation rules.
+---
+
+## Overview
+
+Spiderly simplifies validation across your application by allowing you to annotate your entity classes with attributes.
+
+**Validation attributes fall into two categories:**
+- Spiderly custom validation attributes
+- EF Core attributes from `System.ComponentModel.DataAnnotations`
+
+**Validation attributes are used to:**
+- Automatically generate backend (DTO-level) validation.
+- Automatically generate frontend form validation rules.
+- Leave database validation to EF Core.
+
+**Behavior Based on Attribute Type:**
+- EF Core attributes will result in database schema changes. When you use them, remember to run `Add-Migration` and `Update-Database`.
+- Spiderly backend validation attributes require rebuilding the backend to take effect.
+
+## CustomValidatorAttribute
+
+### Usage
+
+Defines custom validation rules for the decorated property or class (can be used on DTOs as well as entities). Supports chaining of multiple rules using dot notation, e.g., `EmailAddress().Length(5, 50)`.
+
+### Examples:
+
+```csharp
+// Class-level validation
+[CustomValidator("RuleFor(x => x.Email).EmailAddress().Length(5, 50);")]
+[CustomValidator("RuleFor(x => x.Name).Length(2, 100);")]
+public class User : BusinessObject<long>
+{
+  public string Email { get; set; }
+  public string Name { get; set; }
+}
+
+// Property-level validation
+public class User : BusinessObject<long>
+{
+  [CustomValidator("EmailAddress()")]
+  [CustomValidator("Length(5, 50)")]
+  public string Email { get; set; }
+}
+```
+
+## GreaterThanOrEqualToAttribute
+
+### Usage
+
+Validates that a numeric property value is greater than or equal to a specified number. This attribute provides both **server-side** and **client-side** validation.
+
+### Example:
+
+```csharp
+public class Product : BusinessObject<long>
+{
+    [GreaterThanOrEqualTo(0)] // StockQuantity must be 0 or higher
+    public int StockQuantity { get; set; }
+}
+```
+
+## PrecisionAttribute
+
+### Usage
+
+Specifies the precision and scale for a decimal property. Useful for controlling how many digits are stored in total (`precision`) and how many of them are after the decimal point (`scale`).
+
+ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+
+### Example:
+
+```csharp
+public class Product : BusinessObject<long>
+{
+    [Precision(18, 2)] // Allows up to 18 digits total, with 2 after the decimal point
+    public decimal Price { get; set; }
+}
+```
+
+## RangeAttribute
+
+### Usage
+
+Validates that a numeric value falls within a specified inclusive range.
+
+ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+
+### Example:
+
+```csharp
+public class Product : BusinessObject<long>
+{
+    [Range(1, 1000)] // Price must be between 1 and 1000 (inclusive)
+    public decimal Price { get; set; }
+}
+```
+
+## RequiredAttribute
+
+### Usage
+
+Specifies that a value must be provided for the decorated property, enforcing non-null values.
+
+ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [Required] // Name cannot be null or empty
+    public string Name { get; set; }
+}
+```
+
+## StringLengthAttribute
+
+### Usage
+
+Specifies the minimum and/or maximum length for a string property.
+
+ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+
+### Best Practice
+
+💡 Always apply `StringLength` to string properties. If omitted, EF Core will map them to `NVARCHAR(MAX)` by default, which can negatively impact performance.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [StringLength(50, MinimumLength = 2)] // Name must be between 2 and 50 characters
+    public string Name { get; set; }
+}
+```
