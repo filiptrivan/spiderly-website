@@ -30,7 +30,7 @@ const FAQPage = () => {
             <Accordion type="single" collapsible>
               {FAQ.map((faq, index) => (
                 <AccordionItem key={index} value={index.toString()}>
-                  <AccordionTrigger className="text-white hover:text-muted-foreground">
+                  <AccordionTrigger className="text-white hover:text-neutral-300">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent>

@@ -9,7 +9,7 @@ import {
 import Companies from '@/components/sections/companies';
 import { Explanation } from '@/components/sections/explanation/explanation';
 import { Button } from '@/components/ui/button';
-import { PlayIcon } from 'lucide-react';
+import { VideoDialogButton } from '@/components/ui/video-dialog';
 import Link from 'next/link';
 
 const HomePage = async () => {
@@ -30,10 +30,7 @@ const HomePage = async () => {
             <Button asChild>
               <Link href={'/docs/getting-started'}>Get Started</Link>
             </Button>
-            <Button variant={'subtle'}>
-              <PlayIcon className="w-4 h-4 mr-2" />
-              Spiderly in 120 Seconds
-            </Button>
+            <VideoDialogButton />
           </>
         }
       />
