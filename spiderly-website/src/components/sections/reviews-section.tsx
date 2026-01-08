@@ -1,17 +1,14 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
-import { SectionHeading } from '@/components/ui/section-heading';
 import { REVIEWS } from '@/utils/constants/misc';
 import Image from 'next/image';
 import { Card } from '../ui/card';
+import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-description';
 
 export const ReviewsSection = () => {
   return (
     <MaxWidthWrapper>
       <AnimationContainer>
-        <SectionHeading
-          title="What our users are saying"
-          description="Here's what some of our users have to say about Spiderly."
-        />
+        <SectionHeadingWithoutDescription title="Testimonials" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {REVIEWS.map((review, index) => (

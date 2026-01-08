@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 const FAQPage = () => {
   return (
-    <div className="mb-40">
+    <div className="mb-3">
       <HeroSection
         title="Frequently Asked Questions"
         description="Find answers to common questions about Spiderly. Our FAQ covers pricing, comparisons, OS support, tech stack, code generation scope, prerequisites, installation guide, and more."
@@ -26,7 +26,7 @@ const FAQPage = () => {
 
       <MaxWidthWrapper>
         <AnimationContainer>
-          <div className="max-w-3xl mx-auto w-full mt-12">
+          <div className="max-w-3xl mx-auto w-full">
             <Accordion type="single" collapsible>
               {FAQ.map((faq, index) => (
                 <AccordionItem key={index} value={index.toString()}>
@@ -46,7 +46,7 @@ const FAQPage = () => {
                                 ? { target: '_blank', rel: 'noopener noreferrer' }
                                 : {})}
                             >
-                              {faq.externalLink ? 'View on GitHub' : 'here'}
+                              {faq.linkText}
                             </Link>
                           )}
                         </p>
@@ -56,7 +56,7 @@ const FAQPage = () => {
                         <div className="space-y-4">
                           {faq.sections.map((section, idx) => (
                             <div key={idx}>
-                              <h3 className="font-semibold text-lg mb-2">{section.title}</h3>
+                              <h4 className="font-semibold mb-2">{section.title}</h4>
                               <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                                 {section.items.map((item, itemIdx) => (
                                   <li key={itemIdx}>{item}</li>

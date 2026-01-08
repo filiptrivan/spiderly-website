@@ -40,8 +40,8 @@ const HomePage = async () => {
       <Companies />
       <Explanation />
       <TechStackSection />
-      <ReviewsSection />
       <KeyBenefitsSection />
+      <ReviewsSection />
       <FounderSection />
       <CTASection />
     </div>

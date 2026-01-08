@@ -21,10 +21,11 @@ export const FounderSection = () => {
             </p>
 
             <p>
-              Spiderly is valuable in the era of LLMs like ChatGPT, Grok, and Claude because these
-              tools still lack the ability to build deeply structured projects. Spiderly handles the
-              big picture and helps by letting you isolate small chunks of specific business logic,
-              for which you can then ask LLMs to assist you more effectively.
+              Spiderly is valuable in the era of LLMs like ChatGPT, Claude, Gemini, and Grok,
+              because these tools still lack the ability to build deeply structured projects.
+              Spiderly handles the big picture and helps by letting you isolate small chunks of
+              specific business logic, for which you can then ask LLMs to assist you more
+              effectively.
             </p>
 
             <p>

@@ -1,13 +1,15 @@
 export const FAQ = [
   {
     question: 'How to install Spiderly?',
-    answer: 'You can find the installation instructions here.',
+    answer: 'You can find the installation instructions',
     link: '/docs/getting-started',
+    linkText: 'here.',
   },
   {
     question: 'What are the prerequisites for using Spiderly?',
-    answer: 'The prerequisites are listed in the first step of the getting-started guide.',
+    answer: 'The prerequisites are listed in the first step of the',
     link: '/docs/getting-started',
+    linkText: 'getting-started guide.',
   },
   {
     question: 'What parts of the app does Spiderly Source Generators generate?',
@@ -38,8 +40,9 @@ export const FAQ = [
   {
     question: 'Is Spiderly open-source?',
     answer:
-      "Yes, Spiderly is open-source and released under the MIT License. You're free to use it in personal, commercial, or open-source projects.",
+      "Yes, Spiderly is open-source and released under the MIT License. You're free to use it in personal, commercial, or open-source projects. View it on",
     link: 'https://github.com/filiptrivan/spiderly',
+    linkText: 'GitHub.',
     externalLink: true,
   },
   {
@@ -66,7 +69,7 @@ export const FAQ = [
         },
         {
           feature: 'OS support',
-          spiderly: 'Windows only',
+          spiderly: 'Cross-platform (Windows, Linux, macOS)',
           competitor: 'Cross-platform (Windows, Linux, macOS)',
         },
       ],
@@ -106,20 +109,15 @@ export const FAQ = [
         },
         {
           feature: 'OS support',
-          spiderly: 'Windows only',
+          spiderly: 'Cross-platform (Windows, Linux, macOS)',
           competitor: 'Cross-platform (Windows, Linux, macOS)',
         },
       ],
     },
   },
   {
-    question: 'Does Spiderly work on Linux operating systems?',
+    question: 'What operating systems does Spiderly support?',
     answer:
-      'No, Spiderly is currently not compatible with Linux. We are focusing on Windows support for now, but Linux support may be added in the future.',
-  },
-  {
-    question: 'Does Spiderly work on macOS?',
-    answer:
-      'No, Spiderly is currently not compatible with macOS. We are focusing on Windows support for now, but macOS support may be added in the future.',
+      'Spiderly is fully cross-platform and works on Windows, Linux, and macOS.',
   },
 ];

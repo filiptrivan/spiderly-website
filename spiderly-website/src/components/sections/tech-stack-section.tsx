@@ -1,17 +1,14 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
-import { SectionHeading } from '@/components/ui/section-heading';
 import { TECH_STACK } from '@/utils/constants/misc';
 import Image from 'next/image';
 import { Card } from '../ui/card';
+import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-description';
 
 export const TechStackSection = () => {
   return (
     <MaxWidthWrapper>
       <AnimationContainer>
-        <SectionHeading
-          title="Generated App Tech Stack"
-          description="The code generator is driven by attributes applied to EF Core entities and their properties. Implemented using C# Source Generators, it triggers generation on every keystroke for classes within the specified namespace, so it doesn't slow down your build by generating all files at once."
-        />
+        <SectionHeadingWithoutDescription title="Spiderly Tech Stack" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {TECH_STACK.map((tech, index) => (
             <Card key={index} className="flex flex-col items-center justify-center p-6 md:p-8">

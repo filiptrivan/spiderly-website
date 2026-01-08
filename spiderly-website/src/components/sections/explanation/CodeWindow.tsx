@@ -46,26 +46,17 @@ export const CodeWindow = ({
           <div className="text-white">{'{'}</div>
 
           {/* Properties */}
-          {properties.length === 0 && !isTriggered && (
-            <div className="ml-4 my-4">
-              <Button
-                onClick={onAddProperties}
-                variant="primary"
-                size="sm"
-                className="w-full animate-pulse"
-              >
-                Add Dummy Properties
-              </Button>
-            </div>
-          )}
-
           {properties.map((prop, index) => (
             <div key={index}>
               <div
                 className={`ml-4 transition-all duration-300 ${
-                  isTriggered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                  index === 0
+                    ? 'opacity-100 translate-y-0'
+                    : isTriggered
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-2'
                 }`}
-                style={{ transitionDelay: `${index * 150}ms` }}
+                style={{ transitionDelay: index === 0 ? '0ms' : `${(index - 1) * 150}ms` }}
               >
                 {prop.attributes && prop.attributes.length > 0 && (
                   <div className="text-gray-500">
@@ -92,6 +83,22 @@ export const CodeWindow = ({
               {index < properties.length - 1 && <div className="h-2" />}
             </div>
           ))}
+
+          {/* Add Properties Button - shows after first property but before other properties are added */}
+          {!isTriggered && (
+            <div className="ml-4 my-4">
+              <div className="h-2" />
+
+              <Button
+                onClick={onAddProperties}
+                variant="primary"
+                size="sm"
+                className="w-full animate-pulse"
+              >
+                Add More Properties
+              </Button>
+            </div>
+          )}
 
           <div className="text-white">{'}'}</div>
         </div>

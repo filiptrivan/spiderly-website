@@ -1,22 +1,19 @@
 'use client';
 
+import { SectionHeadingWithoutDescription } from '@/components/ui/section-heading-without-description';
 import { useRef, useState } from 'react';
 import AnimationContainer from '../../global/animation-container';
 import SectionContainer from '../../global/max-width-wrapper';
-import { SectionHeading } from '../../ui/section-heading';
 import { CodeWindow } from './CodeWindow';
 import { PreviewCard } from './PreviewCard';
 import { ProductPreview } from './ProductPreview';
 import { TerminalWindow } from './TerminalWindow';
 
 const terminalSteps = [
-  { type: 'loading', text: 'Generating files for the app...' },
-  { type: 'success', text: '[OK] Files generated successfully.' },
-  { type: 'loading', text: 'Creating and updating the database...' },
-  { type: 'success', text: '[OK] Created and updated the database successfully.' },
-  { type: 'loading', text: 'Installing packages...' },
-  { type: 'success', text: '[OK] Packages installed successfully.' },
-  { type: 'success', text: '[OK] Spiderly app created successfully!' },
+  { type: 'success', text: 'Files generated successfully.' },
+  { type: 'success', text: 'Created and updated the database successfully.' },
+  { type: 'success', text: 'Packages installed successfully.' },
+  { type: 'success', text: 'Spiderly app created successfully!' },
 ];
 
 const productProperties = [
@@ -85,15 +82,16 @@ export const Explanation = () => {
   return (
     <SectionContainer>
       <AnimationContainer>
-        <SectionHeading
-          title="How Does Spiderly Work?"
-          description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus veritatis repellendus non excepturi."
-        />
+        <SectionHeadingWithoutDescription title="How Does Spiderly Work?" />
 
         {/* Step 01 */}
-        <h3 className="text-muted-foreground font-bold text-xl md:text-3xl mb-4 lg:mb-5">
-          01. {/* Scaffold a new Spiderly application */}
+        <h3 className="mb-2 lg:mb-4 md:text-3xl text-xl font-medium">
+          01. Create Spiderly Application
         </h3>
+        <p className="mb-6 lg:mb-8 text-muted-foreground">
+          With its CLI tool, Spiderly helps you create a starter template application that is
+          suitable for further use of the Spiderly library.
+        </p>
         <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-[444px] gap-4 lg:gap-6">
           <TerminalWindow
             isTriggered={isTriggered}
@@ -112,17 +110,21 @@ export const Explanation = () => {
 
         {/* Step 02 - Only show after Step 01 is complete */}
         {isComplete && (
-          <div className="mt-8 lg:mt-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <h3 className="text-muted-foreground font-bold text-xl md:text-3xl mb-4 lg:mb-5">
-              02.{' '}
-              {/* Incremental Generation of Everything for CRUD Operations On Class Creation/Edit */}
-            </h3>
+          <div className="mt-12 lg:mt-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <h3 className="mb-2 lg:mb-4 md:text-3xl text-xl font-medium">02. Define Your Class</h3>
+            <p className="mb-6 lg:mb-8 text-muted-foreground">
+              Simply define your class with properties and attributes. Spiderly generates everything
+              needed for CRUD operations, from frontend to backend. Spiderly generator is
+              implemented using C# Source Generators, it triggers generation on every file save for
+              classes within the specified namespace, so it doesn`t slow down your build by
+              generating all files at once.
+            </p>
             <div className="flex flex-col lg:flex-row lg:h-[444px] gap-4 lg:gap-6">
               <CodeWindow
                 isTriggered={step2Triggered}
                 onAddProperties={triggerStep2}
                 onUndo={handleUndoStep2}
-                properties={step2Triggered ? productProperties : []}
+                properties={step2Triggered ? productProperties : [productProperties[0]]}
                 className={`${explanationCard} w-full h-full lg:w-[460px] overflow-auto`}
               />
               <ProductPreview

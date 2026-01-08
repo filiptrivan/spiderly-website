@@ -1,6 +1,6 @@
 import { AnimationContainer, MaxWidthWrapper } from '@/components';
-import { SectionHeading } from '@/components/ui/section-heading';
 import { Card } from '../ui/card';
+import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-description';
 
 const BENEFITS: { title: string; description: string }[] = [
   {
@@ -39,10 +39,7 @@ export const KeyBenefitsSection = () => {
   return (
     <MaxWidthWrapper>
       <AnimationContainer>
-        <SectionHeading
-          title="Key Benefits"
-          description="Discover how Spiderly accelerates development and improves code quality."
-        />
+        <SectionHeadingWithoutDescription title="Key Benefits" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {BENEFITS.map((benefit, index) => {
             return (
