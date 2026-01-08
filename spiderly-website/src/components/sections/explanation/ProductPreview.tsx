@@ -55,7 +55,7 @@ export const ProductPreview = ({ hasProperties, className = '' }: ProductPreview
         <FeatureGrid
           title="Generated Code For Class Summary"
           features={crudFeatures}
-          learnMoreText="Learn more about CRUD incremental generation"
+          learnMoreText="Learn more about CRUD generation"
           learnMoreHref="/features/crud-generation"
         />
       </FeatureOverlay>

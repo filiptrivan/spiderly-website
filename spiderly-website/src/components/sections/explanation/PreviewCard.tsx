@@ -50,7 +50,7 @@ export const PreviewCard = ({ isComplete, isTriggered, className = '' }: Preview
           <FeatureGrid
             title="Created App Summary"
             features={starterFeatures}
-            learnMoreText="Learn more about Spiderly app initialization"
+            learnMoreText="Learn more about Spiderly app creation"
             learnMoreHref="/features/create-spiderly-app"
           />
         </FeatureOverlay>
