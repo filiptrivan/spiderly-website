@@ -1,55 +1,27 @@
 import { Loader2 } from 'lucide-react';
-import Image from 'next/image';
 import { FeatureGrid } from './FeatureGrid';
-import { FeatureOverlay } from './FeatureOverlay';
-import { useHoverOverlay } from './useHoverOverlay';
+import { HoverableImage } from './HoverableImage';
+import { starterFeatures } from './constants';
 
-interface PreviewCardProps {
+interface Step01PreviewCardProps {
   isComplete: boolean;
   isTriggered: boolean;
   className?: string;
 }
 
-const starterFeatures = [
-  {
-    title: 'Database Initialized',
-    description: 'Complete database setup and configuration',
-  },
-  {
-    title: 'Built In Authentication',
-    description: 'Including third party (e.g., Google sign-in)',
-  },
-  {
-    title: 'Built In Authorization',
-    description: 'Roles and permissions management',
-  },
-  {
-    title: 'Built In Notifications',
-    description: 'Notify users inside your Spiderly app',
-  },
-];
-
-export const PreviewCard = ({ isComplete, isTriggered, className = '' }: PreviewCardProps) => {
-  const { showOverlay, isLeaving, handleMouseEnter, handleMouseLeave } = useHoverOverlay();
-
+export const Step01PreviewCard = ({
+  isComplete,
+  isTriggered,
+  className = '',
+}: Step01PreviewCardProps) => {
   if (isComplete && isTriggered) {
     return (
-      <div
-        className={`${className} relative group`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <Image
-          src="/assets/dashboard-dark.svg"
-          alt="Spiderly Dashboard"
-          width={1000}
-          height={1000}
-          className="w-full h-full animate-in fade-in zoom-in-95 duration-700"
-        />
-        <FeatureOverlay show={showOverlay} isLeaving={isLeaving}>
-          <FeatureGrid title="Created App Summary" features={starterFeatures} />
-        </FeatureOverlay>
-      </div>
+      <HoverableImage
+        src="/assets/dashboard-dark.svg"
+        alt="Spiderly Dashboard"
+        className={`${className} animate-in fade-in zoom-in-95 duration-700`}
+        overlayContent={<FeatureGrid title="Created App Summary" features={starterFeatures} />}
+      />
     );
   }
 
