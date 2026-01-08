@@ -6,7 +6,7 @@ import { Step01TextContent } from './Step01TextContent';
 
 export const Explanation = () => {
   return (
-    <SectionContainer>
+    <SectionContainer id="features">
       <AnimationContainer>
         <SectionHeadingWithoutDescription title="How Does Spiderly Work?" />
         <Step01TextContent />

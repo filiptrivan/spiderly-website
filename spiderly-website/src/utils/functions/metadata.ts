@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const generateMetadata = ({
-  title = `Spiderly - The Link Management Platform for Businesses`,
-  description = `Spiderly is the link management platform for businesses. It helps you build, brand, and track your links.`,
+  title = `.NET (C#) Web App Boilerplate Code Generator | Spiderly`,
+  description = `Spiderly is a free open-source .NET (C#) boilerplate code generator that turns EF Core model into fully customizable .NET (C#) + Angular web application.`,
   image = '/thumbnail.png',
   icons = [
     {
