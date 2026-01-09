@@ -7,7 +7,8 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { cn, NAV_LINKS } from '@/utils';
 import { Menu, Star, X } from 'lucide-react';
 import Link from 'next/link';
@@ -29,6 +30,9 @@ const MobileNavbar = () => {
           </Button>
         </SheetTrigger>
         <SheetContent className="w-screen">
+          <VisuallyHidden>
+            <SheetTitle>Navigation Menu</SheetTitle>
+          </VisuallyHidden>
           <SheetClose
             asChild
             className="absolute top-3 right-5 bg-background z-20 flex items-center justify-center"

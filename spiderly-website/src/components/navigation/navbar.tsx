@@ -21,7 +21,7 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        'sticky top-0 inset-x-0 h-14 w-full border-b z-49 select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
+        'sticky top-0 inset-x-0 h-14 w-full border-b z-10 select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
       )}
     >
       <AnimationContainer reverse className="size-full">

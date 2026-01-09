@@ -9,16 +9,23 @@ interface AnimationContainerProps {
   className?: string;
 }
 
-const AnimationContainer = ({ children, className = '', reverse, delay = 0 }: AnimationContainerProps) => {
+const AnimationContainer = ({
+  children,
+  className = '',
+  reverse,
+  delay = 0,
+}: AnimationContainerProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (ref.current) {
