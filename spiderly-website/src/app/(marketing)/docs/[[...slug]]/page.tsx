@@ -1,18 +1,9 @@
 import { source } from '@/lib/source';
-import {
-  DocsPage,
-  DocsBody,
-  DocsDescription,
-  DocsTitle,
-} from 'fumadocs-ui/page';
-import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page';
+import { notFound } from 'next/navigation';
 
-export default async function Page({
-  params,
-}: {
-  params: { slug?: string[] };
-}) {
+export default async function Page({ params }: { params: { slug?: string[] } }) {
   const page = source.getPage(params.slug);
   if (!page) notFound();
 

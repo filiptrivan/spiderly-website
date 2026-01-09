@@ -12,7 +12,7 @@ export const SectionContainer = ({ className, children, id }: Props) => {
     <section
       id={id}
       className={cn(
-        'mx-auto md:max-w-screen-xl px-4 md:px-10 lg:px-20 py-16 md:py-20 lg:py-28',
+        'mx-auto md:max-w-7xl px-4 md:px-10 lg:px-20 py-16 md:py-20 lg:py-28',
         className,
       )}
     >

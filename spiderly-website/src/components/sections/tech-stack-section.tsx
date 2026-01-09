@@ -1,5 +1,6 @@
 import { AnimationContainer, SectionContainer } from '@/components';
 import { TECH_STACK } from '@/utils/constants/misc';
+import React from 'react';
 import { Card } from '../ui/card';
 import { SectionHeadingWithoutDescription } from '../ui/section-heading-without-description';
 
@@ -14,14 +15,14 @@ export const TechStackSection = () => {
             <Card key={index} className="flex flex-col items-center justify-center p-6 md:p-8">
               <div className="flex items-center gap-3 mb-4">
                 {tech.options.map((option, optIndex) => (
-                  <div key={`${index}-${optIndex}`}>
-                    <div key={optIndex} className="flex justify-center w-12 h-12 lg:w-14 lg:h-14">
+                  <React.Fragment key={optIndex}>
+                    <div className="flex justify-center w-12 h-12 lg:w-14 lg:h-14">
                       <img src={option.logo} alt={option.name} title={`${option.name} Logo`} />
                     </div>
                     {optIndex < tech.options.length - 1 && (
                       <span className="text-muted-foreground font-medium text-sm">or</span>
                     )}
-                  </div>
+                  </React.Fragment>
                 ))}
               </div>
               <div className="text-center">

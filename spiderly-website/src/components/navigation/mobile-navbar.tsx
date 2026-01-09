@@ -39,7 +39,7 @@ const MobileNavbar = () => {
           </SheetClose>
           <div className="flex flex-col items-start w-full py-2 mt-10">
             <ul className="flex flex-col items-start w-full">
-              <Accordion type="single" collapsible className="!w-full">
+              <Accordion type="single" collapsible className="w-full!">
                 {NAV_LINKS.map((link) => (
                   <AccordionItem key={link.title} value={link.title} className="last:border-none">
                     {link.dropdown ? (
@@ -109,7 +109,7 @@ const ListItem = React.forwardRef<
         {...props}
       >
         <div className="flex items-center space-x-2 text-foreground">
-          <h6 className="text-sm !leading-none">{title}</h6>
+          <h6 className="text-sm leading-none!">{title}</h6>
         </div>
       </Link>
     </li>

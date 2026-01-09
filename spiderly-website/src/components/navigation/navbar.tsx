@@ -21,11 +21,11 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        'sticky top-0 inset-x-0 h-14 w-full border-b z-[99999] select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
+        'sticky top-0 inset-x-0 h-14 w-full border-b z-49 select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
       )}
     >
       <AnimationContainer reverse className="size-full">
-        <div className="flex items-center justify-between h-full w-full max-w-full md:max-w-screen-xl mx-auto px-4 md:px-12 lg:px-20">
+        <div className="flex items-center justify-between h-full w-full max-w-full md:max-w-7xl mx-auto px-4 md:px-12 lg:px-20">
           <div className="flex items-center space-x-12">
             <Link href="/" className="flex items-center gap-2" title="Spiderly Logo">
               <img src={'/icons/spiderly-logo.svg'} width={26} height={26} alt="Spiderly Logo" />
@@ -59,9 +59,7 @@ const Navbar = () => {
                       </>
                     ) : link.href ? (
                       <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href={link.href}>
-                          {link.title}
-                        </Link>
+                        <Link href={link.href}>{link.title}</Link>
                       </NavigationMenuLink>
                     ) : null}
                   </NavigationMenuItem>
@@ -112,7 +110,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="flex items-center space-x-2 text-neutral-300">
-            <h6 className="text-sm font-medium !leading-none">{title}</h6>
+            <h6 className="text-sm font-medium leading-none!">{title}</h6>
           </div>
         </Link>
       </NavigationMenuLink>

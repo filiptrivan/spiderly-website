@@ -85,7 +85,7 @@ const Footer = () => {
           </p>
         </div>
 
-        <div className="h-[20rem] lg:h-[20rem] hidden md:flex items-center justify-center">
+        <div className="h-80 lg:h-80 hidden md:flex items-center justify-center">
           <TextHoverEffect text="SPIDERLY" />
         </div>
       </AnimationContainer>

@@ -18,7 +18,7 @@ const HomePage = async () => {
         title={
           <>
             .NET (C#) Web App Boilerplate{' '}
-            <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
+            <span className="text-transparent bg-linear-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
               Code Generator
             </span>
           </>

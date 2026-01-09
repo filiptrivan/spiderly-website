@@ -9,10 +9,8 @@ interface FeatureOverlayProps {
 export const FeatureOverlay = ({ show, isLeaving, children }: FeatureOverlayProps) => {
   return (
     <div
-      className={`absolute inset-0 bg-background/95 backdrop-blur-sm transition-all duration-300 flex flex-col overflow-auto ${
-        show && !isLeaving
-          ? 'opacity-100 scale-100'
-          : 'opacity-0 scale-95 pointer-events-none'
+      className={`absolute inset-0 bg-background/95 backdrop-blur-xs transition-all duration-300 flex flex-col overflow-auto ${
+        show && !isLeaving ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
       }`}
     >
       {children}

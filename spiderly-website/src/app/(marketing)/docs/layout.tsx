@@ -6,8 +6,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout
       tree={source.pageTree}
-      nav={{
-        title: 'Spiderly Docs',
+      themeSwitch={{
+        enabled: false,
       }}
     >
       {children}

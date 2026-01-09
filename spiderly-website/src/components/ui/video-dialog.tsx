@@ -1,7 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { PlayIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -17,6 +18,9 @@ export const VideoDialogButton = () => {
 
       <Dialog open={isVideoDialogOpen} onOpenChange={setIsVideoDialogOpen}>
         <DialogContent className="max-w-5xl border-0 p-2">
+          <VisuallyHidden>
+            <DialogTitle>Spiderly in 120 Seconds</DialogTitle>
+          </VisuallyHidden>
           <div className="relative w-full pt-[56.25%] mt-10">
             <iframe
               className="absolute top-0 left-0 w-full h-full"
