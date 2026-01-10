@@ -2,6 +2,8 @@
   "title": "Documentation",
   "pages": [
     "getting-started",
+    "set-up-emailing",
+    "set-up-google-authentication",
     "add-new-entity",
     "attributes",
     "entity-validation",

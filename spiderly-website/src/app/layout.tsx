@@ -1,4 +1,4 @@
-import { Providers } from '@/components';
+import { Footer, Navbar, Providers } from '@/components';
 import '@/styles/globals.css';
 import { aeonik, cn, generateMetadata, inter } from '@/utils';
 
@@ -14,7 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           inter.variable,
         )}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

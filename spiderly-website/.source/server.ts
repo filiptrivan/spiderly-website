@@ -1,7 +1,9 @@
 // @ts-nocheck
-import { default as __fd_glob_8 } from "../content/docs/meta.json?collection=meta"
-import * as __fd_glob_7 from "../content/docs/ui-customization.mdx?collection=docs"
-import * as __fd_glob_6 from "../content/docs/translate-spiderly-app.mdx?collection=docs"
+import { default as __fd_glob_10 } from "../content/docs/meta.json?collection=meta"
+import * as __fd_glob_9 from "../content/docs/ui-customization.mdx?collection=docs"
+import * as __fd_glob_8 from "../content/docs/translate-spiderly-app.mdx?collection=docs"
+import * as __fd_glob_7 from "../content/docs/set-up-google-authentication.mdx?collection=docs"
+import * as __fd_glob_6 from "../content/docs/set-up-emailing.mdx?collection=docs"
 import * as __fd_glob_5 from "../content/docs/index.mdx?collection=docs"
 import * as __fd_glob_4 from "../content/docs/getting-started.mdx?collection=docs"
 import * as __fd_glob_3 from "../content/docs/entity-validation.mdx?collection=docs"
@@ -16,6 +18,6 @@ const create = server<typeof Config, import("fumadocs-mdx/runtime/types").Intern
   }
 }>({"doc":{"passthroughs":["extractedReferences"]}});
 
-export const docs = await create.doc("docs", "content/docs", {"add-new-entity.mdx": __fd_glob_0, "attributes.mdx": __fd_glob_1, "entity-authorization.mdx": __fd_glob_2, "entity-validation.mdx": __fd_glob_3, "getting-started.mdx": __fd_glob_4, "index.mdx": __fd_glob_5, "translate-spiderly-app.mdx": __fd_glob_6, "ui-customization.mdx": __fd_glob_7, });
+export const docs = await create.doc("docs", "content/docs", {"add-new-entity.mdx": __fd_glob_0, "attributes.mdx": __fd_glob_1, "entity-authorization.mdx": __fd_glob_2, "entity-validation.mdx": __fd_glob_3, "getting-started.mdx": __fd_glob_4, "index.mdx": __fd_glob_5, "set-up-emailing.mdx": __fd_glob_6, "set-up-google-authentication.mdx": __fd_glob_7, "translate-spiderly-app.mdx": __fd_glob_8, "ui-customization.mdx": __fd_glob_9, });
 
-export const meta = await create.meta("meta", "content/docs", {"meta.json": __fd_glob_8, });
+export const meta = await create.meta("meta", "content/docs", {"meta.json": __fd_glob_10, });

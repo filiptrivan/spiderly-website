@@ -1,34 +1,37 @@
-import { Footer, Navbar } from '@/components';
+import { HeroSection } from '@/components/sections/hero-section';
 import { Button } from '@/components/ui/button';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: '404 - Page Not Found | Spiderly',
+  description: "The page you're looking for doesn't exist or has been moved.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 const NotFound = () => {
   return (
-    <main className="relative flex flex-col items-center justify-center px-4">
-      <Navbar />
-
-      <div className="flex flex-col items-center justify-center mx-auto h-screen">
-        <div className="flex items-center justify-center h-full flex-col">
-          <span className="text-sm font-medium px-3.5 py-1 rounded-md bg-gradient-to-br from-violet-400 to-purple-600 text-neutral-50 not-found">
+    <HeroSection
+      title={
+        <>
+          <span className="text-transparent bg-linear-to-r from-violet-500 to-fuchsia-500 bg-clip-text">
             404
-          </span>
-          <h1 className="text-3xl md:text-5xl font-bold text-neutral-50 mt-5">Not Found</h1>
-          <p className="text-base text-neutral-400 font-medium mt-5 text-center mx-auto max-w-xl">
-            The page you are looking for does not exist. <br /> But don&apos;t worry, we&apos;ve got
-            you covered. You can{' '}
-            <Link href="/resources/help" className="text-foreground">
-              contact us
-            </Link>
-            .
-          </p>
-          <Link href="/">
-            <Button className="mt-8">Back to homepage</Button>
-          </Link>
-        </div>
-      </div>
-
-      <Footer />
-    </main>
+          </span>{' '}
+          Page Not Found
+        </>
+      }
+      description="The page you're looking for doesn't exist or has been moved. Let's get you back on track to generating your web apps with Spiderly."
+      buttons={
+        <>
+          <Button asChild>
+            <Link href={'/'}>Go to Homepage</Link>
+          </Button>
+        </>
+      }
+    />
   );
 };
 
