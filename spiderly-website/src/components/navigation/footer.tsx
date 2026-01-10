@@ -15,12 +15,12 @@ const Footer = () => {
                 <h3 className="text-base font-medium text-white">Product</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="mt-2">
-                    <Link
-                      href="/#features"
+                    <a
+                      href="#features"
                       className="hover:text-foreground transition-all duration-300"
                     >
                       Features
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </div>
