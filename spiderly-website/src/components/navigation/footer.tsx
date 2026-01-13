@@ -16,7 +16,7 @@ const Footer = () => {
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="mt-2">
                     <a
-                      href="#features"
+                      href="/#features"
                       className="hover:text-foreground transition-all duration-300"
                     >
                       Features
@@ -28,7 +28,10 @@ const Footer = () => {
                 <h3 className="text-base font-medium text-white">Resources</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="">
-                    <Link href="" className="hover:text-foreground transition-all duration-300">
+                    <Link
+                      href="/docs"
+                      className="hover:text-foreground transition-all duration-300"
+                    >
                       Docs
                     </Link>
                   </li>
@@ -45,15 +48,12 @@ const Footer = () => {
                 <h3 className="text-base font-medium text-white">Legal</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="mt-2">
-                    <Link href="/" className="hover:text-foreground transition-all duration-300">
+                    <Link href="/terms-of-service" className="hover:text-foreground transition-all duration-300">
                       Terms of Service
                     </Link>
                   </li>
                   <li className="mt-2">
-                    <Link
-                      href="/resources/help"
-                      className="hover:text-foreground transition-all duration-300"
-                    >
+                    <Link href="/privacy-policy" className="hover:text-foreground transition-all duration-300">
                       Privacy Policy
                     </Link>
                   </li>
@@ -63,17 +63,24 @@ const Footer = () => {
                 <h3 className="text-base font-medium text-white">Socials</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="">
-                    <Link href="" className="hover:text-foreground transition-all duration-300">
+                    <a
+                      href="https://x.com/spiderly_dev"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-foreground transition-all duration-300"
+                    >
                       Twitter
-                    </Link>
+                    </a>
                   </li>
                   <li className="mt-2">
-                    <Link
-                      href="/privacy"
+                    <a
+                      href="https://www.youtube.com/@spiderly-dev"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:text-foreground transition-all duration-300"
                     >
                       YouTube
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </div>

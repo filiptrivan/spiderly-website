@@ -11,23 +11,43 @@ By default, all entities require authorization for Create, Read, Update, and Del
 
 If your entity requires access control, follow the steps in this tutorial to configure proper authorization.
 
-## Insert Permissions into the Database
+## Add Permissions to Your Application
 
-1. Open **SQL Server Management Studio (SSMS)**.
-2. Connect to your SQL Server instance (see [Step 9 in the Getting Started guide](/docs/getting-started#connect-to-sql-server)).
-3. Locate your application database in the Object Explorer.
-4. Right-click the database and select *New Query*.
-5. Execute the SQL commands below, replacing `YourEntityName` with the actual entity name:
+Navigate to your `ApplicationDbContext.cs` file:
 
-```sql
-BEGIN TRANSACTION;
+```
+Backend\{your-app-name}.Infrastructure\{your-app-name}ApplicationDbContext.cs
+```
 
-INSERT INTO Permission (Name, Description, Code) VALUES (N'View YourEntityName', NULL, N'ReadYourEntityName');
-INSERT INTO Permission (Name, Description, Code) VALUES (N'Edit existing YourEntityName', NULL, N'UpdateYourEntityName');
-INSERT INTO Permission (Name, Description, Code) VALUES (N'Add new YourEntityName', NULL, N'InsertYourEntityName');
-INSERT INTO Permission (Name, Description, Code) VALUES (N'Delete YourEntityName', NULL, N'DeleteYourEntityName');
+In the `SeedData` method, add your entity permissions to the permissions array. Replace `YourEntityName` with your actual entity name:
 
-COMMIT;
+```csharp
+private static void SeedData(ModelBuilder modelBuilder)
+{
+    Permission[] permissions =
+    [
+        // ... existing permissions ...
+
+        // Add your new entity permissions
+        new Permission { Id = 13, Name = "View YourEntityName", Code = "ReadYourEntityName" },
+        new Permission { Id = 14, Name = "Edit existing YourEntityName", Code = "UpdateYourEntityName" },
+        new Permission { Id = 15, Name = "Add new YourEntityName", Code = "InsertYourEntityName" },
+        new Permission { Id = 16, Name = "Delete YourEntityName", Code = "DeleteYourEntityName" },
+    ];
+
+    modelBuilder.Entity<Permission>().HasData(permissions);
+
+    // ... rest of seed data ...
+}
+```
+
+**Important**: Make sure to use sequential IDs that don't conflict with existing permissions.
+
+After adding the permissions, create and apply a migration:
+
+```bash
+dotnet ef migrations add AddYourEntityNamePermissions --project Backend/{your-app-name}.Infrastructure --startup-project Backend/{your-app-name}.API
+dotnet ef database update --project Backend/{your-app-name}.Infrastructure --startup-project Backend/{your-app-name}.API
 ```
 
 ## Assign Permissions to a Role
