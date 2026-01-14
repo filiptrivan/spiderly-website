@@ -11,11 +11,11 @@ interface Step02PreviewCardProps {
 
 export const Step02PreviewCard = ({ hasProperties, className = '' }: Step02PreviewCardProps) => {
   const imageSrc = hasProperties
-    ? '/assets/product-page-with-properties.svg'
-    : '/assets/product-page.svg';
+    ? '/assets/Spiderly_App_Details_Page_With_More_Fields.svg'
+    : '/assets/Spiderly_App_Simple_Details_Page.svg';
   const imageAlt = hasProperties
-    ? 'Class UI Admin Page with Properties'
-    : 'Class UI Admin Page';
+    ? 'Class UI Admin Page With More Fields'
+    : 'Class UI Simple Admin Page';
 
   return (
     <HoverableImage

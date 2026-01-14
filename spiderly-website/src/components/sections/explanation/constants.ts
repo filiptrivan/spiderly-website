@@ -8,8 +8,6 @@ export const terminalSteps = [
 export const productProperties = [
   { name: 'Name', type: 'string' },
   { name: 'Active', type: 'bool' },
-  { name: 'Text', type: 'string', attributes: [{ name: 'UIControlType', value: 'TextArea' }] },
-  { name: 'Html', type: 'string', attributes: [{ name: 'UIControlType', value: 'Editor' }] },
   { name: 'Image', type: 'string', attributes: [{ name: 'BlobName' }] },
 ];
 

@@ -26,7 +26,7 @@ const PrivacyPolicyPage = () => {
             <h2>1. Introduction</h2>
             <p>
               This Privacy Policy describes how Spiderly (the &quot;Library&quot;) handles
-              information when you use it as a developer tool. Spiderly is an open-source code
+              information when you use it as a developer tool. Spiderly is a free open-source code
               generation framework distributed via NuGet and GitHub that operates entirely on your
               local development machine.
             </p>
@@ -415,7 +415,7 @@ const PrivacyPolicyPage = () => {
             <p>Review the privacy policies of libraries you use in your projects.</p>
 
             <h2>18. Contact and Questions</h2>
-            <p>Spiderly is an open-source project. For questions about this Privacy Policy:</p>
+            <p>Spiderly is a free open-source project. For questions about this Privacy Policy:</p>
             <ul>
               <li>Open an issue on the GitHub repository</li>
               <li>Contact the maintainers through channels listed in the repository</li>

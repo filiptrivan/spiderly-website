@@ -1,5 +1,5 @@
 ---
-title: Translate Spiderly App
+title: Translation
 description: Learn how to implement internationalization in your Spiderly application using Transloco and .resx resource files.
 ---
 
@@ -96,7 +96,7 @@ By default, Spiderly uses English (`en`) as the primary language. If you want to
 
 ### Language Tag Update:
 
-1. In the backend project opened with Visual Studio, open the `YourAppName.WebAPI\Startup.cs` file and update the `SpiderlyConfigureServices` call by passing your desired language tag:
+1. Open the `Backend\YourAppName.WebAPI\Startup.cs` file and update the `SpiderlyConfigureServices` call by passing your desired language tag:
 
 ```csharp
 public class Startup
@@ -108,7 +108,7 @@ public class Startup
 }
 ```
 
-2. In the frontend project opened with Visual Studio Code, open the `src\app\app.config.ts` file and update the `provideSpiderlyTransloco` configuration:
+2. Open the `Frontend\src\app\app.config.ts` file and update the `provideSpiderlyTransloco` configuration:
 
 ```typescript
 export const appConfig: ApplicationConfig = {
@@ -132,7 +132,7 @@ export const appConfig: ApplicationConfig = {
 
 ### Add a Translation Key-Value Pair
 
-In the frontend project opened with Visual Studio Code, open the appropriate language file under `src\assets\i18n` folder, for example: `en.json`.
+Open the appropriate language file under `Frontend\src\assets\i18n` folder, for example: `en.json`.
 
 Then, add a new key-value entry like this anywhere in the file: `"KeyForTranslation": "Translated text"`.
 
@@ -199,7 +199,7 @@ Let's say you want to throw a translated exception message, based on the active 
 throw new Exception(Terms.YourExceptionKey);
 ```
 
-If that's the case, in the backend project opened with Visual Studio, open the `YourAppName.Shared\Resources\Terms.resx` file and add a new entry with the key `YourExceptionKey` and a culture-specific value, for example: `Your exception message.`
+If that's the case, open the `Backend\YourAppName.Shared\Resources\Terms.resx` file and add a new entry with the key `YourExceptionKey` and a culture-specific value, for example: `Your exception message.`
 
 Spiderly will automatically pick the correct translation at runtime based on the active culture settings.
 

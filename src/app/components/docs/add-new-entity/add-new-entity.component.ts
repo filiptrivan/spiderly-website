@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { DocsStep } from '../layout/docs-layout.component';
 import { HighlightModule } from 'ngx-highlightjs';
+import { ButtonModule } from 'primeng/button';
 import { DocsTemplateComponent } from '../docs-template/docs-template.component';
+import { DocsStep } from '../layout/docs-layout.component';
 
 @Component({
   selector: 'app-add-new-entity',
@@ -72,20 +72,16 @@ namespace YourAppName.Business.Entities
         title: 'Add Your Entity to the Database',
         fragment: 'add-your-entity-to-the-database',
         description: `
-        In the backend project opened with Visual Studio:
-        <ol>
-          <li>Open <b>Package Manager Console</b> via <em>View → Other Windows → Package Manager Console</em> (or press <span class="code-block">Ctrl + \`</span>).</li>
-          <li>Inside opened <b>Package Manager Console</b> window set <span class="code-block">YourAppName.Infrastructure</span> as the <b>Default Project</b> in the dropdown.</li>
-          <li>Run the command to create a migration:</li>
-        </ol>
+        Open a terminal in the <span class="code-block">Backend</span> folder and run the following commands to create and apply a migration:
+        <br/><br/>
+        <b>Create a migration:</b>
         `,
-        terminalMessages: [{ text: 'add-migration YourMigrationScriptName', showCopyButton: true }],
+        terminalMessages: [{ text: 'dotnet ef migrations add YourMigrationScriptName --project YourAppName.Infrastructure --startup-project YourAppName.WebAPI', showCopyButton: true }],
         description2: `
-        <ol start="4">
-          <li>Run the command to apply the migration to the database:</li>
-        </ol>
+        <br/>
+        <b>Apply the migration to the database:</b>
         `,
-        terminalMessages2: [{ text: 'update-database', showCopyButton: true }],
+        terminalMessages2: [{ text: 'dotnet ef database update --project YourAppName.Infrastructure --startup-project YourAppName.WebAPI', showCopyButton: true }],
       },
       {
         title: 'Generate Components',

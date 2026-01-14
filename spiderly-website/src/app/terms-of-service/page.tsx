@@ -32,7 +32,7 @@ const TermsOfServicePage = () => {
 
             <h2>2. Description of Service</h2>
             <p>
-              Spiderly is an open-source code generation framework that helps developers create
+              Spiderly is a free open-source code generation framework that helps developers create
               full-stack web applications using .NET (C#) and Angular. The Library operates as a
               development-time tool that generates source code based on your Entity Framework Core
               models and configuration.

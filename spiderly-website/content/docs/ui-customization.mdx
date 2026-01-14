@@ -1,5 +1,5 @@
 ---
-title: Customizing Spiderly Application's UI
+title: UI Customization
 description: Learn how to customize app name, logo, favicon, theme colors, layout, and UI components in your Spiderly application.
 ---
 
@@ -11,13 +11,13 @@ This step-by-step guide will show you how to customize key UI elements of your S
 
 ## Change the App Name
 
-In the frontend project opened with Visual Studio Code, open the `src\environments\environment.ts` file and change the value of `companyName` to your the desired app name.
+Open the `Frontend\src\environments\environment.ts` file and change the value of `companyName` to your the desired app name.
 
 ## Change the Logo
 
-In the frontend project opened with Visual Studio Code, locate the `src\assets\images\logo\logo.svg` file and replace it with your own `logo.svg`.
+Locate the `Frontend\src\assets\images\logo\logo.svg` file and replace it with your own `logo.svg`.
 
-ℹ️ If your logo file is not named `logo.svg` or you want to use a custom path, open the `src\app\business\services\config.service.ts` file and override the logo path like this:
+ℹ️ If your logo file is not named `logo.svg` or you want to use a custom path, open the `Frontend\src\app\business\services\config.service.ts` file and override the logo path like this:
 
 ```typescript
 export class ConfigService extends ConfigBaseService {
@@ -29,17 +29,17 @@ export class ConfigService extends ConfigBaseService {
 
 ## Change the Favicon
 
-In the frontend project opened with Visual Studio Code, locate the `src\assets\images\logo\favicon.ico` file and change it with your own `favicon.ico`.
+Locate the `Frontend\src\assets\images\logo\favicon.ico` file and change it with your own `favicon.ico`.
 
 ## Change Theme Colors
 
-In the frontend project opened with Visual Studio Code, open the `src\assets\primeng-theme.ts` file and edit the theme values, such as the `primary`.
+Open the `Frontend\src\assets\primeng-theme.ts` file and edit the theme values, such as the `primary`.
 
 For more information and advanced theming options, visit the [PrimeNG Theming Guide](https://primeng.org/theming).
 
 ## Enable Dark Theme
 
-In the frontend project opened with Visual Studio Code, open the `src\index.html` file and add the `dark` class to the `html` tag, like this:
+Open the `Frontend\src\index.html` file and add the `dark` class to the `html` tag, like this:
 
 ```html
 <!doctype html>
@@ -53,7 +53,7 @@ For more information and advanced dark theme options, visit the [PrimeNG Dark Th
 
 ## Displaying Time in Calendar Control on Details Page
 
-In the frontend project opened with Visual Studio Code, open the `src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the following Angular input attribute:
+Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the following Angular input attribute:
 
 ```html
 <your-entity-base-details
@@ -66,7 +66,7 @@ In the frontend project opened with Visual Studio Code, open the `src\app\pages\
 
 By default, Spiderly generates your app with a side menu layout. However, if you'd prefer a top menu layout and either forgot to use the `--top-menu` flag during `spiderly init` or changed your mind later in development, you can easily update it by following these steps:
 
-1. In the frontend project opened with Visual Studio Code, open the `src\app\business\layout\layout.component.html` file.
+1. Open the `Frontend\src\app\business\layout\layout.component.html` file.
 2. Update the layout component by setting the `[isSideMenuLayout]` attribute to `false`:
 
 ```html

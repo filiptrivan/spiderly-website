@@ -23,7 +23,7 @@ const HomePage = async () => {
             </span>
           </>
         }
-        description="Spiderly is an open-source .NET (C#) code generator that transforms an EF Core model into a fully customizable .NET (C#) + Angular web application, automatically updating all boilerplate code as your model evolves."
+        description="Spiderly is a free open-source .NET (C#) code generator that transforms an EF Core model into a fully customizable .NET (C#) + Angular web application, automatically updating all boilerplate code as your model evolves."
         buttons={
           <>
             <Button asChild>

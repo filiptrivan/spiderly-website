@@ -1,5 +1,5 @@
 ---
-title: Add New EF Core Entity With Spiderly
+title: Add New Entity
 description: Learn how to create a new entity in your project, including adding it to the backend, updating the database, and generating the corresponding frontend code.
 ---
 
@@ -9,13 +9,9 @@ The EF Core entity and its attributes form the foundation of everything in Spide
 
 In this step-by-step guide, you'll learn how to create a new entity in your project. This includes adding it to the backend, updating the database, and generating the corresponding frontend code.
 
-## Open the Backend
-
-Open the backend project located at `your-app-name\Backend\YourAppName.sln` using Visual Studio.
-
 ## Add New Entity
 
-In the backend project opened with Visual Studio, locate the `YourAppName.Business\Entities` folder and add a new public class for your entity (e.g., `YourEntityName.cs`).
+Locate the `Backend\YourAppName.Business\Entities` folder and add a new public class for your entity (e.g., `YourEntityName.cs`).
 
 The entity class must inherit from `BusinessObject<ID>` if it supports create, read, update and delete operations, or from `ReadonlyObject<ID>` if it is read-only and does not support create, update, or delete operations from the UI.
 
@@ -40,20 +36,18 @@ namespace YourAppName.Business.Entities
 
 ## Add Your Entity to the Database
 
-In the backend project opened with Visual Studio:
+Open a terminal in the `Backend` folder and run the following commands to create and apply a migration:
 
-1. Open **Package Manager Console** via *View → Other Windows → Package Manager Console* (or press `Ctrl + \``).
-2. Inside opened **Package Manager Console** window set `YourAppName.Infrastructure` as the **Default Project** in the dropdown.
-3. Run the command to create a migration:
+**Create a migration:**
 
 ```bash
-add-migration YourMigrationScriptName
+dotnet ef migrations add YourMigrationScriptName --project YourAppName.Infrastructure --startup-project YourAppName.WebAPI
 ```
 
-4. Run the command to apply the migration to the database:
+**Apply the migration to the database:**
 
 ```bash
-update-database
+dotnet ef database update --project YourAppName.Infrastructure --startup-project YourAppName.WebAPI
 ```
 
 ## Generate Components
@@ -68,17 +62,17 @@ spiderly add-new-page
 
 This will generate the following files:
 
-1. **List Page** - In your Angular project (opened with Visual Studio Code):
-   - `src\app\pages\your-entity-name\your-entity-name-list.component.ts`
-   - `src\app\pages\your-entity-name\your-entity-name-list.component.html`
+1. **List Page**:
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-list.component.ts`
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-list.component.html`
 
-2. **Details Page** - Also in your Angular project:
-   - `src\app\pages\your-entity-name\your-entity-name-details.component.ts`
-   - `src\app\pages\your-entity-name\your-entity-name-details.component.html`
+2. **Details Page**:
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-details.component.ts`
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-details.component.html`
 
 ## Define Routes for Your Page
 
-In the frontend project opened with Visual Studio Code, open the `src\app\app.routes.ts` file and add new route objects to the `layoutRoutes` array:
+Open the `Frontend\src\app\app.routes.ts` file and add new route objects to the `layoutRoutes` array:
 
 ```typescript
 {
@@ -95,7 +89,7 @@ In the frontend project opened with Visual Studio Code, open the `src\app\app.ro
 
 ## Add the Page to the Navigation Menu
 
-In the frontend project opened with Visual Studio Code, open the `src\app\business\layout\layout.component.ts` file.
+Open the `Frontend\src\app\business\layout\layout.component.ts` file.
 
 Locate the `this.menu` array and add a new menu item object for your entity. Use the following structure as a reference:
 

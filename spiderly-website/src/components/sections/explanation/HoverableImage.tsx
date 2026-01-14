@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { ReactNode } from 'react';
 import { FeatureOverlay } from './FeatureOverlay';
 import { useHoverOverlay } from './useHoverOverlay';
@@ -12,22 +11,21 @@ interface HoverableImageProps {
   overlayContent: ReactNode;
 }
 
-export const HoverableImage = ({ src, alt, className = '', overlayContent }: HoverableImageProps) => {
+export const HoverableImage = ({
+  src,
+  alt,
+  className = '',
+  overlayContent,
+}: HoverableImageProps) => {
   const { showOverlay, isLeaving, handleMouseEnter, handleMouseLeave } = useHoverOverlay();
 
   return (
     <div
-      className={`${className} relative group`}
+      className={`${className} relative group w-full h-full overflow-hidden`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Image
-        src={src}
-        alt={alt}
-        width={1000}
-        height={1000}
-        className="w-full h-full"
-      />
+      <img src={src} alt={alt} className="w-full h-full" />
       <FeatureOverlay show={showOverlay} isLeaving={isLeaving}>
         {overlayContent}
       </FeatureOverlay>

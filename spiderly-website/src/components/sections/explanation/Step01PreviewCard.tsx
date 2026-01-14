@@ -17,9 +17,9 @@ export const Step01PreviewCard = ({
   if (isComplete && isTriggered) {
     return (
       <HoverableImage
-        src="/assets/dashboard-dark.svg"
+        src="/assets/Spiderly_App_Initial_Dashboard.svg"
         alt="Spiderly Dashboard"
-        className={`${className} animate-in fade-in zoom-in-95 duration-700`}
+        className={className}
         overlayContent={<FeatureGrid title="Created App Summary" features={starterFeatures} />}
       />
     );
@@ -27,7 +27,7 @@ export const Step01PreviewCard = ({
 
   if (!isComplete && isTriggered) {
     return (
-      <div className={className}>
+      <div className={`${className} w-full h-full`}>
         <div className="w-full h-full flex flex-col items-center justify-center gap-6 text-muted-foreground p-8 animate-in fade-in zoom-in-95 duration-500">
           <div className="relative">
             <div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl" />
@@ -45,7 +45,7 @@ export const Step01PreviewCard = ({
   }
 
   return (
-    <div className={className}>
+    <div className={`${className} w-full h-full`}>
       <div className="w-full h-full flex flex-col items-center justify-center gap-6 text-muted-foreground p-8">
         <div className="text-center space-y-2">
           <h4 className="text-lg font-semibold text-foreground">

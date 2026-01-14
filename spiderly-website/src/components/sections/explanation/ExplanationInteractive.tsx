@@ -42,10 +42,7 @@ export const ExplanationInteractive = () => {
     if (step2Triggered) return;
 
     setStep2Triggered(true);
-    // Add properties with a slight delay for smooth animation
-    setTimeout(() => {
-      setHasProperties(true);
-    }, 600);
+    setHasProperties(true);
   };
 
   const handleUndoStep1 = () => {
@@ -66,7 +63,7 @@ export const ExplanationInteractive = () => {
 
   return (
     <>
-      <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-111 gap-4 lg:gap-6">
+      <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-118 gap-4 lg:gap-6">
         <TerminalWindow
           isTriggered={isTriggered}
           visibleSteps={visibleSteps}
@@ -78,7 +75,7 @@ export const ExplanationInteractive = () => {
         <Step01PreviewCard
           isComplete={isComplete}
           isTriggered={isTriggered}
-          className={`${explanationCard} w-full h-full overflow-hidden`}
+          className={`${explanationCard}`}
         />
       </div>
 
@@ -86,7 +83,7 @@ export const ExplanationInteractive = () => {
       {isComplete && (
         <div className="mt-12 lg:mt-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <Step02TextContent />
-          <div className="flex flex-col lg:flex-row lg:h-111 gap-4 lg:gap-6">
+          <div className="flex flex-col lg:flex-row lg:h-118 gap-4 lg:gap-6">
             <CodeWindow
               isTriggered={step2Triggered}
               onAddProperties={triggerStep2}
@@ -94,10 +91,7 @@ export const ExplanationInteractive = () => {
               properties={step2Triggered ? productProperties : [productProperties[0]]}
               className={`${explanationCard} w-full h-full lg:w-115 overflow-auto`}
             />
-            <Step02PreviewCard
-              hasProperties={hasProperties}
-              className={`${explanationCard} w-full h-full overflow-hidden`}
-            />
+            <Step02PreviewCard hasProperties={hasProperties} className={`${explanationCard}`} />
           </div>
         </div>
       )}
