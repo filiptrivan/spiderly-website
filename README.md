@@ -6,16 +6,17 @@
 
 This is the official website for Spiderly. For the full source code of the Spiderly product itself, please visit the main [Spiderly GitHub repository](https://github.com/filiptrivan/spiderly).
 
-The website features:
+Website overview:
 
-- Getting Started Guide – Learn how to install and use Spiderly.
-- Interactive Playground – Try out Spiderly in your browser.
-- Docs – Detailed explanations of Spiderly’s core concepts, components, and integration steps.
+- Homepage - General Spiderly explanation
+- Docs – Detailed explanations of getting started guide, Spiderly’s core concepts, components, and integration steps.
 - FAQ – Get quick answers to common questions about how Spiderly works and how to use it effectively.
+- Terms of Service
+- Privacy Policy
 
 ## Contributing
 
-While the core logic lives in the main Spiderly repo, contributions to the website are also very welcome — whether it’s improving the docs, fixing UI bugs, or enhancing the playground experience.
+While the core logic lives in the main Spiderly repo, contributions to the website are also very welcome, whether it’s improving the docs, fixing UI bugs, or enhancing the playground experience.
 
 - Open an issue to report bugs or suggest enhancements
 - Submit a pull request with your proposed changes
