@@ -24,7 +24,7 @@ const Navbar = () => {
         'sticky top-0 inset-x-0 h-14 w-full border-b z-49 select-none transition-all duration-300 ease-in-out border-border bg-background/40 backdrop-blur-md',
       )}
     >
-      <AnimationContainer reverse className="size-full">
+      <AnimationContainer className="size-full">
         <div className="flex items-center justify-between h-full w-full max-w-full md:max-w-7xl mx-auto px-4 md:px-12 lg:px-20">
           <div className="flex items-center space-x-12">
             <Link href="/" className="flex items-center gap-2" title="Spiderly Logo">
@@ -79,7 +79,7 @@ const Navbar = () => {
                   <Star className="size-4 mr-2" />
                   Star on GitHub
                   <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
-                    46
+                    47
                   </span>
                 </Link>
               </Button>

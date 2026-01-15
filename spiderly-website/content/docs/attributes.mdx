@@ -1,6 +1,6 @@
 ---
-title: Spiderly Attributes
-description: Complete reference for all Spiderly attributes used in entity configuration, UI generation, and authorization.
+title: Attributes
+description: Complete reference for all Spiderly attributes used in entity configuration, validation, UI generation, and authorization.
 ---
 
 ## AuthGuardAttribute
@@ -61,8 +61,8 @@ public class Comment : BusinessObject<long>
 ### Usage:
 Specifies a custom controller name for an entity, overriding the default naming convention. This attribute allows grouping multiple related entities under a single controller.
 
-### Default behavior without 'Controller' attribute:
-Controllers are named as `'{EntityName}Controller'`
+### Default behavior without `Controller` attribute:
+Controllers are named as `{EntityName}BaseController`
 
 ### Example:
 

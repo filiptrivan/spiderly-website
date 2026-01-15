@@ -17,7 +17,7 @@ Spiderly simplifies validation across your application by allowing you to annota
 - Leave database validation to EF Core.
 
 **Behavior Based on Attribute Type:**
-- EF Core attributes will result in database schema changes. When you use them, remember to run `Add-Migration` and `Update-Database`.
+- EF Core attributes will result in database schema changes. When you use them, remember to run database migration and update.
 - Spiderly backend validation attributes require rebuilding the backend to take effect.
 
 ## CustomValidatorAttribute
@@ -69,7 +69,9 @@ public class Product : BusinessObject<long>
 
 Specifies the precision and scale for a decimal property. Useful for controlling how many digits are stored in total (`precision`) and how many of them are after the decimal point (`scale`).
 
-ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+<Callout>
+Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+</Callout>
 
 ### Example:
 
@@ -87,7 +89,9 @@ public class Product : BusinessObject<long>
 
 Validates that a numeric value falls within a specified inclusive range.
 
-ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+<Callout>
+Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+</Callout>
 
 ### Example:
 
@@ -105,7 +109,9 @@ public class Product : BusinessObject<long>
 
 Specifies that a value must be provided for the decorated property, enforcing non-null values.
 
-ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+<Callout>
+Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+</Callout>
 
 ### Example:
 
@@ -123,11 +129,15 @@ public class User : BusinessObject<long>
 
 Specifies the minimum and/or maximum length for a string property.
 
-ℹ️ Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+<Callout>
+Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+</Callout>
 
 ### Best Practice
 
-💡 Always apply `StringLength` to string properties. If omitted, EF Core will map them to `NVARCHAR(MAX)` by default, which can negatively impact performance.
+<Callout type="warn">
+Always apply `StringLength` to string properties. If omitted, EF Core will map them to `NVARCHAR(MAX)` by default, which can negatively impact performance.
+</Callout>
 
 ### Example:
 

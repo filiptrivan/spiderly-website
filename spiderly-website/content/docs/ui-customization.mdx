@@ -17,7 +17,9 @@ Open the `Frontend\src\environments\environment.ts` file and change the value of
 
 Locate the `Frontend\src\assets\images\logo\logo.svg` file and replace it with your own `logo.svg`.
 
-ℹ️ If your logo file is not named `logo.svg` or you want to use a custom path, open the `Frontend\src\app\business\services\config.service.ts` file and override the logo path like this:
+<Callout>
+If your logo file is not named `logo.svg` or you want to use a custom path, open the `Frontend\src\app\business\services\config.service.ts` file and override the logo path like this:
+</Callout>
 
 ```typescript
 export class ConfigService extends ConfigBaseService {
@@ -64,7 +66,7 @@ Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html`
 
 ## Switching to a Top Menu Layout
 
-By default, Spiderly generates your app with a side menu layout. However, if you'd prefer a top menu layout and either forgot to use the `--top-menu` flag during `spiderly init` or changed your mind later in development, you can easily update it by following these steps:
+By default, Spiderly generates your app with a side menu layout. However, if you'd prefer a top menu layout, you can easily update it by following these steps:
 
 1. Open the `Frontend\src\app\business\layout\layout.component.html` file.
 2. Update the layout component by setting the `[isSideMenuLayout]` attribute to `false`:

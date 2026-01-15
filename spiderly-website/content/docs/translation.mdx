@@ -1,25 +1,24 @@
 ---
 title: Translation
-description: Learn how to implement internationalization in your Spiderly application using Transloco and .resx resource files.
+description: Learn how to translate your Spiderly app using Transloco on the frontend and .resx resource files on the backend.
 ---
-
-## Overview
-
-Spiderly supports internationalization out of the box. On the frontend, translations are powered by [Transloco](https://github.com/jsverse/transloco) with `.json` files. On the backend, it uses standard `.resx` resource files in C#.
-
-Whether you're customizing labels in generated Angular forms, naming Excel exports, or displaying localized validation messages — Spiderly helps you streamline and unify translations across your full stack.
 
 ## Translating Entities and Properties
 
-Spiderly lets you customize how entity and property names appear across the app — not just for multilingual support, but also for customizing labels in **generated Angular components**, **Excel export filenames**, and **validation messages**.
+Spiderly lets you customize how entity and property names appear across the app, not just for translation, but also for: 
+- **Customizing labels** (e.g. by default, on a text input field, Spiderly shows `ProductName` as the label. When you add a translation attribute with the value `Product Name`, it automatically regenerates the label using that value)
+- **Excel export filenames**
+- **Validation messages**
 
-These translations are automatically integrated into Spiderly's generated code, but you can also use them freely throughout your custom logic wherever needed.
+When you add translation attributes to a class or property, these translations are automatically integrated into Spiderly’s generated code, but you can also use them freely throughout your custom logic wherever needed.
 
 ### Built-in Supported Languages:
 - English
 - Serbian (Latin)
 
-ℹ️ You can still add any other language manually — but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
+<Callout>
+You can still add any other language manually, but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
+</Callout>
 
 ### `[Translate{LanguageTag}]` Attribute
 
@@ -92,7 +91,9 @@ By default, Spiderly uses English (`en`) as the primary language. If you want to
 - `en`
 - `sr-Latn-RS`
 
-ℹ️ You can still add any other language tag manually — but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
+<Callout>
+You can still add any other language tag manually, but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
+</Callout>
 
 ### Language Tag Update:
 
@@ -128,7 +129,9 @@ export const appConfig: ApplicationConfig = {
 
 ## Custom Frontend Translations for Multilingual Apps
 
-ℹ️ You only need to add custom frontend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+<Callout>
+You only need to add custom frontend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+</Callout>
 
 ### Add a Translation Key-Value Pair
 
@@ -189,7 +192,9 @@ Use the directive with Angular's `*transloco` syntax:
 
 ## Custom Backend Translations for Multilingual Apps
 
-ℹ️ You only need to add custom backend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+<Callout>
+You only need to add custom backend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+</Callout>
 
 ### Use Case Example
 
@@ -203,4 +208,6 @@ If that's the case, open the `Backend\YourAppName.Shared\Resources\Terms.resx` f
 
 Spiderly will automatically pick the correct translation at runtime based on the active culture settings.
 
-ℹ️ For easier management of translation keys across multiple `.resx` files, you can use [ResXManager](https://marketplace.visualstudio.com/items?itemName=TomEnglert.ResXManager) - a Visual Studio extension that simplifies working with localization resources.
+<Callout>
+For easier management of translation keys across multiple `.resx` files, you can use [ResXManager](https://marketplace.visualstudio.com/items?itemName=TomEnglert.ResXManager) - a Visual Studio extension that simplifies working with localization resources.
+</Callout>

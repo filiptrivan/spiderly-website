@@ -1,13 +1,15 @@
 ---
 title: Authorization
-description: Learn how to configure authorization for entity operations in your Spiderly application.
+description: Learn how to configure authorization for entity CRUD operations in your Spiderly application.
 ---
 
 ## Overview
 
 By default, all entities require authorization for Create, Read, Update, and Delete operations. If your code encounters an authorization issue (e.g., an `UnauthorizedException - You don't have the necessary rights to perform the operation.`), it means the current user lacks the necessary permissions.
 
-⚠️ **Skipping Authorization**: If you want to **explicitly bypass authorization** for an entity, you can apply the `[DoNotAuthorize]` attribute. This disables all security checks for that entity across all operations.
+<Callout type="warn">
+**Skipping Authorization:** If you want to explicitly bypass authorization for an entity, you can apply the `[DoNotAuthorize]` attribute. This disables all security checks for that entity across all operations.
+</Callout>
 
 If your entity requires access control, follow the steps in this tutorial to configure proper authorization.
 

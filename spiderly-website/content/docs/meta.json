@@ -6,9 +6,9 @@
     "set-up-google-authentication",
     "add-new-entity",
     "attributes",
-    "entity-validation",
-    "entity-authorization",
+    "validation",
+    "authorization",
     "ui-customization",
-    "translate-spiderly-app"
+    "translation"
   ]
 }

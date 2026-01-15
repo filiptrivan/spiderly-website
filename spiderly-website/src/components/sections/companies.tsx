@@ -22,9 +22,9 @@ const Companies = () => {
             className="h-10 sm:h-11 w-auto"
           />
           <img
-            src="/companies/sg-tools-logo.svg"
-            alt="SG Tools Logo"
-            title="SG Tools Logo"
+            src="/companies/atrigen-logo.svg"
+            alt="Atrigen Logo"
+            title="Atrigen Logo"
             className="h-10 sm:h-11 w-auto"
           />
           <img
