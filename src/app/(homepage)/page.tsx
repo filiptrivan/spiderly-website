@@ -7,7 +7,7 @@ import {
 } from '@/components/sections';
 import Companies from '@/components/sections/companies';
 import { Explanation } from '@/components/sections/explanation/explanation';
-import { Button } from '@/components/ui/button';
+import { BeamButton } from '@/components/ui/beam-button';
 import { VideoDialogButton } from '@/components/ui/video-dialog';
 import Link from 'next/link';
 
@@ -26,9 +26,9 @@ const HomePage = async () => {
         description="Spiderly is a free open-source .NET (C#) code generator that transforms an EF Core model into a fully customizable .NET (C#) + Angular web application, automatically updating all boilerplate code as your model evolves."
         buttons={
           <>
-            <Button asChild>
+            <BeamButton asChild>
               <Link href={'/docs/getting-started'}>Get Started</Link>
-            </Button>
+            </BeamButton>
             <VideoDialogButton />
           </>
         }

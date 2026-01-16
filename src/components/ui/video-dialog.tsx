@@ -13,19 +13,19 @@ export const VideoDialogButton = () => {
     <>
       <Button variant={'subtle'} onClick={() => setIsVideoDialogOpen(true)}>
         <PlayIcon className="w-4 h-4 mr-2" />
-        Spiderly in 120 Seconds
+        Spiderly in 2 Minutes
       </Button>
 
       <Dialog open={isVideoDialogOpen} onOpenChange={setIsVideoDialogOpen}>
         <DialogContent className="max-w-5xl border-0 p-2">
           <VisuallyHidden>
-            <DialogTitle>Spiderly in 120 Seconds</DialogTitle>
+            <DialogTitle>Spiderly in 2 Minutes</DialogTitle>
           </VisuallyHidden>
           <div className="relative w-full pt-[56.25%] mt-10">
             <iframe
               className="absolute top-0 left-0 w-full h-full"
               src="https://www.youtube.com/embed/_CPHzD6x5sY"
-              title="Spiderly in 120 Seconds"
+              title="Spiderly in 2 Minutes"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

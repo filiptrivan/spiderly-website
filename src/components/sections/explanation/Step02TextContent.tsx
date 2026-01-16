@@ -1,7 +1,7 @@
 export const Step02TextContent = () => {
   return (
     <>
-      <h3 className="mb-3 lg:mb-5 md:text-3xl text-xl font-medium">02. Define Your Class</h3>
+      <h3 className="mb-3 lg:mb-5 md:text-3xl text-xl font-medium">Define Your Class</h3>
       <p className="mb-2 lg:mb-4 text-muted-foreground">
         Simply define your EF Core entities using properties and attributes. Spiderly's code
         generator reads those and automatically produces a complete CRUD stack for each entity,

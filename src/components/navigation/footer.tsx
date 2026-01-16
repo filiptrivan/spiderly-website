@@ -16,10 +16,10 @@ const Footer = () => {
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="mt-2">
                     <a
-                      href="/#features"
+                      href="/#interactive-demo"
                       className="hover:text-foreground transition-all duration-300"
                     >
-                      Features
+                      Interactive Demo
                     </a>
                   </li>
                 </ul>
@@ -48,12 +48,18 @@ const Footer = () => {
                 <h3 className="text-base font-medium text-white">Legal</h3>
                 <ul className="mt-4 text-sm text-muted-foreground">
                   <li className="mt-2">
-                    <Link href="/terms-of-service" className="hover:text-foreground transition-all duration-300">
+                    <Link
+                      href="/terms-of-service"
+                      className="hover:text-foreground transition-all duration-300"
+                    >
                       Terms of Service
                     </Link>
                   </li>
                   <li className="mt-2">
-                    <Link href="/privacy-policy" className="hover:text-foreground transition-all duration-300">
+                    <Link
+                      href="/privacy-policy"
+                      className="hover:text-foreground transition-all duration-300"
+                    >
                       Privacy Policy
                     </Link>
                   </li>
