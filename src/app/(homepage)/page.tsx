@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 const HomePage = async () => {
   return (
-    <div className="mb-16 md:mb-20 lg:mb-28">
+    <div className="">
       <HeroSection
         title={
           <>
@@ -35,10 +35,14 @@ const HomePage = async () => {
       />
       <Companies />
       <Explanation />
+      <hr className="border-dashed border-border" />
       <TechStackSection />
+      <hr className="border-dashed border-border" />
       <KeyBenefitsSection />
+      <hr className="border-dashed border-border" />
       {/* <ReviewsSection /> */}
       <FounderSection />
+      <hr className="border-dashed border-border" />
       <CTASection />
     </div>
   );

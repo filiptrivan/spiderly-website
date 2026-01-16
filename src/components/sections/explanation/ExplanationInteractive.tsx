@@ -63,14 +63,14 @@ export const ExplanationInteractive = () => {
 
   return (
     <>
-      <div ref={sectionRef} className="flex flex-col lg:flex-row lg:h-118 gap-4 lg:gap-6">
+      <div ref={sectionRef} className="flex flex-col xl:flex-row xl:h-121 gap-4 xl:gap-6">
         <TerminalWindow
           isTriggered={isTriggered}
           visibleSteps={visibleSteps}
           onRunCommand={triggerStep1}
           onUndo={handleUndoStep1}
           steps={terminalSteps}
-          className={`${explanationCard} w-full h-full lg:w-115 overflow-auto`}
+          className={`${explanationCard} w-full h-full xl:w-105 overflow-auto`}
         />
         <Step01PreviewCard
           isComplete={isComplete}
@@ -81,15 +81,15 @@ export const ExplanationInteractive = () => {
 
       {/* Step 02 - Only show after Step 01 is complete */}
       {isComplete && (
-        <div className="mt-12 lg:mt-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="mt-12 xl:mt-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <Step02TextContent />
-          <div className="flex flex-col lg:flex-row lg:h-118 gap-4 lg:gap-6">
+          <div className="flex flex-col xl:flex-row xl:h-121 gap-4 xl:gap-6">
             <CodeWindow
               isTriggered={step2Triggered}
               onAddProperties={triggerStep2}
               onUndo={handleUndoStep2}
               properties={step2Triggered ? productProperties : [productProperties[0]]}
-              className={`${explanationCard} w-full h-full lg:w-115 overflow-auto`}
+              className={`${explanationCard} w-full h-full xl:w-105 overflow-auto`}
             />
             <Step02PreviewCard hasProperties={hasProperties} className={`${explanationCard}`} />
           </div>
