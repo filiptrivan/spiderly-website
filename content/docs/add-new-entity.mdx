@@ -20,6 +20,7 @@ The entity class must inherit from `BusinessObject<ID>` if it supports create, r
 ```csharp
 namespace YourAppName.Business.Entities
 {
+    [DoNotAuthorize]
     [TranslatePluralEn("Your entity plural name")]
     public class YourEntityName : BusinessObject<long>
     {

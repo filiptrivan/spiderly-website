@@ -16,7 +16,7 @@ const BeamButton = React.forwardRef<HTMLButtonElement, BeamButtonProps>(
     {
       className,
       duration = 3,
-      colorFrom = 'var(--fuchsia-500)',
+      colorFrom = 'var(--purple-500)',
       colorTo = 'transparent',
       children,
       asChild = false,

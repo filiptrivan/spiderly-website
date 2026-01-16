@@ -11,7 +11,7 @@ interface GlowProps {
 
 const Glow = ({
   className,
-  top = '400px',
+  top = '500px',
   left = '50%',
   height = '100px',
   width = '80%',
