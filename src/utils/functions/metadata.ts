@@ -1,15 +1,19 @@
 import { Metadata } from 'next';
 
+const SITE_URL = 'https://www.spiderly.dev';
+
 export const generateMetadata = ({
   title = `.NET (C#) Web App Boilerplate Code Generator`,
   description = `Spiderly is a free open-source .NET (C#) boilerplate code generator that turns EF Core model into fully customizable .NET (C#) + Angular web application.`,
   image = '/preview-1200x630.png',
+  path = '/',
 }: {
   title?: string;
   description?: string;
   image?: string;
+  path?: string;
 } = {}): Metadata => ({
-  metadataBase: new URL('https://spiderly.dev'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${title} | Spiderly`,
     template: '%s | Spiderly',
@@ -24,6 +28,7 @@ export const generateMetadata = ({
     shortcut: '/favicon.ico',
   },
   openGraph: {
+    url: `${SITE_URL}${path}`,
     type: 'website',
     siteName: 'Spiderly',
     title,

@@ -34,8 +34,15 @@ export async function generateMetadata(props: { params: Promise<{ slug?: string[
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
+  const path = `/docs${params.slug ? `/${params.slug.join('/')}` : ''}`;
+
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      url: `https://www.spiderly.dev${path}`,
+      title: page.data.title,
+      description: page.data.description,
+    },
   };
 }

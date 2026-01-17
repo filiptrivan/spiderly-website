@@ -1,12 +1,13 @@
 import { AnimationContainer, SectionContainer } from '@/components';
 import { HeroSection } from '@/components/sections';
-import { Metadata } from 'next';
+import { generateMetadata as generateMetadataUtil } from '@/utils';
 
-export const metadata: Metadata = {
+export const metadata = generateMetadataUtil({
   title: 'Terms of Service',
   description:
     'Terms of Service for Spiderly - Review the terms and conditions for using Spiderly as a development tool.',
-};
+  path: '/terms-of-service',
+});
 
 const TermsOfServicePage = () => {
   return (

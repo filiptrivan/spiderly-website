@@ -1,12 +1,13 @@
 import { AnimationContainer, SectionContainer } from '@/components';
 import { HeroSection } from '@/components/sections';
-import { Metadata } from 'next';
+import { generateMetadata as generateMetadataUtil } from '@/utils';
 
-export const metadata: Metadata = {
+export const metadata = generateMetadataUtil({
   title: 'Privacy Policy',
   description:
     'Privacy Policy for Spiderly - Learn how we handle information and your responsibilities when using Spiderly as a development tool.',
-};
+  path: '/privacy-policy',
+});
 
 const PrivacyPolicyPage = () => {
   return (
