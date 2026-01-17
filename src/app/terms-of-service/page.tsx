@@ -3,7 +3,7 @@ import { HeroSection } from '@/components/sections';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Spiderly',
+  title: 'Terms of Service',
   description:
     'Terms of Service for Spiderly - Review the terms and conditions for using Spiderly as a development tool.',
 };

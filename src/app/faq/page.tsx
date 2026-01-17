@@ -11,7 +11,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions | Spiderly FAQ',
+  title: 'Frequently Asked Questions',
   description:
     'Find answers to common questions about Spiderly. Our FAQ covers pricing, comparisons, OS support, tech stack, code generation scope, prerequisites, installation guide, and more.',
 };

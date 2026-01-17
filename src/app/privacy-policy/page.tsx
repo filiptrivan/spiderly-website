@@ -3,7 +3,7 @@ import { HeroSection } from '@/components/sections';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Spiderly',
+  title: 'Privacy Policy',
   description:
     'Privacy Policy for Spiderly - Learn how we handle information and your responsibilities when using Spiderly as a development tool.',
 };
