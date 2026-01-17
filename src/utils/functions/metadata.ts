@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const generateMetadata = ({
   title = `.NET (C#) Web App Boilerplate Code Generator | Spiderly`,
   description = `Spiderly is a free open-source .NET (C#) boilerplate code generator that turns EF Core model into fully customizable .NET (C#) + Angular web application.`,
-  image = '/thumbnail.jpg',
+  image = '/preview-1200x630.jpg',
   icons = [
     {
       rel: 'icon',
