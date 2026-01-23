@@ -7,15 +7,48 @@ description: Learn how to create a new entity in your project, including adding 
 
 The EF Core entity and its attributes form the foundation of everything in Spiderly. All other components are built and generated based on these entities.
 
-In this step-by-step guide, you'll learn how to create a new entity in your project. This includes adding it to the backend, updating the database, and generating the corresponding frontend code.
+In this step-by-step guide, you'll learn how to create a new entity in your project using the Spiderly CLI, which automates the entire process including backend entity creation, frontend page generation, routing, and navigation menu setup.
 
 ## Add New Entity
 
-Locate the `Backend\YourAppName.Business\Entities` folder and add a new public class for your entity (e.g., `YourEntityName.cs`).
+Run the following command from the root of your application:
 
-The entity class must inherit from `BusinessObject<ID>` if it supports create, read, update and delete operations, or from `ReadonlyObject<ID>` if it is read-only and does not support create, update, or delete operations from the UI.
+```bash
+spiderly add-new-entity
+```
 
-### Example of an entity:
+Or, if you want to generate a data view instead of a table for the list page:
+
+```bash
+spiderly add-new-entity --data-view
+```
+
+The CLI will prompt you to enter the entity name in PascalCase (e.g., `YourEntityName`).
+
+This command will automatically generate:
+
+1. **Backend Entity**:
+   - `Backend\YourAppName.Business\Entities\YourEntityName.cs`
+
+2. **List Page**:
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-list.component.ts`
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-list.component.html`
+
+3. **Details Page**:
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-details.component.ts`
+   - `Frontend\src\app\pages\your-entity-name\your-entity-name-details.component.html`
+
+4. **Routes** in `Frontend\src\app\app.routes.ts`
+
+5. **Menu Item** in `Frontend\src\app\business\layout\layout.component.ts`
+
+## Customize the Entity
+
+After generation, open the entity file at `Backend\YourAppName.Business\Entities\YourEntityName.cs` and customize it according to your needs.
+
+The entity class inherits from `BusinessObject<ID>` which supports create, read, update and delete operations. If you need a read-only entity that does not support create, update, or delete operations from the UI, change the base class to `ReadonlyObject<ID>`.
+
+### Example of a customized entity:
 
 ```csharp
 namespace YourAppName.Business.Entities
@@ -39,66 +72,7 @@ namespace YourAppName.Business.Entities
 
 Open a terminal in the `Backend` folder and run the following commands to create and apply a migration:
 
-**Create a migration:**
-
 ```bash
-dotnet ef migrations add YourMigrationScriptName --project YourAppName.Infrastructure --startup-project YourAppName.WebAPI
-```
-
-**Apply the migration to the database:**
-
-```bash
-dotnet ef database update --project YourAppName.Infrastructure --startup-project YourAppName.WebAPI
-```
-
-## Generate Components
-
-Use the **Spiderly CLI** to generate a default template for your new entity. You can customize the generated files afterwards.
-
-Run the following command from the root of your application:
-
-```bash
-spiderly add-new-page
-```
-
-This will generate the following files:
-
-1. **List Page**:
-   - `Frontend\src\app\pages\your-entity-name\your-entity-name-list.component.ts`
-   - `Frontend\src\app\pages\your-entity-name\your-entity-name-list.component.html`
-
-2. **Details Page**:
-   - `Frontend\src\app\pages\your-entity-name\your-entity-name-details.component.ts`
-   - `Frontend\src\app\pages\your-entity-name\your-entity-name-details.component.html`
-
-## Define Routes for Your Page
-
-Open the `Frontend\src\app\app.routes.ts` file and add new route objects to the `layoutRoutes` array:
-
-```typescript
-{
-    path: 'your-entity-name', // URL for the list page (e.g., /your-entity-name)
-    loadComponent: () => import('./pages/your-entity-name/your-entity-name-list.component').then(c => c.YourEntityNameListComponent),
-    canActivate: [AuthGuard],
-},
-{
-    path: 'your-entity-name/:id', // URL for the details page (e.g., /your-entity-name/123)
-    loadComponent: () => import('./pages/your-entity-name/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
-    canActivate: [AuthGuard],
-},
-```
-
-## Add the Page to the Navigation Menu
-
-Open the `Frontend\src\app\business\layout\layout.component.ts` file.
-
-Locate the `this.menu` array and add a new menu item object for your entity. Use the following structure as a reference:
-
-```typescript
-{
-    label: this.translocoService.translate('YourEntityName'),
-    icon: 'pi pi-fw pi-question', // Refer to https://primeng.org/icons#list for available icons
-    routerLink: ['your-entity-name'], // Must match the list page path defined in app.routes.ts
-    visible: true,
-},
+spiderly add-migration YourMigrationName
+spiderly update-database
 ```

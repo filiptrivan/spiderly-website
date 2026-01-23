@@ -64,6 +64,35 @@ Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html`
 ></your-entity-base-details>
 ```
 
+## Customize Routes
+
+The `spiderly add-new-entity` CLI command automatically adds routes to `Frontend\src\app\app.routes.ts`. If you need to customize them, the generated routes look like this:
+
+```typescript
+{
+    path: 'your-entity-name-list', // URL for the list page (e.g., /product-list)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-list.component').then(c => c.YourEntityNameListComponent),
+    canActivate: [AuthGuard],
+},
+{
+    path: 'your-entity-name-list/:id', // URL for the details page (e.g., /product-list/123)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
+    canActivate: [AuthGuard],
+},
+```
+
+## Customize the Navigation Menu
+
+The `spiderly add-new-entity` CLI command automatically adds a menu item to `Frontend\src\app\business\layout\layout.component.ts`. If you need to customize it, the generated menu item looks like this:
+
+```typescript
+{
+    label: this.translocoService.translate('YourEntityNameList'),
+    icon: 'pi pi-fw pi-list', // Refer to https://primeng.org/icons#list for available icons
+    routerLink: ['/your-entity-name-list'],
+},
+```
+
 ## Switching to a Top Menu Layout
 
 By default, Spiderly generates your app with a side menu layout. However, if you'd prefer a top menu layout, you can easily update it by following these steps:

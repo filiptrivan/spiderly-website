@@ -48,8 +48,8 @@ private static void SeedData(ModelBuilder modelBuilder)
 After adding the permissions, create and apply a migration:
 
 ```bash
-dotnet ef migrations add AddYourEntityNamePermissions --project Backend/{your-app-name}.Infrastructure --startup-project Backend/{your-app-name}.API
-dotnet ef database update --project Backend/{your-app-name}.Infrastructure --startup-project Backend/{your-app-name}.API
+spiderly add-migration AddYourEntityNamePermissions
+spiderly update-database
 ```
 
 ## Assign Permissions to a Role
