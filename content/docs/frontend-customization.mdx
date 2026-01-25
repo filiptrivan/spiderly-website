@@ -134,6 +134,13 @@ export class ConfigService extends ConfigBaseService {
 
 Extend `AuthServiceBase` and override methods in `Frontend\src\app\business\services\auth.service.ts`:
 
+- `onAfterLoginExternal()` - Executes after external authentication (e.g., Google)
+- `onAfterLogout()` - Runs after logout completion
+- `onAfterRefreshToken()` - Triggers following token refresh
+- `onAfterNgOnDestroy()` - Custom cleanup during component destruction
+
+#### Example
+
 ```typescript
 export class AuthService extends AuthServiceBase {
   override onAfterLoginExternal(): void {
@@ -150,25 +157,20 @@ export class AuthService extends AuthServiceBase {
 }
 ```
 
-### Available AuthService Hooks
-
-- `onAfterLoginExternal()` - Executes after external authentication (e.g., Google)
-- `onAfterLogout()` - Runs after logout completion
-- `onAfterRefreshToken()` - Triggers following token refresh
-- `onAfterNgOnDestroy()` - Custom cleanup during component destruction
-
 ## Generated Files
 
-Spiderly generates several Angular/TypeScript files with the `.generated.ts` suffix. These files are regenerated on each build and **should not be modified**:
+Spiderly generates several Angular/TypeScript files with the `.generated.ts` suffix. These files are regenerated on each build and **should not be modified**.
 
-| File                                                                    | Purpose                                           |
-| ----------------------------------------------------------------------- | ------------------------------------------------- |
-| `Frontend\src\app\business\entities\entities.generated.ts`              | TypeScript classes mirroring your C# DTOs         |
-| `Frontend\src\app\business\services\api\api.service.generated.ts`       | Strongly-typed API service methods                |
-| `Frontend\src\app\business\components\base-details.generated.ts`        | Base detail components for entity forms           |
-| `Frontend\src\app\business\services\validators\validators.generated.ts` | Form validators matching your C# validation rules |
-| `Frontend\src\app\business\services\translates\translates.generated.ts` | Translation keys                                  |
-| `Frontend\src\app\business\enums\enums.generated.ts`                    | TypeScript enums matching your C# enums           |
+All generated files are located in `Frontend\src\app\business\`:
+
+| File                                          | Purpose                                           |
+| --------------------------------------------- | ------------------------------------------------- |
+| `entities\entities.generated.ts`              | TypeScript classes mirroring your C# DTOs         |
+| `services\api\api.service.generated.ts`       | Strongly-typed API service methods                |
+| `components\base-details.generated.ts`        | Base detail components for entity forms           |
+| `services\validators\validators.generated.ts` | Form validators matching your C# validation rules |
+| `services\translates\translates.generated.ts` | Translation keys                                  |
+| `enums\enums.generated.ts`                    | TypeScript enums matching your C# enums           |
 
 To customize behavior, use the non-generated counterparts (e.g., `api.service.ts` extends `ApiGeneratedService`).
 
