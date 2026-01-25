@@ -65,7 +65,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/docs/ui-customization`,
+      url: `${baseUrl}/docs/backend-customization`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/docs/frontend-customization`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,

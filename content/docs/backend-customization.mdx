@@ -1,0 +1,338 @@
+---
+title: Backend Customization
+description: Learn how to customize and extend Spiderly's generated backend code using service inheritance, partial classes, and interface replacement.
+---
+
+## Overview
+
+Spiderly is built on the **Template Method Pattern**, providing multiple extension mechanisms:
+
+1. **Service Inheritance** - Extend generated base classes and override virtual methods
+2. **Partial Classes** - Add custom members to generated partial classes (DTOs, Mapper, PermissionCodes)
+3. **Interface Replacement** - Implement Spiderly interfaces and register your own services in DI for complete behavior replacement
+
+Services follow this inheritance pattern:
+
+```
+Spiderly Framework Base Classes (e.g., BusinessServiceBase)
+        ↓
+Generated Classes - readonly (e.g., BusinessServiceGenerated)
+        ↓
+Your Classes (e.g., BusinessService) - override virtual methods here
+```
+
+When you run `spiderly init`, the CLI creates skeleton files for your customizations:
+
+```
+Backend\YourAppName.Business\
+├── Services\
+│   ├── BusinessService.cs
+│   ├── AuthorizationService.cs
+│   └── SecurityService.cs
+│
+├── DataMappers\
+│   └── Mapper.cs                ← Partial class
+│
+└── Enums\
+    └── PermissionCodes.cs       ← Partial class
+
+Backend\YourAppName.WebAPI\Controllers\
+├── NotificationController.cs
+├── SecurityController.cs
+└── UserController.cs
+```
+
+## Business Service
+
+Override virtual methods in `BusinessService` to customize entity operations.
+
+### Entity Lifecycle Hooks
+
+- `OnBefore{Entity}IsMapped()` - Customize before DTO-to-entity conversion
+- `OnBefore{Entity}Insert()` - Execute logic before inserting a new entity
+- `OnBefore{Entity}Update()` - Execute logic before updating an existing entity
+- `OnBefore{Entity}Delete()` - Execute logic before deleting an entity
+- `OnBefore{Entity}ListDelete()` - Execute logic before bulk deletion
+
+### Save Operation Hooks
+
+- `OnBeforeSave{Entity}AndReturnMainUIFormDTO()` - Validate or modify before save
+- `OnAfterSave{Entity}AndReturnMainUIFormDTO()` - Execute post-save business logic
+
+### Blob/File Processing Hooks
+
+- `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` - Custom authorization for file uploads
+- `OnBefore{Property}BlobFor{Entity}IsUploaded()` - Process files before storage
+- `ValidateImageFor{Property}Of{Entity}()` - Custom image dimension validation
+- `OptimizeImageFor{Property}Of{Entity}()` - Custom image optimization
+
+### Query Hooks
+
+- `GetAll{Property}QueryFor{Entity}()` - Customize lazy-loaded relationship queries
+
+### Example: Overriding Business Service Hooks
+
+```csharp
+// File: Backend\YourAppName.Business\Services\BusinessService.cs
+namespace YourAppName.Business.Services
+{
+    public class BusinessService : BusinessServiceGenerated
+    {
+        // ... constructor and fields ...
+
+        protected override async Task OnBeforeProductInsert(Product product, ProductDTO productDTO)
+        {
+            // Custom logic before inserting a product
+            product.CreatedByUserId = _authenticationService.GetCurrentUserId();
+        }
+
+        protected override async Task OnAfterSaveProductAndReturnMainUIFormDTO(ProductDTO savedDTO, ProductSaveBodyDTO saveBodyDTO)
+        {
+            // Send notification after product is saved
+            await _emailingService.SendProductCreatedNotification(savedDTO.Id);
+        }
+    }
+}
+```
+
+## Security Service
+
+Your `SecurityService` class inherits from `SecurityServiceBase<TUser>` from the `Spiderly.Security` package.
+
+### Available Hooks
+
+- `CreateLoginEmailTemplate(string verificationCode)` - Customize the login verification email
+- `OnAfterLogin(AuthResultDTO authResultDTO)` - Execute logic after successful login
+
+### Example: Overriding Security Service Hooks
+
+```csharp
+// File: Backend\YourAppName.Business\Services\SecurityService.cs
+using Spiderly.Security.Services;
+
+namespace YourAppName.Business.Services
+{
+    public class SecurityService<TUser> : SecurityServiceBase<TUser> where TUser : class, IUser, new()
+    {
+        // ... constructor and fields ...
+
+        public override EmailVerifyUIDTO CreateLoginEmailTemplate(string verificationCode)
+        {
+            return new EmailVerifyUIDTO
+            {
+                Subject = "Your Login Code for MyApp",
+                Body = $"Your verification code is: <strong>{verificationCode}</strong>"
+            };
+        }
+
+        public override async Task OnAfterLogin(AuthResultDTO authResultDTO)
+        {
+            // Log successful login
+            _logger.LogInformation($"User {authResultDTO.UserId} logged in");
+
+            await base.OnAfterLogin(authResultDTO);
+        }
+    }
+}
+```
+
+## Authorization Service
+
+Your `AuthorizationService` class inherits from `AuthorizationServiceGenerated`. Override virtual methods to customize permission checks.
+
+### Example: Custom Authorization Logic
+
+```csharp
+// File: Backend\YourAppName.Business\Services\AuthorizationService.cs
+namespace YourAppName.Business.Services
+{
+    public class AuthorizationService : AuthorizationServiceGenerated
+    {
+        // ... constructor and fields ...
+
+        public override async Task AuthorizeProductDeleteAndThrow(long productId)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                // Custom logic: Only allow deletion of products created by the current user
+                var product = await _context.DbSet<Product>().FindAsync(productId);
+
+                if (product.CreatedByUserId != _authenticationService.GetCurrentUserId())
+                {
+                    throw new UnauthorizedException("You can only delete products you created.");
+                }
+
+                await base.AuthorizeProductDeleteAndThrow(productId);
+            });
+        }
+    }
+}
+```
+
+## Partial Classes
+
+Some generated classes use the partial class pattern, allowing you to add custom members in a separate file.
+
+### Custom Mappings (Mapper)
+
+The `Mapper` class is generated as a partial class. You can add your own custom mapping methods here. If you define a method with the same name as a generated one (e.g., `{Entity}DTOToEntityConfig`, `{Entity}ToDTOConfig`, `{Entity}ProjectToConfig`), the generator will skip that method and use yours instead.
+
+```csharp
+// File: Backend\YourAppName.Business\DataMappers\Mapper.cs
+using Mapster;
+using Spiderly.Shared.Attributes;
+using YourAppName.Business.DTO;
+using YourAppName.Business.Entities;
+
+namespace YourAppName.Business.DataMappers
+{
+    [CustomMapper]
+    public static partial class Mapper
+    {
+        // Custom mapping method for your own use
+        public static ProductSummaryDTO ToSummaryDTO(this Product product)
+        {
+            return new ProductSummaryDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price
+            };
+        }
+
+        // Override the generated mapping configuration for Product -> ProductDTO
+        // This method won't be generated because you defined it here
+        public static TypeAdapterConfig ProductToDTOConfig()
+        {
+            TypeAdapterConfig config = new();
+
+            config
+                .NewConfig<Product, ProductDTO>()
+                .Map(dest => dest.FullName, src => $"{src.Name} - {src.Category}")
+                ;
+
+            return config;
+        }
+    }
+}
+```
+
+### Custom Permission Codes
+
+The `PermissionCodes` class is generated as a partial class. Add custom permission codes in your `PermissionCodes.cs`:
+
+```csharp
+// File: Backend\YourAppName.Business\Enums\PermissionCodes.cs
+namespace YourAppName.Business.Enums
+{
+    public static partial class PermissionCodes
+    {
+        // Add custom permission codes here
+        public static string ExportReports { get; } = "ExportReports";
+        public static string ManageSettings { get; } = "ManageSettings";
+    }
+}
+```
+
+### Custom DTO Properties
+
+DTOs are generated as partial classes. Create a matching partial class to add custom properties or methods:
+
+```csharp
+// File: Backend\YourAppName.Business\DTO\ProductDTO.cs
+namespace YourAppName.Business.DTO
+{
+    public partial class ProductDTO
+    {
+        // Add custom computed properties
+        public decimal PriceWithTax => Price * 1.2m;
+
+        // Add custom methods
+        public string GetDisplayName() => $"{Name} (${Price})";
+    }
+}
+```
+
+## Controller Overrides
+
+Generated controllers create a base class (e.g., `ProductBaseController`) with virtual methods. Create your own controller that inherits from the base and overrides specific endpoints or add new ones.
+
+### Example: Overriding a Controller Method
+
+```csharp
+// File: Backend\YourAppName.WebAPI\Controllers\ProductController.cs
+using YourAppName.Business.Services;
+using Spiderly.Shared.Interfaces;
+
+namespace YourAppName.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/Product/[action]")]
+    public class ProductController : ProductBaseController
+    {
+        public ProductController(
+            IApplicationDbContext context,
+            BusinessService businessService
+        ) : base(context, businessService)
+        {
+        }
+
+        public override async Task<PaginatedResultDTO<ProductDTO>> GetPaginatedProductList(FilterDTO filterDTO)
+        {
+            // Add custom filtering logic
+            filterDTO.AdditionalFilters.Add("IsActive", "true");
+
+            return await base.GetPaginatedProductList(filterDTO);
+        }
+    }
+}
+```
+
+## Replacing Services via Interfaces
+
+For complete behavior replacement, Spiderly provides interfaces that you can implement and register in the DI container. This is useful when you need to completely change how a service works rather than just extending it.
+
+### Available Interfaces (Spiderly.Security)
+
+| Interface          | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| `ITokenStorage<T>` | Token storage operations (in-memory, Redis, or custom) |
+| `IJwtAuthManager`  | JWT token generation, validation, and refresh          |
+| `IUser`            | User entity contract                                   |
+| `IRole`            | Role entity contract                                   |
+| `IPermission`      | Permission entity contract                             |
+
+### Example: Custom Token Storage
+
+```csharp
+// Implement your own token storage
+public class DatabaseTokenStorage<T> : ITokenStorage<T> where T : class
+{
+    private readonly IApplicationDbContext _context;
+
+    public DatabaseTokenStorage(IApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task AddOrUpdateAsync(string key, T token)
+    {
+        // Store token in database
+    }
+
+    public async Task<T> TryGetValueAsync(string key)
+    {
+        // Retrieve token from database
+    }
+
+    public async Task<bool> TryRemoveAsync(string key)
+    {
+        // Remove token from database
+    }
+
+    // ... implement other methods
+}
+
+// Register in Program.cs
+builder.Services.AddScoped(typeof(ITokenStorage<>), typeof(DatabaseTokenStorage<>));
+```

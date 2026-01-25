@@ -1,0 +1,247 @@
+---
+title: Frontend Customization
+description: Learn how to customize your Spiderly Angular application including theming, layout, service overrides, and UI components.
+---
+
+## Overview
+
+Spiderly offers full flexibility when it comes to frontend customization. While you're not required to use the default Angular-based UI or the Spiderly Angular library, doing so provides the best integration and experience.
+
+This guide covers how to customize key elements of your Spiderly app, including: app name, logo, favicon, theme colors, layout, service overrides, and UI components.
+
+## Change the App Name
+
+Open the `Frontend\src\environments\environment.ts` file and change the value of `companyName` to your the desired app name.
+
+## Change the Logo
+
+Locate the `Frontend\src\assets\images\logo\logo.svg` file and replace it with your own `logo.svg`.
+
+<Callout>
+  If your logo file is not named `logo.svg` or you want to use a custom path, open the
+  `Frontend\src\app\business\services\config.service.ts` file and override the logo path like this:
+</Callout>
+
+```typescript
+export class ConfigService extends ConfigBaseService {
+  // ... other overrides
+  override logoPath: string = 'assets/your-logo-path.png';
+  // ...
+}
+```
+
+## Change the Favicon
+
+Locate the `Frontend\src\assets\images\logo\favicon.ico` file and change it with your own `favicon.ico`.
+
+## Change Theme Colors
+
+Open the `Frontend\src\assets\primeng-theme.ts` file and edit the theme values, such as the `primary`.
+
+For more information and advanced theming options, visit the [PrimeNG Theming Guide](https://primeng.org/theming).
+
+## Enable Dark Theme
+
+Open the `Frontend\src\index.html` file and add the `dark` class to the `html` tag, like this:
+
+```html
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    // ...
+  </head>
+</html>
+```
+
+For more information and advanced dark theme options, visit the [PrimeNG Dark Theme Guide](https://primeng.org/theming#darkmode).
+
+## Displaying Time in Calendar Control on Details Page
+
+Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the following Angular input attribute:
+
+```html
+<your-entity-base-details
+// ... other attributes
+[showTimeOn{{YourCalendarPropertyName}}For{{YourEntityName}}]="true"
+></your-entity-base-details>
+```
+
+## Customize Routes
+
+The `spiderly add-new-entity` CLI command automatically adds routes to `Frontend\src\app\app.routes.ts`. If you need to customize them, the generated routes look like this:
+
+```typescript
+{
+    path: 'your-entity-name-list', // URL for the list page (e.g., /product-list)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-list.component').then(c => c.YourEntityNameListComponent),
+    canActivate: [AuthGuard],
+},
+{
+    path: 'your-entity-name-list/:id', // URL for the details page (e.g., /product-list/123)
+    loadComponent: () => import('./pages/your-entity-name/your-entity-name-details.component').then(c => c.YourEntityNameDetailsComponent),
+    canActivate: [AuthGuard],
+},
+```
+
+## Customize the Navigation Menu
+
+The `spiderly add-new-entity` CLI command automatically adds a menu item to `Frontend\src\app\business\layout\layout.component.ts`. If you need to customize it, the generated menu item looks like this:
+
+```typescript
+{
+    label: this.translocoService.translate('YourEntityNameList'),
+    icon: 'pi pi-fw pi-list', // Refer to https://primeng.org/icons#list for available icons
+    routerLink: ['/your-entity-name-list'],
+},
+```
+
+## Switching to a Top Menu Layout
+
+By default, Spiderly generates your app with a side menu layout. However, if you'd prefer a top menu layout, you can easily update it by following these steps:
+
+1. Open the `Frontend\src\app\business\layout\layout.component.html` file.
+2. Update the layout component by setting the `[isSideMenuLayout]` attribute to `false`:
+
+```html
+<spiderly-layout [menu]="menu" [isSideMenuLayout]="false"></spiderly-layout>
+```
+
+If you want to add custom actions (buttons, links, or any other content) to the header area, positioned to the left of the profile avatar, you can do so like this:
+
+```html
+<spiderly-layout [menu]="menu" [isSideMenuLayout]="false">
+  <div ACTIONS>Your custom actions</div>
+</spiderly-layout>
+```
+
+## Service Overrides
+
+Spiderly's Angular library uses base service classes that you extend in your project.
+
+### ConfigService
+
+Extend `ConfigServiceBase` and override properties in `Frontend\src\app\business\services\config.service.ts`:
+
+```typescript
+export class ConfigService extends ConfigBaseService {
+  override logoPath: string = 'assets/my-custom-logo.png';
+  override primaryColor: string = '#3498db';
+  override companyName: string = 'My Company';
+}
+```
+
+### AuthService
+
+Extend `AuthServiceBase` and override methods in `Frontend\src\app\business\services\auth.service.ts`:
+
+```typescript
+export class AuthService extends AuthServiceBase {
+  override onAfterLoginExternal(): void {
+    // Custom post-login logic
+    this.analyticsService.trackLogin();
+    this.router.navigate(['/dashboard']);
+  }
+
+  override onAfterLogout(): void {
+    // Custom logout cleanup
+    this.cacheService.clear();
+    super.onAfterLogout();
+  }
+}
+```
+
+### Available AuthService Hooks
+
+- `onAfterLoginExternal()` - Executes after external authentication (e.g., Google)
+- `onAfterLogout()` - Runs after logout completion
+- `onAfterRefreshToken()` - Triggers following token refresh
+- `onAfterNgOnDestroy()` - Custom cleanup during component destruction
+
+## Generated Files
+
+Spiderly generates several Angular/TypeScript files with the `.generated.ts` suffix. These files are regenerated on each build and **should not be modified**:
+
+| File                                                                    | Purpose                                           |
+| ----------------------------------------------------------------------- | ------------------------------------------------- |
+| `Frontend\src\app\business\entities\entities.generated.ts`              | TypeScript classes mirroring your C# DTOs         |
+| `Frontend\src\app\business\services\api\api.service.generated.ts`       | Strongly-typed API service methods                |
+| `Frontend\src\app\business\components\base-details.generated.ts`        | Base detail components for entity forms           |
+| `Frontend\src\app\business\services\validators\validators.generated.ts` | Form validators matching your C# validation rules |
+| `Frontend\src\app\business\services\translates\translates.generated.ts` | Translation keys                                  |
+| `Frontend\src\app\business\enums\enums.generated.ts`                    | TypeScript enums matching your C# enums           |
+
+To customize behavior, use the non-generated counterparts (e.g., `api.service.ts` extends `ApiGeneratedService`).
+
+<Callout>
+  If you want to understand how these files are generated or create advanced customizations, you can
+  explore the Angular generator source code in the [Spiderly
+  repository](https://github.com/filiptrivan/spiderly/tree/main/Spiderly.SourceGenerators/Angular).
+</Callout>
+
+## Using the Spiderly Data View Component
+
+If you want to display data in a cleaner, card-based layout instead of a plain table — while still keeping filtering capabilities — you can use the `spiderly-data-view` Angular component.
+
+In your `html` file:
+
+```html
+<spiderly-data-view
+  [getTableDataObservableMethod]="getYourEntityNameTableDataObservableMethod"
+  [filters]="filters"
+>
+  <ng-template #cardBody [templateType]="templateType" let-item let-index="index">
+    {{item.name}}
+  </ng-template>
+</spiderly-data-view>
+```
+
+In your `ts` file:
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import {
+  Filter,
+  DataViewCardBody,
+  Role,
+  SpiderlyControlsModule,
+  SpiderlyDataViewComponent,
+  SpiderlyTemplateTypeDirective,
+} from 'spiderly';
+
+@Component({
+  selector: 'your-component-name',
+  templateUrl: './your-component-name.component.html',
+  imports: [SpiderlyTemplateTypeDirective, SpiderlyDataViewComponent, SpiderlyControlsModule],
+})
+export class YourEntityNameDataViewComponent implements OnInit {
+  templateType?: DataViewCardBody<YourEntityName>;
+  filters: Filter<YourEntityName>[];
+
+  getYourEntityNameTableDataObservableMethod = this.apiService.getYourEntityNameTableData;
+
+  constructor(
+    private apiService: ApiService,
+    private translocoService: TranslocoService,
+  ) {}
+
+  ngOnInit() {
+    this.filters = [
+      { name: this.translocoService.translate('Name'), filterType: 'text', field: 'name' },
+      {
+        name: this.translocoService.translate('Id'),
+        filterType: 'numeric',
+        field: 'id',
+        showMatchModes: true,
+      },
+      {
+        name: this.translocoService.translate('CreatedAt'),
+        filterType: 'date',
+        field: 'createdAt',
+        showMatchModes: true,
+      },
+    ];
+  }
+}
+```

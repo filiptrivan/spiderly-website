@@ -12,6 +12,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/docs/ui-customization',
+        destination: '/docs/frontend-customization',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);
