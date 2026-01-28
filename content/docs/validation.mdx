@@ -8,19 +8,22 @@ description: Learn how to use validation attributes to automatically generate ba
 Spiderly simplifies validation across your application by allowing you to annotate your entity classes with attributes.
 
 **Validation attributes fall into two categories:**
+
 - Spiderly custom validation attributes
 - EF Core attributes from `System.ComponentModel.DataAnnotations`
 
 **Validation attributes are used to:**
+
 - Automatically generate backend (DTO-level) validation.
 - Automatically generate frontend form validation rules.
 - Leave database validation to EF Core.
 
 **Behavior Based on Attribute Type:**
+
 - EF Core attributes will result in database schema changes. When you use them, remember to run database migration and update.
 - Spiderly backend validation attributes require rebuilding the backend to take effect.
 
-## CustomValidatorAttribute
+## CustomValidator
 
 ### Usage
 
@@ -47,7 +50,7 @@ public class User : BusinessObject<long>
 }
 ```
 
-## GreaterThanOrEqualToAttribute
+## GreaterThanOrEqualTo
 
 ### Usage
 
@@ -63,14 +66,15 @@ public class Product : BusinessObject<long>
 }
 ```
 
-## PrecisionAttribute
+## Precision
 
 ### Usage
 
 Specifies the precision and scale for a decimal property. Useful for controlling how many digits are stored in total (`precision`) and how many of them are after the decimal point (`scale`).
 
 <Callout>
-Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+  Applies to the server-side, client-side validation and affects the EF Core model and will generate
+  corresponding SQL column definition.
 </Callout>
 
 ### Example:
@@ -83,14 +87,15 @@ public class Product : BusinessObject<long>
 }
 ```
 
-## RangeAttribute
+## Range
 
 ### Usage
 
 Validates that a numeric value falls within a specified inclusive range.
 
 <Callout>
-Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+  Applies to the server-side, client-side validation and affects the EF Core model and will generate
+  corresponding SQL column definition.
 </Callout>
 
 ### Example:
@@ -103,14 +108,15 @@ public class Product : BusinessObject<long>
 }
 ```
 
-## RequiredAttribute
+## Required
 
 ### Usage
 
 Specifies that a value must be provided for the decorated property, enforcing non-null values.
 
 <Callout>
-Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
+  Applies to the server-side, client-side validation and affects the EF Core model and will generate
+  corresponding SQL column definition.
 </Callout>
 
 ### Example:
@@ -123,28 +129,36 @@ public class User : BusinessObject<long>
 }
 ```
 
-## StringLengthAttribute
+## StringLength
+
+Specifies the exact length or a length range for a string property.
+
+This attribute is already built in EF Core, but apart from that, Spiderly also uses it to generate validations (Backend and Frontend).
+
+<Callout>
+  Applies to the server-side, client-side validation and affects the EF Core model and will generate
+  corresponding SQL column definition.
+</Callout>
+
+<Callout type="warn">
+  Always apply `StringLength` to string properties. If omitted, EF Core will map them to
+  `NVARCHAR(MAX)` by default, which can negatively impact performance.
+</Callout>
 
 ### Usage
 
-Specifies the minimum and/or maximum length for a string property.
+- `[StringLength(100)]` without `MinimumLength` generates an **exact length** validation (string must be exactly 100 characters).
+- `[StringLength(100, MinimumLength = 1)]` generates a **range** validation (string must be between 1 and 100 characters).
 
-<Callout>
-Applies to the server-side, client-side validation and affects the EF Core model and will generate corresponding SQL column definition.
-</Callout>
-
-### Best Practice
-
-<Callout type="warn">
-Always apply `StringLength` to string properties. If omitted, EF Core will map them to `NVARCHAR(MAX)` by default, which can negatively impact performance.
-</Callout>
-
-### Example:
+### Examples:
 
 ```csharp
 public class User : BusinessObject<long>
 {
     [StringLength(50, MinimumLength = 2)] // Name must be between 2 and 50 characters
     public string Name { get; set; }
+
+    [StringLength(100)] // Code must be exactly 100 characters
+    public string Code { get; set; }
 }
 ```
