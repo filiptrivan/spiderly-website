@@ -25,6 +25,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/docs/entity-validation',
+        destination: '/docs/validation',
+        permanent: true,
+      },
+      {
+        source: '/docs/translate-spiderly-app',
+        destination: '/docs/translation',
+        permanent: true,
+      },
+      {
         source: '/playground',
         destination: '/#interactive-demo',
         permanent: true,
