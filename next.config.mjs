@@ -19,6 +19,16 @@ const nextConfig = {
         destination: '/docs/frontend-customization',
         permanent: true,
       },
+      {
+        source: '/docs/entity-authorization',
+        destination: '/docs/authorization',
+        permanent: true,
+      },
+      {
+        source: '/playground',
+        destination: '/#interactive-demo',
+        permanent: true,
+      },
     ];
   },
 };

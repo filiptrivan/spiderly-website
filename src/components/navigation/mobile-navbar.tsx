@@ -86,7 +86,7 @@ const MobileNavbar = () => {
                 <Star className="size-4 mr-2" />
                 Star on GitHub
                 <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
-                  47
+                  48
                 </span>
               </Link>
             </div>
