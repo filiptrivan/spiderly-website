@@ -54,6 +54,10 @@ Override virtual methods in `BusinessService` to customize entity operations.
 - `OnBefore{Entity}Delete()` - Execute logic before deleting an entity
 - `OnBefore{Entity}ListDelete()` - Execute logic before bulk deletion
 
+### Read Operation Hooks
+
+- `OnAfterGet{Entity}MainUIFormDTO()` - Enrich the MainUIFormDTO after retrieval (e.g., computed fields, extra queries). Runs inside a database transaction.
+
 ### Save Operation Hooks
 
 - `OnBeforeSave{Entity}AndReturnMainUIFormDTO()` - Validate or modify before save
@@ -84,6 +88,14 @@ namespace YourAppName.Business.Services
         {
             // Custom logic before inserting a product
             product.CreatedByUserId = _authenticationService.GetCurrentUserId();
+        }
+
+        protected override async Task OnAfterGetProductMainUIFormDTO(ProductMainUIFormDTO mainUIFormDTO)
+        {
+            // Enrich the MainUIFormDTO with additional computed data
+            mainUIFormDTO.ReviewCount = await _context.DbSet<Review>()
+                .Where(x => x.ProductId == mainUIFormDTO.ProductDTO.Id)
+                .CountAsync();
         }
 
         protected override async Task OnAfterSaveProductAndReturnMainUIFormDTO(ProductDTO savedDTO, ProductSaveBodyDTO saveBodyDTO)

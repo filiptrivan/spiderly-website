@@ -247,3 +247,29 @@ export class YourEntityNameDataViewComponent implements OnInit {
   }
 }
 ```
+
+## Ordered Many-to-One Panel Customization
+
+### Additional Content Template
+
+You can inject additional content at the bottom of each item in an ordered many-to-one panel using the `additionalContentTemplateFor{Property}For{Entity}` input.
+
+The template receives the form group, index, and whether it's the last item via context:
+
+```html
+<app-product-base-details
+  [additionalContentTemplateForProductItemsForProduct]="extraContent"
+>
+</app-product-base-details>
+
+<ng-template #extraContent let-formGroup let-index="index" let-last="last">
+  <div class="col-12">
+    <p>Item #{{ index + 1 }}</p>
+    <!-- Add custom fields, buttons, or any content here -->
+  </div>
+</ng-template>
+```
+
+<Callout>
+  The template context provides `$implicit` (the formGroup), `formGroup`, `index`, and `last` variables.
+</Callout>
