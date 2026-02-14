@@ -32,6 +32,27 @@ public class User : BusinessObject<long>
 }
 ```
 
+## AcceptedFileTypes
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies the accepted file types for a blob property. When not applied, the file upload control defaults to accepting images only (`image/*`). Use this attribute alongside `BlobName` for non-image uploads (e.g., PDFs, Excel files).
+
+### Example:
+
+```csharp
+public class Catalog : BusinessObject<int>
+{
+    [BlobName]
+    [S3PublicUrl]
+    [AcceptedFileTypes("application/pdf", ".pdf")]
+    [StringLength(1000, MinimumLength = 1)]
+    public string File { get; set; }
+}
+```
+
 ## CascadeDelete
 
 **Namespace:** `Spiderly.Shared.Attributes.Entity`
