@@ -54,7 +54,6 @@ The entity class inherits from `BusinessObject<ID>` which supports create, read,
 namespace YourAppName.Business.Entities
 {
     [DoNotAuthorize]
-    [TranslatePluralEn("Your entity plural name")]
     public class YourEntityName : BusinessObject<long>
     {
         [StringLength(75, MinimumLength = 1)]

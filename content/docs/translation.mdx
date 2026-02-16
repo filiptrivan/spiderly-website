@@ -1,99 +1,86 @@
 ---
 title: Translation
-description: Learn how to translate your Spiderly app using Transloco on the frontend and .resx resource files on the backend.
+description: Learn how to translate your Spiderly app using JSON translation files and Transloco.
 ---
 
 ## Translating Entities and Properties
 
-Spiderly lets you customize how entity and property names appear across the app, not just for translation, but also for: 
-- **Customizing labels** (e.g. by default, on a text input field, Spiderly shows `ProductName` as the label. When you add a translation attribute with the value `Product Name`, it automatically regenerates the label using that value)
+Spiderly uses JSON translation files to customize how entity and property names appear across the app:
+- **Customizing labels** (e.g., by default a text input shows `ProductName` as the label — adding a translation changes it to `Product Name`)
 - **Excel export filenames**
 - **Validation messages**
 
-When you add translation attributes to a class or property, these translations are automatically integrated into Spiderly’s generated code, but you can also use them freely throughout your custom logic wherever needed.
+### How It Works
 
-### Built-in Supported Languages:
-- English
-- Serbian (Latin)
+Translation files live in `Backend\YourAppName.Shared\Translations\`. Each file is named by [language tag](https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags) (e.g., `en.json`, `sr-Latn-RS.json`, `de.json`).
 
-<Callout>
-You can still add any other language manually, but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
-</Callout>
+On build, the `TranslationsGenerator` source generator:
+1. Scans your entities to discover all expected translation keys
+2. Auto-scaffolds missing keys with empty values into each JSON file
+3. Generates `TermsGenerated.generated.cs` (backend translations)
+4. Generates `{lang}.generated.json` files for Angular i18n
 
-### `[Translate{LanguageTag}]` Attribute
+### Translation Keys
 
-This attribute applies to both **entity classes** and their **properties**.
+For each entity, three keys are generated:
+- `{EntityName}` — singular name (used in forms, labels)
+- `{EntityName}List` — plural name (used in table titles)
+- `{EntityName}ExcelExportName` — Excel export filename (falls back to plural name)
 
-#### When Applied to an Entity Class:
-- Generates translations for the `YourEntityName` key on both the frontend and backend.
+For each property:
+- `{PropertyName}` — used as input field labels and in validation messages
 
-#### When Applied to a Property:
-- Generates translations for the `YourPropertyName` key on both the frontend and backend.
-- Used as the default input field label in the generated Angular form component.
-- Used in both server and client-side validation messages (e.g., *Field 'Email address' can not be empty*).
+### Example
 
-#### Example:
+Given this entity:
 
 ```csharp
-[TranslateEn("User")]
-[TranslateSrLatnRS("Korisnik")]
 public class UserExtended : BusinessObject<long>
 {
-    [TranslateEn("Email address")]
-    [TranslateSrLatnRS("Email adresa")]
     public string Email { get; set; }
 }
 ```
 
-### `[TranslatePlural{LanguageTag}]` Attribute
+Create `Backend\YourAppName.Shared\Translations\en.json`:
 
-This attribute is applied **only to entity classes** and defines the plural form of the entity's name for use throughout your app.
-
-#### Usage:
-- Generates translations for the `YourEntityNameList` key on both the frontend and backend.
-- Table titles (used by default when generating pages with the 'add-new-page' Spiderly command; this can be customized).
-- Excel export filenames (when `[TranslateExcel{LanguageTag}]` value is not specified).
-
-#### Example:
-
-```csharp
-[TranslatePluralEn("User points")]
-[TranslatePluralSrLatnRS("Korisnički poeni")]
-public class UserPoint : BusinessObject<long>
+```json
 {
-    // Entity properties
+  "Email": "Email address",
+  "UserExtended": "User",
+  "UserExtendedExcelExportName": "Users",
+  "UserExtendedList": "Users"
 }
 ```
 
-### `[TranslateExcel{LanguageTag}]` Attribute
+And `Backend\YourAppName.Shared\Translations\sr-Latn-RS.json`:
 
-This attribute is applied **only to entity classes** and specifies the filename used for exporting **that entity's data** to Excel throughout your app (e.g., from a Spiderly-generated data table view).
-
-#### Fallback Behavior:
-- First tries to use `[TranslatePlural{LanguageTag}]` value.
-- If `[TranslatePlural{LanguageTag}]` value is not available, uses `'YourEntityNameList'`.
-
-#### Example:
-
-```csharp
-[TranslateExcelEn("Users_Excel")] // Will generate: Users_Excel.xlsx
-public class User : BusinessObject<long>
+```json
 {
-    // Entity properties
+  "Email": "Email adresa",
+  "UserExtended": "Korisnik",
+  "UserExtendedExcelExportName": "Korisnici",
+  "UserExtendedList": "Korisnici"
 }
 ```
+
+<Callout>
+You don't need to create these keys manually. Just create the JSON file (even empty `{}`), build your project, and the generator will auto-scaffold all expected keys with empty values. Then fill in the translations.
+</Callout>
+
+### Adding a New Language
+
+1. Create a new file, e.g., `Backend\YourAppName.Shared\Translations\de.json` (can be empty `{}`)
+2. Build the project — the generator auto-scaffolds all keys with empty values
+3. Fill in the German translations
+4. Build again — translations are available on both backend and frontend
+
+### Excel Export Filename
+
+The `{EntityName}ExcelExportName` key controls the Excel export filename. If left empty, it falls back to `{EntityName}List`. If that's also empty, the entity name is used as-is.
 
 ## Changing Default Language
 
-By default, Spiderly uses English (`en`) as the primary language. If you want to change the default language, you'll need to update the [language tag](https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags) in both your **backend** and **frontend** configurations.
-
-### Built-in Supported Language Tags:
-- `en`
-- `sr-Latn-RS`
-
-<Callout>
-You can still add any other language tag manually, but you'll need to manage the translation keys and values yourself, without the help of Spiderly attributes or auto-generation.
-</Callout>
+By default, Spiderly uses English (`en`) as the primary language. If you want to change the default language, you'll need to update the language tag in both your **backend** and **frontend** configurations.
 
 ### Language Tag Update:
 
