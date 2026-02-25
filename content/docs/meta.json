@@ -11,6 +11,7 @@
     "attributes",
     "validation",
     "authorization",
+    "exceptions",
     "backend-customization",
     "frontend-customization",
     "translation"
