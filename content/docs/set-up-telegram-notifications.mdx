@@ -1,0 +1,31 @@
+---
+title: Set Up Telegram Notifications
+description: Configure your Spiderly app to send unhandled exception notifications to a Telegram chat.
+---
+
+## Overview
+
+Spiderly can send unhandled exception notifications to a Telegram chat. This is useful for getting instant alerts when something goes wrong in production.
+
+Telegram notifications are only sent in production environments. Email and Telegram notifications work independently — you can configure either or both.
+
+## Create a Telegram Bot
+
+1. Open Telegram and search for [@BotFather](https://t.me/BotFather)
+2. Send `/newbot` and follow the prompts to create a new bot
+3. Copy the **bot token** you receive (e.g., `123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11`)
+
+## Get the Chat ID
+
+1. Add the bot to the Telegram chat/group/channel where you want to receive notifications
+2. Send a message in that chat
+3. Visit `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates` in your browser
+4. Find the `"chat":{"id":...}` value in the response — that's your **chat ID**
+
+## Configure Settings
+
+Locate the `Backend\YourAppName.WebAPI\appsettings.json` file and set the following fields under the `Spiderly.Shared` section:
+
+- `"TelegramBotToken"` — the bot token from @BotFather
+- `"TelegramChatId"` — the chat/group/channel ID to send notifications to
+- `"NotificationRateLimitMinutes"` — minimum minutes between repeated notifications for the same error. Defaults to `5`. Set to `0` to disable rate limiting.
