@@ -10,10 +10,12 @@
     "relationships",
     "attributes",
     "validation",
+    "file-storage",
     "authorization",
     "exceptions",
     "backend-customization",
     "frontend-customization",
+    "angular-components",
     "translation"
   ]
 }

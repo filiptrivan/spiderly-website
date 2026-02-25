@@ -1,0 +1,249 @@
+---
+title: Data Components
+description: Reference for Spiderly's data table and data view components — paginated lists with filtering, sorting, selection, and Excel export.
+---
+
+## Overview
+
+Spiderly provides two components for displaying entity lists:
+
+- **SpiderlyDataTable** — paginated table with server-side filtering, sorting, row selection, and Excel export.
+- **SpiderlyDataView** — card-based list with filtering, useful for visual layouts.
+
+Both support lazy loading (server-side pagination) and work with the generated API service methods.
+
+## SpiderlyDataTable
+
+Selector: `spiderly-data-table`
+
+Advanced paginated table with server-side filtering, sorting, selection, inline editing, and Excel export.
+
+### Key Inputs
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `cols` | `Column[]` | — | Column definitions (see [Column Configuration](#column-configuration)) |
+| `getPaginatedListObservableMethod` | `(filter) => Observable<PaginatedResult>` | — | Server fetch method for lazy loading |
+| `exportListToExcelObservableMethod` | `(filter) => Observable<any>` | — | Method called on "Export to Excel" |
+| `deleteItemFromTableObservableMethod` | `(id) => Observable<any>` | — | Method called when a row is deleted |
+| `rows` | `number` | config default | Page size |
+| `rowsPerPageOptions` | `number[]` | config default | Page-size selector options |
+| `selectionMode` | `'single' \| 'multiple'` | — | Row selection mode |
+| `readonly` | `boolean` | `false` | Hides all action buttons |
+| `hasLazyLoad` | `boolean` | `true` | `true` = server-side; `false` = client-side |
+| `items` | `any[]` | — | Data rows (only when `hasLazyLoad` is `false`) |
+| `showAddButton` | `boolean` | `true` | Show the "Add" button |
+| `showExportToExcelButton` | `boolean` | `true` | Show the "Export" button |
+| `navigateOnRowClick` | `boolean` | `false` | Clicking a row navigates to details |
+| `additionalFilterIdLong` | `number` | — | Extra filter ID appended to every request |
+
+### Key Outputs
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onLazyLoad` | `Filter` | Fires on every table load (sort, filter, page change) |
+| `onTotalRecordsChange` | `number` | Fires when the total record count changes |
+| `onRowSelect` | `RowClickEvent` | Fires when a row is selected |
+| `onRowUnselect` | `RowClickEvent` | Fires when a row is deselected |
+| `onIsAllSelectedChange` | `AllClickEvent` | Fires when the "select all" checkbox changes |
+
+### Example
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { Column, SpiderlyDataTableComponent } from 'spiderly';
+import { ApiService } from 'src/app/business/services/api/api.service';
+
+@Component({
+  selector: 'product-list',
+  templateUrl: './product-list.component.html',
+  imports: [SpiderlyDataTableComponent],
+})
+export class ProductListComponent implements OnInit {
+  cols: Column[];
+
+  getProductTableDataObservableMethod = this.apiService.getProductPaginatedList;
+  exportProductListToExcelObservableMethod = this.apiService.exportProductListToExcel;
+  deleteProductObservableMethod = this.apiService.deleteProduct;
+
+  constructor(
+    private apiService: ApiService,
+    private translocoService: TranslocoService,
+  ) {}
+
+  ngOnInit() {
+    this.cols = [
+      { name: this.translocoService.translate('Name'), field: 'name', filterType: 'text' },
+      { name: this.translocoService.translate('Price'), field: 'price', filterType: 'numeric' },
+      {
+        name: this.translocoService.translate('CreatedAt'),
+        field: 'createdAt',
+        filterType: 'date',
+        showMatchModes: true,
+      },
+    ];
+  }
+}
+```
+
+```html
+<spiderly-data-table
+  [cols]="cols"
+  [getPaginatedListObservableMethod]="getProductTableDataObservableMethod"
+  [exportListToExcelObservableMethod]="exportProductListToExcelObservableMethod"
+  [deleteItemFromTableObservableMethod]="deleteProductObservableMethod"
+></spiderly-data-table>
+```
+
+## Column Configuration
+
+Columns are defined using the `Column` class. Each column maps to a data field and can have filtering, sorting, and custom actions.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | `string` | Column header label |
+| `field` | `string` | Data field name (key from the DTO) |
+| `filterType` | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric' \| 'blob'` | Type of column filter |
+| `filterField` | `string` | Alternate field used for filtering (useful for FK autocomplete fields) |
+| `showMatchModes` | `boolean` | Show match mode dropdown in the column filter |
+| `dropdownOrMultiselectValues` | `PrimengOption[]` | Options for multiselect column filters |
+| `editable` | `boolean` | Enable inline editing for this column |
+| `showTime` | `boolean` | For date columns: show time portion |
+| `decimalPlaces` | `number` | For numeric columns: decimal formatting |
+| `actions` | `Action[]` | Row action buttons (see [Actions](#actions)) |
+
+### Actions
+
+Use the `Action` class to add buttons to each row:
+
+```typescript
+{
+  actions: [
+    { field: 'Details', icon: 'pi pi-pencil' },
+    { field: 'Delete', icon: 'pi pi-trash' },
+    { field: 'custom', name: 'Preview', icon: 'pi pi-eye', onClick: (id) => this.preview(id) },
+  ],
+}
+```
+
+Built-in `field` values:
+- `'Details'` — navigates to the detail page
+- `'Delete'` — opens a confirmation dialog and calls `deleteItemFromTableObservableMethod`
+- Any other value — triggers the `onClick` callback
+
+## SpiderlyDataView
+
+Selector: `spiderly-data-view`
+
+Card-based paginated list with custom rendering and filtering. Use this when you want a visual layout instead of a table.
+
+### Key Inputs
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `filters` | `DataViewFilter[]` | `[]` | Filter definitions displayed above the card list |
+| `getPaginatedListObservableMethod` | `(filter) => Observable<PaginatedResult>` | — | Server fetch method |
+| `rows` | `number` | `10` | Page size |
+| `items` | `any[]` | — | Data items (only for non-lazy mode) |
+
+### Key Outputs
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onLazyLoad` | `Filter` | Fires on every lazy load (page change, filter change) |
+
+### Content Projection
+
+Render each card using an `ng-template` with the `#cardBody` reference:
+
+```html
+<spiderly-data-view
+  [getPaginatedListObservableMethod]="getProductListObservableMethod"
+  [filters]="filters"
+>
+  <ng-template #cardBody [templateType]="templateType" let-item let-index="index">
+    <div class="p-4 border rounded">
+      <h3>{{item.name}}</h3>
+      <p>{{item.price | currency}}</p>
+    </div>
+  </ng-template>
+</spiderly-data-view>
+```
+
+The template context provides `item` (the data object) and `index` (row index).
+
+### Example
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import {
+  DataViewFilter,
+  DataViewCardBody,
+  SpiderlyControlsModule,
+  SpiderlyDataViewComponent,
+  SpiderlyTemplateTypeDirective,
+} from 'spiderly';
+
+@Component({
+  selector: 'product-data-view',
+  templateUrl: './product-data-view.component.html',
+  imports: [SpiderlyTemplateTypeDirective, SpiderlyDataViewComponent, SpiderlyControlsModule],
+})
+export class ProductDataViewComponent implements OnInit {
+  templateType?: DataViewCardBody<Product>;
+  filters: DataViewFilter<Product>[];
+
+  getProductListObservableMethod = this.apiService.getProductPaginatedList;
+
+  constructor(
+    private apiService: ApiService,
+    private translocoService: TranslocoService,
+  ) {}
+
+  ngOnInit() {
+    this.filters = [
+      { label: this.translocoService.translate('Name'), type: 'text', field: 'name' },
+      {
+        label: this.translocoService.translate('Price'),
+        type: 'numeric',
+        field: 'price',
+        showMatchModes: true,
+      },
+      {
+        label: this.translocoService.translate('CreatedAt'),
+        type: 'date',
+        field: 'createdAt',
+        showMatchModes: true,
+      },
+    ];
+  }
+}
+```
+
+<Callout>
+  For a quick-start version of this example, see the [Frontend Customization](/docs/frontend-customization#using-the-spiderly-data-view-component) guide.
+</Callout>
+
+## DataViewFilter
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Filter label displayed above the input |
+| `field` | `string` | Data field to filter on |
+| `filterField` | `string` | Alternate field for filtering |
+| `type` | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric'` | Filter input type |
+| `showMatchModes` | `boolean` | Show match mode dropdown (e.g., equals, greater than) |
+| `dropdownOrMultiselectValues` | `PrimengOption[]` | Options for multiselect/dropdown filters |
+
+### Filter Type Behavior
+
+| Type | Match Modes | Description |
+|------|-------------|-------------|
+| `text` | Contains | Text search (contains by default) |
+| `numeric` | Equals, Greater Than, Less Than | Number comparison |
+| `date` | Equals, Greater Than, Less Than | Date comparison |
+| `boolean` | Equals | True/false selection |
+| `multiselect` | In | Multi-value selection |

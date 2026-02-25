@@ -1,0 +1,229 @@
+---
+title: Layout
+description: Reference for Spiderly's layout components — application shell, panels, cards, and buttons.
+---
+
+## SpiderlyLayout
+
+Selector: `spiderly-layout`
+
+Main application shell with sidebar or top menu navigation, user profile avatar, and content area.
+
+### Inputs
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `menu` | `SpiderlyMenuItem[]` | `[]` | Menu definition (see [SpiderlyMenuItem](#spiderlymenuitem)) |
+| `isSideMenuLayout` | `boolean` | `true` | `true` = sidebar navigation; `false` = top menu navigation |
+| `maxWidth` | `string` | `'1100px'` | CSS `max-width` for the main content area |
+
+### Content Projection
+
+Add custom actions to the header (positioned left of the profile avatar) using the `ACTIONS` attribute:
+
+```html
+<spiderly-layout [menu]="menu" [isSideMenuLayout]="false">
+  <div ACTIONS>
+    <spiderly-button icon="pi pi-bell" [outlined]="true" (onClick)="showNotifications()"></spiderly-button>
+  </div>
+</spiderly-layout>
+```
+
+<Callout>
+  For step-by-step layout customization (theme colors, logo, favicon, side vs top menu), see the
+  [Frontend Customization](/docs/frontend-customization) guide.
+</Callout>
+
+## SpiderlyMenuItem
+
+Interface for menu items. Extends PrimeNG's `MenuItem` with permission support:
+
+```typescript
+interface SpiderlyMenuItem extends MenuItem {
+  hasPermission?: (permissionCodes: string[]) => boolean;
+  showPartnerDialog?: boolean;
+}
+```
+
+Key properties inherited from PrimeNG `MenuItem`:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Menu item text |
+| `icon` | `string` | PrimeIcons class (e.g. `'pi pi-home'`) |
+| `routerLink` | `string[]` | Angular route |
+| `items` | `MenuItem[]` | Submenu children |
+| `visible` | `boolean` | Show/hide the item |
+| `disabled` | `boolean` | Disable the item |
+| `badge` | `string` | Badge text |
+
+### Permission-Based Visibility
+
+Use `hasPermission` to show menu items only for users with specific permissions:
+
+```typescript
+{
+  label: this.translocoService.translate('AdminSettings'),
+  icon: 'pi pi-cog',
+  routerLink: ['/admin-settings'],
+  hasPermission: (codes) => codes.includes('ADMIN'),
+}
+```
+
+## SpiderlyPanel
+
+Selector: `spiderly-panel`
+
+Collapsible content container with optional CRUD context menu. Used by generated detail pages for grouping form fields.
+
+<Callout>
+  Requires `SpiderlyPanelsModule` import.
+</Callout>
+
+### Inputs
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `toggleable` | `boolean` | `false` | Whether the panel can be collapsed |
+| `collapsed` | `boolean` | `false` | Initial collapsed state |
+| `showPanelHeader` | `boolean` | `true` | Whether to render the panel header |
+| `crudMenu` | `MenuItem[]` | — | Context menu items shown in the panel header |
+| `showCrudMenu` | `boolean` | `true` | Whether to show the CRUD context menu icon |
+| `showRemoveIcon` | `boolean` | `false` | Whether to show a remove/delete icon |
+| `index` | `number` | — | Row index (forwarded with menu/remove events) |
+
+### Outputs
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onMenuIconClick` | `number` | Fires with the panel's `index` when the menu icon is clicked |
+| `onRemoveIconClick` | `null` | Fires when the remove icon is clicked |
+
+### Example
+
+```html
+<spiderly-panel [toggleable]="true" [collapsed]="false">
+  <ng-template #panelHeader>
+    <span class="font-bold">Product Details</span>
+  </ng-template>
+  <ng-template #panelBody>
+    <spiderly-textbox [control]="form.getControl('name')"></spiderly-textbox>
+    <spiderly-number [control]="form.getControl('price')"></spiderly-number>
+  </ng-template>
+</spiderly-panel>
+```
+
+### With CRUD Menu (SpiderlyFormArray)
+
+Panels are commonly used with `SpiderlyFormArray` to render ordered lists with add/remove context menus:
+
+```html
+<spiderly-panel
+  *ngFor="let group of formArray.getFormGroups(); let i = index"
+  [toggleable]="true"
+  [crudMenu]="formArray.getCrudMenuForOrderedData()"
+  [index]="i"
+  (onMenuIconClick)="formArray.lastMenuIconIndexClicked = $event"
+>
+  <ng-template #panelBody>
+    <spiderly-textbox [control]="group.getControl('name')"></spiderly-textbox>
+  </ng-template>
+</spiderly-panel>
+```
+
+## SpiderlyCard
+
+Selector: `spiderly-card`
+
+Simple card container with an icon and title header.
+
+<Callout>
+  Requires `SpiderlyPanelsModule` import.
+</Callout>
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `icon` | `string` | `'pi pi-file-edit'` | PrimeIcons class for the card header |
+| `title` | `string` | — | Card header title |
+
+```html
+<spiderly-card icon="pi pi-chart-bar" title="Sales Statistics">
+  <!-- card content -->
+</spiderly-card>
+```
+
+## Buttons
+
+All button components have a built-in 500ms click throttle to prevent double-submit.
+
+### spiderly-button
+
+Selector: `spiderly-button`
+
+Standard button. The most commonly used button component.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `label` | `string` | — | Button label text |
+| `icon` | `string` | — | PrimeIcons class (e.g. `'pi pi-save'`) |
+| `severity` | `'success' \| 'info' \| 'warn' \| 'danger' \| 'help' \| 'primary' \| 'secondary' \| 'contrast'` | — | Button color |
+| `size` | `'small' \| 'large'` | — | Button size |
+| `outlined` | `boolean` | `false` | Outlined style |
+| `disabled` | `boolean` | `false` | Disables the button |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | HTML button type |
+| `routerLink` | `string` | — | If provided, clicking navigates to this route instead of emitting `onClick` |
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onClick` | `Event` | Fires (throttled) when clicked (only when no `routerLink`) |
+
+```html
+<spiderly-button
+  label="Save"
+  icon="pi pi-save"
+  severity="success"
+  (onClick)="save()"
+></spiderly-button>
+```
+
+### spiderly-split-button
+
+Selector: `spiderly-split-button`
+
+Button with a dropdown menu. Shares all inputs from `spiderly-button` except `type`.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `dropdownItems` | `MenuItem[]` | — | PrimeNG menu items for the dropdown |
+
+```html
+<spiderly-split-button
+  label="Save"
+  icon="pi pi-save"
+  (onClick)="save()"
+  [dropdownItems]="saveOptions"
+></spiderly-split-button>
+```
+
+```typescript
+saveOptions: MenuItem[] = [
+  { label: 'Save and Close', icon: 'pi pi-times', command: () => this.saveAndClose() },
+  { label: 'Save as Draft', icon: 'pi pi-file', command: () => this.saveAsDraft() },
+];
+```
+
+### return-button
+
+Selector: `return-button`
+
+Back navigation button. Navigates to the parent route by default.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `navigateUrl` | `string` | — | Explicit URL to navigate to. If omitted, navigates to the parent route |
+
+```html
+<return-button></return-button>
+<!-- or with explicit URL -->
+<return-button navigateUrl="/product-list"></return-button>
+```

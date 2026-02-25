@@ -1,0 +1,315 @@
+---
+title: Form Controls
+description: Reference for all Spiderly form input components — text, number, dropdown, autocomplete, file upload, and more.
+---
+
+## Overview
+
+Spiderly provides 13 form control components that wrap PrimeNG inputs with consistent labeling, validation display, and form integration. All controls are designed to work with `SpiderlyFormControl` and are used by the generated detail pages.
+
+Every control extends `BaseControl` and shares a common set of inputs documented below.
+
+## Shared Inputs (BaseControl)
+
+All form controls inherit these inputs:
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `control` | `SpiderlyFormControl<any>` | — | The reactive form control bound to this field |
+| `disabled` | `boolean` | `false` | Disables the control |
+| `label` | `string` | `null` | Custom label text (overrides the control's translated label) |
+| `placeholder` | `string` | `''` | Input placeholder text |
+| `showLabel` | `boolean` | `true` | Whether to render the label |
+| `showRequired` | `boolean` | `true` | Whether to show the required indicator |
+| `showTooltip` | `boolean` | `false` | Whether to show a tooltip icon |
+| `tooltipText` | `string` | `null` | Tooltip content |
+
+## spiderly-textbox
+
+Single-line text input.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `showButton` | `boolean` | `false` | Shows an icon button appended to the input |
+| `buttonIcon` | `string` | — | PrimeIcons class for the button (e.g. `'pi pi-search'`) |
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onButtonClick` | `void` | Fires when the appended button is clicked |
+
+```html
+<spiderly-textbox
+  [control]="form.getControl('name')"
+  [showButton]="true"
+  buttonIcon="pi pi-search"
+  (onButtonClick)="onSearch()"
+></spiderly-textbox>
+```
+
+## spiderly-textarea
+
+Multi-line text input. No additional inputs beyond [shared inputs](#shared-inputs-basecontrol).
+
+```html
+<spiderly-textarea [control]="form.getControl('description')"></spiderly-textarea>
+```
+
+## spiderly-password
+
+Password input with optional strength meter.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `showPasswordStrength` | `boolean` | `false` | Shows a password strength meter below the field |
+
+```html
+<spiderly-password
+  [control]="form.getControl('password')"
+  [showPasswordStrength]="true"
+></spiderly-password>
+```
+
+## spiderly-number
+
+Numeric input with optional spinner buttons and decimal support.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `prefix` | `string` | — | Text prefix shown inside the input (e.g. `'$'`) |
+| `showButtons` | `boolean` | `true` | Shows increment/decrement spinner buttons |
+| `decimal` | `boolean` | — | Whether to allow decimal input |
+| `maxFractionDigits` | `number` | `0` | Maximum number of decimal places |
+
+```html
+<spiderly-number
+  [control]="form.getControl('price')"
+  prefix="$"
+  [decimal]="true"
+  [maxFractionDigits]="2"
+></spiderly-number>
+```
+
+## spiderly-dropdown
+
+Single-selection dropdown. Extends `BaseDropdownControl` which adds `options`, `showAddon`, `addonIcon`, and `onButtonClick`.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `options` | `Namebook[]` | — | Selectable options (`{"{ id, displayName }"}`) |
+| `isBooleanPicker` | `boolean` | `false` | Auto-populates with True/False/Empty options |
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onChange` | `DropdownChangeEvent` | Fires when the selection changes |
+
+```html
+<spiderly-dropdown
+  [control]="form.getControl('categoryId')"
+  [options]="categories"
+  (onChange)="onCategoryChange($event)"
+></spiderly-dropdown>
+```
+
+## spiderly-multiselect
+
+Multi-selection dropdown. Extends `BaseDropdownControl`.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `options` | `Namebook[]` | — | Selectable options |
+
+```html
+<spiderly-multiselect
+  [control]="form.getControl('tagIds')"
+  [options]="tags"
+></spiderly-multiselect>
+```
+
+## spiderly-autocomplete
+
+Searchable single-select with lazy loading. Extends `BaseAutocompleteControl`.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `options` | `Namebook[]` | — | Filtered options (update on `onTextInput`) |
+| `showClear` | `boolean` | `true` | Shows a clear button |
+| `displayName` | `string` | — | Initial display text when the value is already set |
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onTextInput` | `AutoCompleteCompleteEvent` | Fires when the user types — use to load filtered options |
+
+```html
+<spiderly-autocomplete
+  [control]="form.getControl('authorId')"
+  [options]="authorOptions"
+  [displayName]="authorDisplayName"
+  (onTextInput)="searchAuthors($event)"
+></spiderly-autocomplete>
+```
+
+## spiderly-multiautocomplete
+
+Searchable multi-select. Extends `BaseAutocompleteControl`.
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onTextInput` | `AutoCompleteCompleteEvent` | Fires when the user types — use to load filtered options |
+
+```html
+<spiderly-multiautocomplete
+  [control]="form.getControl('reviewerIds')"
+  [options]="reviewerOptions"
+  (onTextInput)="searchReviewers($event)"
+></spiderly-multiautocomplete>
+```
+
+## spiderly-checkbox
+
+Boolean input.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `initializeToFalse` | `boolean` | `false` | Sets the control value to `false` on init |
+| `inlineLabel` | `boolean` | `false` | Renders the label inline (to the right of the checkbox) |
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onChange` | `CheckboxChangeEvent` | Fires when the value changes |
+
+```html
+<spiderly-checkbox
+  [control]="form.getControl('isActive')"
+  [initializeToFalse]="true"
+  [inlineLabel]="true"
+></spiderly-checkbox>
+```
+
+## spiderly-calendar
+
+Date/datetime picker.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `showTime` | `boolean` | `false` | Shows time picker in addition to date |
+
+```html
+<spiderly-calendar
+  [control]="form.getControl('publishedAt')"
+  [showTime]="true"
+></spiderly-calendar>
+```
+
+## spiderly-colorpicker
+
+Color picker with optional hex text input.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `showInputTextField` | `boolean` | `true` | Shows a hex text input alongside the color swatch |
+
+```html
+<spiderly-colorpicker [control]="form.getControl('themeColor')"></spiderly-colorpicker>
+```
+
+## spiderly-editor
+
+Rich text editor (Quill-based) with optional image upload.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `uploadImageMethod` | `(formData: FormData) => Observable<string>` | — | Callback for uploading images; the returned URL is inserted into the editor |
+| `objectId` | `number` | `0` | ID prepended to the filename when uploading images |
+
+```html
+<spiderly-editor
+  [control]="form.getControl('content')"
+  [uploadImageMethod]="uploadImage"
+  [objectId]="entityId"
+></spiderly-editor>
+```
+
+## spiderly-file
+
+File upload with validation.
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `acceptedFileTypes` | `string[]` | `['image/*']` | MIME types or extensions the input accepts |
+| `maxFileSize` | `number` | `20_000_000` | Maximum file size in bytes (20 MB) |
+| `imageWidth` | `number` | `0` | Expected image width in pixels (0 = no constraint) |
+| `imageHeight` | `number` | `0` | Expected image height in pixels (0 = no constraint) |
+| `multiple` | `boolean` | `false` | Allow selecting multiple files |
+| `objectId` | `number` | — | ID prepended to the uploaded filename |
+| `fileData` | `string` | — | Existing file data for pre-populating (base64 or Cloudinary URL) |
+| `isCloudinaryFileData` | `boolean` | `true` | Whether `fileData` is a Cloudinary URL or a base64 string |
+
+| Output | Payload | Description |
+|--------|---------|-------------|
+| `onFileSelected` | `SpiderlyFileSelectEvent` | Fires when a file is selected |
+| `onFileRemoved` | `null` | Fires when the file is removed |
+
+`SpiderlyFileSelectEvent` contains: `file` (File), `formData` (FormData ready to POST), `width` and `height` (for images).
+
+```html
+<spiderly-file
+  [control]="form.getControl('profilePicture')"
+  [objectId]="entityId"
+  [acceptedFileTypes]="['image/*']"
+  [maxFileSize]="5000000"
+  [imageWidth]="200"
+  [imageHeight]="200"
+  [fileData]="profilePictureData"
+  [isCloudinaryFileData]="false"
+  (onFileSelected)="onProfilePictureSelected($event)"
+  (onFileRemoved)="onProfilePictureRemoved()"
+></spiderly-file>
+```
+
+## Form Framework
+
+Spiderly extends Angular's reactive forms with typed wrappers that integrate with the validation and code generation pipeline.
+
+### SpiderlyFormControl\<T\>
+
+Extends Angular `FormControl<T>`. Created automatically by the generated validators service.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Internal control name |
+| `labelForDisplay` | `string` | Translated label used by controls |
+| `required` | `boolean` | Whether the control has a required validator |
+| `type` | `string` | Type hint: `'number'`, `'Date'`, `'string'`, `'Namebook[]'`, etc. |
+
+Constructor defaults `updateOn` to `'blur'` for performance. `getRawValue()` returns the value even when the control is disabled.
+
+### SpiderlyFormGroup\<T\>
+
+Extends Angular `FormGroup` with type-safe control access.
+
+| Method / Property | Type | Description |
+|-------------------|------|-------------|
+| `getControl(name)` | `SpiderlyFormControl` | Type-safe accessor for a control by field name |
+| `getRawValue()` | `T` | Returns all values including disabled controls |
+| `targetClass` | `Constructor<T>` | Constructor reference for the entity type |
+| `saveObservableMethod` | `(body) => Observable<any>` | Optional method for saving this form group independently |
+
+```typescript
+const title = this.form.getControl('title');
+console.log(title.value, title.required, title.labelForDisplay);
+```
+
+### SpiderlyFormArray\<T\>
+
+Extends Angular `FormArray` for managing ordered lists of form groups (e.g., complex M2M relationships).
+
+| Method / Property | Type | Description |
+|-------------------|------|-------------|
+| `addNewFormGroup(index)` | `void` | Inserts a new blank form group at the given index |
+| `getFormGroups()` | `SpiderlyFormGroup<T>[]` | Returns child controls as typed form groups |
+| `getCrudMenuForOrderedData()` | `MenuItem[]` | Returns context menu items: Remove, Add Above, Add Below |
+| `disableAllFormControls()` | `void` | Disables every control in all child form groups |
+| `enableAllFormControls()` | `void` | Enables every control in all child form groups |
+| `label` | `string` | Internal label name |
+| `labelForDisplay` | `string` | Translated label |
+| `required` | `boolean` | Whether the array is required |
