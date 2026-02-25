@@ -1,0 +1,123 @@
+---
+title: CLI Reference
+description: Complete reference for the Spiderly CLI tool — all commands, options, and usage examples.
+---
+
+## Installation
+
+```bash
+dotnet tool install -g Spiderly.CLI
+```
+
+To update to the latest version:
+
+```bash
+dotnet tool update -g Spiderly.CLI
+```
+
+## Usage
+
+```bash
+spiderly [command] [options]
+```
+
+Run `spiderly help` to see all available commands.
+
+## Commands
+
+### init
+
+Initialize a new Spiderly project with a .NET backend and an Angular frontend.
+
+```bash
+spiderly init [--name <AppName>] [--db <provider>]
+```
+
+| Option | Description |
+| --- | --- |
+| `--name` | App name in PascalCase, without spaces (e.g., `MyApp`). If omitted, the CLI will prompt you. |
+| `--db` | Database provider: `postgresql`, `sqlserver`, or `skip`. If omitted, the CLI will prompt you. |
+
+**Examples:**
+
+```bash
+spiderly init
+```
+
+```bash
+spiderly init --name MyApp --db postgresql
+```
+
+### add-new-entity
+
+Create a new entity and generate all necessary files: entity class, Angular pages (list and details), routes, and menu item.
+
+```bash
+spiderly add-new-entity [--data-view]
+```
+
+| Option | Description |
+| --- | --- |
+| `--data-view` | Generate a DataView template instead of the default Table template for the list page. |
+
+The CLI will prompt you to enter the entity name in PascalCase (e.g., `YourEntityName`).
+
+**Examples:**
+
+```bash
+spiderly add-new-entity
+```
+
+```bash
+spiderly add-new-entity --data-view
+```
+
+### add-migration
+
+Create a new EF Core migration.
+
+```bash
+spiderly add-migration <name>
+```
+
+| Argument | Description |
+| --- | --- |
+| `<name>` | The name for the new migration (required). |
+
+**Example:**
+
+```bash
+spiderly add-migration AddProductTable
+```
+
+### update-database
+
+Apply all pending EF Core migrations to the database.
+
+```bash
+spiderly update-database
+```
+
+### remove-migration
+
+Remove the last EF Core migration.
+
+```bash
+spiderly remove-migration
+```
+
+### list-migrations
+
+List all available EF Core migrations.
+
+```bash
+spiderly list-migrations
+```
+
+### help
+
+Show all available commands and their options.
+
+```bash
+spiderly help
+```
