@@ -2,9 +2,12 @@
   "title": "Documentation",
   "pages": [
     "getting-started",
+    "architecture",
     "set-up-emailing",
     "set-up-google-authentication",
+    "set-up-telegram-notifications",
     "add-new-entity",
+    "relationships",
     "attributes",
     "validation",
     "authorization",
