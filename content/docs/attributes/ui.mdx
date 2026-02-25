@@ -1,0 +1,222 @@
+---
+title: UI
+description: Attributes that control how entities and properties are rendered in the Angular admin panel — control types, layout, ordering, and permissions.
+---
+
+## UIControlType
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+
+Specifies the UI control type for a property.
+
+If not specified, the control type is automatically determined based on the property type:
+
+- `string`: `TextBox` (or `TextArea` if `[StringLength]` value is large)
+- `int/long`: `Number`
+- `decimal`: `Decimal`
+- `bool`: `CheckBox`
+- `DateTime`: `Calendar`
+- `many-to-one`: `Autocomplete`
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
+    public UserType Type { get; set; }
+
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Description { get; set; }
+
+    // Automatically becomes a TextBox
+    public string Name { get; set; }
+
+    // Automatically becomes a Number
+    public int Age { get; set; }
+}
+```
+
+## UIControlWidth
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+
+Specifies the width of a UI field using PrimeNG (PrimeFlex) column classes.
+
+### Default values:
+
+- `"col-12"` for TextArea and Editor controls
+- `"col-12 md:col-6"` for all other controls
+
+### Example:
+
+```csharp
+public class Article : <long>
+{
+    [UIControlWidth("col-12")]
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Content { get; set; }
+
+    [UIControlWidth("col-3")]
+    public string Author { get; set; }
+
+    // Uses default "col-12 md:col-6"
+    public string Title { get; set; }
+}
+```
+
+## UIDoNotGenerate
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+
+Excludes a property from being generated in the UI main form component.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    public string Name { get; set; }
+
+    [UIDoNotGenerate]
+    public DateTime LastLoginDate { get; set; } // Won't appear in the UI form
+
+    [UIDoNotGenerate]
+    public string InternalNotes { get; set; } // Won't appear in the UI form
+}
+```
+
+## UIPanel
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies in which panel the UI control will be located. By default, all controls are inside the `"Details"` panel.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; } // Goes to "Details" panel by default
+
+    [UIPanel("Security")]
+    public string Password { get; set; } // Goes to "Security" panel
+
+    [UIPanel("Preferences")]
+    public bool ReceiveNotifications { get; set; } // Goes to "Preferences" panel
+}
+```
+
+## UIPropertyBlockOrder
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+
+Specifies the display order of UI controls. Controls are displayed in the order of property declaration, except for: `'file'`, `'text-area'`, `'editor'`, and `'table'` controls, which are always displayed last in their declaration order.
+
+### Example:
+
+```csharp
+public class Article : BusinessObject<long>
+{
+    [UIPropertyBlockOrder("1")]
+    public string Title { get; set; }
+
+    [UIPropertyBlockOrder("2")]
+    public string Author { get; set; }
+
+    // Will be displayed last despite order number
+    [UIPropertyBlockOrder("0")]
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Content { get; set; }
+}
+```
+
+## UIOrderedOneToMany
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+
+Enables management of child entities through an ordered list in the parent entity's main UI form component.
+
+### Example:
+
+```csharp
+public class Course : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [UIOrderedOneToMany]
+    public virtual List<Course> Courses { get; set; } = new(); // Will be shown as an ordered list in the UI
+}
+
+public class CourseItem : BusinessObject<long>
+{
+    [DisplayName]
+    public string Title { get; set; }
+
+    [UIDoNotGenerate]
+    [Required]
+    public int OrderNumber { get; set; } // Needs to be called OrderNumber
+
+    [Required] // The course item can't exist without the course
+    [WithMany(nameof(Course.CourseItems))]
+    public virtual Course Course { get; set; }
+}
+```
+
+## UITableColumn
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity.UI`
+
+### Usage:
+
+Specifies which columns should be displayed in a table view for a `many-to-many` relationship. Must be used in combination with `[SimpleManyToManyTableLazyLoad]` attribute.
+
+### Example:
+
+```csharp
+public class Partner : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    #region UITableColumn
+    [UITableColumn(nameof(PartnerUserDTO.UserDisplayName))]
+    [UITableColumn(nameof(PartnerUserDTO.Points))]
+    [UITableColumn(nameof(PartnerUserDTO.TierDisplayName))]
+    [UITableColumn(nameof(PartnerUserDTO.CheckedSegmentationItemsCommaSeparated), "Segmentation")] // Custom translation key
+    [UITableColumn(nameof(PartnerUserDTO.CreatedAt))]
+    #endregion
+    [SimpleManyToManyTableLazyLoad]
+    public virtual List<PartnerUser> Recipients { get; set; } = new(); // M2M relationship
+}
+```
+
+## UIAdditionalPermissionCodeForInsert
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies additional permission requirements for inserting entities in the UI. The user must have ONE of the specified permissions to perform the insert operation. Multiple instances of this attribute can be applied to a single entity.
+
+## UIAdditionalPermissionCodeForUpdate
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies additional permission requirements for updating entities in the UI. The user must have ONE of the specified permissions to perform the update operation. Multiple instances of this attribute can be applied to a single entity.

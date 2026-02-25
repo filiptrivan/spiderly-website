@@ -1,0 +1,145 @@
+---
+title: Code Generation
+description: Attributes that control what gets generated — DTOs, services, mappers, and source generator output.
+---
+
+## BlobName
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Marks a string property as a reference to a file stored in Azure Blob Storage. This property will contain the unique identifier (`blob name`) used to locate and access the file in Azure Storage.
+
+When you add a property decorated with the `BlobName` inside your entity, Spiderly will automatically generate an additional property in the corresponding DTO (e.g., `ProfilePictureData`). This new property will contain the Base64-encoded string of the file. To display this image in your HTML, use the Spiderly helper method `getHtmlImgDisplayString64` and pass its result as the `src` attribute of an `<img>` tag.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [BlobName]
+    [StringLength(80, MinimumLength = 30)] // GUID length
+    public string ProfilePicture { get; set; }
+}
+```
+
+## IncludeInDTO
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies that a property should be included in the generated DTO. This attribute is particularly useful for enumerable properties, which are not included in DTOs by default.
+
+### Note:
+
+This attribute only affects DTO generation and does not influence the mapping behavior (Entity ↔ DTO).
+
+## ExcludeFromDTO
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies that a property should be excluded from the generated DTO.
+
+## ExcludeServiceMethodsFromGeneration
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Prevents the generation of standard business service methods for the decorated property in the `BusinessServiceGenerated` class.
+
+### Use this attribute when you want to:
+
+- Implement custom business logic instead of using generated methods
+- Override the default generated behavior with your own implementation
+- Exclude specific properties from the standard service method generation
+
+### Note:
+
+The property will still be part of the entity, but no service methods will be generated for it in the `BusinessServiceGenerated` class.
+
+## GenerateCommaSeparatedDisplayName
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Generates a string property in the DTO containing comma-separated display names for a collection property in the entity.
+
+### Example:
+
+```csharp
+public class Project : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [GenerateCommaSeparatedDisplayName]
+    public virtual List<User> TeamMembers { get; set; } = new();
+}
+
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Email { get; set; }
+}
+
+// In the UI table, the TeamMembers column will show:
+// "john@example.com, jane@example.com, bob@example.com"
+```
+
+## ProjectToDTO
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies custom mapping configuration when projecting an entity to its DTO.
+
+### Example:
+
+```csharp
+[ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
+public class Achievement : BusinessObject<long>
+{
+    // Properties
+}
+```
+
+## CustomMapper
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+Marks a class for custom object mapping implementation.
+
+### Example:
+
+```csharp
+[CustomMapper]
+public static partial class Mapper
+{
+    // Custom mapping methods
+}
+```
+
+### Note:
+
+Use this attribute when you need to implement specialized mapping logic that cannot be handled by the default mapping configuration.
+
+## Output
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+Specifies the output configuration for the Source Generator.
+
+### Note:
+
+This is a temporary solution and may be replaced in future versions.
