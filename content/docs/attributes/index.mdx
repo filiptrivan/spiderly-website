@@ -5,26 +5,25 @@ description: Complete reference for all Spiderly attributes used in entity confi
 
 Spiderly uses C# attributes to configure entity behavior, relationships, UI generation, and more. Attributes are grouped into the following categories:
 
-## [Relationships](/docs/attributes/relationships)
-
-Attributes for defining entity relationships — many-to-one, many-to-many, cascade behavior, and display names.
-
-**Attributes:** M2M, M2MWithMany, WithMany, CascadeDelete, SetNull, DisplayName, ComplexManyToManyList, SimpleManyToManyTableLazyLoad
-
-## [UI](/docs/attributes/ui)
-
-Attributes that control how entities and properties are rendered in the Angular admin panel — control types, layout, ordering, and permissions.
-
-**Attributes:** UIControlType, UIControlWidth, UIDoNotGenerate, UIPanel, UIPropertyBlockOrder, UIOrderedOneToMany, UITableColumn, UIAdditionalPermissionCodeForInsert, UIAdditionalPermissionCodeForUpdate
-
-## [Code Generation](/docs/attributes/code-generation)
-
-Attributes that control what gets generated — DTOs, services, mappers, and source generator output.
-
-**Attributes:** BlobName, IncludeInDTO, ExcludeFromDTO, ExcludeServiceMethodsFromGeneration, GenerateCommaSeparatedDisplayName, ProjectToDTO, CustomMapper, Output
-
-## [General](/docs/attributes/general)
-
-Attributes for authentication, authorization, controller routing, and UI behavior.
-
-**Attributes:** AuthGuard, DoNotAuthorize, Controller, SkipSpinner
+<Cards>
+  <Card
+    title="Relationships"
+    description="Attributes for defining entity relationships — many-to-one, many-to-many, cascade behavior, and display names."
+    href="/docs/attributes/relationships"
+  />
+  <Card
+    title="UI"
+    description="Attributes that control how entities and properties are rendered in the Angular admin panel — control types, layout, ordering, and permissions."
+    href="/docs/attributes/ui"
+  />
+  <Card
+    title="Code Generation"
+    description="Attributes that control what gets generated — DTOs, services, mappers, and source generator output."
+    href="/docs/attributes/code-generation"
+  />
+  <Card
+    title="General"
+    description="Attributes for authentication, authorization, controller routing, and UI behavior."
+    href="/docs/attributes/general"
+  />
+</Cards>
