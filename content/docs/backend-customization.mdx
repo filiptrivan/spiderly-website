@@ -102,7 +102,9 @@ Spiderly's global exception handler catches all exceptions and maps them to appr
 | Exception | Default Status | Log Level | Message to Client | Notification Sent |
 |-----------|---------------|-----------|-------------------|-------------------|
 | `BusinessException` | 400 | Warning | Exception message | No |
+| `ExpiredVerificationException` | 400 | Information | Exception message | No |
 | `UnauthorizedException` | 401 | Error | Exception message | No |
+| `HackerException` | 500 | Error | Generic error | Yes |
 | Unhandled (any other) | 500 | Error | Generic error | Yes |
 
 ### BusinessException
@@ -119,13 +121,21 @@ The default status code is `400 Bad Request`. You can override it via the `Statu
 throw new BusinessException("Resource not found.") { StatusCode = 404 };
 ```
 
+### ExpiredVerificationException
+
+Returns `400 Bad Request` with the exception message, logged at `Information` level. Used internally by the security module when a verification code has expired, but you can also throw it in your own code for similar time-sensitive validation scenarios.
+
 ### UnauthorizedException
 
 For custom authorization checks — returns `401 Unauthorized` with your message. See the [Authorization Service](#authorization-service) section for a usage example.
 
+### HackerException
+
+For requests that indicate malicious intent (e.g., tampering with IDs, accessing resources that shouldn't be reachable). Returns a generic error message (never revealing what went wrong) and triggers email/Telegram notifications so you can investigate. Used internally by Spiderly's generated services for integrity checks.
+
 ### Unhandled Exceptions
 
-Any exception that isn't a `BusinessException` or `UnauthorizedException` returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `IExceptionNotificationDispatcher`.
+Any other exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `IExceptionNotificationDispatcher`.
 
 ## Security Service
 
