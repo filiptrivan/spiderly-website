@@ -16,6 +16,7 @@
     "backend-customization",
     "frontend-customization",
     "angular-components",
+    "filtering-and-pagination",
     "translation"
   ]
 }

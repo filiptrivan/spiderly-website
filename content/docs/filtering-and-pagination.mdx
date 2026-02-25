@@ -1,0 +1,245 @@
+---
+title: Filtering & Pagination
+description: How Spiderly's server-side filtering, pagination, and sorting pipeline works — from the Angular UI to the EF Core query.
+---
+
+## Overview
+
+Spiderly auto-generates a full **server-side filtering + pagination pipeline** from your entity definitions. The frontend sends a filter object (column filters, pagination offset, sort rules) → the backend applies those filters to EF Core queries → and returns paginated DTOs with a total count.
+
+This page covers the system internals. For configuring the UI components that drive filtering, see [Data Components](/docs/angular-components/data-components).
+
+## How It Works
+
+```
+┌─────────────────────────────┐
+│  Angular Component          │   DataTable / DataView fires lazy load event
+│  (SpiderlyDataTable)        │
+└────────────┬────────────────┘
+             │ Filter object (JSON)
+             ▼
+┌─────────────────────────────┐
+│  Generated Controller       │   GetPaginated{Entity}List endpoint
+└────────────┬────────────────┘
+             │ FilterDTO
+             ▼
+┌─────────────────────────────┐
+│  Generated Service          │   Calls PaginatedResultGenerator.Build()
+│                             │   → applies column filters to IQueryable
+│                             │   → counts total matching records
+│                             │   → applies Skip(first) + Take(rows)
+└────────────┬────────────────┘
+             │ PaginatedResult<TEntity>
+             ▼
+┌─────────────────────────────┐
+│  Mapster Projection         │   Projects entities to DTOs
+└────────────┬────────────────┘
+             │ PaginatedResultDTO<TDTO>
+             ▼
+┌─────────────────────────────┐
+│  JSON Response              │   { data: [...], totalRecords: N }
+└─────────────────────────────┘
+```
+
+1. The Angular component (`SpiderlyDataTable` or `SpiderlyDataView`) fires a lazy load event containing a `Filter` object.
+2. The `Filter` is sent via the generated API service to the `GetPaginated{Entity}List` controller endpoint.
+3. The generated service calls `PaginatedResultGenerator.Build()`, which applies column filters to the EF Core `IQueryable` using LinqKit's `PredicateBuilder`.
+4. It counts all matching records (before pagination).
+5. It applies `Skip(first)` + `Take(rows)` for pagination.
+6. The result is projected to DTOs via Mapster.
+7. A `PaginatedResultDTO<T>` with `Data` + `TotalRecords` is returned to the frontend.
+
+## FilterDTO
+
+The C# class that represents a filter request:
+
+```csharp
+public class FilterDTO
+{
+    public Dictionary<string, List<FilterRuleDTO>> Filters { get; set; } = new();
+    public int First { get; set; }       // zero-based offset
+    public int Rows { get; set; }        // page size
+    public List<FilterSortMetaDTO> MultiSortMeta { get; set; } = new();
+    public int? AdditionalFilterIdInt { get; set; }
+    public long? AdditionalFilterIdLong { get; set; }
+}
+```
+
+- **`Filters`** dictionary: keys are property names (camelCase), values are lists of filter rules.
+- Multiple rules per column are supported (e.g., price > 100 AND price < 500).
+
+## FilterRuleDTO
+
+A single filter condition:
+
+```csharp
+public class FilterRuleDTO
+{
+    public object Value { get; set; }
+    public MatchModeCodes MatchMode { get; set; }
+    public string Operator { get; set; }  // "and" / "or" between rules on the same column
+}
+```
+
+## Match Modes
+
+All supported match modes:
+
+| MatchModeCodes | Applies To | Description |
+|----------------|-----------|-------------|
+| `StartsWith` | string | Case-insensitive prefix match |
+| `Contains` | string | Case-insensitive substring match |
+| `Equals` | string, number, bool, DateTime | Exact match |
+| `LessThan` | number, DateTime | Less than comparison |
+| `GreaterThan` | number, DateTime | Greater than comparison |
+| `In` | number, collections | Value is in a set |
+
+<Callout>
+  String comparisons are always case-insensitive (`.ToLower()` is applied automatically).
+</Callout>
+
+## Sorting
+
+Single and multi-column sorting is handled via `MultiSortMeta`:
+
+```csharp
+public class FilterSortMetaDTO
+{
+    public string Field { get; set; }
+    public int Order { get; set; }  // 1 = ascending, -1 = descending
+}
+```
+
+Sort rules are applied in list order — the first entry is the primary sort.
+
+## PaginatedResultDTO
+
+The response wrapper returned by every paginated endpoint:
+
+```csharp
+public class PaginatedResultDTO<T> where T : class
+{
+    public IList<T> Data { get; set; }
+    public int TotalRecords { get; set; }
+}
+```
+
+`TotalRecords` is the count of all records matching the filters (before pagination), used by the UI paginator to calculate total pages.
+
+## Programmatic Filtering
+
+When you need to build filters in custom backend code, use the generic `FilterDTO<TEntity>` which provides a fluent, expression-based API:
+
+```csharp
+var filter = new FilterDTO<Product>()
+    .AddFilter(x => x.Name, "widget", MatchModeCodes.Contains)
+    .AddFilter(x => x.Price, 100, MatchModeCodes.GreaterThan)
+    .AddSort(x => x.CreatedAt, -1)
+    .SetPagination(0, 25);
+
+var result = await GetPaginatedProductList(filter);
+```
+
+This is compile-time safe — no magic strings. The expression `x => x.Name` is converted to the camelCase property name `"name"` automatically.
+
+## Custom Filtering with AdditionalFilterId
+
+`AdditionalFilterIdInt` and `AdditionalFilterIdLong` are extra filter parameters designed for **parent-child filtering** — when you need to show a list of child records filtered by a parent ID.
+
+**Frontend:** Pass the parent ID via the `additionalFilterIdLong` input on `spiderly-data-table`:
+
+```html
+<spiderly-data-table
+  [cols]="cols"
+  [getPaginatedListObservableMethod]="getCommentListObservableMethod"
+  [additionalFilterIdLong]="blogPostId"
+></spiderly-data-table>
+```
+
+**Backend:** Override the generated `GetPaginated{Entity}List` method to apply the additional filter:
+
+```csharp
+public override async Task<PaginatedResultDTO<CommentDTO>> GetPaginatedCommentList(
+    FilterDTO filterDTO,
+    IQueryable<Comment> query,
+    bool authorize)
+{
+    if (filterDTO.AdditionalFilterIdLong.HasValue)
+    {
+        query = query.Where(x => x.BlogPost.Id == filterDTO.AdditionalFilterIdLong.Value);
+    }
+    return await base.GetPaginatedCommentList(filterDTO, query, authorize);
+}
+```
+
+## DTO Property Resolution
+
+The generated filter code resolves **DTO property names** to entity paths automatically:
+
+- `categoryDisplayName` → `Category.Name` (follows navigation property + `[DisplayName]` attribute)
+- `categoryId` → `Category.Id` (follows FK relationship)
+- Properties with `[ProjectToDTO]` custom mappings are also resolved
+
+This means you can filter by DTO fields that don't directly exist on the entity — the generator knows how to translate them to the correct EF Core expression.
+
+## TypeScript Types
+
+The Angular frontend has type-safe equivalents for all filter types. For usage with the UI components, see [Data Components](/docs/angular-components/data-components).
+
+### Filter\<T\>
+
+The request object, mirrors `FilterDTO`:
+
+```typescript
+class Filter<T> {
+  filters?: { [K in keyof T]?: FilterRule[] };
+  first?: number;
+  rows?: number;
+  multiSortMeta?: FilterSortMeta[];
+  additionalFilterIdInt?: number;
+  additionalFilterIdLong?: number;
+}
+```
+
+### FilterRule\<T\>
+
+Individual filter condition with **type-safe match modes**:
+
+```typescript
+class FilterRule<T = any> {
+  matchMode: AllowedMatchModes<T>;
+  value: T;
+  operator?: string;
+}
+```
+
+The `AllowedMatchModes<T>` type restricts which match modes are valid based on the value type:
+
+| Type | Allowed Match Modes |
+|------|-------------------|
+| `string` | `Contains`, `StartsWith`, `Equals` |
+| `boolean` | `Equals` |
+| `Date` | `Equals`, `GreaterThan`, `LessThan` |
+| `number` | `Equals`, `GreaterThan`, `LessThan`, `In` |
+
+### MatchModeCodes
+
+```typescript
+enum MatchModeCodes {
+  StartsWith = 0,
+  Contains = 1,
+  Equals = 2,
+  LessThan = 3,
+  GreaterThan = 4,
+  In = 5,
+}
+```
+
+### PaginatedResult\<T\>
+
+```typescript
+class PaginatedResult<T = any> {
+  data?: T[];
+  totalRecords: number;
+}
+```
