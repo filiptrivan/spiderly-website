@@ -1,0 +1,88 @@
+---
+title: Enums
+description: Learn how to define C# enums that are automatically generated as TypeScript enums for your Angular frontend.
+---
+
+## Overview
+
+Spiderly lets you define enums once in C# and automatically generates matching TypeScript enums for your Angular frontend. This keeps backend and frontend enum definitions in sync — no manual duplication or copy-paste errors.
+
+## Defining an Enum
+
+1. Create a file in `Backend\{YourAppName}.Business\Enums\`
+2. Use a block namespace ending with `.Enums`
+3. Define a standard C# enum
+
+**C# input:**
+
+```csharp
+// File: Backend\YourAppName.Business\Enums\OrderStatusCodes.cs
+namespace YourAppName.Business.Enums
+{
+    public enum OrderStatusCodes
+    {
+        PendingPayment = 1,
+        Pending = 2,
+        Processing = 3,
+        Shipped = 4,
+        Delivered = 5,
+        Cancelled = 6
+    }
+}
+```
+
+**Generated TypeScript output:**
+
+```typescript
+// File: Frontend\src\app\business\enums\enums.generated.ts (auto-generated)
+export enum OrderStatusCodes {
+  PendingPayment = 1,
+  Pending = 2,
+  Processing = 3,
+  Shipped = 4,
+  Delivered = 5,
+  Cancelled = 6,
+}
+```
+
+<Callout type="warn">
+  You must use block namespace syntax (`namespace X.Y.Enums {'{'} ... {'}'}`), not file-scoped
+  (`namespace X.Y.Enums;`). The source generator relies on the syntax tree structure of block
+  namespaces to discover enums.
+</Callout>
+
+## Naming Convention
+
+Spiderly follows the `...Codes` naming convention for enums (e.g., `OrderStatusCodes`, `PaymentMethodCodes`, `CartStatusCodes`). This convention makes it clear that the type represents a fixed set of coded values.
+
+## Class-Based Enums
+
+Static classes in the `.Enums` namespace are also picked up by the generator and emitted as **string enums**. This is used internally for `PermissionCodes` — a partial class where Spiderly auto-generates CRUD permission codes for every entity.
+
+```csharp
+// Auto-generated permissions for each entity:
+export enum PermissionCodes {
+    ReadBanner = "ReadBanner",
+    UpdateBanner = "UpdateBanner",
+    InsertBanner = "InsertBanner",
+    DeleteBanner = "DeleteBanner",
+    // ... for every entity
+}
+```
+
+See [Backend Customization](/docs/backend-customization) for how to extend `PermissionCodes` with custom permissions.
+
+## Generated Output
+
+All enums are consolidated into a single file:
+
+```
+Frontend\src\app\business\enums\enums.generated.ts
+```
+
+Enums are sorted alphabetically by name in the generated file.
+
+<Callout type="warn">
+  Do not edit `enums.generated.ts` — your changes will be overwritten on the next build. To add
+  custom TypeScript enums, create a separate file alongside the generated one.
+</Callout>

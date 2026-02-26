@@ -10,6 +10,7 @@
     "relationships",
     "attributes",
     "validation",
+    "enums",
     "file-storage",
     "authorization",
     "exceptions",
@@ -17,6 +18,7 @@
     "frontend-customization",
     "angular-components",
     "filtering-and-pagination",
-    "translation"
+    "translation",
+    "deployment"
   ]
 }
