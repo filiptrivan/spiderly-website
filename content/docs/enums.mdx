@@ -7,6 +7,28 @@ description: Learn how to define C# enums that are automatically generated as Ty
 
 Spiderly lets you define enums once in C# and automatically generates matching TypeScript enums for your Angular frontend. This keeps backend and frontend enum definitions in sync — no manual duplication or copy-paste errors.
 
+## How It Works
+
+`NgEnumsGenerator` is a Roslyn source generator that runs at **build time** (when you build the `.Business` project). It scans for two kinds of types in namespaces ending with `.Enums`:
+
+- **`enum` declarations** → generated as numeric TypeScript enums (explicit values preserved)
+- **`static class` declarations** → generated as string TypeScript enums (property names become string values)
+
+All output is consolidated into a single file:
+
+```
+Frontend\src\app\business\enums\enums.generated.ts
+```
+
+Enums are sorted alphabetically by name in the generated file.
+
+<Callout type="warn">
+  Do not edit `enums.generated.ts` — your changes will be overwritten on the next build. To add
+  custom TypeScript enums, create a separate file alongside the generated one.
+</Callout>
+
+See [Architecture](/docs/architecture) for the full list of generators, and [spiderly.json Configuration](/docs/spiderly-json-configuration) for disabling the generator.
+
 ## Defining an Enum
 
 1. Create a file in `Backend\{YourAppName}.Business\Enums\`
@@ -59,30 +81,31 @@ Spiderly follows the `...Codes` naming convention for enums (e.g., `OrderStatusC
 
 Static classes in the `.Enums` namespace are also picked up by the generator and emitted as **string enums**. This is used internally for `PermissionCodes` — a partial class where Spiderly auto-generates CRUD permission codes for every entity.
 
+**C# input:**
+
 ```csharp
-// Auto-generated permissions for each entity:
+// File: Backend\YourAppName.Business\Enums\PermissionCodes.cs
+namespace YourAppName.Business.Enums
+{
+    public static partial class PermissionCodes
+    {
+    }
+}
+```
+
+The class itself is empty — Spiderly auto-generates `Read`/`Update`/`Insert`/`Delete` permission codes for every entity in your project. You can add custom permission codes by adding `public static string` properties to the partial class.
+
+**Generated TypeScript output:**
+
+```typescript
+// File: Frontend\src\app\business\enums\enums.generated.ts (auto-generated)
 export enum PermissionCodes {
     ReadBanner = "ReadBanner",
     UpdateBanner = "UpdateBanner",
     InsertBanner = "InsertBanner",
     DeleteBanner = "DeleteBanner",
-    // ... for every entity
+    // ... Read/Update/Insert/Delete for every entity
 }
 ```
 
 See [Backend Customization](/docs/backend-customization) for how to extend `PermissionCodes` with custom permissions.
-
-## Generated Output
-
-All enums are consolidated into a single file:
-
-```
-Frontend\src\app\business\enums\enums.generated.ts
-```
-
-Enums are sorted alphabetically by name in the generated file.
-
-<Callout type="warn">
-  Do not edit `enums.generated.ts` — your changes will be overwritten on the next build. To add
-  custom TypeScript enums, create a separate file alongside the generated one.
-</Callout>
