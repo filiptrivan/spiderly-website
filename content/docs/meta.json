@@ -2,6 +2,7 @@
   "title": "Documentation",
   "pages": [
     "getting-started",
+    "database-providers",
     "architecture",
     "set-up-emailing",
     "set-up-google-authentication",
