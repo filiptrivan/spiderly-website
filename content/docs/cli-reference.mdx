@@ -121,3 +121,25 @@ Show all available commands and their options.
 ```bash
 spiderly help
 ```
+
+## What Needs a Migration?
+
+Not every entity change requires a database migration. Use this table to decide:
+
+| Change | Migration needed? |
+|---|---|
+| Add/remove entity class | Yes |
+| Add/remove/rename property | Yes |
+| Change property type | Yes |
+| Change `[StringLength]` | Yes |
+| Change `[Required]` | Yes |
+| Add/remove `[CascadeDelete]`/`[SetNull]` | Yes |
+| Change `[DisplayName]` | No (UI only) |
+| Change `[UIControlType]` | No (UI only) |
+| Change `[UIControlWidth]` | No (UI only) |
+| Add/remove `[UIDoNotGenerate]` | No (UI only) |
+| Change `[UIOrderedOneToMany]` | No (UI only) |
+| Add/remove `[BlobName]` | No (mapped to existing string column) |
+| Change `[AcceptedFileTypes]`/`[MaxFileSize]` | No (validation only) |
+| Add/remove `[DoNotAuthorize]` | No (authorization only) |
+| Change `[Controller]` | No (routing only) |

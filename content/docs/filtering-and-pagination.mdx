@@ -243,3 +243,29 @@ class PaginatedResult<T = any> {
   totalRecords: number;
 }
 ```
+
+## Custom Projection (Advanced)
+
+When you need a fully custom DTO shape (e.g., for a storefront API), you can use the internal `GetPaginated{Entity}List` overload that returns `PaginatedResult<T>` (filtered query + total count), then apply your own projection:
+
+```csharp
+public async Task<PaginatedResultDTO<CustomProductDTO>> GetPaginatedProductsCustom(
+    FilterDTO filterDTO, IQueryable<Product> query)
+{
+    PaginatedResult<Product> result = await GetPaginatedProductList(filterDTO, query);
+
+    List<CustomProductDTO> dtos = await result.Query
+        .Skip(filterDTO.First)
+        .Take(filterDTO.Rows)
+        .Select(x => new CustomProductDTO { Id = x.Id, Title = x.Title })
+        .ToListAsync();
+
+    return new PaginatedResultDTO<CustomProductDTO>
+    {
+        Data = dtos,
+        TotalRecords = result.TotalRecords
+    };
+}
+```
+
+This gives you full control over the SELECT while reusing Spiderly's filtering, sorting, and pagination count logic.

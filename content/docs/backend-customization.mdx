@@ -59,6 +59,33 @@ Override virtual methods in `BusinessService` to customize entity operations.
 - `OnBeforeSave{Entity}AndReturnMainUIFormDTO()` - Validate or modify before save
 - `OnAfterSave{Entity}AndReturnMainUIFormDTO()` - Execute post-save business logic
 
+#### Save Flow Execution Order
+
+The generated save method runs these steps in order:
+
+```
+1. OnBeforeSave{Entity}AndReturnMainUIFormDTO(SaveBodyDTO)
+2. OnBefore{Entity}IsMapped(DTO)
+3. OnBefore{Entity}Insert(entity, DTO)  — or —  OnBefore{Entity}Update(entity, DTO)
+4. SaveChangesAsync
+5. Update M2M + ordered O2M collections
+6. OnAfterSave{Entity}AndReturnMainUIFormDTO(SaveBodyDTO, MainUIFormDTO)
+```
+
+Steps 1–3 run **before** the database write. Step 6 runs **after** everything is persisted (including M2M updates), making it the right place for side effects like sending notifications, indexing, or cache invalidation.
+
+### Get Hooks
+
+- `OnAfterGet{Entity}MainUIFormDTO()` - Enrich the DTO with computed fields after it's constructed
+
+```csharp
+protected override async Task OnAfterGetProductMainUIFormDTO(
+    ProductMainUIFormDTO mainUIFormDTO)
+{
+    mainUIFormDTO.ProductDTO.ComputedField = await CalculateValue(mainUIFormDTO.ProductDTO.Id);
+}
+```
+
 ### Blob/File Processing Hooks
 
 - `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` - Custom authorization for file uploads
@@ -86,10 +113,10 @@ namespace YourAppName.Business.Services
             product.CreatedByUserId = _authenticationService.GetCurrentUserId();
         }
 
-        protected override async Task OnAfterSaveProductAndReturnMainUIFormDTO(ProductDTO savedDTO, ProductSaveBodyDTO saveBodyDTO)
+        protected override async Task OnAfterSaveProductAndReturnMainUIFormDTO(ProductSaveBodyDTO saveBodyDTO, ProductMainUIFormDTO mainUIFormDTO)
         {
             // Send notification after product is saved
-            await _emailingService.SendProductCreatedNotification(savedDTO.Id);
+            await _emailingService.SendProductCreatedNotification(mainUIFormDTO.ProductDTO.Id);
         }
     }
 }
@@ -332,4 +359,62 @@ public class DatabaseTokenStorage<T> : ITokenStorage<T> where T : class
 
 // Register in Program.cs
 builder.Services.AddScoped(typeof(ITokenStorage<>), typeof(DatabaseTokenStorage<>));
+```
+
+## Transaction Management
+
+Every generated save/delete method wraps its logic in `_context.WithTransactionAsync(...)`. All hooks called within that flow (e.g., `OnBeforeInsert`, `OnAfterSave`) automatically run inside the same transaction. Nested `WithTransactionAsync` calls reuse the existing transaction — you do **not** need to start your own transaction in hooks.
+
+If you need a transaction in **custom** (non-hook) methods:
+
+```csharp
+await _context.WithTransactionAsync(async () =>
+{
+    // All DB operations here are transactional.
+    // If any operation throws, everything is rolled back.
+});
+```
+
+## Exception Types
+
+| Type | HTTP Status | When to Use |
+|---|---|---|
+| `BusinessException(message)` | 400 | Validation the user can trigger through normal UI usage |
+| `HackerException()` | 500 (generic) | Impossible conditions, tampering, unauthorized access |
+
+```csharp
+throw new BusinessException("Sale price must be less than regular price.");
+throw new HackerException(); // Logs detailed message server-side, returns generic error to client
+```
+
+## Common Pitfalls
+
+### PostgreSQL MARS (Multiple Active Result Sets)
+
+EF Core on PostgreSQL does **not** support multiple active result sets. You'll get a `NpgsqlOperationInProgressException` if you enumerate two queries concurrently on the same connection.
+
+**Fix 1 — Materialize with `.Select()` before starting another query:**
+
+```csharp
+// BAD — lazy enumeration holds the connection open
+var dict = await _context.DbSet<Product>()
+    .ToDictionaryAsync(x => x.Id, x => x.Name);
+
+// GOOD — materialize first
+var dict = await _context.DbSet<Product>()
+    .Select(x => new { x.Id, x.Name })
+    .ToDictionaryAsync(x => x.Id, x => x.Name);
+```
+
+**Fix 2 — Use `.Include()` instead of lazy loading navigation properties:**
+
+```csharp
+// BAD — accessing Product.Category triggers lazy load while connection is busy
+var products = await _context.DbSet<Product>().ToListAsync();
+var names = products.Select(p => p.Category.Name); // MARS error
+
+// GOOD — eager load
+var products = await _context.DbSet<Product>()
+    .Include(p => p.Category)
+    .ToListAsync();
 ```
