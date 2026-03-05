@@ -122,15 +122,10 @@ Data Source=localhost,14330;Initial Catalog=YourApp;User ID=sa;Password=SqlServe
 
 ## Automatic Installation
 
-`spiderly init` detects whether the database service is already running. If not, it offers to install it automatically.
+`spiderly init` detects whether the chosen database is already running. If it isn't:
 
-| OS | PostgreSQL | SQL Server |
-| --- | --- | --- |
-| Windows | Chocolatey (`choco install postgresql`) | Chocolatey (`choco install sql-server-express`) |
-| macOS | Homebrew (`brew install postgresql`) | Docker container |
-| Linux | Docker container | Docker container |
-
-If the package manager (Chocolatey, Homebrew) isn't installed, the CLI will offer to install it first.
+1. **Docker available** — the CLI offers to start the database via `docker run` with a named volume for persistent data. This works the same way on Windows, macOS, and Linux.
+2. **Docker not available** — the CLI displays a link to install the database manually and a link to install Docker.
 
 ## Switching Providers After Init
 

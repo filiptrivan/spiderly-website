@@ -9,15 +9,11 @@ description: Attributes for authentication, authorization, controller routing, a
 
 ### Usage:
 
-Provides authentication protection for API endpoints by validating JWT tokens in the request.
+Provides authentication protection for API endpoints by checking authentication status set by the authentication middleware.
 
 For cookie-based authentication, AuthGuard enforces CSRF protection on state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`). These requests must include an `X-CSRF` header (the value doesn't matter, only its presence is checked). If the header is missing, the request is rejected with `403 Forbidden`.
 
 Requests authenticated via the `Authorization` header (Bearer token) are not affected by CSRF checks. `GET`, `HEAD`, and `OPTIONS` requests are also not affected.
-
-### Customization:
-
-The `OnActionExecuting` method is `virtual`, so you can subclass `AuthGuardAttribute` and override it for custom authentication logic.
 
 ## DoNotAuthorize
 
