@@ -1,0 +1,219 @@
+---
+title: Excel Export
+description: How Spiderly auto-generates Excel export for every entity — backend service, API endpoint, Angular UI button, column selection, and customization.
+---
+
+## Overview
+
+Every entity gets a full **Excel export pipeline** auto-generated from its definition. Admin panel users can export any entity's data table to an `.xlsx` file with one click.
+
+Key characteristics:
+
+- **Respects current filters and sorting** — exports exactly what the user sees (filtered + sorted), but without pagination limits (capped at `ExcelExportMaxRows`, default 100,000)
+- **Column headers are auto-translated** via the [translation system](/docs/translation)
+- Uses **MiniExcel** for `.xlsx` generation
+- The exported filename is translated (e.g., `ProductList.xlsx` in English, `ListaProizvoda.xlsx` in Serbian)
+
+## How It Works
+
+```
+┌─────────────────────────────┐
+│  Angular Data Table          │   User clicks "Export to Excel"
+│  (SpiderlyDataTable)         │
+└────────────┬────────────────┘
+             │ Current filters + sorting (FilterDTO)
+             ▼
+┌─────────────────────────────┐
+│  Generated API Service       │   export{Entity}ListToExcel(filter)
+│  (Angular HttpClient)        │   POST with { observe: 'response', responseType: 'blob' }
+└────────────┬────────────────┘
+             │ HTTP POST /api/{Entity}/Export{Entity}ListToExcel
+             ▼
+┌─────────────────────────────┐
+│  Generated Controller        │   Calls service, returns File() response
+└────────────┬────────────────┘
+             │ FilterDTO
+             ▼
+┌─────────────────────────────┐
+│  Generated Service           │   Applies filters/sorting
+│                              │   → Caps at ExcelExportMaxRows (default 100,000)
+│                              │   → Projects to DTO via ExcelProjectToConfig
+│                              │   → Excludes IEnumerable properties
+│                              │   → Streams rows via IAsyncEnumerable (not buffered)
+│                              │   → Generates Excel with MiniExcel
+└────────────┬────────────────┘
+             │ byte[] (.xlsx file)
+             ▼
+┌─────────────────────────────┐
+│  Browser Download            │   FileSaver.js triggers .xlsx download
+└─────────────────────────────┘
+```
+
+## What Gets Generated
+
+### Backend
+
+For each entity, the following are auto-generated:
+
+**Service method** — applies filters, projects to DTO, generates the Excel file:
+
+```csharp
+public async virtual Task<byte[]> Export{Entity}ListToExcel(
+    FilterDTO filterDTO, IQueryable<{Entity}> query, bool authorize,
+    CancellationToken cancellationToken = default)
+```
+
+**Controller endpoint** — receives the filter, calls the service, returns the file:
+
+```csharp
+[HttpPost]
+[AuthGuard]
+public virtual async Task<IActionResult> Export{Entity}ListToExcel(FilterDTO filterDTO)
+```
+
+**Mapper config** — a Mapster projection specifically for Excel export (separate from the regular `ProjectToConfig`):
+
+```csharp
+public static TypeAdapterConfig {Entity}ExcelProjectToConfig()
+```
+
+**Exclusion list** — determines which DTO properties to skip in the export:
+
+```csharp
+ExcelPropertiesToExclude.GetHeadersToExclude(new {Entity}DTO())
+```
+
+### Frontend (Angular)
+
+**API service method** — sends the current table filters to the export endpoint and receives a blob:
+
+```typescript
+export{Entity}ListToExcel = (filterDTO: Filter): Observable<any> => {
+    return this.http.post(
+        `${this.config.apiUrl}/{Entity}/Export{Entity}ListToExcel`,
+        filterDTO,
+        { observe: 'response', responseType: 'blob' }
+    );
+}
+```
+
+**Data table button** — an "Export to Excel" button is shown by default in every `spiderly-data-table`. When clicked, it sends the current `FilterDTO` (including active column filters, sorting, and `additionalFilterIdLong`) to the export endpoint.
+
+## Column Selection
+
+All public DTO properties are included by default, except:
+
+1. **`IEnumerable` properties** — collections (one-to-many, many-to-many) are automatically excluded
+2. **Properties marked with `[MapperIgnoreTarget]`** — on a custom `ExcelProjectTo` method in the `Mapper` class (see below)
+
+## Excluding Columns
+
+To exclude specific properties from the Excel export, add a method named `{Entity}ExcelProjectToConfig` in your hand-written `Mapper` class. This replaces the auto-generated one. Use Mapster's `.Ignore()` to exclude properties from the projection:
+
+```csharp
+[CustomMapper]
+public static partial class Mapper
+{
+    public static TypeAdapterConfig ProductExcelProjectToConfig()
+    {
+        TypeAdapterConfig config = new();
+
+        config
+            .NewConfig<Product, ProductDTO>()
+            .Map(dest => dest.CategoryId, src => src.Category.Id)
+            .Map(dest => dest.CategoryDisplayName, src => src.Category.Name)
+            .Ignore(dest => dest.Description)
+            ;
+
+        return config;
+    }
+}
+```
+
+<Callout>
+When you write a custom `{Entity}ExcelProjectToConfig` method, the generator skips its auto-generated version. You must include all the many-to-one mappings yourself (the generator won't merge them in).
+</Callout>
+
+To also exclude properties from the column headers (not just the projection), add `[MapperIgnoreTarget]` attributes to a method named `ExcelProjectTo` with the DTO as its return type:
+
+```csharp
+[MapperIgnoreTarget("Description")]
+[MapperIgnoreTarget("InternalNotes")]
+public ProductDTO ExcelProjectTo() => default;
+```
+
+This tells the `ExcelPropertiesToExclude` generator to add `Description` and `InternalNotes` to the exclusion list, so they won't appear as columns in the exported file.
+
+## Hiding the Export Button
+
+To hide the "Export to Excel" button on a specific data table, set the `showExportToExcelButton` input to `false`:
+
+```html
+<spiderly-data-table
+  [cols]="cols"
+  [getPaginatedListObservableMethod]="getProductListObservableMethod"
+  [exportListToExcelObservableMethod]="exportProductListToExcelObservableMethod"
+  [showExportToExcelButton]="false"
+></spiderly-data-table>
+```
+
+## Excel Formatting
+
+The generated Excel file uses the following formatting:
+
+| Element | Style |
+|---------|-------|
+| Column width | Type-based (see table below) |
+| Date columns | MiniExcel default (no custom format) |
+| Sheet name | `Sheet1` (MiniExcel default) |
+| Data start row | Row 2 (row 1 is the header) |
+
+**Column widths by type:**
+
+| Type | Width |
+|------|-------|
+| `bool` | 10 |
+| `byte`, `short`, `int`, `long` | 14 |
+| `decimal`, `double`, `float` | 16 |
+| `DateTime`, `DateOnly` | 18 |
+| `string` (`[StringLength]` ≤ 50) | 20 |
+| `string` (`[StringLength]` ≤ 200) | 30 |
+| `string` (`[StringLength]` > 200) | 40 |
+| Other / no `[StringLength]` | 22 |
+
+## Overriding the Export Logic
+
+The service method is `virtual` — override it in your `BusinessService` to customize the export behavior:
+
+```csharp
+public override async Task<byte[]> ExportProductListToExcel(
+    FilterDTO filterDTO, IQueryable<Product> query, bool authorize,
+    CancellationToken cancellationToken = default)
+{
+    query = query.Where(x => x.IsActive);
+
+    return await base.ExportProductListToExcel(filterDTO, query, authorize, cancellationToken);
+}
+```
+
+Common use cases for overriding:
+
+- **Pre-filter the query** — add `.Where()` clauses to restrict what gets exported
+- **Modify the FilterDTO** — change sorting or add filters programmatically
+- **Completely replace the export** — skip calling `base` and generate a custom Excel file
+
+## Max Rows Limit
+
+By default, exports are capped at **100,000 rows** to prevent memory and timeout issues on very large tables. You can change this limit via `ExcelExportMaxRows` in `appsettings.json`:
+
+```json
+{
+  "AppSettings": {
+    "Spiderly.Shared": {
+      "ExcelExportMaxRows": 50000
+    }
+  }
+}
+```
+
+The cap is applied as a `Take(maxRows)` on the `IQueryable` before the query executes, so it translates to a SQL `LIMIT`/`TOP` clause.

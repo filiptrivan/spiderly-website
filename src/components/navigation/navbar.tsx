@@ -11,6 +11,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn, NAV_LINKS } from '@/utils';
+import { GITHUB_STARS } from '@/utils/constants/nav-links';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
@@ -79,7 +80,7 @@ const Navbar = () => {
                   <Star className="size-4 mr-2" />
                   Star on GitHub
                   <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
-                    51
+                    {GITHUB_STARS}
                   </span>
                 </Link>
               </Button>

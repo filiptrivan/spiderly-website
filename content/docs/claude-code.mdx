@@ -1,0 +1,111 @@
+---
+title: Claude Code Plugin
+description: Use AI-assisted development with Spiderly — the Claude Code plugin gives Claude deep knowledge of entity design, backend hooks, migrations, Angular customization, and more.
+---
+
+Spiderly's Claude Code plugin gives Claude deep knowledge of the framework so it produces correct, idiomatic code without you explaining conventions from scratch every time. Instead of pasting docs into your prompt, the plugin automatically loads the right context — entity patterns, hook signatures, migration commands, Angular form system — based on what you're working on.
+
+## Installation
+
+<Callout>
+  [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview) must be installed before adding the plugin.
+</Callout>
+
+Install the plugin from GitHub by running these two commands inside Claude Code:
+
+```bash
+/plugin marketplace add filiptrivan/spiderly
+/plugin install spiderly@spiderly
+```
+
+## How It Works
+
+The plugin contains **skills** and **commands**:
+
+- **Skills** are context packs that Claude loads automatically when it detects a relevant task. You don't need to invoke them — just describe what you want to do and Claude picks the right skill.
+- **Commands** are user-invoked workflows you trigger with a slash command. They guide Claude through a multi-step process.
+
+```
+Your prompt → Claude analyzes intent → Matches skill? → Loads context automatically
+                                     → Slash command? → Runs guided workflow
+```
+
+## Available Skills
+
+| Skill | Activates When You Ask About | What Claude Gets |
+|---|---|---|
+| `entity-design` | Creating/modifying entities, attributes, relationships | Base classes, property rules, relationship patterns, attribute reference, UI control mapping |
+| `backend-hooks` | Customizing CRUD behavior, lifecycle hooks | Save/delete/get hook signatures, execution order, exception types, transaction model |
+| `filtering-patterns` | Server-side filtering, pagination, custom queries | FilterDTO structure, paginated list overrides, programmatic filter API |
+| `migration-workflow` | Database migrations, schema changes | CLI commands, naming conventions, which changes need migrations |
+| `angular-customization` | Angular forms, data tables, layout, translations | Form system, data table config, service overrides, validation, UI controls |
+| `custom-endpoints` | Non-CRUD API endpoints, custom controllers | Controller patterns, database access, transactions, DI registration |
+| `file-storage` | File uploads, S3, Cloudinary, Azure Blob | Provider selection, entity attributes, upload hooks, cleanup methods |
+| `authorization` | Permissions, roles, authentication, Google OAuth | Permission codes, seeding, auth flow, frontend guards |
+| `mapper-customization` | DTO mapping, Mapster configuration | Generated mapper methods, `[ProjectToDTO]`, partial class overrides |
+
+## Commands
+
+### `/spiderly:add-entity`
+
+A guided workflow that scaffolds a new entity end-to-end. Claude walks you through each step:
+
+1. Gather requirements (entity name, properties, relationships)
+2. Run CLI scaffold command
+3. Write the entity class with attributes
+4. Build backend
+5. Create and apply migration
+6. Customize Angular components (list and details pages)
+7. Add translation keys
+8. Build frontend
+9. Add backend hooks if needed
+
+This is the recommended way to add new entities — it ensures nothing is missed and follows Spiderly conventions at every step.
+
+## Example Prompts
+
+These prompts naturally trigger the right skills without any special syntax:
+
+**Entity creation:**
+> Create a `Warehouse` entity with Name (required, max 200), Address, and a many-to-one relationship to City.
+
+**Backend customization:**
+> After saving an Order, send an email notification to the customer.
+
+**Migrations:**
+> I added a `Phone` property to the Customer entity. Create and apply the migration.
+
+**Angular:**
+> Customize the Product details form — make the Description field use a rich text editor and move Price into a separate panel.
+
+**Authorization:**
+> Set up role-based permissions so only users with the `ManageOrders` permission can access the Order pages.
+
+**Custom endpoints:**
+> Add a `POST /api/storefront/contact` endpoint that accepts a name, email, and message, then sends an email to the site owner.
+
+## Plugin Structure
+
+For contributors or advanced users, here is the plugin file tree:
+
+```
+.claude-plugin/
+  plugin.json
+  marketplace.json
+skills/
+  entity-design/SKILL.md
+  backend-hooks/SKILL.md
+  filtering-patterns/SKILL.md
+  migration-workflow/SKILL.md
+  angular-customization/SKILL.md
+  custom-endpoints/SKILL.md
+  file-storage/SKILL.md
+  authorization/SKILL.md
+  mapper-customization/SKILL.md
+commands/
+  add-entity.md
+```
+
+<Callout>
+  You don't need to read or reference these files directly. Claude loads them automatically based on what you're working on.
+</Callout>

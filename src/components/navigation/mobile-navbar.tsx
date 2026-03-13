@@ -10,6 +10,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { cn, NAV_LINKS } from '@/utils';
+import { GITHUB_STARS } from '@/utils/constants/nav-links';
 import { Menu, Star, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -86,7 +87,7 @@ const MobileNavbar = () => {
                 <Star className="size-4 mr-2" />
                 Star on GitHub
                 <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
-                  51
+                  {GITHUB_STARS}
                 </span>
               </Link>
             </div>

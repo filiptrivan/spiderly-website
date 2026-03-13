@@ -2,14 +2,28 @@
   "title": "Documentation",
   "pages": [
     "getting-started",
+    "database-providers",
+    "architecture",
     "set-up-emailing",
     "set-up-google-authentication",
+    "set-up-telegram-notifications",
     "add-new-entity",
+    "relationships",
     "attributes",
     "validation",
+    "enums",
+    "file-storage",
     "authorization",
+    "exceptions",
     "backend-customization",
     "frontend-customization",
-    "translation"
+    "angular-components",
+    "filtering-and-pagination",
+    "translation",
+    "spiderly-json-configuration",
+    "excel-export",
+    "cli-reference",
+    "claude-code",
+    "deployment"
   ]
 }

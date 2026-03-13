@@ -1,0 +1,440 @@
+---
+title: Relationships
+description: Learn how to configure many-to-one, one-to-many, and many-to-many relationships between entities using Spiderly attributes.
+---
+
+## Overview
+
+Relationships in Spiderly are configured via attributes on your C# entity classes. From those attributes, Spiderly generates:
+
+- EF Core relationship configuration (foreign keys, delete behavior, composite keys)
+- API endpoints for loading related data
+- Angular UI controls (dropdowns, autocompletes, multi-selects, editable lists)
+
+This guide covers all four relationship types using a cohesive **blog domain** as an example: authors, categories, tags, posts, and comments.
+
+## Many-to-One
+
+A many-to-one relationship is defined by adding a `virtual` navigation property on the child entity pointing to the parent, decorated with `[WithMany]`.
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Title { get; set; }
+
+    [Required]
+    [WithMany(nameof(Category.BlogPosts))]
+    public virtual Category Category { get; set; }
+}
+```
+
+Spiderly auto-generates:
+
+- A shadow foreign key property `CategoryId` on the `BlogPost` table
+- An autocomplete dropdown in the Angular UI for selecting a `Category`
+- DTO fields `CategoryId` and `CategoryDisplayName`
+
+`[Required]` makes the FK non-nullable — every blog post must have a category. Without `[Required]`, the FK is nullable and the dropdown allows clearing the selection.
+
+## One-to-Many with \[WithMany\]
+
+To make the relationship bidirectional, add a `List<T>` collection property on the parent entity. The `[WithMany]` attribute on the child points to this collection by name:
+
+```csharp
+public class Category : BusinessObject<int>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(100, MinimumLength = 1)]
+    public string Name { get; set; }
+
+    public virtual List<BlogPost> BlogPosts { get; } = new();
+}
+```
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Title { get; set; }
+
+    [Required]
+    [WithMany(nameof(Category.BlogPosts))]
+    public virtual Category Category { get; set; }
+}
+```
+
+<Callout>
+  Always use the `{"{ get; } = new()"}` pattern for collection navigation properties — not `{"{ get; set; }"}`.
+  This ensures the list is never null.
+</Callout>
+
+## Delete Behavior: \[CascadeDelete\] vs \[SetNull\]
+
+By default, Spiderly blocks deletion of a parent entity if it has children referencing it (EF Core `DeleteBehavior.NoAction`). You can change this with two attributes:
+
+### \[CascadeDelete\]
+
+Deleting the parent automatically deletes all children:
+
+```csharp
+public class Comment : BusinessObject<long>
+{
+    [Required]
+    [StringLength(1000, MinimumLength = 1)]
+    public string Text { get; set; }
+
+    [Required]
+    [CascadeDelete]
+    [WithMany(nameof(BlogPost.Comments))]
+    public virtual BlogPost BlogPost { get; set; }
+}
+```
+
+When a `BlogPost` is deleted, all of its `Comment` entities are deleted too.
+
+### \[SetNull\]
+
+Deleting the parent sets the foreign key to null on children:
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Title { get; set; }
+
+    [SetNull]
+    [WithMany(nameof(Author.BlogPosts))]
+    public virtual Author Author { get; set; }
+}
+```
+
+When an `Author` is deleted, their blog posts remain but `AuthorId` becomes null.
+
+<Callout type="warn">
+  `[SetNull]` requires a **nullable** foreign key — do not combine it with `[Required]`.
+  A required FK means the child cannot exist without the parent, which contradicts set-null behavior.
+</Callout>
+
+### Summary
+
+| Attribute | On Delete | Use When |
+|---|---|---|
+| *(none)* | Deletion blocked if children exist | Parent is referenced master data |
+| `[CascadeDelete]` | All children deleted | Children have no meaning without parent |
+| `[SetNull]` | FK set to null on children | Children can exist independently |
+
+## Simple Many-to-Many
+
+A many-to-many relationship requires a **junction entity** marked with `[M2M]`, containing two navigation properties decorated with `[M2MWithMany]`.
+
+### Junction entity
+
+```csharp
+[M2M]
+public class BlogPostTag
+{
+    [M2MWithMany(nameof(BlogPost.Tags))]
+    public virtual BlogPost BlogPost { get; set; }
+
+    [M2MWithMany(nameof(Tag.BlogPosts))]
+    public virtual Tag Tag { get; set; }
+}
+```
+
+A simple junction entity does **not** inherit from `BusinessObject` — it has no `Id`, `Version`, or timestamps. Spiderly creates a composite primary key from the two FKs.
+
+### Both sides
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Title { get; set; }
+
+    [UIControlType(nameof(UIControlTypeCodes.MultiSelect))]
+    public virtual List<Tag> Tags { get; } = new();
+}
+```
+
+```csharp
+public class Tag : BusinessObject<int>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(50, MinimumLength = 1)]
+    public string Name { get; set; }
+
+    public virtual List<BlogPost> BlogPosts { get; } = new();
+}
+```
+
+`[UIControlType(nameof(UIControlTypeCodes.MultiSelect))]` renders a multi-select dropdown. For entities with many items, use `MultiAutocomplete` instead, which adds search-as-you-type.
+
+## \[DisplayName\] in Relationships
+
+`[DisplayName]` controls what text appears in dropdowns, autocompletes, and table columns when referencing an entity.
+
+### Property-level
+
+Mark a property to use its value as the display text:
+
+```csharp
+public class Author : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(100, MinimumLength = 1)]
+    public string Name { get; set; }
+
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Email { get; set; }
+}
+```
+
+When a dropdown shows authors, it displays each author's `Name`.
+
+### Class-level
+
+Use dot notation to display a property from a related entity:
+
+```csharp
+[DisplayName("BlogPost.Title")]
+public class Comment : BusinessObject<long>
+{
+    [Required]
+    [StringLength(1000, MinimumLength = 1)]
+    public string Text { get; set; }
+
+    [Required]
+    [CascadeDelete]
+    [WithMany(nameof(BlogPost.Comments))]
+    public virtual BlogPost BlogPost { get; set; }
+}
+```
+
+When a `Comment` appears in a list or dropdown, it shows the related `BlogPost.Title` instead of the comment's own `Id`.
+
+<Callout>
+  If no `[DisplayName]` is specified, the entity falls back to displaying the `Id`.
+</Callout>
+
+## \[GenerateCommaSeparatedDisplayName\]
+
+When displaying many-to-many relationships in list tables, you often want to show all related items as a comma-separated string. Apply `[GenerateCommaSeparatedDisplayName]` to the collection property:
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Title { get; set; }
+
+    [GenerateCommaSeparatedDisplayName]
+    [UIControlType(nameof(UIControlTypeCodes.MultiSelect))]
+    public virtual List<Tag> Tags { get; } = new();
+}
+```
+
+This generates a `TagsCommaSeparatedDisplayNames` property on the DTO. In the blog post list table, the Tags column shows `"Tutorial, C#, Beginner"` instead of requiring a separate column for each tag.
+
+## Complex Many-to-Many
+
+When a junction entity needs additional fields beyond the two foreign keys, it becomes a **complex** many-to-many. The junction entity inherits from `BusinessObject<T>` to get its own `Id`, `Version`, and timestamps.
+
+Example: a blog post can have multiple authors, each with a specific role (e.g., "Lead Author", "Contributor"):
+
+```csharp
+[M2M]
+public class BlogPostAuthor : BusinessObject<long>
+{
+    [M2MWithMany(nameof(BlogPost.BlogPostAuthors))]
+    public virtual BlogPost BlogPost { get; set; }
+
+    [M2MWithMany(nameof(Author.BlogPostAuthors))]
+    public virtual Author Author { get; set; }
+
+    [Required]
+    [StringLength(50, MinimumLength = 1)]
+    public string Role { get; set; }
+}
+```
+
+Both sides reference the junction entity directly (not the other-side entity):
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
+    public string Title { get; set; }
+
+    [ComplexManyToManyList]
+    public virtual List<BlogPostAuthor> BlogPostAuthors { get; } = new();
+}
+```
+
+```csharp
+public class Author : BusinessObject<long>
+{
+    [DisplayName]
+    [Required]
+    [StringLength(100, MinimumLength = 1)]
+    public string Name { get; set; }
+
+    public virtual List<BlogPostAuthor> BlogPostAuthors { get; } = new();
+}
+```
+
+## Choosing the Right M2M UI
+
+Spiderly provides three attributes for controlling how many-to-many relationships render in the Angular admin UI:
+
+| Attribute | UI Behavior | Loading | Best For |
+|---|---|---|---|
+| `[ComplexManyToManyList]` | Editable inline list with all other-side entities | Eager | Small sets (e.g., 3 warehouses) |
+| `[SimpleManyToManyTableLazyLoad]` | Paginated table with add/remove | Lazy | Large sets, pair with `[UITableColumn]` |
+| `[ComplexManyToManyReadonlyTable]` | Read-only paginated table | Lazy | Display-only complex M2M data |
+
+For **simple M2M** (no extra fields on junction), use `[UIControlType]` on the collection property instead:
+
+| Control Type | UI Behavior | Best For |
+|---|---|---|
+| `MultiSelect` | Multi-select dropdown showing all items | Small lists (e.g., tags, permissions) |
+| `MultiAutocomplete` | Search-as-you-type multi-select | Large lists (e.g., users, products) |
+
+<Callout type="warn">
+  `[ComplexManyToManyList]` loads **all** entities from the other side into memory at once.
+  Only use it for small sets (under ~50 items). For larger sets, use
+  `[SimpleManyToManyTableLazyLoad]`.
+</Callout>
+
+## Complete Example: Blog Domain
+
+Here is a complete blog domain that ties together all relationship types covered in this guide:
+
+```csharp
+namespace YourAppName.Business.Entities
+{
+    public class Category : BusinessObject<int>
+    {
+        [DisplayName]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        public string Name { get; set; }
+
+        public virtual List<BlogPost> BlogPosts { get; } = new();
+    }
+
+    public class Author : BusinessObject<long>
+    {
+        [DisplayName]
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(200, MinimumLength = 1)]
+        public string Email { get; set; }
+
+        public virtual List<BlogPostAuthor> BlogPostAuthors { get; } = new();
+    }
+
+    public class Tag : BusinessObject<int>
+    {
+        [DisplayName]
+        [Required]
+        [StringLength(50, MinimumLength = 1)]
+        public string Name { get; set; }
+
+        public virtual List<BlogPost> BlogPosts { get; } = new();
+    }
+
+    public class BlogPost : BusinessObject<long>
+    {
+        [DisplayName]
+        [Required]
+        [StringLength(200, MinimumLength = 1)]
+        public string Title { get; set; }
+
+        [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+        [StringLength(10000, MinimumLength = 1)]
+        public string Content { get; set; }
+
+        // Many-to-one (required)
+        [Required]
+        [WithMany(nameof(Category.BlogPosts))]
+        public virtual Category Category { get; set; }
+
+        // One-to-many (cascade delete)
+        public virtual List<Comment> Comments { get; } = new();
+
+        // Simple many-to-many
+        [GenerateCommaSeparatedDisplayName]
+        [UIControlType(nameof(UIControlTypeCodes.MultiSelect))]
+        public virtual List<Tag> Tags { get; } = new();
+
+        // Complex many-to-many
+        [ComplexManyToManyList]
+        public virtual List<BlogPostAuthor> BlogPostAuthors { get; } = new();
+    }
+
+    [DisplayName("BlogPost.Title")]
+    public class Comment : BusinessObject<long>
+    {
+        [Required]
+        [StringLength(1000, MinimumLength = 1)]
+        public string Text { get; set; }
+
+        [Required]
+        [CascadeDelete]
+        [WithMany(nameof(BlogPost.Comments))]
+        public virtual BlogPost BlogPost { get; set; }
+    }
+
+    // Simple M2M junction (no Id, no timestamps)
+    [M2M]
+    public class BlogPostTag
+    {
+        [M2MWithMany(nameof(BlogPost.Tags))]
+        public virtual BlogPost BlogPost { get; set; }
+
+        [M2MWithMany(nameof(Tag.BlogPosts))]
+        public virtual Tag Tag { get; set; }
+    }
+
+    // Complex M2M junction (has extra fields)
+    [M2M]
+    public class BlogPostAuthor : BusinessObject<long>
+    {
+        [M2MWithMany(nameof(BlogPost.BlogPostAuthors))]
+        public virtual BlogPost BlogPost { get; set; }
+
+        [M2MWithMany(nameof(Author.BlogPostAuthors))]
+        public virtual Author Author { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 1)]
+        public string Role { get; set; }
+    }
+}
+```
+
+**What Spiderly generates from this:**
+
+- `BlogPost → Category`: required FK, autocomplete dropdown for selecting category
+- `BlogPost → Comments`: one-to-many, deleting a post cascades to its comments
+- `BlogPost ↔ Tags`: simple M2M via `BlogPostTag`, multi-select dropdown, tags shown as comma-separated string in list tables
+- `BlogPost ↔ Authors`: complex M2M via `BlogPostAuthor` with editable `Role` field, inline list UI

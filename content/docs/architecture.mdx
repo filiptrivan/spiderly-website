@@ -1,0 +1,237 @@
+---
+title: Architecture
+description: Understand how Spiderly works under the hood — from C# entities to generated backend and frontend code, and how to extend it.
+---
+
+## Overview
+
+Spiderly's core idea is simple: **you define C# entity classes with attributes, and the framework generates everything else**.
+
+At build time, Roslyn source generators read your entity definitions and produce:
+
+- .NET services, controllers, DTOs, mappers, validators, and permission codes
+- Angular entities, API services, form components, validators, and enums
+
+You never edit generated files. Instead, you extend them through inheritance and partial classes.
+
+```
+Your Entity Classes (C# + Attributes)
+        │
+        ▼
+  Source Generators (build time)
+        │
+        ▼
+  Generated Base Code (*.generated.cs / *.generated.ts)
+        │
+        ▼
+  Your Code (extends generated base classes)
+```
+
+## Project Structure
+
+Running `spiderly init` creates the following structure:
+
+```
+your-app-name/
+├── Backend/
+│   ├── YourApp.Business/
+│   │   ├── Entities/           ← Your entity classes (source of truth)
+│   │   ├── Services/           ← BusinessService, AuthorizationService, SecurityService
+│   │   ├── DTO/                ← Custom DTO extensions (partial classes)
+│   │   ├── DataMappers/        ← Custom Mapster mappings (partial class)
+│   │   ├── Enums/              ← Custom PermissionCodes (partial class)
+│   │   └── Settings.cs
+│   │
+│   ├── YourApp.Infrastructure/ ← EF Core DbContext, migrations
+│   ├── YourApp.WebAPI/         ← Custom controllers, Program.cs
+│   ├── YourApp.Shared/
+│   │   └── Translations/       ← Translation JSON files (en.json, sr-Latn-RS.json, ...)
+│   └── YourApp.sln
+│
+└── Frontend/
+    └── src/app/
+        ├── business/
+        │   ├── components/     ← Generated base detail components
+        │   ├── entities/       ← Generated TypeScript entity classes
+        │   ├── enums/          ← Generated TypeScript enums
+        │   ├── layout/         ← Navigation menu and layout
+        │   └── services/
+        │       ├── api/        ← API service (extends generated base)
+        │       ├── auth/       ← Auth service (extends generated base)
+        │       └── validators/ ← Generated form validators
+        └── pages/              ← Your list and details page components
+```
+
+## What Gets Generated
+
+Spiderly has 15 source generators (10 for .NET, 5 for Angular) that run at build time:
+
+### .NET Generators
+
+| Generator | Output File | Purpose |
+|---|---|---|
+| ServicesGenerator | `BusinessService.generated.cs` | CRUD operations, data retrieval, Excel export |
+| ControllerGenerator | `BaseControllers.generated.cs` | REST API endpoints for each entity |
+| EntitiesToDTOGenerator | `DTOList.generated.cs` | DTO classes mirroring your entities |
+| MapperGenerator | `Mapper.generated.cs` | Mapster config for entity ↔ DTO mapping |
+| FluentValidationGenerator | `ValidationRules.generated.cs` | FluentValidation rules from attributes |
+| AuthorizationServicesGenerator | `AuthorizationService.generated.cs` | Permission checks for CRUD operations |
+| PermissionCodesGenerator | `PermissionCodes.generated.cs` | Static permission code constants |
+| PaginatedResultGenerator | `PaginatedResultGenerator.generated.cs` | Dynamic EF Core filtering queries |
+| ExcelPropertiesGenerator | `ExcelPropertiesToExclude.generated.cs` | Properties to exclude from Excel export |
+| TranslationsGenerator | `TermsGenerated.generated.cs` | C# translation dictionary from JSON files |
+
+### Angular Generators
+
+| Generator | Output File | Purpose |
+|---|---|---|
+| NgEntitiesGenerator | `entities.generated.ts` | TypeScript classes mirroring C# DTOs |
+| NgControllersGenerator | `api.service.generated.ts` | Typed HTTP methods for all API endpoints |
+| NgBaseDetailsGenerator | `base-details.generated.ts` | Form components for entity detail pages |
+| NgValidatorsGenerator | `validators.generated.ts` | Angular form validators from C# attributes |
+| NgEnumsGenerator | `enums.generated.ts` | TypeScript enums from C# enums |
+
+### What You Write by Hand
+
+- Entity classes with attributes (the single source of truth)
+- Business logic overrides in `BusinessService`
+- Custom controllers for non-CRUD endpoints
+- Angular list and details page components
+- Custom DTO properties (via partial classes)
+- Custom mapper configurations (via partial class)
+- Translations
+
+## The Inheritance Pattern
+
+Spiderly uses a three-tier inheritance pattern. The framework provides a base class, generators produce a middle layer, and you extend at the top:
+
+### Services
+
+```
+BusinessServiceBase          ← Framework (Spiderly NuGet package)
+        ↓
+BusinessServiceGenerated     ← Generated (readonly, rebuilt every build)
+        ↓
+BusinessService              ← Your code (override virtual methods here)
+```
+
+### Controllers
+
+```
+SpiderlyBaseController       ← Framework
+        ↓
+{Entity}BaseController       ← Generated (e.g., ProductBaseController)
+        ↓
+{Entity}Controller           ← Your code (optional, only if you need overrides)
+```
+
+### Authorization
+
+```
+AuthorizationServiceBase     ← Framework
+        ↓
+AuthorizationServiceGenerated ← Generated
+        ↓
+AuthorizationService         ← Your code
+```
+
+### Angular API Service
+
+```
+ApiSecurityService           ← Framework (Spiderly Angular library)
+        ↓
+ApiGeneratedService          ← Generated
+        ↓
+ApiService                   ← Your code
+```
+
+<Callout type="warn">
+  Never edit files with `.generated.cs` or `.generated.ts` suffixes — they are overwritten on every
+  build. Always extend through the hand-written classes above.
+</Callout>
+
+## How Angular and .NET Stay in Sync
+
+Both the .NET and Angular code are generated from the same source: your C# entity classes. This means:
+
+- **TypeScript entities** mirror your C# DTOs — same property names and types
+- **Angular API service methods** mirror your .NET controller endpoints — same method names and parameter types
+- **Angular form validators** mirror your FluentValidation rules — same validation logic on both sides
+- **TypeScript enums** mirror your C# enums — same values and names
+
+When you add a property to an entity, rebuild, and both sides update automatically.
+
+## Base Entities
+
+Every entity in Spiderly inherits from one of two base classes.
+
+### BusinessObject\<T\>
+
+For entities that support full CRUD (create, read, update, delete) operations:
+
+```csharp
+public class BusinessObject<T> : IBusinessObject<T> where T : struct
+{
+    public T Id { get; set; }
+
+    [ConcurrencyCheck]
+    [Required]
+    public int Version { get; set; }
+
+    [Required]
+    public DateTime CreatedAt { get; set; }
+
+    [Required]
+    public DateTime ModifiedAt { get; set; }
+}
+```
+
+- `Id` — Auto-generated primary key. `T` can be `long`, `int`, or `byte`.
+- `Version` — Optimistic concurrency control. Spiderly checks this on every update to prevent conflicting writes.
+- `CreatedAt` / `ModifiedAt` — Automatically managed by the framework.
+
+```csharp
+namespace YourAppName.Business.Entities
+{
+    public class BlogPost : BusinessObject<long>
+    {
+        [Required]
+        [StringLength(200, MinimumLength = 1)]
+        public string Title { get; set; }
+
+        [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+        [StringLength(5000, MinimumLength = 1)]
+        public string Content { get; set; }
+    }
+}
+```
+
+### ReadonlyObject\<T\>
+
+For lookup/reference tables that are read-only from the UI (no create, update, or delete operations):
+
+```csharp
+public class ReadonlyObject<T> : IReadonlyObject<T> where T : struct
+{
+    public T Id { get; set; }
+}
+```
+
+No `Version`, `CreatedAt`, or `ModifiedAt` — these are simple lookup entities with data typically seeded in migrations.
+
+```csharp
+namespace YourAppName.Business.Entities
+{
+    public class PostStatus : ReadonlyObject<byte>
+    {
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
+        public string Name { get; set; }
+    }
+}
+```
+
+<Callout>
+  Entity classes must be in a namespace ending with `.Entities` (e.g.,
+  `YourAppName.Business.Entities`) to be discovered by the source generators.
+</Callout>

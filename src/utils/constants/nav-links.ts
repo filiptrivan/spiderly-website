@@ -18,3 +18,5 @@ export const NAV_LINKS: NavLink[] = [
     href: '/docs',
   },
 ];
+
+export const GITHUB_STARS = 50;

@@ -1,0 +1,145 @@
+---
+title: CLI Reference
+description: Complete reference for the Spiderly CLI tool — all commands, options, and usage examples.
+---
+
+## Installation
+
+```bash
+dotnet tool install -g Spiderly.CLI
+```
+
+To update to the latest version:
+
+```bash
+dotnet tool update -g Spiderly.CLI
+```
+
+## Usage
+
+```bash
+spiderly [command] [options]
+```
+
+Run `spiderly help` to see all available commands.
+
+## Commands
+
+### init
+
+Initialize a new Spiderly project with a .NET backend and an Angular frontend.
+
+```bash
+spiderly init [--name <AppName>] [--db <provider>]
+```
+
+| Option | Description |
+| --- | --- |
+| `--name` | App name in PascalCase, without spaces (e.g., `MyApp`). If omitted, the CLI will prompt you. |
+| `--db` | Database provider: `postgresql`, `sqlserver`, or `skip`. If omitted, the CLI will prompt you. See [Database Providers](/docs/database-providers) for details on what each option generates. |
+
+**Examples:**
+
+```bash
+spiderly init
+```
+
+```bash
+spiderly init --name MyApp --db postgresql
+```
+
+### add-new-entity
+
+Create a new entity and generate all necessary files: entity class, Angular pages (list and details), routes, and menu item.
+
+```bash
+spiderly add-new-entity [--data-view]
+```
+
+| Option | Description |
+| --- | --- |
+| `--data-view` | Generate a DataView template instead of the default Table template for the list page. |
+
+The CLI will prompt you to enter the entity name in PascalCase (e.g., `YourEntityName`).
+
+**Examples:**
+
+```bash
+spiderly add-new-entity
+```
+
+```bash
+spiderly add-new-entity --data-view
+```
+
+### add-migration
+
+Create a new EF Core migration.
+
+```bash
+spiderly add-migration <name>
+```
+
+| Argument | Description |
+| --- | --- |
+| `<name>` | The name for the new migration (required). |
+
+**Example:**
+
+```bash
+spiderly add-migration AddProductTable
+```
+
+### update-database
+
+Apply all pending EF Core migrations to the database.
+
+```bash
+spiderly update-database
+```
+
+### remove-migration
+
+Remove the last EF Core migration.
+
+```bash
+spiderly remove-migration
+```
+
+### list-migrations
+
+List all available EF Core migrations.
+
+```bash
+spiderly list-migrations
+```
+
+### help
+
+Show all available commands and their options.
+
+```bash
+spiderly help
+```
+
+## What Needs a Migration?
+
+Not every entity change requires a database migration. Use this table to decide:
+
+| Change | Migration needed? |
+|---|---|
+| Add/remove entity class | Yes |
+| Add/remove/rename property | Yes |
+| Change property type | Yes |
+| Change `[StringLength]` | Yes |
+| Change `[Required]` | Yes |
+| Add/remove `[CascadeDelete]`/`[SetNull]` | Yes |
+| Change `[DisplayName]` | No (UI only) |
+| Change `[UIControlType]` | No (UI only) |
+| Change `[UIControlWidth]` | No (UI only) |
+| Add/remove `[UIDoNotGenerate]` | No (UI only) |
+| Change `[UIOrderedOneToMany]` | No (UI only) |
+| Add/remove `[BlobName]` | No (mapped to existing string column) |
+| Change `[AcceptedFileTypes]`/`[MaxFileSize]` | No (validation only) |
+| Add/remove `[DoNotAuthorize]` | No (authorization only) |
+| Change `[Controller]` | No (routing only) |

@@ -1,0 +1,78 @@
+---
+title: General
+description: Attributes for authentication, authorization, controller routing, and UI behavior.
+---
+
+## AuthGuard
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+Provides authentication protection for API endpoints by checking authentication status set by the authentication middleware.
+
+For cookie-based authentication, AuthGuard enforces CSRF protection on state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`). These requests must include an `X-CSRF` header (the value doesn't matter, only its presence is checked). If the header is missing, the request is rejected with `403 Forbidden`.
+
+Requests authenticated via the `Authorization` header (Bearer token) are not affected by CSRF checks. `GET`, `HEAD`, and `OPTIONS` requests are also not affected.
+
+## DoNotAuthorize
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Disables authorization checks for CRUD operations on the decorated entity. By default, all entities require authorization for CRUD operations.
+
+### Warning:
+
+This attribute bypasses security checks and should be used with extreme caution. It is primarily intended for testing purposes and should generally be avoided in production environments.
+
+## Controller
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+Specifies a custom controller name for an entity, overriding the default naming convention. This attribute allows grouping multiple related entities under a single controller.
+
+### Default behavior without `Controller` attribute:
+
+Controllers are named as `{EntityName}BaseController`
+
+### Example:
+
+```csharp
+[Controller("SecurityController")]
+public class User { }
+
+[Controller("SecurityController")]
+public class Role { }
+
+[Controller("SecurityController")]
+public class Permission { }
+```
+
+## SkipSpinner
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+Indicates that the loading spinner should be skipped for the decorated controller method.
+
+### Use when:
+
+- The operation is very quick and doesn't need a loading indicator
+- You want to implement custom loading behavior
+- The operation runs in the background
+
+### Example:
+
+```csharp
+[HttpGet]
+[SkipSpinner]
+public async Task SendNotificationEmail(long notificationId)
+{
+    await SendNotificationEmail(notificationId);
+}
+```

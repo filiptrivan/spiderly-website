@@ -1,0 +1,140 @@
+---
+title: spiderly.json Configuration
+description: Configure source generator behavior and API settings with spiderly.json.
+---
+
+## Overview
+
+`spiderly.json` is an optional configuration file that controls how Spiderly's source generators behave. Use it to:
+
+- **Disable specific generators** — useful when you only need a subset of generated code (e.g., backend-only projects that don't need Angular generators)
+- **Customize the API route prefix** — change the default `/api` prefix on generated controller routes
+
+If you don't create this file, all generators are enabled and the default `/api` route prefix is used.
+
+## Setup
+
+**1. Create the file** in your `.Business` project (the same directory as your entity classes):
+
+```json title="YourApp.Business/spiderly.json"
+{
+  "generators": {},
+  "api": {
+    "routePrefix": "/api"
+  }
+}
+```
+
+**2. Register it** in your `.Business` `.csproj` as an additional file so the source generators can read it:
+
+```xml title="YourApp.Business/YourApp.Business.csproj"
+<ItemGroup>
+  <AdditionalFiles Include="spiderly.json" />
+</ItemGroup>
+```
+
+<Callout>
+  JSON parsing is case-insensitive — `"generators"` and `"Generators"` both work.
+</Callout>
+
+## Full Example
+
+```json title="spiderly.json"
+{
+  "generators": {
+    "ServicesGenerator": true,
+    "ControllerGenerator": true,
+    "EntitiesToDTOGenerator": true,
+    "MapperGenerator": true,
+    "FluentValidationGenerator": true,
+    "AuthorizationServicesGenerator": true,
+    "PermissionCodesGenerator": true,
+    "PaginatedResultGenerator": true,
+    "ExcelPropertiesGenerator": true,
+    "TranslationsGenerator": true,
+    "NgEntitiesGenerator": false,
+    "NgControllersGenerator": false,
+    "NgBaseDetailsGenerator": false,
+    "NgValidatorsGenerator": false,
+    "NgEnumsGenerator": false
+  },
+  "api": {
+    "routePrefix": "/api"
+  }
+}
+```
+
+## generators
+
+A dictionary of generator name → `true`/`false`. Any generator not listed defaults to `true` (enabled).
+
+### .NET Generators
+
+| Generator | Output | Purpose |
+|---|---|---|
+| `ServicesGenerator` | `BusinessService.generated.cs` | CRUD operations, data retrieval, Excel export |
+| `ControllerGenerator` | `BaseControllers.generated.cs` | REST API endpoints for each entity |
+| `EntitiesToDTOGenerator` | `DTOList.generated.cs` | DTO classes mirroring your entities |
+| `MapperGenerator` | `Mapper.generated.cs` | Mapster config for entity ↔ DTO mapping |
+| `FluentValidationGenerator` | `ValidationRules.generated.cs` | FluentValidation rules from attributes |
+| `AuthorizationServicesGenerator` | `AuthorizationService.generated.cs` | Permission checks for CRUD operations |
+| `PermissionCodesGenerator` | `PermissionCodes.generated.cs` | Static permission code constants |
+| `PaginatedResultGenerator` | `PaginatedResultGenerator.generated.cs` | Dynamic EF Core filtering queries |
+| `ExcelPropertiesGenerator` | `ExcelPropertiesToExclude.generated.cs` | Properties to exclude from Excel export |
+| `TranslationsGenerator` | `TermsGenerated.generated.cs` | C# translation dictionary from JSON files |
+
+### Angular Generators
+
+| Generator | Output | Purpose |
+|---|---|---|
+| `NgEntitiesGenerator` | `entities.generated.ts` | TypeScript classes mirroring C# DTOs |
+| `NgControllersGenerator` | `api.service.generated.ts` | Typed HTTP methods for all API endpoints |
+| `NgBaseDetailsGenerator` | `base-details.generated.ts` | Form components for entity detail pages |
+| `NgValidatorsGenerator` | `validators.generated.ts` | Angular form validators from C# attributes |
+| `NgEnumsGenerator` | `enums.generated.ts` | TypeScript enums from C# enums |
+
+### Example: Backend-only project
+
+If your project doesn't use the Spiderly Angular frontend (e.g., you're pairing the backend with a different frontend like Next.js), disable all Angular generators:
+
+```json title="spiderly.json"
+{
+  "generators": {
+    "NgEntitiesGenerator": false,
+    "NgControllersGenerator": false,
+    "NgBaseDetailsGenerator": false,
+    "NgValidatorsGenerator": false,
+    "NgEnumsGenerator": false
+  }
+}
+```
+
+## api
+
+Configuration for the generated API controllers.
+
+### routePrefix
+
+| Property | Type | Default |
+|---|---|---|
+| `routePrefix` | `string` | `"/api"` |
+
+Sets the route prefix on generated controller `[Route]` attributes. By default, generated controllers use:
+
+```csharp
+[Route("/api/Product/[action]")]
+```
+
+Setting `routePrefix` to `"/v1"` produces:
+
+```csharp
+[Route("/v1/Product/[action]")]
+```
+
+```json title="spiderly.json"
+{
+  "api": {
+    "routePrefix": "/v1"
+  }
+}
+```

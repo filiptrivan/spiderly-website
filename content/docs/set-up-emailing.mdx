@@ -19,3 +19,40 @@ Locate the `Backend\YourAppName.WebAPI\appsettings.json` file and set the follow
 
 - `"EmailSender"` - Set this to the **existing email address** you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.
 - `"EmailSenderPassword"` - **Do not** use your regular Gmail password. This must be the **Gmail App Password** for the same email account specified in `"EmailSender"`. Follow the video tutorial to see how to generate an Gmail App Password from your Google account.
+
+### Note:
+
+`SmtpHost` defaults to `smtp.gmail.com` and `SmtpPort` defaults to `587`, so for Gmail you only need to set `EmailSender` and `EmailSenderPassword`.
+
+## Using Brevo
+
+Spiderly also ships with a built-in [Brevo](https://www.brevo.com/) (formerly Sendinblue) transactional email provider. To use it instead of SMTP:
+
+### 1. Set `BrevoApiKey` in appsettings
+
+Add your Brevo API key to the `Spiderly.Shared` section of `appsettings.json` (or user secrets / environment variables):
+
+```json
+"Spiderly.Shared": {
+  "EmailSender": "you@example.com",
+  "BrevoApiKey": "xkeysib-..."
+}
+```
+
+### 2. Register the Brevo HttpClient
+
+In your `Startup.ConfigureServices` (or `Program.cs`), call:
+
+```csharp
+services.SpiderlyAddBrevoEmailingService();
+```
+
+### 3. Register `BrevoEmailingService` in DI
+
+Wire up `IEmailingService` to the Brevo implementation:
+
+```csharp
+registry.Register<IEmailingService, Spiderly.Shared.Emailing.BrevoEmailingService>();
+```
+
+That's it — all emails (verification, exception alerts, background jobs) will now be sent through the Brevo API.

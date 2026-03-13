@@ -162,3 +162,86 @@ public class User : BusinessObject<long>
     public string Code { get; set; }
 }
 ```
+
+## AcceptedFileTypes
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage
+
+Specifies the accepted file types for a blob property. When not applied, the file upload defaults to accepting images only (`image/*`). Use this attribute alongside `[BlobName]` for non-image uploads (e.g., PDFs, Excel files).
+
+### Example:
+
+```csharp
+public class Catalog : BusinessObject<int>
+{
+    [BlobName]
+    [AcceptedFileTypes("application/pdf", ".pdf")]
+    [StringLength(1000, MinimumLength = 1)]
+    public string File { get; set; }
+}
+```
+
+## MaxFileSize
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage
+
+Specifies the maximum allowed file size (in bytes) for a blob property. When not applied, the file upload defaults to 20 MB (20,000,000 bytes). Use this attribute alongside `[BlobName]` for file uploads.
+
+### Example:
+
+```csharp
+public class Catalog : BusinessObject<int>
+{
+    [BlobName]
+    [MaxFileSize(5_000_000)] // 5 MB
+    [AcceptedFileTypes("application/pdf", ".pdf")]
+    [StringLength(1000, MinimumLength = 1)]
+    public string File { get; set; }
+}
+```
+
+## ImageWidth
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage
+
+Validates exact image width (in pixels) for a blob property. This attribute provides both **server-side** and **client-side** validation. Use this attribute alongside `[BlobName]` for image uploads.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [BlobName]
+    [ImageWidth(100)]
+    [ImageHeight(100)]
+    [StringLength(80, MinimumLength = 30)]
+    public string Avatar { get; set; }
+}
+```
+
+## ImageHeight
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage
+
+Validates exact image height (in pixels) for a blob property. This attribute provides both **server-side** and **client-side** validation. Use this attribute alongside `[BlobName]` for image uploads.
+
+### Example:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [BlobName]
+    [ImageWidth(100)]
+    [ImageHeight(100)]
+    [StringLength(80, MinimumLength = 30)]
+    public string Avatar { get; set; }
+}
+```

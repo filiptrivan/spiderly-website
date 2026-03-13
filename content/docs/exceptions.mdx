@@ -1,0 +1,44 @@
+---
+title: Exceptions
+description: Learn about Spiderly's exception types and how the global exception handler maps them to HTTP responses.
+---
+
+Spiderly's global exception handler catches all exceptions and maps them to appropriate HTTP responses. Here are the exception types you can throw in your code:
+
+| Exception | Default Status | Log Level | Message to Client | Notification Sent |
+|-----------|---------------|-----------|-------------------|-------------------|
+| `BusinessException` | 400 | Warning | Exception message | No |
+| `ExpiredVerificationException` | 400 | Information | Exception message | No |
+| `UnauthorizedException` | 401 | Error | Exception message | No |
+| `HackerException` | 500 | Error | Generic error | Yes |
+| Unhandled (any other) | 500 | Error | Generic error | Yes |
+
+## BusinessException
+
+The primary way to reject invalid input with a user-facing message. Throw it from lifecycle hooks (e.g., `OnBeforeProductInsert`) to return a meaningful error to the client:
+
+```csharp
+throw new BusinessException("Product name must be unique.");
+```
+
+The default status code is `400 Bad Request`. You can override it via the `StatusCode` property:
+
+```csharp
+throw new BusinessException("Resource not found.") { StatusCode = 404 };
+```
+
+## ExpiredVerificationException
+
+Returns `400 Bad Request` with the exception message, logged at `Information` level. Used internally by the security module when a verification code has expired, but you can also throw it in your own code for similar time-sensitive validation scenarios.
+
+## UnauthorizedException
+
+For custom authorization checks — returns `401 Unauthorized` with your message. See the [Authorization Service](/docs/backend-customization#authorization-service) section for a usage example.
+
+## HackerException
+
+For requests that indicate malicious intent (e.g., tampering with IDs, accessing resources that shouldn't be reachable). Returns a generic error message (never revealing what went wrong) and triggers email/Telegram notifications so you can investigate. Used internally by Spiderly's generated services for integrity checks.
+
+## Unhandled Exceptions
+
+Any other exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `IExceptionNotificationDispatcher`.

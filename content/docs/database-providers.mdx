@@ -1,0 +1,150 @@
+---
+title: Database Providers
+description: Understand the differences between PostgreSQL and SQL Server in Spiderly — what gets generated, how to switch, and which to choose.
+---
+
+## Overview
+
+Spiderly supports **PostgreSQL** and **SQL Server** via Entity Framework Core. The provider is selected during [`spiderly init`](/docs/cli-reference#init) (or via the `--db` flag).
+
+Your application code — entities, services, controllers, DTOs — is **identical** regardless of which provider you choose. The only differences are a handful of NuGet packages, one Hangfire configuration line, and the recommended VS Code extension.
+
+## Comparison Table
+
+| Feature | PostgreSQL | SQL Server |
+| --- | --- | --- |
+| EF Core package | `Npgsql.EntityFrameworkCore.PostgreSQL` | `Microsoft.EntityFrameworkCore.SqlServer` |
+| Hangfire package | `Hangfire.PostgreSql` | `Hangfire.SqlServer` |
+| VS Code extension | `ckolkman.vscode-postgres` | `ms-mssql.mssql` |
+| Default auth method | Password (`postgres` user) | Windows Authentication or Docker (`sa` user) |
+
+## What Gets Generated Per Provider
+
+### NuGet Packages
+
+In your `.WebAPI.csproj`, the two provider-specific packages are:
+
+**PostgreSQL:**
+
+```xml
+<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
+<PackageReference Include="Hangfire.PostgreSql" Version="1.20.*" />
+```
+
+**SQL Server:**
+
+```xml
+<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
+<PackageReference Include="Hangfire.SqlServer" Version="1.8.*" />
+```
+
+All other packages in the `.csproj` are shared between providers.
+
+### Startup Configuration
+
+In `Startup.cs`, the Hangfire storage and EF Core provider are configured based on your choice:
+
+**PostgreSQL:**
+
+```csharp
+services.AddHangfire(config =>
+    config.UseHangfirePostgreSqlStorage(
+        Spiderly.Shared.SettingsProvider.Current.ConnectionString)
+);
+
+services.SpiderlyConfigureServices<YourAppApplicationDbContext>(
+    dbProvider: DbProviderCodes.PostgreSQL);
+```
+
+**SQL Server:**
+
+```csharp
+services.AddHangfire(config =>
+    config.UseSqlServerStorage(
+        Spiderly.Shared.SettingsProvider.Current.ConnectionString)
+);
+
+services.SpiderlyConfigureServices<YourAppApplicationDbContext>(
+    dbProvider: DbProviderCodes.SQLServer);
+```
+
+### VS Code Extensions
+
+The generated `.vscode/extensions.json` recommends the matching database extension:
+
+**PostgreSQL:**
+
+```json
+{
+  "recommendations": [
+    "angular.ng-template",
+    "formulahendry.auto-rename-tag",
+    "ckolkman.vscode-postgres",
+    "esbenp.prettier-vscode"
+  ]
+}
+```
+
+**SQL Server:**
+
+```json
+{
+  "recommendations": [
+    "angular.ng-template",
+    "formulahendry.auto-rename-tag",
+    "ms-mssql.mssql",
+    "esbenp.prettier-vscode"
+  ]
+}
+```
+
+## Connection Strings
+
+Connection strings are stored in [.NET user secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets) and configured automatically during `spiderly init`.
+
+**PostgreSQL format:**
+
+```
+Host=localhost;Port=5432;Database=YourApp;Username=postgres;Password=yourpassword;
+```
+
+**SQL Server — Windows Authentication:**
+
+```
+Data Source=localhost;Initial Catalog=YourApp;Integrated Security=True;Encrypt=False;MultipleActiveResultSets=True;
+```
+
+**SQL Server — Docker:**
+
+```
+Data Source=localhost,14330;Initial Catalog=YourApp;User ID=sa;Password=SqlServer123;Encrypt=False;MultipleActiveResultSets=True;TrustServerCertificate=True;
+```
+
+## Automatic Installation
+
+`spiderly init` detects whether the chosen database is already running. If it isn't:
+
+1. **Docker available** — the CLI offers to start the database via `docker run` with a named volume for persistent data. This works the same way on Windows, macOS, and Linux.
+2. **Docker not available** — the CLI displays a link to install the database manually and a link to install Docker.
+
+## Switching Providers After Init
+
+If you need to switch providers after project creation, follow these steps:
+
+1. **Swap NuGet packages** in `Backend/YourApp.WebAPI/YourApp.WebAPI.csproj` — replace the EF Core and Hangfire packages (see [comparison table](#comparison-table) above).
+2. **Update Hangfire storage** in `Startup.cs` — change `UseHangfirePostgreSqlStorage` to `UseSqlServerStorage` (or vice versa).
+3. **Change `DbProviderCodes`** in the `SpiderlyConfigureServices` call in `Startup.cs`.
+4. **Update the connection string** in user secrets (`dotnet user-secrets set`).
+5. **Delete existing migrations** from `Backend/YourApp.Infrastructure/Migrations/` and create a new initial migration with `spiderly add-migration Init`.
+
+<Callout type="warn">
+  Switching providers requires a fresh database — your existing data will not be migrated automatically.
+</Callout>
+
+## Which Provider Should I Choose?
+
+**PostgreSQL (recommended):** Free, open-source, and runs natively on all operating systems. This is the default recommendation for most projects.
+
+**SQL Server:** Choose if your organization already uses SQL Server, you need Windows Authentication, or you rely on SQL Server Management Studio (SSMS). On macOS and Linux, SQL Server runs via Docker.
+
+Both providers are fully supported — the generated application code is identical.

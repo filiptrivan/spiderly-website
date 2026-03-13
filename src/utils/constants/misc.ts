@@ -93,6 +93,15 @@ export const TECH_STACK = [
     ],
   },
   {
+    category: 'CSS Framework',
+    options: [
+      {
+        name: 'Tailwind CSS',
+        logo: '/tech-stack/tailwindcss-logo.svg',
+      },
+    ],
+  },
+  {
     category: 'Logging',
     options: [
       {

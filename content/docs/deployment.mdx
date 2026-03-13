@@ -1,0 +1,180 @@
+---
+title: Deployment
+description: Deploy your Spiderly backend to production — Dockerfile, database migrations, environment variables, and CORS.
+---
+
+## Overview
+
+This page covers deploying the Spiderly .NET backend as a Docker container to any hosting platform. The instructions are platform-generic — they work on Cloud Run, ECS, Azure App Service, Railway, and similar container-based services.
+
+## Dockerfile
+
+Create a `Dockerfile` in your `Backend/` directory:
+
+```dockerfile
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
+WORKDIR /src
+
+COPY ["YourApp.WebAPI/YourApp.WebAPI.csproj", "YourApp.WebAPI/"]
+COPY ["YourApp.Business/YourApp.Business.csproj", "YourApp.Business/"]
+COPY ["YourApp.Infrastructure/YourApp.Infrastructure.csproj", "YourApp.Infrastructure/"]
+COPY ["YourApp.Shared/YourApp.Shared.csproj", "YourApp.Shared/"]
+
+RUN dotnet restore "YourApp.WebAPI/YourApp.WebAPI.csproj"
+
+COPY . .
+
+RUN dotnet build "YourApp.WebAPI/YourApp.WebAPI.csproj" -c Release -o /app/build
+
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "YourApp.WebAPI/YourApp.WebAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+
+COPY --from=publish /app/publish .
+
+EXPOSE 8080
+
+ENTRYPOINT ["dotnet", "YourApp.WebAPI.dll"]
+```
+
+<Callout>
+  The `.csproj` files are copied separately before `COPY . .` so that Docker can cache the NuGet restore layer. As long as the `.csproj` files don't change, subsequent builds skip the `dotnet restore` step entirely.
+</Callout>
+
+## Database Migrations
+
+EF Core migrations must be applied before (or during) deployment. There are two approaches.
+
+### Run Migrations Before Deployment (Recommended)
+
+Run `dotnet ef database update` from your CI pipeline, pointing at the production database:
+
+```bash
+dotnet ef database update \
+  --project YourApp.Infrastructure \
+  --startup-project YourApp.WebAPI \
+  --connection "Host=...;Database=...;Username=...;Password=..."
+```
+
+This keeps migrations explicit and avoids race conditions.
+
+<Callout type="warn">
+  If your database is inside a private network (VPC), the CI runner won't have direct access. Use a database proxy (e.g., Cloud SQL Auth Proxy) or a bastion host to tunnel the connection.
+</Callout>
+
+### Run Migrations at Startup
+
+Alternatively, apply migrations when the app starts by adding this to `Startup.Configure`:
+
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    IApplicationDbContext dbContext = app.ApplicationServices
+        .CreateScope().ServiceProvider
+        .GetRequiredService<IApplicationDbContext>();
+
+    ((DbContext)dbContext).Database.Migrate();
+
+    // ... rest of Configure
+}
+```
+
+<Callout type="warn">
+  If your hosting platform runs multiple instances, they will all try to migrate simultaneously on deploy. This can cause race conditions and failed deployments. Use this approach only with single-instance deployments or if your platform supports pre-deploy hooks.
+</Callout>
+
+## Environment Variables
+
+The generated `Program.cs` calls `config.AddEnvironmentVariables()`, so any setting from `appsettings.json` can be overridden with an environment variable. This is the standard way to configure secrets and per-environment values in production.
+
+### Mapping Convention
+
+.NET uses `__` (double underscore) as the separator for nested configuration keys. The mapping from `appsettings.json` to environment variables follows this pattern:
+
+| `appsettings.json` path | Environment variable |
+|---|---|
+| `AppSettings:Spiderly.Shared:ConnectionString` | `AppSettings__Spiderly.Shared__ConnectionString` |
+| `AppSettings:Spiderly.Shared:JwtKey` | `AppSettings__Spiderly.Shared__JwtKey` |
+| `AppSettings:Spiderly.Security:GoogleClientId` | `AppSettings__Spiderly.Security__GoogleClientId` |
+
+<Callout type="warn">
+  `Spiderly.Shared` is the **section name** — the dots are part of the name, not configuration separators. The correct variable is `AppSettings__Spiderly.Shared__JwtKey`. A common mistake is `AppSettings__Spiderly__Shared__JwtKey` (treating the dot as a separator), which will be silently ignored and leave the setting at its default value.
+</Callout>
+
+### Required Variables
+
+These must be set for every production deployment:
+
+| Variable | Description |
+|---|---|
+| `ASPNETCORE_ENVIRONMENT` | Set to `Production`. |
+| `AppSettings__Spiderly.Shared__ConnectionString` | Database connection string. During development this is stored in user secrets via `spiderly init`. |
+| `AppSettings__Spiderly.Shared__JwtKey` | JWT signing key. Also stored in user secrets during development. Must be at least 32 characters. |
+| `AppSettings__Spiderly.Shared__FrontendUrl` | URL of your Angular admin panel. Used for CORS. Default: `http://localhost:4200`. |
+| `AppSettings__Spiderly.Shared__JwtIssuer` | JWT issuer claim. Default: `https://localhost:7260;` — **must** be changed for production. |
+| `AppSettings__Spiderly.Shared__JwtAudience` | JWT audience claim. Default: `https://localhost:7260;` — **must** be changed for production. |
+
+<Callout type="warn">
+  The default `JwtIssuer` and `JwtAudience` are `https://localhost:7260;`. If you don't override them in production, every authenticated request will fail with a 401 because the token's issuer/audience won't match.
+</Callout>
+
+### Optional Variables
+
+| Variable | Description |
+|---|---|
+| `AppSettings__Spiderly.Shared__EmailSender`, `AppSettings__Spiderly.Shared__EmailSenderPassword` | Email sending credentials. See [Set Up Emailing](/docs/set-up-emailing). |
+| `AppSettings__Spiderly.Shared__TelegramBotToken`, `AppSettings__Spiderly.Shared__TelegramChatId` | Telegram error notifications. See [Set Up Telegram Notifications](/docs/set-up-telegram-notifications). |
+| `AppSettings__Spiderly.Security__GoogleClientId` | Google OAuth client ID. See [Set Up Google Authentication](/docs/set-up-google-authentication). |
+| File storage variables (`BlobStorageConnectionString`, `S3BucketName`, `CloudinaryCloudName`, etc.) | Depends on your storage provider. See [File Storage — Provider Setup](/docs/file-storage#provider-setup). |
+
+## CORS
+
+The generated `Startup.cs` reads `FrontendUrl` from `Spiderly.Shared` settings and passes it to `.WithOrigins()`:
+
+```csharp
+builder
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+    .WithOrigins(new[] { Spiderly.Shared.SettingsProvider.Current.FrontendUrl });
+```
+
+If you have additional frontends (e.g., a Next.js storefront), you can add more origins by overriding the CORS configuration in your `Startup.Configure`:
+
+```csharp
+app.UseCors(builder =>
+{
+    builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .WithOrigins(new[]
+        {
+            Spiderly.Shared.SettingsProvider.Current.FrontendUrl,
+            YourApp.WebAPI.SettingsProvider.Current.StorefrontUrl,
+        })
+        .WithExposedHeaders("Content-Disposition");
+});
+```
+
+<Callout type="warn">
+  Trailing slashes matter. `https://admin.example.com/` and `https://admin.example.com` are treated as different origins. Make sure `FrontendUrl` matches exactly what the browser sends in the `Origin` header (typically without a trailing slash).
+</Callout>
+
+## Production Checklist
+
+- [ ] `ASPNETCORE_ENVIRONMENT` set to `Production`
+- [ ] `ConnectionString` points to the production database
+- [ ] `JwtKey` is set to a strong, unique key (at least 32 characters)
+- [ ] `JwtIssuer` and `JwtAudience` are changed from their localhost defaults
+- [ ] `FrontendUrl` is set to the production admin panel URL (no trailing slash)
+- [ ] Database migrations are applied
+- [ ] CORS origins include all frontends that call the API
+- [ ] Email, Telegram, and file storage variables are set (if using those features)
+- [ ] HTTPS is configured (via your hosting platform's load balancer or reverse proxy)
