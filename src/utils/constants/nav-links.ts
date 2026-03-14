@@ -19,4 +19,4 @@ export const NAV_LINKS: NavLink[] = [
   },
 ];
 
-export const GITHUB_STARS = 50;
+export const GITHUB_STARS = 51;
