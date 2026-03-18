@@ -67,6 +67,10 @@ namespace YourAppName.Business.Entities
 }
 ```
 
+## Database Table Naming
+
+Spiderly creates database tables with the **exact same name** as your entity class — singular, PascalCase. For example, a `YourEntityName` class produces a `"YourEntityName"` table, not `"YourEntityNames"`.
+
 ## Add Your Entity to the Database
 
 Open a terminal in the `Backend` folder and run the following commands to create and apply a migration:
