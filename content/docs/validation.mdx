@@ -159,9 +159,9 @@ public class User : BusinessObject<long>
 
 ## StringLength
 
-Specifies the exact length or a length range for a string property.
+Specifies the maximum length, a length range, or an exact length for a string property.
 
-This attribute is already built in EF Core, but apart from that, Spiderly also uses it to generate validations (Backend and Frontend).
+This attribute is already built in EF Core, but apart from that, Spiderly also uses it to generate validations (Backend and Frontend). The behavior aligns with standard .NET semantics — `[StringLength(X)]` means max-length (minimum defaults to 0).
 
 <Callout>
   Applies to the server-side, client-side validation and affects the EF Core model and will generate
@@ -175,8 +175,9 @@ This attribute is already built in EF Core, but apart from that, Spiderly also u
 
 ### Usage
 
-- `[StringLength(100)]` without `MinimumLength` generates an **exact length** validation (string must be exactly 100 characters).
+- `[StringLength(100)]` without `MinimumLength` generates a **max-length** validation (string must have at most 100 characters).
 - `[StringLength(100, MinimumLength = 1)]` generates a **range** validation (string must be between 1 and 100 characters).
+- `[StringLength(8, MinimumLength = 8)]` (min == max) generates an **exact-length** validation (string must be exactly 8 characters).
 
 ### Examples:
 
@@ -186,7 +187,10 @@ public class User : BusinessObject<long>
     [StringLength(50, MinimumLength = 2)] // Name must be between 2 and 50 characters
     public string Name { get; set; }
 
-    [StringLength(100)] // Code must be exactly 100 characters
+    [StringLength(200)] // Description can be up to 200 characters
+    public string Description { get; set; }
+
+    [StringLength(6, MinimumLength = 6)] // Code must be exactly 6 characters
     public string Code { get; set; }
 }
 ```
