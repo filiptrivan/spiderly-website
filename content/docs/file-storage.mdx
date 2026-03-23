@@ -119,14 +119,15 @@ public class Brand : BusinessObject<int>
 }
 ```
 
-**DI registration (Program.cs or CompositionRoot):**
+**DI registration — use `AddFileStorage` and `AddAzureBlobStorage` in the Spiderly builder:**
 
 ```csharp
-BlobContainerClient blobContainerClient = new BlobContainerClient(
-    settings.BlobStorageConnectionString,
-    settings.BlobStorageContainerName
-);
-services.AddSingleton<IFileManager>(new BlobStorageService(blobContainerClient));
+services.AddSpiderly<YourAppApplicationDbContext>(spiderly =>
+{
+    // ...
+    spiderly.AddFileStorage<BlobStorageService>();
+    spiderly.AddAzureBlobStorage(); // registers BlobServiceClient + BlobContainerClient
+});
 ```
 
 ### S3 Private
@@ -143,12 +144,17 @@ services.AddSingleton<IFileManager>(new BlobStorageService(blobContainerClient))
 }
 ```
 
-**DI registration:**
+**DI registration — use `AddFileStorage` in the Spiderly builder:**
 
 ```csharp
-services.AddSingleton<IAmazonS3>(s3Client);
-services.AddSingleton<IFileManager>(sp => new S3StorageService(sp.GetRequiredService<IAmazonS3>()));
+services.AddSpiderly<YourAppApplicationDbContext>(spiderly =>
+{
+    // ...
+    spiderly.AddFileStorage<S3StorageService>();
+});
 ```
+
+You still need to register `IAmazonS3` yourself (e.g., `services.AddSingleton<IAmazonS3>(s3Client)`).
 
 ### S3 Public (Cloudflare R2, CloudFront, etc.)
 
@@ -194,12 +200,14 @@ Cloudinary is auto-configured — no manual DI registration needed. The generate
 
 No configuration needed. Files are stored in `{CurrentDirectory}/FileStorage`.
 
-**DI registration:**
+**DI registration — use `AddFileStorage` in the Spiderly builder:**
 
 ```csharp
-services.AddSingleton<IFileManager>(new DiskStorageService());
-// or with a custom path:
-services.AddSingleton<IFileManager>(new DiskStorageService("/path/to/storage"));
+services.AddSpiderly<YourAppApplicationDbContext>(spiderly =>
+{
+    // ...
+    spiderly.AddFileStorage<DiskStorageService>();
+});
 ```
 
 ## Generated Upload Pipeline

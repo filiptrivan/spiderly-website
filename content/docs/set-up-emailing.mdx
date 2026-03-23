@@ -39,20 +39,22 @@ Add your Brevo API key to the `Spiderly.Shared` section of `appsettings.json` (o
 }
 ```
 
-### 2. Register the Brevo HttpClient
+### 2. Register Brevo in the Spiderly builder
 
-In your `Startup.ConfigureServices` (or `Program.cs`), call:
-
-```csharp
-services.SpiderlyAddBrevoEmailingService();
-```
-
-### 3. Register `BrevoEmailingService` in DI
-
-Wire up `IEmailingService` to the Brevo implementation:
+In your `Startup.ConfigureServices`, use `AddBrevoEmailing()` inside the `AddSpiderly` builder:
 
 ```csharp
-registry.Register<IEmailingService, Spiderly.Shared.Emailing.BrevoEmailingService>();
+services.AddSpiderly<YourAppApplicationDbContext>(spiderly =>
+{
+    spiderly.UsePostgreSQL(); // or UseSQLServer()
+    spiderly.AddAuthentication();
+    spiderly.AddBrevoEmailing(); // registers BrevoEmailingService + HttpClient
+    // ... other features
+});
 ```
 
-That's it — all emails (verification, exception alerts, background jobs) will now be sent through the Brevo API.
+That's it — `AddBrevoEmailing()` registers both the `BrevoEmailingService` as `IEmailingService` and the named `"Brevo"` HttpClient. All emails (verification, exception alerts, background jobs) will now be sent through the Brevo API.
+
+<Callout>
+  For a custom emailing implementation, use `spiderly.AddEmailing<YourEmailingService>()` instead, where `YourEmailingService` implements `IEmailingService`.
+</Callout>

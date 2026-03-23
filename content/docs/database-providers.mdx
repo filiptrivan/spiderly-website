@@ -42,7 +42,7 @@ All other packages in the `.csproj` are shared between providers.
 
 ### Startup Configuration
 
-In `Startup.cs`, the Hangfire storage and EF Core provider are configured based on your choice:
+In `Startup.cs`, the Hangfire storage and Spiderly services are configured based on your choice:
 
 **PostgreSQL:**
 
@@ -52,8 +52,12 @@ services.AddHangfire(config =>
         Spiderly.Shared.SettingsProvider.Current.ConnectionString)
 );
 
-services.SpiderlyConfigureServices<YourAppApplicationDbContext>(
-    dbProvider: DbProviderCodes.PostgreSQL);
+services.AddSpiderly<YourAppApplicationDbContext>(spiderly =>
+{
+    spiderly.UsePostgreSQL();
+    spiderly.AddAuthentication();
+    // ... other features
+});
 ```
 
 **SQL Server:**
@@ -64,8 +68,12 @@ services.AddHangfire(config =>
         Spiderly.Shared.SettingsProvider.Current.ConnectionString)
 );
 
-services.SpiderlyConfigureServices<YourAppApplicationDbContext>(
-    dbProvider: DbProviderCodes.SQLServer);
+services.AddSpiderly<YourAppApplicationDbContext>(spiderly =>
+{
+    spiderly.UseSQLServer();
+    spiderly.AddAuthentication();
+    // ... other features
+});
 ```
 
 ### VS Code Extensions
@@ -133,7 +141,7 @@ If you need to switch providers after project creation, follow these steps:
 
 1. **Swap NuGet packages** in `Backend/YourApp.WebAPI/YourApp.WebAPI.csproj` — replace the EF Core and Hangfire packages (see [comparison table](#comparison-table) above).
 2. **Update Hangfire storage** in `Startup.cs` — change `UseHangfirePostgreSqlStorage` to `UseSqlServerStorage` (or vice versa).
-3. **Change `DbProviderCodes`** in the `SpiderlyConfigureServices` call in `Startup.cs`.
+3. **Change the provider call** in the `AddSpiderly` builder in `Startup.cs` — switch `UsePostgreSQL()` to `UseSQLServer()` (or vice versa).
 4. **Update the connection string** in user secrets (`dotnet user-secrets set`).
 5. **Delete existing migrations** from `Backend/YourApp.Infrastructure/Migrations/` and create a new initial migration with `spiderly add-migration Init`.
 

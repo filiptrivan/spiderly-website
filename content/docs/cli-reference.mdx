@@ -74,7 +74,7 @@ spiderly add-new-entity --data-view
 
 ### add-migration
 
-Create a new EF Core migration.
+Create a new EF Core migration. The CLI uses the `*.Migrations` project as the startup project (if present), which avoids DLL lock issues when the WebAPI is running. Falls back to `*.WebAPI` if no Migrations project exists.
 
 ```bash
 spiderly add-migration <name>

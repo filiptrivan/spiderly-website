@@ -43,7 +43,8 @@ your-app-name/
 │   │   └── Settings.cs
 │   │
 │   ├── YourApp.Infrastructure/ ← EF Core DbContext, migrations
-│   ├── YourApp.WebAPI/         ← Custom controllers, Program.cs
+│   ├── YourApp.Migrations/    ← Lightweight host for EF Core CLI (avoids DLL lock)
+│   ├── YourApp.WebAPI/         ← Custom controllers, Startup.cs
 │   ├── YourApp.Shared/
 │   │   └── Translations/       ← Translation JSON files (en.json, sr-Latn-RS.json, ...)
 │   └── YourApp.sln
