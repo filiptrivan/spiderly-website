@@ -26,6 +26,7 @@ Advanced paginated table with server-side filtering, sorting, selection, inline 
 | `getPaginatedListObservableMethod` | `(filter) => Observable<PaginatedResult>` | — | Server fetch method for lazy loading |
 | `exportListToExcelObservableMethod` | `(filter) => Observable<any>` | — | Method called on "Export to Excel" |
 | `deleteItemFromTableObservableMethod` | `(id) => Observable<any>` | — | Method called when a row is deleted |
+| `deleteListFromTableObservableMethod` | `(ids) => Observable<any>` | — | Method called when selected rows are bulk-deleted. When provided, `selectionMode` is auto-set to `'multiple'` and checkboxes appear on each row. |
 | `rows` | `number` | config default | Page size |
 | `rowsPerPageOptions` | `number[]` | config default | Page-size selector options |
 | `selectionMode` | `'single' \| 'multiple'` | — | Row selection mode |
@@ -66,6 +67,7 @@ export class ProductListComponent implements OnInit {
   getProductTableDataObservableMethod = this.apiService.getProductPaginatedList;
   exportProductListToExcelObservableMethod = this.apiService.exportProductListToExcel;
   deleteProductObservableMethod = this.apiService.deleteProduct;
+  deleteProductListObservableMethod = this.apiService.deleteProductList;
 
   constructor(
     private apiService: ApiService,
@@ -93,6 +95,7 @@ export class ProductListComponent implements OnInit {
   [getPaginatedListObservableMethod]="getProductTableDataObservableMethod"
   [exportListToExcelObservableMethod]="exportProductListToExcelObservableMethod"
   [deleteItemFromTableObservableMethod]="deleteProductObservableMethod"
+  [deleteListFromTableObservableMethod]="deleteProductListObservableMethod"
 ></spiderly-data-table>
 ```
 
