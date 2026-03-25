@@ -41,4 +41,4 @@ For requests that indicate malicious intent (e.g., tampering with IDs, accessing
 
 ## Unhandled Exceptions
 
-Any other exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `IExceptionNotificationDispatcher`.
+Any other exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `INotificationDispatcher`.
