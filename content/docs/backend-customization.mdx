@@ -330,7 +330,7 @@ For complete behavior replacement, Spiderly provides interfaces that you can imp
 
 ```csharp
 // Implement your own token storage
-public class DatabaseTokenStorage<T> : ITokenStorage<T> where T : class
+public class DatabaseTokenStorage<T> : ITokenStorage<T> where T : class, IExpirableToken
 {
     private readonly IApplicationDbContext _context;
 
@@ -352,6 +352,11 @@ public class DatabaseTokenStorage<T> : ITokenStorage<T> where T : class
     public async Task<bool> TryRemoveAsync(string key)
     {
         // Remove token from database
+    }
+
+    public async Task<IEnumerable<KeyValuePair<string, T>>> GetByIndexAsync(string indexName, string indexValue)
+    {
+        // Query tokens by a secondary index (e.g., "UserId" or "Email")
     }
 
     // ... implement other methods
