@@ -10,7 +10,7 @@ Before getting started with Spiderly, make sure you have the following prerequis
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - [Docker](https://www.docker.com/get-started/) (recommended) or a direct [PostgreSQL](https://www.postgresql.org/download/)/[SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) installation — the CLI can start a database container automatically if Docker is available; see [Database Providers](/docs/database-providers) for guidance on choosing
-- [Node.js](https://nodejs.org/en/download/)
+- [Node.js](https://nodejs.org/en/download/) — npm comes bundled with Node.js. You can also use [pnpm](https://pnpm.io/installation), [yarn](https://yarnpkg.com/getting-started/install), or [bun](https://bun.sh/docs/installation) via the `--pm` flag
 - [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
 - Run the Spiderly CLI installation command from any terminal location:
   ```bash
@@ -45,6 +45,12 @@ For AI agents or CI pipelines, use flags to skip all interactive prompts:
 
 ```bash
 spiderly init --name MyApp --db postgresql
+```
+
+With a specific package manager:
+
+```bash
+spiderly init --name MyApp --db postgresql --pm pnpm
 ```
 
 With a custom database connection string:

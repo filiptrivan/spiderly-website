@@ -30,7 +30,7 @@ Run `spiderly help` to see all available commands.
 Initialize a new Spiderly project with a .NET backend and an Angular frontend.
 
 ```bash
-spiderly init [--name <AppName>] [--db <provider>] [--db-connection-string <connectionString>]
+spiderly init [--name <AppName>] [--db <provider>] [--db-connection-string <connectionString>] [--pm <manager>]
 ```
 
 | Option | Description |
@@ -38,6 +38,7 @@ spiderly init [--name <AppName>] [--db <provider>] [--db-connection-string <conn
 | `--name` | App name in PascalCase, without spaces (e.g., `MyApp`). If omitted, the CLI will prompt you. Required in non-interactive mode. |
 | `--db` | Database provider: `postgresql`, `sqlserver`, or `skip`. If omitted, the CLI will prompt you. Required in non-interactive mode. See [Database Providers](/docs/database-providers) for details on what each option generates. |
 | `--db-connection-string` | Full EF Core connection string. Bypasses auto-discovery and Docker. Example: `"Host=localhost;Port=5432;Database=myapp;Username=postgres;Password=secret"` |
+| `--pm` | Package manager: `npm` (default), `pnpm`, `yarn`, or `bun`. If omitted, the CLI will prompt you in interactive mode or default to npm. |
 
 In non-interactive mode (e.g., AI agents, CI), if no running database is found and Docker is available, the CLI will automatically start a database container.
 
@@ -49,6 +50,10 @@ spiderly init
 
 ```bash
 spiderly init --name MyApp --db postgresql
+```
+
+```bash
+spiderly init --name MyApp --db postgresql --pm pnpm
 ```
 
 ```bash
