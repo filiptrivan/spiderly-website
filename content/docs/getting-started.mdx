@@ -10,12 +10,24 @@ Before getting started with Spiderly, make sure you have the following prerequis
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - [Docker](https://www.docker.com/get-started/) (recommended) or a direct [PostgreSQL](https://www.postgresql.org/download/)/[SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) installation — the CLI can start a database container automatically if Docker is available; see [Database Providers](/docs/database-providers) for guidance on choosing
-- [Node.js](https://nodejs.org/en/download/)
+- [Node.js](https://nodejs.org/en/download/) — npm comes bundled with Node.js. You can also use [pnpm](https://pnpm.io/installation), [yarn](https://yarnpkg.com/getting-started/install), or [bun](https://bun.sh/docs/installation) via the `--pm` flag
 - [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
 - Run the Spiderly CLI installation command from any terminal location:
   ```bash
   dotnet tool install -g Spiderly.CLI
   ```
+
+## Verify Prerequisites
+
+Before running `spiderly init`, verify your environment:
+
+```bash
+dotnet --version   # Must be 9.0 or higher
+node --version     # Must be 18 or higher
+docker --version   # Optional, but recommended for automatic database setup
+```
+
+The CLI also validates these automatically before initializing.
 
 ## Initialize the App
 
@@ -26,6 +38,34 @@ spiderly init
 ```
 
 This will create a new folder with your app name containing the full Spiderly project structure.
+
+### Non-Interactive Mode
+
+For AI agents or CI pipelines, use flags to skip all interactive prompts:
+
+```bash
+spiderly init --name MyApp --db postgresql
+```
+
+With a specific package manager:
+
+```bash
+spiderly init --name MyApp --db postgresql --pm pnpm
+```
+
+With a custom database connection string:
+
+```bash
+spiderly init --name MyApp --db postgresql --db-connection-string "Host=localhost;Port=5432;Database=myapp;Username=postgres;Password=secret"
+```
+
+To skip database setup entirely:
+
+```bash
+spiderly init --name MyApp --db skip
+```
+
+When `--db postgresql` or `--db sqlserver` is specified in non-interactive mode and no running database is found, the CLI will automatically start one via Docker if Docker is available.
 
 ## Open the Project
 

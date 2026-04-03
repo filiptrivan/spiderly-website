@@ -1,36 +1,81 @@
 ---
 title: Translation
-description: Learn how to translate your Spiderly app using JSON translation files and Transloco.
+description: Learn how to translate your Spiderly app using JSON files and IStringLocalizer.
 ---
 
-## Translating Entities and Properties
+## Overview
 
-Spiderly uses JSON translation files to customize how entity and property names appear across the app:
-- **Customizing labels** (e.g., by default a text input shows `ProductName` as the label — adding a translation changes it to `Product Name`)
-- **Excel export filenames**
-- **Validation messages**
+Spiderly uses a runtime, JSON-based translation system powered by .NET's `IStringLocalizer`. Translation files are flat key-value JSON files stored in your project, and `IStringLocalizer` is automatically injected into all generated services and controllers.
 
-### How It Works
+Key features:
+- **JSON files** in `Backend\YourAppName.Shared\Translations\` named by [language tag](https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags) (e.g., `en.json`, `sr-Latn-RS.json`)
+- **Automatic injection** — generated services and controllers receive `IStringLocalizer` via constructor injection
+- **Graceful fallback** — if no translations are configured, the app still works (keys are returned as-is)
 
-Translation files live in `Backend\YourAppName.Shared\Translations\`. Each file is named by [language tag](https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags) (e.g., `en.json`, `sr-Latn-RS.json`, `de.json`).
+## Registration
 
-On build, the `TranslationsGenerator` source generator:
-1. Scans your entities to discover all expected translation keys
-2. Auto-scaffolds missing keys with empty values into each JSON file
-3. Generates `TermsGenerated.generated.cs` (backend translations)
-4. Generates `{lang}.generated.json` files for Angular i18n
+Enable translations in your `Program.cs` using the `SpiderlyBuilder`:
 
-### Translation Keys
+```csharp
+services.AddSpiderly<YourDbContext>(spiderly =>
+{
+    spiderly.UsePostgreSQL(); // or UseSQLServer()
 
-For each entity, three keys are generated:
-- `{EntityName}` — singular name (used in forms, labels)
-- `{EntityName}List` — plural name (used in table titles)
-- `{EntityName}ExcelExportName` — Excel export filename (falls back to plural name)
+    // Enable the built-in JSON file-based localizer
+    spiderly.UseTranslations();
 
-For each property:
-- `{PropertyName}` — used as input field labels and in validation messages
+    // Set the default culture (English by default)
+    spiderly.UseCulture("sr-Latn-RS");
+});
+```
 
-### Example
+### UseTranslations
+
+Two overloads are available:
+
+- **`spiderly.UseTranslations()`** — Registers the built-in `JsonStringLocalizer`, which loads `{culture}.json` files from the `Translations` directory at runtime.
+- **`spiderly.UseTranslations<TLocalizer>()`** — Registers a custom `IStringLocalizer` implementation (e.g., database-backed translations).
+
+If neither is called, Spiderly registers a `PassthroughStringLocalizer` that returns the key itself as the value — so the app works without any translation configuration.
+
+### UseCulture
+
+```csharp
+// Single language:
+spiderly.UseCulture("sr-Latn-RS");
+
+// Multiple languages (first = default):
+spiderly.UseCulture("sr-Latn-RS", "en");
+```
+
+When multiple cultures are provided, per-request culture resolution is enabled via:
+- `Accept-Language` header
+- Query string: `?culture=sr-Latn-RS`
+- Cookie
+
+## Translation Keys
+
+Spiderly uses the following key conventions for entities and properties:
+
+### Entity Keys
+
+| Key pattern | Purpose | Example |
+|---|---|---|
+| `{EntityName}` | Singular name (forms, labels) | `"Product"` |
+| `{EntityName}List` | Plural name (table titles) | `"ProductList"` |
+| `{EntityName}ExcelExportName` | Excel export filename | `"ProductExcelExportName"` |
+
+### Property Keys
+
+| Key pattern | Purpose | Example |
+|---|---|---|
+| `{PropertyName}` | Input labels, validation messages | `"Name"`, `"CreatedAt"` |
+
+<Callout>
+  When you run `spiderly init`, the CLI seeds an `en.json` file with framework keys (`Name`, `Description`, `CreatedAt`, `ModifiedAt`, etc.). You only need to add translations for your own entities and properties.
+</Callout>
+
+## Example
 
 Given this entity:
 
@@ -63,61 +108,94 @@ And `Backend\YourAppName.Shared\Translations\sr-Latn-RS.json`:
 }
 ```
 
-<Callout>
-You don't need to create these keys manually. Just create the JSON file (even empty `{}`), build your project, and the generator will auto-scaffold all expected keys with empty values. Then fill in the translations.
-</Callout>
-
 ### Adding a New Language
 
-1. Create a new file, e.g., `Backend\YourAppName.Shared\Translations\de.json` (can be empty `{}`)
-2. Build the project — the generator auto-scaffolds all keys with empty values
-3. Fill in the German translations
-4. Build again — translations are available on both backend and frontend
-
-### Excel Export Filename
-
-The `{EntityName}ExcelExportName` key controls the Excel export filename. If left empty, it falls back to `{EntityName}List`. If that's also empty, the entity name is used as-is.
-
-## Changing Default Language
-
-By default, Spiderly uses English (`en`) as the primary language. If you want to change the default language, you'll need to update the language tag in both your **backend** and **frontend** configurations.
-
-### Language Tag Update:
-
-1. Open the `Backend\YourAppName.WebAPI\Startup.cs` file and update the `SpiderlyConfigureServices` call by passing your desired language tag:
+Create a new file, e.g., `Backend\YourAppName.Shared\Translations\de.json`, add your translations, and register the culture:
 
 ```csharp
-public class Startup
+spiderly.UseCulture("en", "sr-Latn-RS", "de");
+```
+
+## Using Translations in Backend Code
+
+`IStringLocalizer` is automatically injected into all generated services and controllers. In your custom code, inject it via the constructor:
+
+```csharp
+public class ProductService
 {
-    public void ConfigureServices(IServiceCollection services)
+    private readonly IStringLocalizer _localizer;
+
+    public ProductService(IStringLocalizer localizer)
     {
-        services.SpiderlyConfigureServices<YourAppNameApplicationDbContext>("your-language-tag");
+        _localizer = localizer;
+    }
+
+    public string GetProductLabel()
+    {
+        // Returns translated value, or the key itself if not found
+        return _localizer.Translate("Product");
     }
 }
 ```
 
-2. Open the `Frontend\src\app\app.config.ts` file and update the `provideSpiderlyTransloco` configuration:
+### Helper Extensions
 
-```typescript
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideSpiderlyTransloco({
-      preloadLangs: ['your-language-tag'],
-      availableLangs: [
-        'your-language-tag',
-        'your-language-tag.generated',
-      ],
-      defaultLang: 'your-language-tag',
-      fallbackLang: 'your-language-tag.generated',
-    }),
-  ]
-};
+Spiderly provides two extension methods on `IStringLocalizer`:
+
+| Method | Description |
+|---|---|
+| `_localizer.Translate(key)` | Returns the translated value, or the key itself if not found |
+| `_localizer.GetExcelTranslation(excelKey, pluralKey)` | Tries the Excel-specific key first, falls back to the plural key |
+
+```csharp
+// Translate a key
+string label = _localizer.Translate("Product");
+
+// Excel filename with fallback
+string filename = _localizer.GetExcelTranslation("ProductExcelExportName", "ProductList");
+// Returns "Proizvodi" if ProductExcelExportName has a translation,
+// otherwise falls back to the ProductList translation
 ```
 
-## Custom Frontend Translations for Multilingual Apps
+## Excel Export
+
+The `ExcelService.FillReportTemplateAsync` method accepts `IStringLocalizer` for translating column headers. Generated Excel export endpoints automatically pass the injected localizer:
+
+```csharp
+return File(
+    fileContent,
+    SettingsProvider.Current.ExcelContentType,
+    Uri.EscapeDataString($"{_localizer.GetExcelTranslation("ProductExcelExportName", "ProductList")}.xlsx")
+);
+```
+
+The `{EntityName}ExcelExportName` key controls the filename. If left empty, it falls back to `{EntityName}List`. If that's also empty, the key is used as-is.
+
+## FluentValidation Integration
+
+When translations are enabled, FluentValidation automatically uses `IStringLocalizer` to resolve property display names. For example, if `"BirthDate"` is translated to `"Birth Date"`, validation messages will say *"Birth Date is required"* instead of *"BirthDate is required"*.
+
+This is handled by the generated `TranslatePropertiesConfiguration` class — no manual setup needed.
+
+## Changing Default Language
+
+To change the default language, call `UseCulture()` in your builder (see [Registration](#registration)). Then update the Angular frontend in `Frontend\src\app\app.config.ts` to match:
+
+```typescript
+provideTransloco({
+  config: {
+    availableLangs: ['sr-Latn-RS'],
+    defaultLang: 'sr-Latn-RS',
+    reRenderOnLangChange: true,
+  },
+  loader: SpiderlyTranslocoLoader
+}),
+```
+
+## Custom Frontend Translations
 
 <Callout>
-You only need to add custom frontend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+  You only need to add custom frontend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
 </Callout>
 
 ### Add a Translation Key-Value Pair
@@ -177,24 +255,19 @@ Use the directive with Angular's `*transloco` syntax:
 </ng-container>
 ```
 
-## Custom Backend Translations for Multilingual Apps
+## Custom Backend Translations
 
 <Callout>
-You only need to add custom backend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+  You only need to add custom backend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
 </Callout>
 
-### Use Case Example
-
-Let's say you want to throw a translated exception message, based on the active culture (e.g., English):
+To use custom backend translations, add your keys to the JSON translation files and resolve them with `IStringLocalizer`:
 
 ```csharp
-throw new Exception(Terms.YourExceptionKey);
+// Add to en.json: "YourExceptionKey": "Your exception message."
+// Add to sr-Latn-RS.json: "YourExceptionKey": "Vaša poruka o grešci."
+
+throw new Exception(_localizer.Translate("YourExceptionKey"));
 ```
 
-If that's the case, open the `Backend\YourAppName.Shared\Resources\Terms.resx` file and add a new entry with the key `YourExceptionKey` and a culture-specific value, for example: `Your exception message.`
-
-Spiderly will automatically pick the correct translation at runtime based on the active culture settings.
-
-<Callout>
-For easier management of translation keys across multiple `.resx` files, you can use [ResXManager](https://marketplace.visualstudio.com/items?itemName=TomEnglert.ResXManager) - a Visual Studio extension that simplifies working with localization resources.
-</Callout>
+Spiderly automatically resolves the correct translation based on the active culture.

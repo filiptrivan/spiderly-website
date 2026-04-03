@@ -30,13 +30,17 @@ Run `spiderly help` to see all available commands.
 Initialize a new Spiderly project with a .NET backend and an Angular frontend.
 
 ```bash
-spiderly init [--name <AppName>] [--db <provider>]
+spiderly init [--name <AppName>] [--db <provider>] [--db-connection-string <connectionString>] [--pm <manager>]
 ```
 
 | Option | Description |
 | --- | --- |
-| `--name` | App name in PascalCase, without spaces (e.g., `MyApp`). If omitted, the CLI will prompt you. |
-| `--db` | Database provider: `postgresql`, `sqlserver`, or `skip`. If omitted, the CLI will prompt you. See [Database Providers](/docs/database-providers) for details on what each option generates. |
+| `--name` | App name in PascalCase, without spaces (e.g., `MyApp`). If omitted, the CLI will prompt you. Required in non-interactive mode. |
+| `--db` | Database provider: `postgresql`, `sqlserver`, or `skip`. If omitted, the CLI will prompt you. Required in non-interactive mode. See [Database Providers](/docs/database-providers) for details on what each option generates. |
+| `--db-connection-string` | Full EF Core connection string. Bypasses auto-discovery and Docker. Example: `"Host=localhost;Port=5432;Database=myapp;Username=postgres;Password=secret"` |
+| `--pm` | Package manager: `npm` (default), `pnpm`, `yarn`, or `bun`. If omitted, the CLI will prompt you in interactive mode or default to npm. |
+
+In non-interactive mode (e.g., AI agents, CI), if no running database is found and Docker is available, the CLI will automatically start a database container.
 
 **Examples:**
 
@@ -48,19 +52,26 @@ spiderly init
 spiderly init --name MyApp --db postgresql
 ```
 
+```bash
+spiderly init --name MyApp --db postgresql --pm pnpm
+```
+
+```bash
+spiderly init --name MyApp --db postgresql --db-connection-string "Host=localhost;Port=5432;Database=myapp;Username=postgres;Password=secret"
+```
+
 ### add-new-entity
 
 Create a new entity and generate all necessary files: entity class, Angular pages (list and details), routes, and menu item.
 
 ```bash
-spiderly add-new-entity [--data-view]
+spiderly add-new-entity [--name <EntityName>] [--data-view]
 ```
 
 | Option | Description |
 | --- | --- |
+| `--name` | Entity name in PascalCase (e.g., `Product`). If omitted, the CLI will prompt you. Required in non-interactive mode. |
 | `--data-view` | Generate a DataView template instead of the default Table template for the list page. |
-
-The CLI will prompt you to enter the entity name in PascalCase (e.g., `YourEntityName`).
 
 **Examples:**
 
@@ -69,7 +80,11 @@ spiderly add-new-entity
 ```
 
 ```bash
-spiderly add-new-entity --data-view
+spiderly add-new-entity --name Product
+```
+
+```bash
+spiderly add-new-entity --name Product --data-view
 ```
 
 ### add-migration
