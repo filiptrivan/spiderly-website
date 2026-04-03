@@ -366,6 +366,17 @@ public class DatabaseTokenStorage<T> : ITokenStorage<T> where T : class, IExpira
 builder.Services.AddScoped(typeof(ITokenStorage<>), typeof(DatabaseTokenStorage<>));
 ```
 
+### Secondary Index Constants
+
+When the security service calls `GetByIndexAsync`, it uses these predefined index names:
+
+| Constant | Value | Purpose |
+|---|---|---|
+| `RefreshTokenDTO.UserIdIndex` | `"UserId"` | Find all refresh tokens for a user (used during logout-all-sessions) |
+| `LoginVerificationTokenDTO.EmailIndex` | `"Email"` | Find pending login verifications by email |
+
+Your custom `ITokenStorage` implementation must support querying by these indexes for the security service to work correctly.
+
 ## Transaction Management
 
 Every generated save/delete method wraps its logic in `_context.WithTransactionAsync(...)`. All hooks called within that flow (e.g., `OnBeforeInsert`, `OnAfterSave`) automatically run inside the same transaction. Nested `WithTransactionAsync` calls reuse the existing transaction — you do **not** need to start your own transaction in hooks.

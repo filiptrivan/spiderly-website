@@ -131,6 +131,8 @@ These must be set for every production deployment:
 | `AppSettings__Spiderly.Shared__EmailSender`, `AppSettings__Spiderly.Shared__EmailSenderPassword` | Email sending credentials. See [Set Up Emailing](/docs/set-up-emailing). |
 | `AppSettings__Spiderly.Shared__TelegramBotToken`, `AppSettings__Spiderly.Shared__TelegramChatId` | Telegram error notifications. See [Set Up Telegram Notifications](/docs/set-up-telegram-notifications). |
 | `AppSettings__Spiderly.Security__GoogleClientId` | Google OAuth client ID. See [Set Up Google Authentication](/docs/set-up-google-authentication). |
+| `AppSettings__Spiderly.Shared__CookieDomain` | Cookie domain for cross-subdomain sharing (e.g., `.example.com`). See [Cookie Configuration](#cookie-configuration). |
+| `AppSettings__Spiderly.Shared__CookieSameSite` | Cookie SameSite attribute (`None`, `Lax`, `Strict`, `Unspecified`). Default: `None`. See [Cookie Configuration](#cookie-configuration). |
 | File storage variables (`BlobStorageConnectionString`, `S3BucketName`, `CloudinaryCloudName`, etc.) | Depends on your storage provider. See [File Storage — Provider Setup](/docs/file-storage#provider-setup). |
 
 ## CORS
@@ -167,6 +169,40 @@ app.UseCors(builder =>
   Trailing slashes matter. `https://admin.example.com/` and `https://admin.example.com` are treated as different origins. Make sure `FrontendUrl` matches exactly what the browser sends in the `Origin` header (typically without a trailing slash).
 </Callout>
 
+## Cookie Configuration
+
+When your frontend and API are on different subdomains (e.g., `admin.example.com` and `api.example.com`), you need to configure cookie settings so the browser shares cookies across both.
+
+### Settings
+
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `CookieDomain` | `string` | *(empty)* | Domain attribute for cookies. Set to `.example.com` to share cookies across all subdomains. Leave empty for default browser behavior. |
+| `CookieSameSite` | `enum` | `None` | SameSite attribute for cookies. Options: `None`, `Lax`, `Strict`, `Unspecified`. |
+
+### appsettings.json
+
+```json
+{
+  "AppSettings": {
+    "Spiderly.Shared": {
+      "CookieDomain": ".example.com",
+      "CookieSameSite": "Lax"
+    }
+  }
+}
+```
+
+### When to Configure
+
+- **Same-domain setup** (frontend and API on same origin): No cookie configuration needed — defaults work.
+- **Subdomain setup** (e.g., `admin.example.com` + `api.example.com`): Set `CookieDomain` to `.example.com` and `CookieSameSite` to `Lax`.
+- **Cross-domain setup** (completely different domains): Keep `CookieSameSite` at `None` (default). The browser requires `Secure` cookies with `SameSite=None`, which Spiderly sets automatically.
+
+<Callout type="warn">
+  If you switch from `SameSite=None` to `Lax`, existing cookies in users' browsers will still have the old `SameSite` value until they expire. For a smooth transition, deploy the change and wait for cookie expiration, or advise users to clear cookies.
+</Callout>
+
 ## Production Checklist
 
 - [ ] `ASPNETCORE_ENVIRONMENT` set to `Production`
@@ -177,4 +213,5 @@ app.UseCors(builder =>
 - [ ] Database migrations are applied
 - [ ] CORS origins include all frontends that call the API
 - [ ] Email, Telegram, and file storage variables are set (if using those features)
+- [ ] `CookieDomain` and `CookieSameSite` are set (if using cookie-based authentication across subdomains)
 - [ ] HTTPS is configured (via your hosting platform's load balancer or reverse proxy)

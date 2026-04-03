@@ -1,7 +1,54 @@
 ---
-title: Authorization
-description: Learn how to configure authorization for entity CRUD operations in your Spiderly application.
+title: Authentication & Authorization
+description: Configure authentication strategies and entity-level authorization in your Spiderly application.
 ---
+
+## Authentication Strategies
+
+Spiderly supports two authentication strategies. Both use JWT tokens under the hood — the difference is how tokens are transported between client and server.
+
+### Token-Based (Default)
+
+Tokens are returned in the response body and sent via the `Authorization` header. The client is responsible for storing and managing tokens.
+
+**Angular methods:**
+
+| Method | Returns | Description |
+|---|---|---|
+| `login(request)` | `AuthResult` | Login with email verification token |
+| `loginExternal(provider)` | `AuthResult` | Login with external provider (e.g., Google) |
+| `logout(browserId)` | — | Invalidate tokens |
+| `refreshTokenWithHeaders(request)` | `AuthResult` | Refresh an expired access token |
+
+`AuthResult` includes `accessToken`, `refreshToken`, `userId`, and `email`.
+
+### Cookie-Based
+
+Tokens are stored in `HttpOnly` cookies — the browser handles storage and sends them automatically. No token management needed on the client side.
+
+**Angular methods:**
+
+| Method | Returns | Description |
+|---|---|---|
+| `loginWithCookies(request)` | `AuthResultWithCookies` | Login with email verification token |
+| `loginExternalWithCookies(provider)` | `AuthResultWithCookies` | Login with external provider (e.g., Google) |
+| `logoutWithCookies(browserId)` | — | Clear auth cookies |
+| `refreshTokenWithCookies(browserId)` | `AuthResultWithCookies` | Refresh via cookie |
+
+`AuthResultWithCookies` includes `userId`, `email`, and `accessTokenExpiresAt` — no tokens in the response body.
+
+<Callout type="warn">
+  Cookie-based authentication requires the [`AuthGuard`](/docs/attributes/general#authguard) attribute's CSRF protection. All state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"` header.
+</Callout>
+
+### Choosing a Strategy
+
+| | Token-Based | Cookie-Based |
+|---|---|---|
+| **Best for** | Mobile apps, cross-domain APIs, SPAs with explicit token handling | Same-domain/subdomain setups, simpler frontend code |
+| **Token storage** | Client manages (localStorage, memory) | Browser manages (HttpOnly cookies) |
+| **CSRF protection** | Not needed (tokens in headers) | Required (`X-CSRF` header) |
+| **Cross-subdomain** | Works out of the box | Requires [`CookieDomain` and `CookieSameSite`](/docs/deployment#cookie-configuration) configuration |
 
 ## Overview
 
