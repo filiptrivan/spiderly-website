@@ -36,7 +36,7 @@ your-app-name/
 ├── Backend/
 │   ├── YourApp.Business/
 │   │   ├── Entities/           ← Your entity classes (source of truth)
-│   │   ├── Services/           ← BusinessService, AuthorizationService, SecurityService
+│   │   ├── Services/           ← Entity services, AuthorizationService, SecurityService
 │   │   ├── DTO/                ← Custom DTO extensions (partial classes)
 │   │   ├── DataMappers/        ← Custom Mapster mappings (partial class)
 │   │   ├── Enums/              ← Custom PermissionCodes (partial class)
@@ -70,7 +70,7 @@ Spiderly has 14 source generators (9 for .NET, 5 for Angular) that run at build 
 
 | Generator | Output File | Purpose |
 |---|---|---|
-| ServicesGenerator | `BusinessService.generated.cs` | CRUD operations, data retrieval, Excel export |
+| ServicesGenerator | `{Entity}EntityService.generated.cs` | Per-entity CRUD operations, data retrieval, Excel export |
 | ControllerGenerator | `BaseControllers.generated.cs` | REST API endpoints for each entity |
 | EntitiesToDTOGenerator | `DTOList.generated.cs` | DTO classes mirroring your entities |
 | MapperGenerator | `Mapper.generated.cs` | Mapster config for entity ↔ DTO mapping |
@@ -93,7 +93,7 @@ Spiderly has 14 source generators (9 for .NET, 5 for Angular) that run at build 
 ### What You Write by Hand
 
 - Entity classes with attributes (the single source of truth)
-- Business logic overrides in `BusinessService`
+- Business logic overrides in entity service classes (e.g., `ProductEntityService`)
 - Custom controllers for non-CRUD endpoints
 - Angular list and details page components
 - Custom DTO properties (via partial classes)
@@ -107,11 +107,11 @@ Spiderly uses a three-tier inheritance pattern. The framework provides a base cl
 ### Services
 
 ```
-BusinessServiceBase          ← Framework (Spiderly NuGet package)
+ServiceBase                      ← Framework (Spiderly NuGet package)
         ↓
-BusinessServiceGenerated     ← Generated (readonly, rebuilt every build)
+{Entity}EntityServiceGenerated   ← Generated per entity (readonly, rebuilt every build)
         ↓
-BusinessService              ← Your code (override virtual methods here)
+{Entity}EntityService            ← Your code (override virtual methods here)
 ```
 
 ### Controllers

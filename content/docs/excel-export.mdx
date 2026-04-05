@@ -183,7 +183,7 @@ The generated Excel file uses the following formatting:
 
 ## Overriding the Export Logic
 
-The service method is `virtual` — override it in your `BusinessService` to customize the export behavior:
+The service method is `virtual` — override it in your entity service class to customize the export behavior:
 
 ```csharp
 public override async Task<byte[]> ExportProductListToExcel(

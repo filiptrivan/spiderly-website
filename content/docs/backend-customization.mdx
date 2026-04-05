@@ -14,19 +14,19 @@ Spiderly is built on the **Template Method Pattern**, providing multiple extensi
 Services follow this inheritance pattern:
 
 ```
-Spiderly Framework Base Classes (e.g., BusinessServiceBase)
+Spiderly Framework Base Classes (e.g., ServiceBase)
         ↓
-Generated Classes - readonly (e.g., BusinessServiceGenerated)
+Generated Classes - readonly (e.g., ProductEntityServiceGenerated)
         ↓
-Your Classes (e.g., BusinessService) - override virtual methods here
+Your Classes (e.g., ProductEntityService) - override virtual methods here
 ```
 
-When you run `spiderly init`, the CLI creates skeleton files for your customizations:
+Each entity gets its own generated service class. When you run `spiderly init`, the CLI creates skeleton files for your customizations:
 
 ```
 Backend\YourAppName.Business\
 ├── Services\
-│   ├── BusinessService.cs
+│   ├── EntityServices\       ← Your entity service overrides (e.g., ProductEntityService.cs)
 │   ├── AuthorizationService.cs
 │   └── SecurityService.cs
 │
@@ -42,9 +42,9 @@ Backend\YourAppName.WebAPI\Controllers\
 └── UserController.cs
 ```
 
-## Business Service
+## Entity Services
 
-Override virtual methods in `BusinessService` to customize entity operations.
+Override virtual methods in your entity service class to customize entity operations. Create an `{Entity}EntityService` class that inherits from `{Entity}EntityServiceGenerated`.
 
 ### Entity Lifecycle Hooks
 
@@ -64,15 +64,17 @@ Override virtual methods in `BusinessService` to customize entity operations.
 The generated save method runs these steps in order:
 
 ```
-1. OnBeforeSave{Entity}AndReturnMainUIFormDTO(SaveBodyDTO)
-2. OnBefore{Entity}IsMapped(DTO)
-3. OnBefore{Entity}Insert(entity, DTO)  — or —  OnBefore{Entity}Update(entity, DTO)
-4. SaveChangesAsync
-5. Update M2M + ordered O2M collections
-6. OnAfterSave{Entity}AndReturnMainUIFormDTO(SaveBodyDTO, MainUIFormDTO)
+1. SaveBody validation (SaveBodyDTOValidationRules — usually empty)
+2. OnBeforeSave{Entity}AndReturnMainUIFormDTO(SaveBodyDTO)
+3. DTO validation ({Entity}DTOValidationRules — NotEmpty, Length, etc.)
+4. OnBefore{Entity}IsMapped(DTO)
+5. OnBefore{Entity}Insert(entity, DTO)  — or —  OnBefore{Entity}Update(entity, DTO)
+6. SaveChangesAsync
+7. Update M2M + ordered O2M collections
+8. OnAfterSave{Entity}AndReturnMainUIFormDTO(SaveBodyDTO, MainUIFormDTO)
 ```
 
-Steps 1–3 run **before** the database write. Step 6 runs **after** everything is persisted (including M2M updates), making it the right place for side effects like sending notifications, indexing, or cache invalidation.
+Step 2 runs **before** step 3 — this means `OnBeforeSave` can set server-generated fields (e.g., `[UIDoNotGenerate]` + `[Required]` properties like hashes or computed values) before DTO validation runs. Step 8 runs **after** everything is persisted (including M2M updates), making it the right place for side effects like sending notifications, indexing, or cache invalidation.
 
 ### Get Hooks
 
@@ -97,15 +99,26 @@ protected override async Task OnAfterGetProductMainUIFormDTO(
 
 - `GetAll{Property}QueryFor{Entity}()` - Customize lazy-loaded relationship queries
 
-### Example: Overriding Business Service Hooks
+### Example: Overriding Entity Service Hooks
 
 ```csharp
-// File: Backend\YourAppName.Business\Services\BusinessService.cs
+// File: Backend\YourAppName.Business\Services\EntityServices\ProductEntityService.cs
 namespace YourAppName.Business.Services
 {
-    public class BusinessService : BusinessServiceGenerated
+    public class ProductEntityService : ProductEntityServiceGenerated
     {
-        // ... constructor and fields ...
+        private readonly AuthenticationService _authenticationService;
+        private readonly EmailingService _emailingService;
+
+        public ProductEntityService(
+            EntityServiceDependencies deps,
+            AuthenticationService authenticationService,
+            EmailingService emailingService
+        ) : base(deps)
+        {
+            _authenticationService = authenticationService;
+            _emailingService = emailingService;
+        }
 
         protected override async Task OnBeforeProductInsert(Product product, ProductDTO productDTO)
         {
@@ -121,6 +134,15 @@ namespace YourAppName.Business.Services
     }
 }
 ```
+
+The `EntityServiceDependencies` object (`_deps`) provides access to shared framework services: `Context`, `ExcelService`, `AuthorizationService`, `FileManager`, `Localizer`, and `ServiceProvider`. Add custom dependencies to your entity service constructor.
+
+### DI Registration
+
+All entity service DI registration is **auto-generated** — you never register entity services manually. Call `services.AddEntityServices()` in your startup configuration. The source generator auto-detects user-written `{Entity}EntityService` classes and registers them alongside the generated base classes:
+
+- If you create `ProductEntityService : ProductEntityServiceGenerated`, the generator registers both the concrete type and a forwarding registration so that resolving `ProductEntityServiceGenerated` returns your `ProductEntityService`.
+- If no user override exists for an entity, only the generated service is registered.
 
 ## Security Service
 
@@ -290,6 +312,7 @@ Generated controllers create a base class (e.g., `ProductBaseController`) with v
 // File: Backend\YourAppName.WebAPI\Controllers\ProductController.cs
 using YourAppName.Business.Services;
 using Spiderly.Shared.Interfaces;
+using Microsoft.Extensions.Localization;
 
 namespace YourAppName.WebAPI.Controllers
 {
@@ -299,8 +322,9 @@ namespace YourAppName.WebAPI.Controllers
     {
         public ProductController(
             IApplicationDbContext context,
-            BusinessService businessService
-        ) : base(context, businessService)
+            IServiceProvider serviceProvider,
+            IStringLocalizer localizer
+        ) : base(context, serviceProvider, localizer)
         {
         }
 
