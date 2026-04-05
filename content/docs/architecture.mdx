@@ -70,7 +70,7 @@ Spiderly has 14 source generators (9 for .NET, 5 for Angular) that run at build 
 
 | Generator | Output File | Purpose |
 |---|---|---|
-| ServicesGenerator | `{Entity}EntityService.generated.cs` | Per-entity CRUD operations, data retrieval, Excel export |
+| ServicesGenerator | `{Entity}Service.generated.cs` | Per-entity CRUD operations, data retrieval, Excel export |
 | ControllerGenerator | `BaseControllers.generated.cs` | REST API endpoints for each entity |
 | EntitiesToDTOGenerator | `DTOList.generated.cs` | DTO classes mirroring your entities |
 | MapperGenerator | `Mapper.generated.cs` | Mapster config for entity ↔ DTO mapping |
@@ -93,7 +93,7 @@ Spiderly has 14 source generators (9 for .NET, 5 for Angular) that run at build 
 ### What You Write by Hand
 
 - Entity classes with attributes (the single source of truth)
-- Business logic overrides in entity service classes (e.g., `ProductEntityService`)
+- Business logic overrides in entity service classes (e.g., `ProductService`)
 - Custom controllers for non-CRUD endpoints
 - Angular list and details page components
 - Custom DTO properties (via partial classes)
@@ -109,9 +109,9 @@ Spiderly uses a three-tier inheritance pattern. The framework provides a base cl
 ```
 ServiceBase                      ← Framework (Spiderly NuGet package)
         ↓
-{Entity}EntityServiceGenerated   ← Generated per entity (readonly, rebuilt every build)
+{Entity}ServiceGenerated   ← Generated per entity (readonly, rebuilt every build)
         ↓
-{Entity}EntityService            ← Your code (override virtual methods here)
+{Entity}Service            ← Your code (override virtual methods here)
 ```
 
 ### Controllers

@@ -16,9 +16,9 @@ Services follow this inheritance pattern:
 ```
 Spiderly Framework Base Classes (e.g., ServiceBase)
         ↓
-Generated Classes - readonly (e.g., ProductEntityServiceGenerated)
+Generated Classes - readonly (e.g., ProductServiceGenerated)
         ↓
-Your Classes (e.g., ProductEntityService) - override virtual methods here
+Your Classes (e.g., ProductService) - override virtual methods here
 ```
 
 Each entity gets its own generated service class. When you run `spiderly init`, the CLI creates skeleton files for your customizations:
@@ -26,7 +26,7 @@ Each entity gets its own generated service class. When you run `spiderly init`, 
 ```
 Backend\YourAppName.Business\
 ├── Services\
-│   ├── EntityServices\       ← Your entity service overrides (e.g., ProductEntityService.cs)
+│   ├── EntityServices\       ← Your entity service overrides (e.g., ProductService.cs)
 │   ├── AuthorizationService.cs
 │   └── SecurityService.cs
 │
@@ -44,7 +44,7 @@ Backend\YourAppName.WebAPI\Controllers\
 
 ## Entity Services
 
-Override virtual methods in your entity service class to customize entity operations. Create an `{Entity}EntityService` class that inherits from `{Entity}EntityServiceGenerated`.
+Override virtual methods in your entity service class to customize entity operations. Create an `{Entity}Service` class that inherits from `{Entity}ServiceGenerated`.
 
 ### Entity Lifecycle Hooks
 
@@ -102,15 +102,15 @@ protected override async Task OnAfterGetProductMainUIFormDTO(
 ### Example: Overriding Entity Service Hooks
 
 ```csharp
-// File: Backend\YourAppName.Business\Services\EntityServices\ProductEntityService.cs
+// File: Backend\YourAppName.Business\Services\EntityServices\ProductService.cs
 namespace YourAppName.Business.Services
 {
-    public class ProductEntityService : ProductEntityServiceGenerated
+    public class ProductService : ProductServiceGenerated
     {
         private readonly AuthenticationService _authenticationService;
         private readonly EmailingService _emailingService;
 
-        public ProductEntityService(
+        public ProductService(
             EntityServiceDependencies deps,
             AuthenticationService authenticationService,
             EmailingService emailingService
@@ -139,9 +139,9 @@ The `EntityServiceDependencies` object (`_deps`) provides access to shared frame
 
 ### DI Registration
 
-All entity service DI registration is **auto-generated** — you never register entity services manually. Call `services.AddEntityServices()` in your startup configuration. The source generator auto-detects user-written `{Entity}EntityService` classes and registers them alongside the generated base classes:
+All entity service DI registration is **auto-generated** — you never register entity services manually. Call `services.AddEntityServices()` in your startup configuration. The source generator auto-detects user-written `{Entity}Service` classes and registers them alongside the generated base classes:
 
-- If you create `ProductEntityService : ProductEntityServiceGenerated`, the generator registers both the concrete type and a forwarding registration so that resolving `ProductEntityServiceGenerated` returns your `ProductEntityService`.
+- If you create `ProductService : ProductServiceGenerated`, the generator registers both the concrete type and a forwarding registration so that resolving `ProductServiceGenerated` returns your `ProductService`.
 - If no user override exists for an entity, only the generated service is registered.
 
 ## Security Service
