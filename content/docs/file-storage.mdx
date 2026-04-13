@@ -283,11 +283,11 @@ public string ProfilePictureData { get; set; }  // file content for display
 |----------|--------|-------|
 | Azure Blob | `filename={key};base64,{data}` | Decode base64 for display |
 | S3 Private | `filename={key};base64,{data}` | Decode base64 for display |
-| S3 Public | `filename={key};base64,{data}` | Decode base64 for display |
+| S3 Public | Full public URL | Use directly as `src` |
 | Disk | `filename={key};base64,{data}` | Decode base64 for display |
 | Cloudinary | Cloudinary HTTPS URL | Use directly as `src` |
 
-In the Angular admin panel, `spiderly-file` handles this automatically. It uses the `[isCloudinaryFileData]` input (auto-generated) to determine how to render the preview.
+In the Angular admin panel, `spiderly-file` handles this automatically. It uses the `[isUrlFileData]` input (auto-generated) to determine how to render the preview.
 
 <Callout>
   For **S3 Public** files, the `{Property}` itself contains the full CDN URL. You can use it

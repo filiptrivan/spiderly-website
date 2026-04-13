@@ -39,6 +39,29 @@ Spiderly auto-generates:
 
 `[Required]` makes the FK non-nullable — every blog post must have a category. Without `[Required]`, the FK is nullable and the dropdown allows clearing the selection.
 
+### Explicit Foreign Key
+
+By default, the FK is a **shadow property** — EF Core creates the column but you can't reference it directly on the entity. If you need direct access to the FK value, you can declare it as a scalar property alongside the navigation:
+
+```csharp
+public class BlogPost : BusinessObject<long>
+{
+    public long? CategoryId { get; set; }
+
+    [Required]
+    [WithMany(nameof(Category.BlogPosts))]
+    public virtual Category Category { get; set; }
+}
+```
+
+Spiderly resolves the FK name via `[ForeignKey("...")]` or the `{Nav}Id` convention. When a scalar FK is declared, all generated code (DTOs, mappers, validators, service queries) routes through it instead of the shadow property.
+
+**When to use this:**
+
+- You write custom LINQ filters and want to avoid EF Core's [unresolved `nav.Id` JOIN issue](https://github.com/dotnet/efcore/issues/15826) — `x.CategoryId == id` generates a clean `WHERE` instead of a spurious `INNER JOIN`
+- You want to set the FK without first loading the parent entity: `post.CategoryId = 42` instead of `post.Category = await _context.Categories.FindAsync(42)`
+- The FK column name doesn't follow the `{Nav}Id` convention and needs an explicit `[ForeignKey]` mapping
+
 ## One-to-Many with \[WithMany\]
 
 To make the relationship bidirectional, add a `List<T>` collection property on the parent entity. The `[WithMany]` attribute on the child points to this collection by name:
