@@ -89,6 +89,19 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
   If your hosting platform runs multiple instances, they will all try to migrate simultaneously on deploy. This can cause race conditions and failed deployments. Use this approach only with single-instance deployments or if your platform supports pre-deploy hooks.
 </Callout>
 
+## Local Dev Secrets
+
+For local development, real secrets (database connection, JWT key, API tokens) live in `Backend/YourApp.WebAPI/appsettings.Development.local.json`. This file is **gitignored** and written automatically by `spiderly init`.
+
+Load order for the running app:
+
+1. `appsettings.json` — committed, safe defaults.
+2. `appsettings.Development.json` — committed, dev-only overrides (e.g. local URLs).
+3. `appsettings.Development.local.json` — **gitignored**, real dev secrets.
+4. Environment variables — used in production.
+
+A committed `appsettings.Development.local.example.json` ships alongside as a template — new developers copy it to `appsettings.Development.local.json` and fill in values.
+
 ## Environment Variables
 
 The generated `Program.cs` calls `config.AddEnvironmentVariables()`, so any setting from `appsettings.json` can be overridden with an environment variable. This is the standard way to configure secrets and per-environment values in production.
@@ -114,8 +127,8 @@ These must be set for every production deployment:
 | Variable | Description |
 |---|---|
 | `ASPNETCORE_ENVIRONMENT` | Set to `Production`. |
-| `AppSettings__Spiderly.Shared__ConnectionString` | Database connection string. During development this is stored in user secrets via `spiderly init`. |
-| `AppSettings__Spiderly.Shared__JwtKey` | JWT signing key. Also stored in user secrets during development. Must be at least 32 characters. |
+| `AppSettings__Spiderly.Shared__ConnectionString` | Database connection string. During development this is stored in `appsettings.Development.local.json` (gitignored), written by `spiderly init`. |
+| `AppSettings__Spiderly.Shared__JwtKey` | JWT signing key. Also stored in `appsettings.Development.local.json` during development. Must be at least 32 characters. |
 | `AppSettings__Spiderly.Shared__FrontendUrl` | URL of your Angular admin panel. Used for CORS. Default: `http://localhost:4200`. |
 | `AppSettings__Spiderly.Shared__JwtIssuer` | JWT issuer claim. Default: `https://localhost:7260;` — **must** be changed for production. |
 | `AppSettings__Spiderly.Shared__JwtAudience` | JWT audience claim. Default: `https://localhost:7260;` — **must** be changed for production. |
