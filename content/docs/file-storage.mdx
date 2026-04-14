@@ -211,10 +211,15 @@ When you add a `[BlobName]` or `[CloudinaryPublicId]` property to an entity, Spi
 1. Client sends `POST /api/{Entity}/Upload{Property}For{Entity}` with the file
 2. `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` hook runs
 3. Authorization check (insert vs update based on entity ID)
-4. File size validation (if `[MaxFileSize]` is present)
-5. `OnBefore{Property}BlobFor{Entity}IsUploaded()` hook runs — for images, this validates dimensions and optimizes
-6. File is uploaded to the storage provider
-7. The file identifier (key or URL) is returned to the client
+4. File size validation — `[MaxFileSize]` if set, otherwise **20 MB default**
+5. MIME-type + magic-byte signature validation — `[AcceptedFileTypes]` if set (MIME types only; extensions are Angular-only), otherwise the image-only default set (`image/jpeg`, `image/png`, `image/gif`, `image/webp`, `image/bmp`). The server reads the first 16 bytes of the stream and rejects requests whose content does not match the declared `Content-Type` — spoofing the header does not bypass validation.
+6. `OnBefore{Property}BlobFor{Entity}IsUploaded()` hook runs — for images, this validates dimensions and optimizes
+7. File is uploaded to the storage provider
+8. The file identifier (key or URL) is returned to the client
+
+### Rate Limiting
+
+All generated `Upload*For*` endpoints are decorated with `[EnableRateLimiting(SpiderlyRateLimitPolicies.BlobUpload)]`. Calling `spiderly.AddRateLimiting()` in your `AddSpiderly(...)` setup registers the policy with a default of **20 requests per minute per IP**. Override the policy in your own `Configure<RateLimiterOptions>` call to tune the limit without forking Spiderly.
 
 ### Default Image Processing
 
@@ -294,19 +299,37 @@ In the Angular admin panel, `spiderly-file` handles this automatically. It uses 
   directly as an image `src` without going through the `{Property}Data` base64 field.
 </Callout>
 
-## Orphaned File Cleanup
+## Storage Paths and Orphan Cleanup
 
-Spiderly automatically deletes orphaned files during entity save. When a user replaces a file (e.g., uploads a new profile picture), the old file is cleaned up after `SaveChangesAsync()` completes.
+All providers place uploaded blobs under a hierarchical, entity-scoped key:
 
-### How It Works
+```
+{EntityName}/{PropertyName}/{ObjectId}/{BlobGuid}.{ext}
+```
+
+### Insert Flow — Staging Prefix
+
+When a user uploads a file for an entity that doesn't exist yet (insert), the entity ID is `0`. Spiderly routes these uploads to a temporary staging prefix:
+
+```
+{EntityName}/{PropertyName}/_tmp/{UploadGuid}/{BlobGuid}.{ext}
+```
+
+Once the entity is saved and has a real ID, the generated save code calls `IFileManager.MoveBlobToEntityPathAsync(...)`, which copies the blob to its permanent key (`{Entity}/{Prop}/{realId}/{BlobGuid}.ext`), deletes the staging source, and updates the DB column. The client never sees the staged path.
+
+<Callout>
+  Configure a storage lifecycle rule to auto-expire objects under the `_tmp/` prefix after
+  7 days (S3/R2 lifecycle rule, Azure blob tag rule, etc.). This cleans up uploads that
+  were abandoned before the entity was saved — no cron needed.
+</Callout>
+
+### Update Flow — Replace and Clean
+
+When a user replaces a file on an existing entity:
 
 1. User uploads a new file → new key/URL is returned
 2. User saves the entity with the new key/URL
 3. After `SaveChangesAsync()`, the generated code calls `DeleteNonActiveBlobs()` on the storage service
-4. The service lists all files for that entity+property and deletes everything except the active file
+4. The service lists all files under `{Entity}/{Prop}/{id}/` and deletes everything except the active file
 
 This design is intentional — files are uploaded **before** the entity is saved (so the upload endpoint works independently). Cleanup only happens at save time, which means refreshing the page without saving won't lose the old file.
-
-<Callout type="warn">
-  Cleanup is skipped for new entities (ID = 0) to prevent accidental mass deletion.
-</Callout>
