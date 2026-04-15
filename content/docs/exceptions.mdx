@@ -3,15 +3,30 @@ title: Exceptions
 description: Learn about Spiderly's exception types and how the global exception handler maps them to HTTP responses.
 ---
 
-Spiderly's global exception handler catches all exceptions and maps them to appropriate HTTP responses. Here are the exception types you can throw in your code:
+Spiderly's global exception handler catches all exceptions and maps them to appropriate HTTP responses. Responses share a common `ApiErrorDTO` shape:
 
-| Exception | Default Status | Log Level | Message to Client | Notification Sent |
-|-----------|---------------|-----------|-------------------|-------------------|
-| `BusinessException` | 400 | Warning | Exception message | No |
+```ts
+{
+  statusCode: number;
+  message: string;
+  errorCode?: string;          // machine-readable discriminator (e.g. "invalid_token")
+  fieldErrors?: { [field: string]: string[] };  // populated for 422 responses
+  exception?: string;          // full stack trace, development only
+}
+```
+
+| Exception | Status | Log Level | Message to Client | Notification |
+|-----------|--------|-----------|-------------------|--------------|
+| `BusinessException` | 400 | Information | Exception message | No |
 | `ExpiredVerificationException` | 400 | Information | Exception message | No |
-| `UnauthorizedException` | 401 | Error | Exception message | No |
-| `HackerException` | 403 | Error | Generic error | Yes |
-| Unhandled (any other) | 500 | Error | Generic error | Yes |
+| `SpiderlyValidationException` | 422 | Information | Per-field errors | No |
+| `FluentValidation.ValidationException` | 422 | Information | Per-field errors | No |
+| `UnauthorizedException` | 401 | Warning | Exception message | No |
+| `SecurityTokenException` | 401 (RFC 6750) | Information | Exception message | No |
+| `SecurityViolationException` | 403 | Error | Generic error | Yes |
+| `DbUpdateConcurrencyException` | 409 | Warning | Localized `ConcurrencyException` | No |
+| `DbUpdateException` (unique/FK violation) | 409 | Warning | Localized message | No |
+| Unhandled | 500 | Error | Generic error | Yes |
 
 ## BusinessException
 
@@ -21,24 +36,55 @@ The primary way to reject invalid input with a user-facing message. Throw it fro
 throw new BusinessException("Product name must be unique.");
 ```
 
-The default status code is `400 Bad Request`. You can override it via the `StatusCode` property:
-
-```csharp
-throw new BusinessException("Resource not found.") { StatusCode = 404 };
-```
+Always returns `400 Bad Request`. Use a different exception type if you need a different status — that's the whole point of semantic exceptions.
 
 ## ExpiredVerificationException
 
-Returns `400 Bad Request` with the exception message, logged at `Information` level. Used internally by the security module when a verification code has expired, but you can also throw it in your own code for similar time-sensitive validation scenarios.
+Returns `400 Bad Request` with the exception message, logged at `Information` level. Used internally by the security module when a verification code has expired.
+
+## SpiderlyValidationException
+
+Throw when domain rules produce per-field errors that can't be expressed via FluentValidation attributes. Returns `422 Unprocessable Entity` with a `fieldErrors` dictionary the client can render inline next to the offending inputs:
+
+```csharp
+throw new SpiderlyValidationException(new Dictionary<string, string[]>
+{
+    ["Sku"] = new[] { "SKU already exists." }
+});
+```
+
+Standard FluentValidation failures (`ValidateAndThrow()` from generated validators) are converted to the same response shape automatically — you don't need to catch and rethrow.
 
 ## UnauthorizedException
 
 For custom authorization checks — returns `401 Unauthorized` with your message. See the [Authorization Service](/docs/backend-customization#authorization-service) section for a usage example.
 
-## HackerException
+## SecurityTokenException
 
-For requests that indicate malicious intent (e.g., tampering with IDs, accessing resources that shouldn't be reachable). Returns a generic error message (never revealing what went wrong) and triggers email/Telegram notifications so you can investigate. Used internally by Spiderly's generated services for integrity checks.
+Thrown from refresh-token flows when the presented token is missing, expired, or tampered with. Returns `401 Unauthorized` with:
+
+- `WWW-Authenticate: Bearer error="invalid_token", error_description="..."` (per RFC 6750)
+- `errorCode: "invalid_token"` in the body
+
+The handler also clears the access, refresh, and auth-result cookies. Clients should check either the header or the `errorCode` and treat the response as a forced logout.
+
+## SecurityViolationException
+
+For requests that indicate malicious intent (tampered IDs, forged hidden fields, file-size bypass attempts). Returns a generic error message (never revealing what went wrong) and triggers email/Telegram notifications so you can investigate. Used internally by Spiderly's generated services for integrity checks.
+
+## DbUpdateException
+
+The handler recognises common Postgres and SQL Server constraint violations and maps them to `409 Conflict` with localized messages:
+
+| Dialect | Code | Meaning | Localization key |
+|---------|------|---------|------------------|
+| Postgres | `23505` | Unique violation | `UniqueConstraintException` |
+| Postgres | `23503` | Foreign-key violation | `ForeignKeyConstraintException` |
+| SQL Server | `2627`, `2601` | Unique violation | `UniqueConstraintException` |
+| SQL Server | `547` | Foreign-key violation | `ForeignKeyConstraintException` |
+
+Other `DbUpdateException` instances fall through to the generic 500 handler. `DbUpdateConcurrencyException` is handled separately with the `ConcurrencyException` message.
 
 ## Unhandled Exceptions
 
-Any other exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `INotificationDispatcher`.
+Any exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `INotificationDispatcher`.

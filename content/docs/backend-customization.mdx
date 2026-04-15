@@ -419,11 +419,11 @@ await _context.WithTransactionAsync(async () =>
 | Type | HTTP Status | When to Use |
 |---|---|---|
 | `BusinessException(message)` | 400 | Validation the user can trigger through normal UI usage |
-| `HackerException()` | 403 | Impossible conditions, tampering, unauthorized access |
+| `SecurityViolationException()` | 403 | Impossible conditions, tampering, unauthorized access |
 
 ```csharp
 throw new BusinessException("Sale price must be less than regular price.");
-throw new HackerException(); // Logs detailed message server-side, returns generic error to client
+throw new SecurityViolationException(); // Logs detailed message server-side, returns generic error to client
 ```
 
 ## Common Pitfalls
