@@ -90,6 +90,8 @@ Spiderly has 14 source generators (9 for .NET, 5 for Angular) that run at build 
 | NgValidatorsGenerator | `validators.generated.ts` | Angular form validators from C# attributes |
 | NgEnumsGenerator | `enums.generated.ts` | TypeScript enums from C# enums |
 
+When a generator encounters a contract violation on your entity (bad `[ForeignKey]`, missing base class, malformed `[DisplayName]` path, etc.), it emits a located `SPIDERLY###` diagnostic rather than crashing the build. See [Build Diagnostics](/docs/build-diagnostics) for the full code reference.
+
 ### What You Write by Hand
 
 - Entity classes with attributes (the single source of truth)

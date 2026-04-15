@@ -1,0 +1,159 @@
+---
+title: Build Diagnostics
+description: Reference for SPIDERLY### diagnostic codes emitted by Spiderly source generators when entity definitions violate a contract.
+---
+
+## Overview
+
+When an entity class violates a contract the source generators rely on — a missing base class, a malformed `[ForeignKey]`, an ambiguous relationship, a broken `[DisplayName]` path — Spiderly emits a **located Roslyn diagnostic** at build time rather than crashing with `CS8785 "generator failed to generate source"`.
+
+Each diagnostic:
+
+- Has a stable `SPIDERLY###` ID (never reused, never renumbered).
+- Renders as a red squiggle in Visual Studio / Rider / VS Code on the offending class or property.
+- Appears in the build output with a clickable file and line.
+- Is parseable by CI logs and AI agents for automated fix suggestions.
+
+Diagnostics are reported by the generator's `SourceProductionContext`, so they behave like any other compiler warning or error — you can suppress individual codes via `<NoWarn>` in the `.csproj`, treat warnings as errors, or filter them in CI output. Severity is **Error** for everything except `SPIDERLY013` (Warning).
+
+## Diagnostic Reference
+
+| ID | Severity | Title |
+|----|----------|-------|
+| [SPIDERLY001](#spiderly001) | Error | Controller type is not a discovered entity or DTO |
+| [SPIDERLY002](#spiderly002) | Error | Many-to-many entity requires exactly two `[M2MWithMany]` properties |
+| [SPIDERLY003](#spiderly003) | Error | `[ForeignKey]` references a property that does not exist |
+| [SPIDERLY004](#spiderly004) | Error | Foreign key type does not match target primary key |
+| [SPIDERLY005](#spiderly005) | Error | Foreign key is ambiguous — multiple convention matches |
+| [SPIDERLY006](#spiderly006) | Error | Foreign key nullability does not match navigation property |
+| [SPIDERLY007](#spiderly007) | Error | `[DisplayName]` path references a property that does not exist |
+| [SPIDERLY008](#spiderly008) | Error | `[DisplayName]` path segment is not a many-to-one navigation |
+| [SPIDERLY009](#spiderly009) | Error | `[DisplayName]` navigation target entity not found |
+| [SPIDERLY010](#spiderly010) | Error | Entity missing required `BusinessObject<T>` / `ReadonlyObject<T>` base |
+| [SPIDERLY011](#spiderly011) | Error | Controller property type is not resolvable for client generation |
+| [SPIDERLY012](#spiderly012) | Error | One-to-many back-reference missing `[M2MWithMany]` |
+| [SPIDERLY013](#spiderly013) | Warning | `Backend` folder not found under calling project |
+
+## SPIDERLY001
+
+**Controller type is not a discovered entity or DTO.**
+
+A controller action takes or returns a class that isn't a Spiderly entity (inheriting `BusinessObject<T>` / `ReadonlyObject<T>`) and isn't in a namespace ending with `.DTO`. The generated Angular client would reference an undefined TypeScript type.
+
+**Fix:** move the class into a namespace ending with `.DTO`, or make it inherit from a Spiderly entity base class.
+
+## SPIDERLY002
+
+**Many-to-many entity requires exactly two `[M2MWithMany]` properties.**
+
+An entity declared as a many-to-many join has zero, one, or more than two `[M2MWithMany]` attributes. A join needs exactly one on each side.
+
+**Fix:** annotate each of the two navigation properties on the join entity with `[M2MWithMany]` pointing at the opposite side. See [Relationships](/docs/relationships) for a worked example.
+
+## SPIDERLY003
+
+**`[ForeignKey]` references a property that does not exist.**
+
+`[ForeignKey(nameof(X))]` on a navigation or scalar points at a member name that isn't declared on the entity.
+
+**Fix:** correct the `nameof(...)` argument, or add the missing scalar/navigation property.
+
+## SPIDERLY004
+
+**Foreign key type does not match target primary key.**
+
+The FK scalar's type (e.g. `int`) doesn't match the type of the target entity's `Id` (e.g. `long`).
+
+**Fix:** change the FK scalar to the target entity's `Id` type. The primary key type comes from the entity's `BusinessObject<T>` / `ReadonlyObject<T>` base.
+
+## SPIDERLY005
+
+**Foreign key is ambiguous — multiple convention matches.**
+
+Multiple scalar properties match the `{NavigationName}Id` convention for the same navigation, so the generator cannot pick a unique FK.
+
+**Fix:** use `[ForeignKey(nameof(ExplicitFkScalar))]` on the navigation to disambiguate.
+
+## SPIDERLY006
+
+**Foreign key nullability does not match navigation property.**
+
+Either a `[Required]` navigation is paired with a nullable FK scalar, or an optional navigation is paired with a non-nullable FK scalar.
+
+**Fix:** align them. `[Required] Category Category` must pair with non-nullable `long CategoryId`; optional `Category Category` must pair with nullable `long? CategoryId`.
+
+## SPIDERLY007
+
+**`[DisplayName]` path references a property that does not exist.**
+
+A segment of `[DisplayName("A.B.C")]` names a property that isn't declared on the corresponding entity.
+
+**Fix:** correct the path, or add the missing property.
+
+## SPIDERLY008
+
+**`[DisplayName]` path segment is not a many-to-one navigation.**
+
+An intermediate segment of a `[DisplayName]` path must be a many-to-one navigation so the generator can follow the chain.
+
+**Fix:** use only M2O navigations for intermediate segments. Scalars and collection properties are only valid as the final segment.
+
+## SPIDERLY009
+
+**`[DisplayName]` navigation target entity not found.**
+
+The entity type referenced by a `[DisplayName]` navigation segment is not discovered in the current project or any referenced project with a `.Entities` namespace.
+
+**Fix:** ensure the target entity lives in a `.Entities` namespace and its project is referenced.
+
+## SPIDERLY010
+
+**Entity missing required `BusinessObject<T>` / `ReadonlyObject<T>` base.**
+
+Every Spiderly entity must inherit — directly or transitively — from `BusinessObject<T>` or `ReadonlyObject<T>`. The generators cannot resolve the entity's `Id` type otherwise.
+
+**Fix:** add the appropriate base class. See [Add New Entity](/docs/add-new-entity).
+
+## SPIDERLY011
+
+**Controller property type is not resolvable for client generation.**
+
+A generated controller method references a navigation property whose target entity cannot be discovered, so the Angular autocomplete / dropdown method cannot be generated.
+
+**Fix:** ensure the target entity exists in a `.Entities` namespace and its project is referenced.
+
+## SPIDERLY012
+
+**One-to-many back-reference missing `[M2MWithMany]`.**
+
+An entity declares a one-to-many collection into a complex many-to-many join, but the join entity has no property annotated with a matching `[M2MWithMany(nameof(...))]` pointing back.
+
+**Fix:** add `[M2MWithMany(nameof(ThisCollection))]` to the corresponding navigation on the join entity.
+
+## SPIDERLY013
+
+**`Backend` folder not found under calling project.**
+
+The file-emitting generators (Angular entities/controllers/validators/details/enums) walk up from the calling project to find a `Backend` folder as an anchor for writing output. They emit this warning and skip file emission if the folder can't be found.
+
+**Fix:** ensure your backend project lives under a folder named `Backend` (or pass a custom name if your generator consumer supports it).
+
+## Suppressing Diagnostics
+
+To suppress a specific diagnostic project-wide, add it to `<NoWarn>` in the consuming project's `.csproj`:
+
+```xml
+<PropertyGroup>
+  <NoWarn>$(NoWarn);SPIDERLY013</NoWarn>
+</PropertyGroup>
+```
+
+Suppress at a single site with a `#pragma`:
+
+```csharp
+#pragma warning disable SPIDERLY013
+// ...code that triggers the diagnostic...
+#pragma warning restore SPIDERLY013
+```
+
+Use sparingly — each diagnostic points at a real contract violation that will produce broken generated code.
