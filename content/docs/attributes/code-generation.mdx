@@ -43,6 +43,76 @@ public class GenerateApiKeyResponseDTO
 }
 ```
 
+## SpiderlyController
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+**Required** on every hand-written controller. Without `[SpiderlyController]`, the source generators ignore the class and skip any routing/permission wiring that depends on it.
+
+### Example:
+
+```csharp
+[SpiderlyController]
+[ApiController]
+[Route("/api/[controller]/[action]")]
+public class ProductController : ProductBaseController
+{
+    // Custom endpoints and overrides
+}
+```
+
+## SpiderlyService
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+**Required** on every hand-written entity service override (and on `AuthorizationService`). The source generator enrolls these classes in DI registration and forwards resolves of `{Entity}ServiceGenerated` to your override. Without the marker, the override is invisible to the generator and only the generated base is registered.
+
+### Example:
+
+```csharp
+[SpiderlyService]
+public class ProductService : ProductServiceGenerated
+{
+    public ProductService(EntityServiceDependencies deps) : base(deps) { }
+
+    protected override async Task OnBeforeProductInsert(Product product, ProductDTO productDTO)
+    {
+        // Custom logic
+    }
+}
+```
+
+## SpiderlyEnum
+
+**Namespace:** `Spiderly.Shared.Attributes`
+
+### Usage:
+
+**Required** on every C# enum or class-based enum that should be emitted into `enums.generated.ts` for the Angular client. Classes/enums without this marker stay backend-only — that is the correct default for enums that carry no frontend value.
+
+Applies to both:
+
+- `public enum {Name}Codes` — generated as a numeric TypeScript enum
+- `public static partial class {Name}Codes` with string constants — generated as a string TypeScript enum
+
+### Example:
+
+```csharp
+[SpiderlyEnum]
+public enum OrderStatusCodes
+{
+    PendingPayment = 1,
+    Pending = 2,
+    Shipped = 3,
+    Delivered = 4,
+    Cancelled = 5,
+}
+```
+
 ## BlobName
 
 **Namespace:** `Spiderly.Shared.Attributes.Entity`
