@@ -3,6 +3,46 @@ title: Code Generation
 description: Attributes that control what gets generated — DTOs, services, mappers, and source generator output.
 ---
 
+## SpiderlyEntity
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+**Required** on every hand-written entity class. Without `[SpiderlyEntity]`, the source generators ignore the class and emit no DTO, mapper, controller, validator, or Angular form for it. The `spiderly add-new-entity` CLI adds this attribute automatically.
+
+### Example:
+
+```csharp
+[SpiderlyEntity]
+public class Product : BusinessObject<long>
+{
+    [Required]
+    [StringLength(100, MinimumLength = 1)]
+    public string Name { get; set; }
+}
+```
+
+## SpiderlyDTO
+
+**Namespace:** `Spiderly.Shared.Attributes.Entity`
+
+### Usage:
+
+**Required** on every hand-written DTO class that the generator should pass through to the Angular client. Generated DTOs (`{Entity}DTO`, `{Entity}SaveBodyDTO`, `{Entity}MainUIFormDTO`) are emitted by Spiderly directly and need no marker — apply this attribute only to DTOs you write by hand.
+
+### Example:
+
+```csharp
+[SpiderlyDTO]
+public class GenerateApiKeyResponseDTO
+{
+    [Required]
+    [StringLength(64)]
+    public string ApiKey { get; set; }
+}
+```
+
 ## BlobName
 
 **Namespace:** `Spiderly.Shared.Attributes.Entity`
