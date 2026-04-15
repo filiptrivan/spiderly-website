@@ -9,12 +9,13 @@ description: Attributes for defining entity relationships — many-to-one, many-
 
 ### Usage:
 
-Indicates that the entity represents a helper table for a `many-to-many` (M2M) relationship.
+Indicates that the entity represents a helper table for a `many-to-many` (M2M) relationship. Always pair `[M2M]` with `[SpiderlyEntity]` — the junction is still a DB entity and must be enrolled in the generator pipeline, otherwise opposite-M2M lookups return null and the parent entity's generated service fails to compile.
 
 ### Example:
 
 ```csharp
 [M2M]
+[SpiderlyEntity]
 public class RolePermission
 {
     [M2MWithMany(nameof(Role.Permissions))]
@@ -37,6 +38,7 @@ Marks a property in a `many-to-many` (M2M) relationship.
 
 ```csharp
 [M2M]
+[SpiderlyEntity]
 public class RolePermission
 {
     [M2MWithMany(nameof(Role.Permissions))]
@@ -163,6 +165,7 @@ public class ProductVariant : BusinessObject<long>
 }
 
 [M2M]
+[SpiderlyEntity]
 public class ProductVariantWarehouse
 {
     [M2MWithMany(nameof(ProductVariant.ProductVariantWarehouses))]
