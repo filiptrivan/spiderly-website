@@ -111,7 +111,7 @@ All public DTO properties are included by default, except:
 To exclude specific properties from the Excel export, add a method named `{Entity}ExcelProjectToConfig` in your hand-written `Mapper` class. This replaces the auto-generated one. Use Mapster's `.Ignore()` to exclude properties from the projection:
 
 ```csharp
-[CustomMapper]
+[SpiderlyDataMapper]
 public static partial class Mapper
 {
     public static TypeAdapterConfig ProductExcelProjectToConfig()

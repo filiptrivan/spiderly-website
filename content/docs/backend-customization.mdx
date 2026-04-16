@@ -37,14 +37,13 @@ Backend\YourAppName.Business\
     └── PermissionCodes.cs       ← Partial class
 
 Backend\YourAppName.WebAPI\Controllers\
-├── NotificationController.cs
 ├── SecurityController.cs
 └── UserController.cs
 ```
 
 ## Entity Services
 
-Override virtual methods in your entity service class to customize entity operations. Create an `{Entity}Service` class that inherits from `{Entity}ServiceGenerated`.
+Override virtual methods in your entity service class to customize entity operations. Create an `{Entity}Service` class that inherits from `{Entity}ServiceGenerated` and mark it with `[SpiderlyService]` so the source generator picks it up for DI registration.
 
 ### Entity Lifecycle Hooks
 
@@ -103,8 +102,11 @@ protected override async Task OnAfterGetProductMainUIFormDTO(
 
 ```csharp
 // File: Backend\YourAppName.Business\Services\EntityServices\ProductService.cs
+using Spiderly.Shared.Attributes;
+
 namespace YourAppName.Business.Services
 {
+    [SpiderlyService]
     public class ProductService : ProductServiceGenerated
     {
         private readonly AuthenticationService _authenticationService;
@@ -139,10 +141,11 @@ The `EntityServiceDependencies` object (`_deps`) provides access to shared frame
 
 ### DI Registration
 
-All entity service DI registration is **auto-generated** — you never register entity services manually. Call `services.AddEntityServices()` in your startup configuration. The source generator auto-detects user-written `{Entity}Service` classes and registers them alongside the generated base classes:
+All entity service DI registration is **auto-generated** — you never register entity services manually. Call `services.AddEntityServices()` in your startup configuration. The source generator auto-detects user-written `{Entity}Service` classes marked with `[SpiderlyService]` and registers them alongside the generated base classes:
 
-- If you create `ProductService : ProductServiceGenerated`, the generator registers both the concrete type and a forwarding registration so that resolving `ProductServiceGenerated` returns your `ProductService`.
+- If you create `[SpiderlyService] ProductService : ProductServiceGenerated`, the generator registers both the concrete type and a forwarding registration so that resolving `ProductServiceGenerated` returns your `ProductService`.
 - If no user override exists for an entity, only the generated service is registered.
+- Without the `[SpiderlyService]` marker, the override is invisible to the generator and the forwarding registration is not emitted — the generated base wins at runtime.
 
 ## Security Service
 
@@ -187,14 +190,17 @@ namespace YourAppName.Business.Services
 
 ## Authorization Service
 
-Your `AuthorizationService` class inherits from `AuthorizationServiceGenerated`. Override virtual methods to customize permission checks.
+Your `AuthorizationService` class inherits from `AuthorizationServiceGenerated`. Mark it with `[SpiderlyService]` and override virtual methods to customize permission checks.
 
 ### Example: Custom Authorization Logic
 
 ```csharp
 // File: Backend\YourAppName.Business\Services\AuthorizationService.cs
+using Spiderly.Shared.Attributes;
+
 namespace YourAppName.Business.Services
 {
+    [SpiderlyService]
     public class AuthorizationService : AuthorizationServiceGenerated
     {
         // ... constructor and fields ...
@@ -235,7 +241,7 @@ using YourAppName.Business.Entities;
 
 namespace YourAppName.Business.DataMappers
 {
-    [CustomMapper]
+    [SpiderlyDataMapper]
     public static partial class Mapper
     {
         // Custom mapping method for your own use
@@ -311,11 +317,13 @@ Generated controllers create a base class (e.g., `ProductBaseController`) with v
 ```csharp
 // File: Backend\YourAppName.WebAPI\Controllers\ProductController.cs
 using YourAppName.Business.Services;
+using Spiderly.Shared.Attributes;
 using Spiderly.Shared.Interfaces;
 using Microsoft.Extensions.Localization;
 
 namespace YourAppName.WebAPI.Controllers
 {
+    [SpiderlyController]
     [ApiController]
     [Route("/api/Product/[action]")]
     public class ProductController : ProductBaseController
@@ -420,11 +428,11 @@ await _context.WithTransactionAsync(async () =>
 | Type | HTTP Status | When to Use |
 |---|---|---|
 | `BusinessException(message)` | 400 | Validation the user can trigger through normal UI usage |
-| `HackerException()` | 403 | Impossible conditions, tampering, unauthorized access |
+| `SecurityViolationException()` | 403 | Impossible conditions, tampering, unauthorized access |
 
 ```csharp
 throw new BusinessException("Sale price must be less than regular price.");
-throw new HackerException(); // Logs detailed message server-side, returns generic error to client
+throw new SecurityViolationException(); // Logs detailed message server-side, returns generic error to client
 ```
 
 ## Common Pitfalls

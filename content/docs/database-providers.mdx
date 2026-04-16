@@ -100,7 +100,7 @@ The generated `.vscode/extensions.json` recommends the matching database extensi
 
 ## Connection Strings
 
-Connection strings are stored in [.NET user secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets) and configured automatically during `spiderly init`.
+Connection strings are stored in `Backend/YourApp.WebAPI/appsettings.Development.local.json` (gitignored) and configured automatically during `spiderly init`.
 
 **PostgreSQL format:**
 
@@ -134,7 +134,7 @@ If you need to switch providers after project creation, follow these steps:
 1. **Swap NuGet packages** in `Backend/YourApp.WebAPI/YourApp.WebAPI.csproj` — replace the EF Core and Hangfire packages (see [comparison table](#comparison-table) above).
 2. **Update Hangfire storage** in `Startup.cs` — change `UseHangfirePostgreSqlStorage` to `UseSqlServerStorage` (or vice versa).
 3. **Change `DbProviderCodes`** in the `SpiderlyConfigureServices` call in `Startup.cs`.
-4. **Update the connection string** in user secrets (`dotnet user-secrets set`).
+4. **Update the connection string** in `Backend/YourApp.WebAPI/appsettings.Development.local.json`.
 5. **Delete existing migrations** from `Backend/YourApp.Infrastructure/Migrations/` and create a new initial migration with `spiderly add-migration Init`.
 
 <Callout type="warn">

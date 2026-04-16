@@ -9,10 +9,12 @@ Spiderly lets you define enums once in C# and automatically generates matching T
 
 ## How It Works
 
-`NgEnumsGenerator` is a Roslyn source generator that runs at **build time** (when you build the `.Business` project). It scans for two kinds of types in namespaces ending with `.Enums`:
+`NgEnumsGenerator` is a Roslyn source generator that runs at **build time** (when you build the `.Business` project). It scans for two kinds of types carrying the `[SpiderlyEnum]` marker:
 
 - **`enum` declarations** → generated as numeric TypeScript enums (explicit values preserved)
 - **`static class` declarations** → generated as string TypeScript enums (property names become string values)
+
+Types without the marker stay backend-only. This is the correct default — most enums exist to label database rows and never need to reach the frontend.
 
 All output is consolidated into a single file:
 
@@ -32,15 +34,18 @@ See [Architecture](/docs/architecture) for the full list of generators, and [spi
 ## Defining an Enum
 
 1. Create a file in `Backend\{YourAppName}.Business\Enums\`
-2. Use a block namespace ending with `.Enums`
-3. Define a standard C# enum
+2. Use a block namespace (file-scoped syntax is not supported)
+3. Define a standard C# enum and decorate it with `[SpiderlyEnum]`
 
 **C# input:**
 
 ```csharp
 // File: Backend\YourAppName.Business\Enums\OrderStatusCodes.cs
+using Spiderly.Shared.Attributes;
+
 namespace YourAppName.Business.Enums
 {
+    [SpiderlyEnum]
     public enum OrderStatusCodes
     {
         PendingPayment = 1,
@@ -68,9 +73,9 @@ export enum OrderStatusCodes {
 ```
 
 <Callout type="warn">
-  You must use block namespace syntax (`namespace X.Y.Enums {'{'} ... {'}'}`), not file-scoped
-  (`namespace X.Y.Enums;`). The source generator relies on the syntax tree structure of block
-  namespaces to discover enums.
+  You must use block namespace syntax (`namespace X.Y {'{'} ... {'}'}`), not file-scoped
+  (`namespace X.Y;`). The source generator relies on the syntax tree structure of block
+  namespaces to read the enum.
 </Callout>
 
 ## Naming Convention
@@ -79,14 +84,17 @@ Spiderly follows the `...Codes` naming convention for enums (e.g., `OrderStatusC
 
 ## Class-Based Enums
 
-Static classes in the `.Enums` namespace are also picked up by the generator and emitted as **string enums**. This is used internally for `PermissionCodes` — a partial class where Spiderly auto-generates CRUD permission codes for every entity.
+Static classes carrying `[SpiderlyEnum]` are emitted as **string enums**. This is used internally for `PermissionCodes` — a partial class where Spiderly auto-generates CRUD permission codes for every entity.
 
 **C# input:**
 
 ```csharp
 // File: Backend\YourAppName.Business\Enums\PermissionCodes.cs
+using Spiderly.Shared.Attributes;
+
 namespace YourAppName.Business.Enums
 {
+    [SpiderlyEnum]
     public static partial class PermissionCodes
     {
     }
