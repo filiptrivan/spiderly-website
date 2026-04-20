@@ -33,6 +33,7 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY011](#spiderly011) | Error | Controller property type is not resolvable for client generation |
 | [SPIDERLY012](#spiderly012) | Error | One-to-many back-reference missing `[M2MWithMany]` |
 | [SPIDERLY013](#spiderly013) | Warning | `Backend` folder not found under calling project |
+| [SPIDERLY014](#spiderly014) | Error | Blob property missing `[AcceptedFileTypes]` attribute |
 
 ## SPIDERLY001
 
@@ -137,6 +138,26 @@ An entity declares a one-to-many collection into a complex many-to-many join, bu
 The file-emitting generators (Angular entities/controllers/validators/details/enums) walk up from the calling project to find a `Backend` folder as an anchor for writing output. They emit this warning and skip file emission if the folder can't be found.
 
 **Fix:** ensure your backend project lives under a folder named `Backend` (or pass a custom name if your generator consumer supports it).
+
+## SPIDERLY014
+
+**Blob property missing `[AcceptedFileTypes]` attribute.**
+
+Every `[BlobName]` property must declare `[AcceptedFileTypes("mime/type", ...)]` with at least one MIME-typed value. There is no implicit default — the old images-only fallback has been removed so every blob property's upload whitelist is an explicit, auditable decision at the source level.
+
+An attribute that contains only extension values (e.g. `[AcceptedFileTypes(".pdf")]`) also trips this because the generator filters to MIME-typed entries (values containing `/`) when emitting the server-side validator.
+
+**Fix:** add `[AcceptedFileTypes(...)]` with one or more MIME types. Examples:
+
+```csharp
+[BlobName]
+[AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]
+public string ImageUrl { get; set; }
+
+[BlobName]
+[AcceptedFileTypes("application/pdf", ".pdf")]
+public string PdfFile { get; set; }
+```
 
 ## Suppressing Diagnostics
 
