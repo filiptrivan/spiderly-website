@@ -201,7 +201,7 @@ public class User : BusinessObject<long>
 
 ### Usage
 
-Specifies the accepted file types for a blob property. When not applied, the file upload defaults to accepting images only (`image/*`). Use this attribute alongside `[BlobName]` for non-image uploads (e.g., PDFs, Excel files).
+Specifies the accepted file types for a blob property. **This attribute is required on every `[BlobName]` property** and must declare at least one MIME-typed value. If it is missing (or contains only extension values like `".pdf"` with no `image/jpeg`-shaped entry), the source generator raises build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). There is no implicit default — every blob property must whitelist its accepted types explicitly.
 
 ### Example:
 

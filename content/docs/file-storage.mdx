@@ -212,7 +212,7 @@ When you add a `[BlobName]` or `[CloudinaryPublicId]` property to an entity, Spi
 2. `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` hook runs
 3. Authorization check (insert vs update based on entity ID)
 4. File size validation — `[MaxFileSize]` if set, otherwise **20 MB default**
-5. MIME-type + magic-byte signature validation — `[AcceptedFileTypes]` if set (MIME types only; extensions are Angular-only), otherwise the image-only default set (`image/jpeg`, `image/png`, `image/gif`, `image/webp`, `image/bmp`). The server reads the first 16 bytes of the stream and rejects requests whose content does not match the declared `Content-Type` — spoofing the header does not bypass validation.
+5. MIME-type + magic-byte signature validation — `[AcceptedFileTypes]` is **required** on every `[BlobName]` property and must declare at least one MIME-typed value (e.g. `[AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]`). If it is missing or contains only extension values, the source generator emits build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). The server reads the first 16 bytes of the stream and rejects requests whose content does not match the declared `Content-Type` — spoofing the header does not bypass validation.
 6. `OnBefore{Property}BlobFor{Entity}IsUploaded()` hook runs — for images, this validates dimensions and optimizes
 7. File is uploaded to the storage provider
 8. The file identifier (key or URL) is returned to the client
