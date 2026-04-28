@@ -17,13 +17,17 @@ const HomePage = async () => {
       <HeroSection
         title={
           <>
-            .NET (C#) Web App Boilerplate{' '}
+            .NET (C#) Web App Framework Built For{' '}
             <span className="text-transparent bg-linear-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
-              Code Generator
+              AI Coding Agents
             </span>
           </>
         }
-        description="Spiderly is a free open-source .NET (C#) code generator that transforms an EF Core model into a fully customizable .NET (C#) + Angular web application, automatically updating all boilerplate code as your model evolves."
+        description="Spiderly is a free, 
+        open-source .NET web app framework that lets your AI coding agent focus on business logic. 
+        It generates a fully customizable .NET + Angular app from your EF Core model, 
+        regenerating boilerplate on every model change. 
+        Built on a production-tested architecture that stays clean and testable as your codebase grows."
         buttons={
           <>
             <BeamButton asChild>

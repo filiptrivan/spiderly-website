@@ -39,9 +39,9 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 
 **Controller type is not a discovered entity or DTO.**
 
-A controller action takes or returns a class that isn't a Spiderly entity (inheriting `BusinessObject<T>` / `ReadonlyObject<T>`) and isn't in a namespace ending with `.DTO`. The generated Angular client would reference an undefined TypeScript type.
+A controller action takes or returns a class that isn't marked with `[SpiderlyDTO]` and doesn't inherit from `BusinessObject<T>` / `ReadonlyObject<T>`. The generated Angular client would reference an undefined TypeScript type.
 
-**Fix:** move the class into a namespace ending with `.DTO`, or make it inherit from a Spiderly entity base class.
+**Fix:** add `[SpiderlyDTO]` to the class, or make it inherit from a Spiderly entity base class.
 
 ## SPIDERLY002
 
