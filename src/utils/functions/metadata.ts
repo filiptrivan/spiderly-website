@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 const SITE_URL = 'https://www.spiderly.dev';
 
 export const generateMetadata = ({
-  title = `.NET (C#) Web App Boilerplate Code Generator`,
+  title = `.NET Web App Framework Built For AI Coding Agents`,
   description = `Spiderly is a free open-source .NET (C#) boilerplate code generator that turns EF Core model into fully customizable .NET (C#) + Angular web application.`,
   image = '/preview-1200x630.png',
   path = '/',

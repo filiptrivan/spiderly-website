@@ -16,7 +16,7 @@ export const HeroSection = ({ title, description, buttons }: HeroSectionProps) =
       <AnimationContainer>
         <SectionContainer>
           <div className="flex flex-col items-center justify-center w-full text-center">
-            <h1 className="text-foreground mb-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-7xl leading-[1.15]! w-full">
+            <h1 className="text-foreground mb-6 text-4xl font-medium tracking-normal text-balance sm:text-5xl md:text-6xl lg:text-7xl leading-[1.15]! w-full">
               {title}
             </h1>
             <p className="mb-6 text-lg tracking-tight text-muted-foreground md:text-xl text-balance max-w-6xl">
