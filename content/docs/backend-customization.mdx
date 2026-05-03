@@ -50,8 +50,8 @@ Override virtual methods in your entity service class to customize entity operat
 - `OnBefore{Entity}IsMapped()` - Customize before DTO-to-entity conversion
 - `OnBefore{Entity}Insert()` - Execute logic before inserting a new entity
 - `OnBefore{Entity}Update()` - Execute logic before updating an existing entity
-- `OnBefore{Entity}Delete()` - Execute logic before deleting an entity
-- `OnBefore{Entity}ListDelete()` - Execute logic before bulk deletion
+- `OnBefore{Entity}ListDelete()` - Execute logic before deletion (handles both single and bulk cases)
+- `OnBefore{Entity}Delete()` - Per-id variant; defaults to forwarding to `OnBefore{Entity}ListDelete` with a one-element list. Override only when the per-id flow genuinely diverges from the batch case.
 
 ### Save Operation Hooks
 
