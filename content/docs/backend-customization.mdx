@@ -423,6 +423,10 @@ await _context.WithTransactionAsync(async () =>
 });
 ```
 
+<Callout type="warn">
+  `WithTransactionAsync` throws `InvalidOperationException` if the change tracker still has pending writes when the transaction is about to commit. `transaction.CommitAsync()` only commits the DB transaction — it does **not** flush the tracker — so a missed `SaveChangesAsync` after `Add` would otherwise silently drop the writes (a classic outbox-pattern footgun). Either call `SaveChangesAsync` before returning from the action, or detach entries you don't intend to persist.
+</Callout>
+
 ## Exception Types
 
 | Type | HTTP Status | When to Use |

@@ -89,6 +89,23 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
   If your hosting platform runs multiple instances, they will all try to migrate simultaneously on deploy. This can cause race conditions and failed deployments. Use this approach only with single-instance deployments or if your platform supports pre-deploy hooks.
 </Callout>
 
+## Health Checks
+
+Generated apps ship with a `/health` endpoint and forwarded-headers middleware out of the box — no opt-in required.
+
+**What's wired:**
+
+- `services.AddHealthChecks().AddDbContextCheck<T>()` — `GET /health` returns `200 OK` when the app is up and the DB is reachable, and `503 Service Unavailable` when the `DbContext` cannot connect. Point your uptime probe (Cloud Run, ECS, Kubernetes, Uptime Kuma, etc.) at this path.
+- `spiderly.AddForwardedHeaders()` + `app.SpiderlyConfigureForwardedHeaders()` — so the app reports the correct scheme and host when running behind a reverse proxy or CDN (Caddy, nginx, Cloudflare).
+
+**Production tuning:**
+
+`appsettings.Production.json` ships with `ForwardLimit: 2`, which is correct when traffic flows through one CDN hop and one reverse-proxy hop. If you have a different topology (direct-to-origin, multiple CDNs), tune `ForwardLimit` and `KnownProxies` / `KnownNetworks` to match. Setting it too low truncates `X-Forwarded-For` chains; setting it too high lets clients spoof their IP.
+
+<Callout type="warn">
+  When using a Docker health check that calls `/health`, set `start_period` to at least `60s`. EF Core's first connection takes 20–30 seconds to warm up, and a too-tight start period will mark the container unhealthy before it ever goes green.
+</Callout>
+
 ## Local Dev Secrets
 
 For local development, real secrets (database connection, JWT key, API tokens) live in `Backend/YourApp.WebAPI/appsettings.Development.local.json`. This file is **gitignored** and written automatically by `spiderly init`.

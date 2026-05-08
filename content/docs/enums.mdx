@@ -117,3 +117,43 @@ export enum PermissionCodes {
 ```
 
 See [Backend Customization](/docs/backend-customization) for how to extend `PermissionCodes` with custom permissions.
+
+## Enum Properties on Entities
+
+A `[SpiderlyEnum]`-decorated type can also be used **directly as an entity property type** — Spiderly recognizes it as a scalar value and generates a dropdown UI control instead of treating it as a foreign-key relationship.
+
+**C# input:**
+
+```csharp
+// File: Backend\YourAppName.Business\Enums\OrderStatusCodes.cs
+using Spiderly.Shared.Attributes;
+
+namespace YourAppName.Business.Enums
+{
+    [SpiderlyEnum]
+    public enum OrderStatusCodes
+    {
+        Pending,
+        Paid,
+        Shipped,
+        Cancelled,
+    }
+}
+```
+
+```csharp
+// File: Backend\YourAppName.Business\Entities\Order.cs
+[SpiderlyEntity]
+public class Order : BusinessObject<long>
+{
+    public OrderStatusCodes Status { get; set; }
+}
+```
+
+**Generated behavior:**
+
+- The Angular form renders `Status` as a scalar dropdown populated from `OrderStatusCodes` — no lookup table or M2O navigation property is generated.
+- `IsManyToOneType` short-circuits for properties whose type is in the `[SpiderlyEnum]` registry, so the generators that previously emitted FK plumbing skip it for these properties.
+- `[SpiderlyEnum]` is the single source of truth — the type does **not** need to follow the `...Codes` naming convention to be recognized.
+
+Use this pattern when the set of values is fixed at compile time and you don't need per-row metadata. For values that need labels, ordering, or admin-managed lifetimes, keep the lookup-table pattern with `ReadonlyObject<T>`.
