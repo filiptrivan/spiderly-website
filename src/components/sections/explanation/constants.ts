@@ -8,7 +8,7 @@ export const terminalSteps = [
 export const productProperties = [
   { name: 'Name', type: 'string' },
   { name: 'Active', type: 'bool' },
-  { name: 'Image', type: 'string', attributes: [{ name: 'BlobName' }] },
+  { name: 'Image', type: 'string', attributes: [{ name: 'S3PublicStorage' }] },
 ];
 
 export const starterFeatures = [

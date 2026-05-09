@@ -1,71 +1,67 @@
 ---
 title: File Storage
-description: Learn how to configure file uploads in Spiderly — storage providers, entity configuration, validation, processing hooks, and automatic cleanup.
+description: Configure file uploads in Spiderly — built-in storage adapters, custom adapters, validation, processing hooks, and automatic cleanup.
 ---
 
 ## Overview
 
-Spiderly supports 5 storage providers for file uploads. The provider is determined by the attributes on your entity properties and the service registered in DI. All upload endpoints, validation, and cleanup are auto-generated.
+Spiderly's file-storage model is **per-property**: every blob property on an entity declares its storage adapter via a `StorageAttribute` subclass. The source generator emits the upload pipeline (controller endpoint, validation, optimization hooks, save-time cleanup) and resolves the right `IFileManager` adapter from DI for that property only — there is no global storage registration.
 
-## Storage Providers
+## Built-in Adapters
 
-| Provider | Attribute(s) | Returns | Best For |
+Spiderly ships three built-in storage classes and matching attributes. Anything else (Cloudinary, Azure Blob, Backblaze, on-prem MinIO, …) is implemented by the consumer (see [Custom Adapters](#custom-adapters)).
+
+| Adapter | Attribute | Returns | Best For |
 |----------|-------------|---------|----------|
-| Azure Blob | `[BlobName]` | File key | Private files with Azure infrastructure |
-| S3 Private | `[BlobName]` + register `S3StorageService` as `IFileManager` | File key | Private files with AWS/S3 |
-| S3 Public | `[BlobName]` + `[S3PublicUrl]` | Full CDN URL | Public images/assets with CloudFront/R2 CDN |
-| Cloudinary | `[CloudinaryPublicId]` | Public ID | Image-heavy apps with transformation needs |
-| Disk | `[BlobName]` + register `DiskStorageService` as `IFileManager` | File key | Local development |
+| `DiskStorageService` | `[DiskStorage]` | File key | Local development |
+| `S3PublicStorageService` | `[S3PublicStorage]` | Full CDN URL | Public images/assets with CloudFront/R2 CDN |
+| `S3PrivateStorageService` | `[S3PrivateStorage]` | S3 key | Private documents, signed-URL access |
 
-### How the Provider Is Selected
-
-The generated code routes to the correct storage service based on attributes:
-
-1. Property has `[CloudinaryPublicId]` → `CloudinaryStorageService`
-2. Property has `[S3PublicUrl]` → `S3PublicStorageService`
-3. Otherwise → `IFileManager` (whatever is registered in DI: `BlobStorageService`, `S3StorageService`, or `DiskStorageService`)
+All three implement `Spiderly.Shared.Interfaces.IFileManager`.
 
 ## Entity Configuration
 
-Add a file property to an entity by decorating a `string` property with a storage attribute.
+Decorate a `string` property with a storage attribute. The attribute itself marks the property as a blob — there is no separate marker attribute.
 
-### Private File (Azure Blob, S3, or Disk)
+### Public CDN file
 
-The actual provider is determined by which service is registered as `IFileManager` in DI:
-
-```csharp
-public class User : BusinessObject<long>
-{
-    [BlobName]
-    [StringLength(80, MinimumLength = 30)]
-    public string ProfilePicture { get; set; }
-}
-```
-
-### Public File with CDN URL (S3 Public)
-
-The property stores the full public URL. Ideal for images served directly from a CDN:
+The column stores the full public URL. Ideal for images served directly from a CDN:
 
 ```csharp
-public class Product : BusinessObject<long>
+public class Brand : BusinessObject<int>
 {
-    [BlobName]
-    [S3PublicUrl]
+    [S3PublicStorage]
+    [AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]
+    [MaxFileSize(2_000_000)]
     [StringLength(1000, MinimumLength = 1)]
-    public string Image { get; set; }
+    public string LogoUrl { get; set; }
 }
 ```
 
-### Cloudinary Image
+### Private S3 file (signed-URL access)
 
-The property stores a Cloudinary public ID:
+The column stores an opaque S3 key; access is mediated via signed URLs or a backend proxy. Use for personal data, compliance-sensitive uploads, etc.:
+
+```csharp
+public class WarrantyRegistration : BusinessObject<long>
+{
+    [S3PrivateStorage]
+    [AcceptedFileTypes("image/jpeg", "image/png", "application/pdf")]
+    [MaxFileSize(10_000_000)]
+    [StringLength(1000, MinimumLength = 1)]
+    public string ReceiptImageUrl { get; set; }
+}
+```
+
+### Local disk (development)
 
 ```csharp
 public class User : BusinessObject<long>
 {
-    [CloudinaryPublicId]
-    [StringLength(500, MinimumLength = 1)]
-    public string Photo { get; set; }
+    [DiskStorage]
+    [AcceptedFileTypes("image/*")]
+    [StringLength(1000, MinimumLength = 1)]
+    public string ProfilePicture { get; set; }
 }
 ```
 
@@ -75,12 +71,12 @@ These attributes add both server-side and client-side validation. See the [Valid
 
 | Attribute | Description | Default |
 |-----------|-------------|---------|
-| `[AcceptedFileTypes("image/*", ".pdf")]` | Allowed MIME types or extensions | `image/*` (images only) |
+| `[AcceptedFileTypes("image/*", ".pdf")]` | Allowed MIME types or extensions | **Required.** No default — build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014) if missing. |
 | `[MaxFileSize(5_000_000)]` | Max file size in bytes | 20 MB |
 | `[ImageWidth(800)]` | Required exact image width in pixels | No validation |
 | `[ImageHeight(600)]` | Required exact image height in pixels | No validation |
 
-### Example with All Validation Attributes
+### Example with all validation attributes
 
 ```csharp
 public class Brand : BusinessObject<int>
@@ -90,8 +86,7 @@ public class Brand : BusinessObject<int>
     [StringLength(100, MinimumLength = 1)]
     public string Name { get; set; }
 
-    [BlobName]
-    [S3PublicUrl]
+    [S3PublicStorage]
     [AcceptedFileTypes("image/*")]
     [MaxFileSize(2_000_000)]
     [ImageWidth(400)]
@@ -103,7 +98,9 @@ public class Brand : BusinessObject<int>
 
 ## Provider Setup
 
-### Azure Blob Storage
+### S3 (public or private)
+
+Both `S3PublicStorageService` and `S3PrivateStorageService` share a single `IAmazonS3` registration.
 
 **appsettings.json:**
 
@@ -111,117 +108,123 @@ public class Brand : BusinessObject<int>
 {
   "AppSettings": {
     "Spiderly.Shared": {
-      "BlobStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=...;AccountKey=...;EndpointSuffix=core.windows.net",
-      "BlobStorageContainerName": "files",
-      "BlobStorageUrl": "https://youraccount.blob.core.windows.net/files"
+      "S3BucketName": "my-bucket",
+      "S3PublicEndpoint": "https://cdn.example.com"
     }
   }
 }
 ```
 
-**DI registration (Program.cs or CompositionRoot):**
+`S3PublicEndpoint` is the base URL `S3PublicStorageService` uses to format returned URLs as `{S3PublicEndpoint}/{key}`. The setting is unused by `S3PrivateStorageService`. S3 credentials (`S3AccessKey`, `S3SecretKey`, `S3ServiceUrl`) live in your application's settings, not in `Spiderly.Shared`.
+
+**DI registration (your `AppServiceExtensions` or equivalent):**
 
 ```csharp
-BlobContainerClient blobContainerClient = new BlobContainerClient(
-    settings.BlobStorageConnectionString,
-    settings.BlobStorageContainerName
-);
-services.AddSingleton<IFileManager>(new BlobStorageService(blobContainerClient));
-```
-
-### S3 Private
-
-**appsettings.json:**
-
-```json
+services.AddSingleton<IAmazonS3>(sp =>
 {
-  "AppSettings": {
-    "Spiderly.Shared": {
-      "S3BucketName": "my-private-bucket"
-    }
-  }
-}
+    AmazonS3Config s3Config = new AmazonS3Config
+    {
+        ServiceURL = SettingsProvider.Current.S3ServiceUrl,
+        ForcePathStyle = true,
+        AuthenticationRegion = "auto",
+    };
+
+    return new AmazonS3Client(
+        new BasicAWSCredentials(
+            SettingsProvider.Current.S3AccessKey,
+            SettingsProvider.Current.S3SecretKey
+        ),
+        s3Config
+    );
+});
+
+services.AddTransient<S3PublicStorageService>();
+services.AddTransient<S3PrivateStorageService>();
 ```
 
-**DI registration:**
-
-```csharp
-services.AddSingleton<IAmazonS3>(s3Client);
-services.AddSingleton<IFileManager>(sp => new S3StorageService(sp.GetRequiredService<IAmazonS3>()));
-```
-
-### S3 Public (Cloudflare R2, CloudFront, etc.)
-
-**appsettings.json:**
-
-```json
-{
-  "AppSettings": {
-    "Spiderly.Shared": {
-      "S3BucketName": "my-public-bucket",
-      "S3PublicEndpoint": "https://pub-xxx.r2.dev"
-    }
-  }
-}
-```
-
-`S3PublicEndpoint` is the base URL for public file access. Uploaded files are returned as `{S3PublicEndpoint}/{key}`.
+The source generator emits `_deps.ServiceProvider.GetRequiredService<TConcrete>()` per blob property, so each adapter you reference must be registered by its concrete type.
 
 <Callout>
   `S3PublicStorageService` sets `Cache-Control: public, max-age=31536000, immutable` and disables
   payload signing for Cloudflare R2 compatibility.
 </Callout>
 
-### Cloudinary
+### Disk (local development)
 
-**appsettings.json:**
+No appsettings entries needed. Files are stored under `{CurrentDirectory}/FileStorage`.
 
-```json
+```csharp
+services.AddTransient<DiskStorageService>();
+```
+
+`DiskStorageService` is intended for development. In a Linux/Docker production deployment the host filesystem is ephemeral and not shared across replicas; switch to `S3PublicStorage` / `S3PrivateStorage` (or a custom adapter) for production.
+
+## Custom Adapters
+
+Spiderly ships only the three adapters above. Other backends (Cloudinary, Azure Blob, Backblaze B2, on-prem MinIO, …) are written by the consumer.
+
+### Step 1 — Implement `IFileManager`
+
+```csharp
+public class CloudinaryStorageService : IFileManager
 {
-  "AppSettings": {
-    "Spiderly.Shared": {
-      "CloudinaryCloudName": "my-cloud",
-      "CloudinaryApiKey": "123456789",
-      "CloudinaryApiSecret": "your-secret"
-    }
-  }
+    public Task<string> UploadFileAsync(...)             { /* impl */ }
+    public Task DeleteNonActiveBlobs(...)                { /* impl */ }
+    public Task<string> GetFileDataAsync(string key)     { /* impl */ }
+    public Task<string> MoveBlobToEntityPathAsync(...)   { /* impl */ }
+    public Task DeleteNonActiveEditorImages(...)         { /* impl */ }
 }
 ```
 
-Cloudinary is auto-configured — no manual DI registration needed. The generated code injects `CloudinaryStorageService` when any entity has `[CloudinaryPublicId]`.
+### Step 2 — Subclass `StorageAttribute`
 
-### Disk (Local Development)
-
-No configuration needed. Files are stored in `{CurrentDirectory}/FileStorage`.
-
-**DI registration:**
+Pass your service type to the base constructor:
 
 ```csharp
-services.AddSingleton<IFileManager>(new DiskStorageService());
-// or with a custom path:
-services.AddSingleton<IFileManager>(new DiskStorageService("/path/to/storage"));
+public sealed class CloudinaryStorageAttribute : StorageAttribute
+{
+    public CloudinaryStorageAttribute() : base(typeof(CloudinaryStorageService)) { }
+}
 ```
+
+### Step 3 — Register the service
+
+```csharp
+services.AddTransient<CloudinaryStorageService>();
+```
+
+### Step 4 — Use the attribute on entity properties
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [CloudinaryStorage]
+    [AcceptedFileTypes("image/*")]
+    [StringLength(500, MinimumLength = 1)]
+    public string Photo { get; set; }
+}
+```
+
+The source generator detects custom storage attributes by the convention "attribute simple name ends with `Storage`" and treats the property as a blob automatically. Field-name resolution in the generator is currently hard-coded for the three built-ins; for custom adapters in auto-generated CRUD, you may need to inject your custom service directly into hand-written upload paths until Spiderly's source generator gains symbol-level resolution of `StorageAttribute.ServiceType`.
 
 ## Generated Upload Pipeline
 
-When you add a `[BlobName]` or `[CloudinaryPublicId]` property to an entity, Spiderly generates the full upload pipeline:
-
-### Upload Flow
+### Upload flow
 
 1. Client sends `POST /api/{Entity}/Upload{Property}For{Entity}` with the file
 2. `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` hook runs
 3. Authorization check (insert vs update based on entity ID)
 4. File size validation — `[MaxFileSize]` if set, otherwise **20 MB default**
-5. MIME-type + magic-byte signature validation — `[AcceptedFileTypes]` is **required** on every `[BlobName]` property and must declare at least one MIME-typed value (e.g. `[AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]`). If it is missing or contains only extension values, the source generator emits build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). The server reads the first 16 bytes of the stream and rejects requests whose content does not match the declared `Content-Type` — spoofing the header does not bypass validation.
+5. MIME-type + magic-byte signature validation — `[AcceptedFileTypes]` is **required** on every blob property and must declare at least one MIME-typed value (e.g. `[AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]`). If it is missing or contains only extension values, the source generator emits build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). The server reads the first 16 bytes of the stream and rejects requests whose content does not match the declared `Content-Type` — spoofing the header does not bypass validation.
 6. `OnBefore{Property}BlobFor{Entity}IsUploaded()` hook runs — for images, this validates dimensions and optimizes
-7. File is uploaded to the storage provider
+7. File is uploaded to the storage adapter resolved per the property's `[*Storage]` attribute
 8. The file identifier (key or URL) is returned to the client
 
 ### Rate Limiting
 
 All generated `Upload*For*` endpoints are decorated with `[EnableRateLimiting(SpiderlyRateLimitPolicies.BlobUpload)]`. Calling `spiderly.AddRateLimiting()` in your `AddSpiderly(...)` setup registers the policy with a default of **20 requests per minute per IP**. Override the policy in your own `Configure<RateLimiterOptions>` call to tune the limit without forking Spiderly.
 
-### Default Image Processing
+### Default image processing
 
 For image files, the default `OnBefore{Property}BlobFor{Entity}IsUploaded` hook:
 
@@ -239,7 +242,7 @@ All hooks are `virtual` methods on the generated entity service class (e.g., `Pr
 | `ValidateImageFor{Property}Of{Entity}()` | Custom dimension validation | Exact match if `[ImageWidth]`/`[ImageHeight]` set |
 | `OptimizeImageFor{Property}Of{Entity}()` | Custom image optimization | Convert to WebP at 85% quality |
 
-### Example: Custom Image Optimization
+### Example: custom image optimization
 
 Override the optimization hook to resize images before storage:
 
@@ -255,7 +258,7 @@ public override async Task<byte[]> OptimizeImageForLogoOfBrand(
 }
 ```
 
-### Example: Skip Optimization for a Specific Property
+### Example: skip optimization for a specific property
 
 ```csharp
 public override async Task<byte[]> OptimizeImageForBannerOfHomePage(
@@ -267,11 +270,11 @@ public override async Task<byte[]> OptimizeImageForBannerOfHomePage(
 
 ## Displaying Files
 
-How uploaded files appear in DTOs depends on the storage provider.
+How uploaded files appear in DTOs depends on the storage adapter.
 
-### DTO Generation
+### DTO generation
 
-For every `[BlobName]` or `[CloudinaryPublicId]` property, Spiderly generates a companion `{Property}Data` field on the DTO:
+For every blob property, Spiderly generates a companion `{Property}Data` field on the DTO:
 
 ```csharp
 // Entity:
@@ -282,32 +285,30 @@ public string ProfilePicture { get; set; }     // storage key or URL
 public string ProfilePictureData { get; set; }  // file content for display
 ```
 
-### What `{Property}Data` Contains
+### What `{Property}Data` contains
 
-| Provider | Format | Usage |
+| Adapter | Format | Usage |
 |----------|--------|-------|
-| Azure Blob | `filename={key};base64,{data}` | Decode base64 for display |
-| S3 Private | `filename={key};base64,{data}` | Decode base64 for display |
-| S3 Public | Full public URL | Use directly as `src` |
-| Disk | `filename={key};base64,{data}` | Decode base64 for display |
-| Cloudinary | Cloudinary HTTPS URL | Use directly as `src` |
+| `DiskStorageService` | `filename={key};base64,{data}` | Decode base64 for display |
+| `S3PrivateStorageService` | `filename={key};base64,{data}` | Decode base64 for display |
+| `S3PublicStorageService` | Full public URL | Use directly as `src` |
 
 In the Angular admin panel, `spiderly-file` handles this automatically. It uses the `[isUrlFileData]` input (auto-generated) to determine how to render the preview.
 
 <Callout>
-  For **S3 Public** files, the `{Property}` itself contains the full CDN URL. You can use it
+  For `[S3PublicStorage]` properties, the column itself contains the full CDN URL. You can use it
   directly as an image `src` without going through the `{Property}Data` base64 field.
 </Callout>
 
 ## Storage Paths and Orphan Cleanup
 
-All providers place uploaded blobs under a hierarchical, entity-scoped key:
+All adapters place uploaded blobs under a hierarchical, entity-scoped key:
 
 ```
 {EntityName}/{PropertyName}/{ObjectId}/{BlobGuid}.{ext}
 ```
 
-### Insert Flow — Staging Prefix
+### Insert flow — staging prefix
 
 When a user uploads a file for an entity that doesn't exist yet (insert), the entity ID is `0`. Spiderly routes these uploads to a temporary staging prefix:
 
@@ -319,17 +320,17 @@ Once the entity is saved and has a real ID, the generated save code calls `IFile
 
 <Callout>
   Configure a storage lifecycle rule to auto-expire objects under the `_tmp/` prefix after
-  7 days (S3/R2 lifecycle rule, Azure blob tag rule, etc.). This cleans up uploads that
-  were abandoned before the entity was saved — no cron needed.
+  7 days (S3/R2 lifecycle rule, etc.). This cleans up uploads that were abandoned before the
+  entity was saved — no cron needed.
 </Callout>
 
-### Update Flow — Replace and Clean
+### Update flow — replace and clean
 
 When a user replaces a file on an existing entity:
 
 1. User uploads a new file → new key/URL is returned
 2. User saves the entity with the new key/URL
-3. After `SaveChangesAsync()`, the generated code calls `DeleteNonActiveBlobs()` on the storage service
-4. The service lists all files under `{Entity}/{Prop}/{id}/` and deletes everything except the active file
+3. After `SaveChangesAsync()`, the generated code calls `DeleteNonActiveBlobs()` on the storage adapter
+4. The adapter lists all files under `{Entity}/{Prop}/{id}/` and deletes everything except the active file
 
 This design is intentional — files are uploaded **before** the entity is saved (so the upload endpoint works independently). Cleanup only happens at save time, which means refreshing the page without saving won't lose the old file.

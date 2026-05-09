@@ -113,23 +113,24 @@ public enum OrderStatusCodes
 }
 ```
 
-## BlobName
+## StorageAttribute (DiskStorage / S3PublicStorage / S3PrivateStorage)
 
 **Namespace:** `Spiderly.Shared.Attributes.Entity`
 
 ### Usage:
 
-Marks a string property as a reference to a file stored in Azure Blob Storage. This property will contain the unique identifier (`blob name`) used to locate and access the file in Azure Storage.
+Marks a string property as a blob and selects the `IFileManager` adapter that handles its uploads. The presence of any `StorageAttribute` subclass on a property is what flags it as a blob — there is no separate marker attribute. Spiderly ships three built-in subclasses (`[DiskStorage]`, `[S3PublicStorage]`, `[S3PrivateStorage]`); custom adapters subclass `StorageAttribute` themselves (see [File Storage — Custom Adapters](/docs/file-storage#custom-adapters)).
 
-When you add a property decorated with the `BlobName` inside your entity, Spiderly will automatically generate an additional property in the corresponding DTO (e.g., `ProfilePictureData`). This new property will contain the Base64-encoded string of the file. To display this image in your HTML, use the Spiderly helper method `getHtmlImgDisplayString64` and pass its result as the `src` attribute of an `<img>` tag.
+When you add a blob property to an entity, Spiderly automatically generates an additional property in the corresponding DTO (e.g., `ProfilePictureData`). For private adapters this contains the Base64-encoded file content; for public-CDN adapters it contains the full public URL. The Angular admin's `spiderly-file` component renders both forms automatically.
 
 ### Example:
 
 ```csharp
 public class User : BusinessObject<long>
 {
-    [BlobName]
-    [StringLength(80, MinimumLength = 30)] // GUID length
+    [S3PrivateStorage]
+    [AcceptedFileTypes("image/jpeg", "image/png")]
+    [StringLength(1000, MinimumLength = 1)]
     public string ProfilePicture { get; set; }
 }
 ```

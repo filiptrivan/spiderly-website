@@ -163,7 +163,7 @@ These must be set for every production deployment:
 | `AppSettings__Spiderly.Security__GoogleClientId` | Google OAuth client ID. See [Set Up Google Authentication](/docs/set-up-google-authentication). |
 | `AppSettings__Spiderly.Shared__CookieDomain` | Cookie domain for cross-subdomain sharing (e.g., `.example.com`). See [Cookie Configuration](#cookie-configuration). |
 | `AppSettings__Spiderly.Shared__CookieSameSite` | Cookie SameSite attribute (`None`, `Lax`, `Strict`, `Unspecified`). Default: `None`. See [Cookie Configuration](#cookie-configuration). |
-| File storage variables (`BlobStorageConnectionString`, `S3BucketName`, `CloudinaryCloudName`, etc.) | Depends on your storage provider. See [File Storage — Provider Setup](/docs/file-storage#provider-setup). |
+| File storage variables (`S3BucketName`, `S3PublicEndpoint`, plus your own S3 credentials / custom-adapter settings) | Depends on the `StorageAttribute` subclasses your entities use. See [File Storage — Provider Setup](/docs/file-storage#provider-setup). |
 
 ## CORS
 

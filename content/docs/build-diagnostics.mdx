@@ -143,18 +143,18 @@ The file-emitting generators (Angular entities/controllers/validators/details/en
 
 **Blob property missing `[AcceptedFileTypes]` attribute.**
 
-Every `[BlobName]` property must declare `[AcceptedFileTypes("mime/type", ...)]` with at least one MIME-typed value. There is no implicit default — the old images-only fallback has been removed so every blob property's upload whitelist is an explicit, auditable decision at the source level.
+Every blob property (any property decorated with a `StorageAttribute` subclass like `[S3PublicStorage]`, `[S3PrivateStorage]`, `[DiskStorage]`, or a custom one) must declare `[AcceptedFileTypes("mime/type", ...)]` with at least one MIME-typed value. There is no implicit default — the old images-only fallback has been removed so every blob property's upload whitelist is an explicit, auditable decision at the source level.
 
 An attribute that contains only extension values (e.g. `[AcceptedFileTypes(".pdf")]`) also trips this because the generator filters to MIME-typed entries (values containing `/`) when emitting the server-side validator.
 
 **Fix:** add `[AcceptedFileTypes(...)]` with one or more MIME types. Examples:
 
 ```csharp
-[BlobName]
+[S3PublicStorage]
 [AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]
 public string ImageUrl { get; set; }
 
-[BlobName]
+[S3PublicStorage]
 [AcceptedFileTypes("application/pdf", ".pdf")]
 public string PdfFile { get; set; }
 ```

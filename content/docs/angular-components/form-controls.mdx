@@ -241,8 +241,8 @@ File upload with validation.
 | `imageHeight` | `number` | `0` | Expected image height in pixels (0 = no constraint) |
 | `multiple` | `boolean` | `false` | Allow selecting multiple files |
 | `objectId` | `number` | — | ID prepended to the uploaded filename |
-| `fileData` | `string` | — | Existing file data for pre-populating (base64 or Cloudinary URL) |
-| `isCloudinaryFileData` | `boolean` | `true` | Whether `fileData` is a Cloudinary URL or a base64 string |
+| `fileData` | `string` | — | Existing file data for pre-populating (base64 payload or full public URL) |
+| `isUrlFileData` | `boolean` | `true` | `true` when `fileData` is a public URL (S3 public CDN, etc.); `false` when it is a base64 payload |
 
 | Output | Payload | Description |
 |--------|---------|-------------|
@@ -260,7 +260,7 @@ File upload with validation.
   [imageWidth]="200"
   [imageHeight]="200"
   [fileData]="profilePictureData"
-  [isCloudinaryFileData]="false"
+  [isUrlFileData]="false"
   (onFileSelected)="onProfilePictureSelected($event)"
   (onFileRemoved)="onProfilePictureRemoved()"
 ></spiderly-file>
