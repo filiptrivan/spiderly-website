@@ -50,8 +50,8 @@ Override virtual methods in your entity service class to customize entity operat
 - `OnBefore{Entity}IsMapped()` - Customize before DTO-to-entity conversion
 - `OnBefore{Entity}Insert()` - Execute logic before inserting a new entity
 - `OnBefore{Entity}Update()` - Execute logic before updating an existing entity
-- `OnBefore{Entity}Delete()` - Execute logic before deleting an entity
-- `OnBefore{Entity}ListDelete()` - Execute logic before bulk deletion
+- `OnBefore{Entity}ListDelete()` - Execute logic before deletion (handles both single and bulk cases)
+- `OnBefore{Entity}Delete()` - Per-id variant; defaults to forwarding to `OnBefore{Entity}ListDelete` with a one-element list. Override only when the per-id flow genuinely diverges from the batch case.
 
 ### Save Operation Hooks
 
@@ -422,6 +422,10 @@ await _context.WithTransactionAsync(async () =>
     // If any operation throws, everything is rolled back.
 });
 ```
+
+<Callout type="warn">
+  `WithTransactionAsync` throws `InvalidOperationException` if the change tracker still has pending writes when the transaction is about to commit. `transaction.CommitAsync()` only commits the DB transaction — it does **not** flush the tracker — so a missed `SaveChangesAsync` after `Add` would otherwise silently drop the writes (a classic outbox-pattern footgun). Either call `SaveChangesAsync` before returning from the action, or detach entries you don't intend to persist.
+</Callout>
 
 ## Exception Types
 
