@@ -8,6 +8,7 @@ import {
 import Companies from '@/components/sections/companies';
 import { Explanation } from '@/components/sections/explanation/explanation';
 import { BeamButton } from '@/components/ui/beam-button';
+import NpmDownloadCounter from '@/components/ui/npm-download-counter';
 import { VideoDialogButton } from '@/components/ui/video-dialog';
 import Link from 'next/link';
 
@@ -34,6 +35,7 @@ const HomePage = async () => {
               <Link href={'/docs/getting-started'}>Get Started</Link>
             </BeamButton>
             <VideoDialogButton />
+            <NpmDownloadCounter time="last-month" />
           </>
         }
       />
