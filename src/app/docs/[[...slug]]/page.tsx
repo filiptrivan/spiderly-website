@@ -1,3 +1,4 @@
+import BtnCopyMdx from '@/components/global/btn-copy-mdx';
 import { source } from '@/lib/source';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/page';
@@ -9,12 +10,13 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   if (!page) notFound();
 
   const MDX = page.data.body;
+  const mdxString = MDX.toString();
 
   return (
     <DocsPage
       toc={page.data.toc}
       full={page.data.full}
-      tableOfContent={{ enabled: true, single: true }}
+      tableOfContent={{ enabled: true, single: true, footer: <BtnCopyMdx mdxString={mdxString} /> }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
