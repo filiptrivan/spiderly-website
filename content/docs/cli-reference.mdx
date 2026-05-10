@@ -154,7 +154,7 @@ Not every entity change requires a database migration. Use this table to decide:
 | Change `[UIControlWidth]` | No (UI only) |
 | Add/remove `[UIDoNotGenerate]` | No (UI only) |
 | Change `[UIOrderedOneToMany]` | No (UI only) |
-| Add/remove `[BlobName]` | No (mapped to existing string column) |
+| Add/remove a `StorageAttribute` subclass (`[DiskStorage]`, `[S3PublicStorage]`, `[S3PrivateStorage]`, custom) | No (mapped to existing string column) |
 | Change `[AcceptedFileTypes]`/`[MaxFileSize]` | No (validation only) |
 | Add/remove `[DoNotAuthorize]` | No (authorization only) |
 | Change `[Controller]` | No (routing only) |
