@@ -5,6 +5,10 @@ description: Reference for SPIDERLY### diagnostic codes emitted by Spiderly sour
 
 ## Overview
 
+<Callout type="warn">
+  When the build emits **hundreds of CS0246 errors about missing `{Entity}DTO` types**, look for the **SPIDERLY-prefixed diagnostic first** — that is the real cause. A single contract violation aborts `MapperGenerator`, which deletes every entity's generated DTO and produces a flood of downstream CS0246 errors that look unrelated.
+</Callout>
+
 When an entity class violates a contract the source generators rely on — a missing base class, a malformed `[ForeignKey]`, an ambiguous relationship, a broken `[DisplayName]` path — Spiderly emits a **located Roslyn diagnostic** at build time rather than crashing with `CS8785 "generator failed to generate source"`.
 
 Each diagnostic:
@@ -34,6 +38,10 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY012](#spiderly012) | Error | One-to-many back-reference missing `[M2MWithMany]` |
 | [SPIDERLY013](#spiderly013) | Warning | `Backend` folder not found under calling project |
 | [SPIDERLY014](#spiderly014) | Error | Blob property missing `[AcceptedFileTypes]` attribute |
+| [SPIDERLY015](#spiderly015) | Error | Many-to-one navigation missing `[WithMany]` attribute |
+| [SPIDERLY016](#spiderly016) | Error | `[WithMany]` target collection does not exist on the related entity |
+| [SPIDERLY017](#spiderly017) | Error | `[WithMany]` target collection has the wrong element type |
+| [SPIDERLY018](#spiderly018) | Error | Entity primary key type must be `int`, `long`, or `byte` |
 
 ## SPIDERLY001
 
@@ -157,6 +165,49 @@ public string ImageUrl { get; set; }
 [S3PublicStorage]
 [AcceptedFileTypes("application/pdf", ".pdf")]
 public string PdfFile { get; set; }
+```
+
+## SPIDERLY015
+
+**Many-to-one navigation missing `[WithMany]` attribute.**
+
+A virtual navigation property on a `[SpiderlyEntity]` class targets another entity (a many-to-one relationship), but is missing the required `[WithMany(nameof(Target.Collection))]` attribute. Without it, `ApplicationDbContext` cannot configure the `HasOne(...).WithMany(...)` relationship and the parent collection it points at.
+
+**Fix:** add `[WithMany(nameof(Target.Collection))]` to the navigation, and declare `public virtual List<Source> Collection { get; } = new();` on the target entity if it doesn't exist yet. If the relationship really should be unidirectional, drop the virtual navigation property entirely and configure the relationship manually via a partial `OnModelCreating` — see [Relationships](/docs/relationships) for the worked pattern.
+
+## SPIDERLY016
+
+**`[WithMany]` target collection does not exist on the related entity.**
+
+`[WithMany("OrderItems")]` (or `[WithMany(nameof(Order.OrderItems))]`) is declared on a many-to-one navigation, but the named collection property doesn't exist on the target entity. EF Core would die mid-`OnModelCreating` with a generic "no such navigation" error; this diagnostic surfaces it at build time with the offending file and line.
+
+**Fix:** add the named collection (`public virtual List<Source> OrderItems { get; } = new();`) on the target entity, or correct the `[WithMany]` argument to match an existing collection name.
+
+## SPIDERLY017
+
+**`[WithMany]` target collection has the wrong element type.**
+
+`[WithMany("OrderItems")]` resolves to an existing property on the target entity, but the property's collection element type doesn't match the source entity. For example: `[WithMany(nameof(User.OrderItems))]` on `OrderItem.User`, but `User.OrderItems` is declared as `List<Order>` rather than `List<OrderItem>`. Typical cause: a copy-paste mistake or a rename that updated one side but not the other.
+
+**Fix:** align the back-collection's element type with the source entity (`List<OrderItem>`), or change the `[WithMany]` target to a collection of the correct element type.
+
+## SPIDERLY018
+
+**Entity primary key type must be `int`, `long`, or `byte`.**
+
+An entity inherits `BusinessObject<T>` or `ReadonlyObject<T>` where `T` is something other than `int`, `long`, or `byte` (e.g. `Guid`, `decimal`, `short`, `DateTime`). The C# generic constraint on the base class is `where T : struct`, which technically admits any value type — but the rest of Spiderly (audit/versioning in `ApplicationDbContext`, `FilterDTO.AdditionalFilterIdInt/Long/Byte`, Angular type mapping) only handles the three documented types. Allowing anything else would silently produce broken generated code or, worse, dropped audit rows at runtime.
+
+**Fix:** change `T` to `int`, `long`, or `byte`. If you need a public, non-enumerable identifier (UUID-style URLs for security/anti-enumeration), keep the numeric `Id` as the primary key and add a separate `Guid PublicId` property alongside it — `Guid` is a fully supported non-PK base data type.
+
+```csharp
+// ✗ Rejected by SPIDERLY018
+public class Order : BusinessObject<Guid> { }
+
+// ✓ Recommended pattern for public-facing identifiers
+public class Order : BusinessObject<long>
+{
+    public Guid PublicId { get; set; }
+}
 ```
 
 ## Suppressing Diagnostics
