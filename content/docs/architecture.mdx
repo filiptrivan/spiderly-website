@@ -187,7 +187,7 @@ public class BusinessObject<T> : IBusinessObject<T> where T : struct
 }
 ```
 
-- `Id` — Auto-generated primary key. `T` can be `long`, `int`, or `byte`.
+- `Id` — Auto-generated primary key. `T` can be `long`, `int`, or `byte`. **`Guid` is not supported as the PK type** — `ServiceSaveGenerator` emits `dto.Id > 0` arithmetic checks that fail with CS0019 when `T` is `Guid`. `Guid` scalar properties on entities are fine; only the PK type argument is restricted.
 - `Version` — Optimistic concurrency control. Spiderly checks this on every update to prevent conflicting writes.
 - `CreatedAt` / `ModifiedAt` — Automatically managed by the framework.
 

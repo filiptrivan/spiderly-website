@@ -97,6 +97,29 @@ public class BlogPost : BusinessObject<long>
   This ensures the list is never null.
 </Callout>
 
+### Unidirectional many-to-one (pointer-only, no back-collection)
+
+The bidirectional pattern above is the default. A navigation property *without* a matching collection on the target throws at `DbContext` init: `[WithMany(...)] attribute is required for ManyToOne property: X.Y`. When you want only the child-to-parent pointer — `Comment.LastReadMessage`, `Message.ParentMessage`, etc. — and a back-collection on the target would just be noise, **drop the navigation property entirely** and configure the relationship manually in `OnModelCreating`.
+
+```csharp
+public class Comment : BusinessObject<long>
+{
+    public long PostId { get; set; }
+    // no Post navigation
+}
+```
+
+```csharp
+// In OnModelCreating
+modelBuilder.Entity<Comment>()
+    .HasOne<Post>()
+    .WithMany()
+    .HasForeignKey(c => c.PostId)
+    .OnDelete(DeleteBehavior.Cascade);
+```
+
+This trades Spiderly's generated UI (autocomplete dropdown, `{Nav}DisplayName` in DTOs) for hand-managed configuration — use it only when the parent is never displayed alongside the child in the admin UI.
+
 ## Delete Behavior: \[CascadeDelete\] vs \[SetNull\]
 
 By default, Spiderly blocks deletion of a parent entity if it has children referencing it (EF Core `DeleteBehavior.NoAction`). You can change this with two attributes:
