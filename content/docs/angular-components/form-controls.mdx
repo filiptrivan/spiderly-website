@@ -218,7 +218,7 @@ Rich text editor (Quill-based) with optional image upload.
 
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|
-| `uploadImageMethod` | `(formData: FormData) => Observable<string>` | — | Callback for uploading images; the returned URL is inserted into the editor |
+| `uploadImageMethod` | `(formData: FormData) => Observable<EditorImageUploadResult>` | — | Callback for uploading images; the returned `{ url, width, height }` is used to insert an `<img>` with explicit dimensions so the consuming page can render without layout shift |
 | `objectId` | `number` | `0` | ID prepended to the filename when uploading images |
 
 ```html
@@ -228,6 +228,8 @@ Rich text editor (Quill-based) with optional image upload.
   [objectId]="entityId"
 ></spiderly-editor>
 ```
+
+The generated `UploadXImageForY` endpoint on the backend returns an `EditorImageUploadResultDTO` (`Spiderly.Shared.DTO`). The image is WebP-encoded via `Helper.OptimizeImageWithDimensions`, and its post-resize dimensions are written onto the inserted `<img>` tag so storefront renderers can hand them to `next/image` (or equivalent) without re-probing the asset.
 
 ## spiderly-file
 
