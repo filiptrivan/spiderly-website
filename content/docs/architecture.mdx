@@ -102,6 +102,17 @@ When a generator encounters a contract violation on your entity (bad `[ForeignKe
 - Custom mapper configurations (via partial class)
 - Translations
 
+## You Own the Generated Code
+
+Spiderly is MIT-licensed, and so is everything it produces. The generators run at build time: the Angular generators write `.generated.ts` files into your project, and the Roslyn source generators emit C# straight into the compiled assembly (or onto disk too, if you set `EmitCompilerGeneratedFiles`). Either way, the output is plain C# and TypeScript — no runtime magic, no proprietary format. Your app depends on a handful of base classes from the Spiderly NuGet packages (`ServiceBase`, `SpiderlyBaseController`, `AuthorizationServiceBase`, …), nothing more.
+
+A Spiderly project is a normal ASP.NET Core + EF Core project. Anything you'd reach for in a regular .NET app — your own controllers and minimal API endpoints, Hangfire, SignalR, custom middleware, Dapper alongside EF Core, your preferred logging stack (Serilog, OpenTelemetry) — drops in the same way it would anywhere else. The framework adds scaffolding on top; it doesn't fork the runtime or close off the ecosystem.
+
+If you ever want to stop using Spiderly, you have two paths:
+
+- **Freeze the generated output.** Your Angular `.generated.ts` files are already on disk. For the .NET side, set `<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>` in `Directory.Build.props` and build once to write the C# to disk. Commit both, vendor a copy of the runtime base classes you use, drop the Spiderly package references — your hand-written code already extends the generated base classes through inheritance, so the app still compiles and runs.
+- **Fork the generators.** The source generators live in [the Spiderly repo](https://github.com/filiptrivan/spiderly) under MIT. Copy the ones you use into your codebase and evolve them on your own schedule.
+
 ## The Inheritance Pattern
 
 Spiderly uses a three-tier inheritance pattern. The framework provides a base class, generators produce a middle layer, and you extend at the top:
