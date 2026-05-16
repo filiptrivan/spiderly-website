@@ -1,0 +1,71 @@
+---
+title: Attribute Reference
+description: Alphabetical index of every Spiderly attribute, with a one-line purpose and a link to the topic page where it is documented in context.
+---
+
+## How to Use This Page
+
+This page is a flat A–Z index — useful when you know the attribute name and want to jump straight to its full documentation. For tutorials and worked examples, follow the **Documented in** link to the relevant topic page.
+
+Every attribute on this list lives in the `Spiderly.Shared` package. Standard .NET data annotations (`[Required]`, `[StringLength]`, `[Range]`, `[Precision]`) that Spiderly also reacts to are documented in [Validation](/docs/validation).
+
+## Reference
+
+| Attribute | Namespace | Purpose | Documented in |
+|---|---|---|---|
+| `[AcceptedFileTypes]` | `Spiderly.Shared.Attributes.Entity` | Whitelist of MIME types accepted by a blob property. **Required** on every blob property. | [Validation](/docs/validation#acceptedfiletypes) |
+| `[AuthGuard]` | `Spiderly.Shared.Attributes` | Requires an authenticated request on a controller action; also enforces CSRF when cookie auth is in use. | [Authorization](/docs/authorization#authguard) |
+| `[CascadeDelete]` | `Spiderly.Shared.Attributes.Entity` | Deleting the parent entity deletes all children referencing it. | [Relationships](/docs/relationships#cascadedelete) |
+| `[ComplexManyToManyList]` | `Spiderly.Shared.Attributes.Entity` | Renders a complex (extra-field) M2M as an inline editable list with all other-side entities pre-loaded. Use for small sets only. | [Relationships](/docs/relationships#complex-many-to-many) |
+| `[ComplexManyToManyReadonlyTable]` | `Spiderly.Shared.Attributes.Entity` | Renders a complex M2M as a lazy-loaded, read-only paginated table. | [Relationships](/docs/relationships#read-only-display-complexmanytomanyreadonlytable) |
+| `[Controller]` | `Spiderly.Shared.Attributes.Entity` | Groups multiple entities under one shared generated controller. | [Backend Customization](/docs/backend-customization#grouping-entities-under-one-controller-with-controller) |
+| `[DiskStorage]` | `Spiderly.Shared.Attributes.Entity` | Marks a string property as a blob stored on the local filesystem (dev only). | [File Storage](/docs/file-storage#built-in-adapters) |
+| `[DisplayName]` | `Spiderly.Shared.Attributes.Entity` | Marks the property used as the entity's display text in dropdowns, tables, and autocompletes. Class-level form supports dot notation. | [Relationships](/docs/relationships#displayname-in-relationships) |
+| `[DoNotAuthorize]` | `Spiderly.Shared.Attributes.Entity` | Bypasses all authorization checks for the decorated entity's CRUD operations. | [Authorization](/docs/authorization#donotauthorize) |
+| `[Email]` | `Spiderly.Shared.Attributes.Entity` | Validates that a string property is a well-formed email address (server + client). | [Validation](/docs/validation#email) |
+| `[ExcludeFromDTO]` | `Spiderly.Shared.Attributes.Entity` | Removes the property from all generated DTOs (server-only field). | [Backend Customization](/docs/backend-customization#excludefromdto) |
+| `[ExcludeServiceMethodsFromGeneration]` | `Spiderly.Shared.Attributes.Entity` | Skips generation of the standard CRUD service methods for the decorated property. | [Backend Customization](/docs/backend-customization#excludeservicemethodsfromgeneration) |
+| `[GenerateCommaSeparatedDisplayName]` | `Spiderly.Shared.Attributes.Entity` | Adds a `{Property}CommaSeparatedDisplayNames` field to the DTO containing display names for an M2M collection. | [Relationships](/docs/relationships#generatecommaseparateddisplayname) |
+| `[GreaterThanOrEqualTo]` | `Spiderly.Shared.Attributes.Entity` | Numeric lower-bound validator (server + client). | [Validation](/docs/validation#greaterthanorequalto) |
+| `[ImageHeight]` | `Spiderly.Shared.Attributes.Entity` | Validates exact image height in pixels. Pair with a storage attribute. | [Validation](/docs/validation#imageheight) |
+| `[ImageWidth]` | `Spiderly.Shared.Attributes.Entity` | Validates exact image width in pixels. Pair with a storage attribute. | [Validation](/docs/validation#imagewidth) |
+| `[IncludeInDTO]` | `Spiderly.Shared.Attributes.Entity` | Forces an enumerable property into the generated DTO (excluded by default). | [Backend Customization](/docs/backend-customization#includeindto) |
+| `[M2M]` | `Spiderly.Shared.Attributes.Entity` | Flags a class as the junction table for a many-to-many relationship. Pair with `[SpiderlyEntity]`. | [Relationships](/docs/relationships#simple-many-to-many) |
+| `[M2MWithMany(prop)]` | `Spiderly.Shared.Attributes.Entity` | Links a junction-entity navigation property back to its parent collection. | [Relationships](/docs/relationships#simple-many-to-many) |
+| `[MaxFileSize(bytes)]` | `Spiderly.Shared.Attributes.Entity` | Max upload size for a blob property. Defaults to 20 MB. | [Validation](/docs/validation#maxfilesize) |
+| `[Output]` | `Spiderly.Shared.Attributes` | Source-generator output configuration. **Marked temporary by the framework** — may be replaced in a future version. | — |
+| `[ProjectToDTO(expr)]` | `Spiderly.Shared.Attributes.Entity` | Adds a custom Mapster `.Map(...)` step to a `GetSingle` projection. | [Backend Customization](/docs/backend-customization#projecttodto) |
+| `[S3PrivateStorage]` | `Spiderly.Shared.Attributes.Entity` | Blob stored in a private S3 bucket; client receives signed-URL/base64 access. | [File Storage](/docs/file-storage#built-in-adapters) |
+| `[S3PublicStorage]` | `Spiderly.Shared.Attributes.Entity` | Blob stored in a public S3 bucket; DTO field contains the full CDN URL. | [File Storage](/docs/file-storage#built-in-adapters) |
+| `[SetNull]` | `Spiderly.Shared.Attributes.Entity` | Deleting the parent entity sets the FK on children to null. Requires a nullable FK. | [Relationships](/docs/relationships#setnull) |
+| `[SimpleManyToManyTableLazyLoad]` | `Spiderly.Shared.Attributes.Entity` | Renders a simple M2M as a paginated, lazy-loaded admin table. Pair with `[UITableColumn]`. | [Relationships](/docs/relationships#choosing-the-right-m2m-ui) |
+| `[SkipSpinner]` | `Spiderly.Shared.Attributes` | Suppresses the global Angular HTTP loading spinner for a controller method. | [Backend Customization](/docs/backend-customization#suppressing-the-loading-spinner-with-skipspinner) |
+| `[SpiderlyController]` | `Spiderly.Shared.Attributes` | **Required** on every hand-written controller so the generator enrolls it. | [Backend Customization](/docs/backend-customization#controller-overrides) |
+| `[SpiderlyDataMapper]` | `Spiderly.Shared.Attributes` | **Required** on the hand-written partial `Mapper` class. | [Backend Customization](/docs/backend-customization#custom-mappings-mapper) |
+| `[SpiderlyDTO]` | `Spiderly.Shared.Attributes.Entity` | **Required** on every hand-written DTO so the generator passes it through to the Angular client. | [Add New Entity](/docs/add-new-entity#customize-the-entity) |
+| `[SpiderlyEntity]` | `Spiderly.Shared.Attributes.Entity` | **Required** on every entity class — enrolls it in the generator pipeline. | [Add New Entity](/docs/add-new-entity#customize-the-entity) |
+| `[SpiderlyEnum]` | `Spiderly.Shared.Attributes` | Marks a C# enum or static-class enum for emission into `enums.generated.ts`. | [Enums](/docs/enums) |
+| `[SpiderlyService]` | `Spiderly.Shared.Attributes` | **Required** on every hand-written entity service override (and the `AuthorizationService`). | [Backend Customization](/docs/backend-customization#entity-services) |
+| `[UIAdditionalPermissionCodeForInsert]` | `Spiderly.Shared.Attributes.Entity` | Extra permission required for inserting the entity through the admin UI. | [UI Customization](/docs/ui-customization#uiadditionalpermissioncodeforinsert) |
+| `[UIAdditionalPermissionCodeForUpdate]` | `Spiderly.Shared.Attributes.Entity` | Extra permission required for updating the entity through the admin UI. | [UI Customization](/docs/ui-customization#uiadditionalpermissioncodeforupdate) |
+| `[UIControlType]` | `Spiderly.Shared.Attributes.Entity.UI` | Overrides the inferred Angular control for a property (Dropdown, TextArea, Calendar, Autocomplete, …). | [UI Customization](/docs/ui-customization#uicontroltype) |
+| `[UIControlWidth]` | `Spiderly.Shared.Attributes.Entity.UI` | Overrides the default grid width for a field. | [UI Customization](/docs/ui-customization#uicontrolwidth) |
+| `[UIDoNotGenerate]` | `Spiderly.Shared.Attributes.Entity.UI` | Excludes a property, entity class, or controller method from generated UI. | [UI Customization](/docs/ui-customization#uidonotgenerate) |
+| `[UIOrderedOneToMany]` | `Spiderly.Shared.Attributes.Entity.UI` | Renders a child collection as a drag-reorderable inline list. Child must have an `OrderNumber` property. | [UI Customization](/docs/ui-customization#uiorderedonetomany) |
+| `[UIPanel(name)]` | `Spiderly.Shared.Attributes.Entity` | **Not yet implemented.** Will group properties into named accordion-style panels on the form. | [UI Customization](/docs/ui-customization#uipanel) |
+| `[UIPropertyBlockOrder]` | `Spiderly.Shared.Attributes.Entity.UI` | **Not yet implemented.** Will override the field display order within a panel. | [UI Customization](/docs/ui-customization#uipropertyblockorder) |
+| `[UITableColumn(field, key?)]` | `Spiderly.Shared.Attributes.Entity.UI` | Declares a column in an M2M relationship table. Stack multiple times for multiple columns. | [UI Customization](/docs/ui-customization#uitablecolumn) |
+| `[WithMany(prop)]` | `Spiderly.Shared.Attributes.Entity` | Declares the inverse collection navigation for a many-to-one relationship. Required on every M2O navigation. | [Relationships](/docs/relationships#one-to-many-with-withmany) |
+
+## Standard .NET Attributes
+
+Spiderly also reacts to the standard `System.ComponentModel.DataAnnotations` attributes:
+
+| Attribute | Generates |
+|---|---|
+| `[Required]` | Server + client `NotEmpty` validation, non-nullable column |
+| `[StringLength(max)]` / `[StringLength(max, MinimumLength = min)]` | Server + client length validation, EF column length |
+| `[Range(min, max)]` | Server + client range validation |
+| `[Precision(p, s)]` | Server + client decimal validation, EF column precision |
+
+See [Validation](/docs/validation) for usage examples.

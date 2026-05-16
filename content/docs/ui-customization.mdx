@@ -1,0 +1,222 @@
+---
+title: UI Customization
+description: Attributes that control how entities and properties are rendered in the Angular admin panel — control types, layout, ordering, table columns, and per-action permissions.
+---
+
+## Overview
+
+Spiderly infers a sensible default form layout from your entity's property types. When you need to override that default — switch a `string` from textbox to dropdown, group fields into panels, reorder blocks, or attach extra permission checks — you reach for the UI attributes documented here.
+
+These attributes affect **only the generated Angular form and tables**. None of them change the database schema, so adding, removing, or changing them does not require a migration. See [CLI Reference — What Needs a Migration?](/docs/cli-reference#what-needs-a-migration) for the full decision table.
+
+## Control Type and Width
+
+### \[UIControlType\]
+
+Specifies the UI control type for a property. If not specified, the control is inferred from the C# type:
+
+- `string` → `TextBox` (or `TextArea` if `[StringLength]` value is large)
+- `int` / `long` → `Number`
+- `decimal` → `Decimal`
+- `bool` → `CheckBox`
+- `DateTime` → `Calendar`
+- many-to-one navigation → `Autocomplete`
+
+Override the default by passing a value from `UIControlTypeCodes`:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
+    public UserType Type { get; set; }
+
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Description { get; set; }
+
+    public string Name { get; set; }
+
+    public int Age { get; set; }
+}
+```
+
+### \[UIControlWidth\]
+
+Specifies the field width using the Spiderly grid (`spiderly-grid`) column classes.
+
+Defaults:
+
+- `"col-8"` for `TextArea`, `Editor`, `File`, `MultiSelect`, `MultiAutocomplete`, and `Table` controls
+- `"col-8 md:col-4"` for all other controls
+
+```csharp
+public class Article : BusinessObject<long>
+{
+    [UIControlWidth("col-8")]
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Content { get; set; }
+
+    [UIControlWidth("col-2")]
+    public string Author { get; set; }
+
+    // Uses default "col-8 md:col-4"
+    public string Title { get; set; }
+}
+```
+
+## Layout and Ordering
+
+### \[UIPanel\]
+
+<Callout type="warn">
+  **Not yet implemented.** The `[UIPanel]` attribute is exposed in the public API but the source
+  generators do not currently act on it — every property still renders in the default `"Details"`
+  panel regardless of this attribute. Documented here for forward reference; will activate in a
+  future release.
+</Callout>
+
+When wired up, `[UIPanel]` will group properties into named accordion-style sections:
+
+```csharp
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; } // Default "Details" panel
+
+    [UIPanel("Security")]
+    public string Password { get; set; }
+
+    [UIPanel("Preferences")]
+    public bool ReceiveNotifications { get; set; }
+}
+```
+
+### \[UIPropertyBlockOrder\]
+
+<Callout type="warn">
+  **Not yet implemented.** Like `[UIPanel]`, this attribute is exposed but not yet consumed by the
+  generators. Fields currently render in property-declaration order, with `file`, `text-area`,
+  `editor`, and `table` controls always pushed to the end.
+</Callout>
+
+When wired up, `[UIPropertyBlockOrder]` will override the field display order within a panel:
+
+```csharp
+public class Article : BusinessObject<long>
+{
+    [UIPropertyBlockOrder("1")]
+    public string Title { get; set; }
+
+    [UIPropertyBlockOrder("2")]
+    public string Author { get; set; }
+
+    // Always renders last because TextArea controls are pushed to the end
+    [UIPropertyBlockOrder("0")]
+    [UIControlType(nameof(UIControlTypeCodes.TextArea))]
+    public string Content { get; set; }
+}
+```
+
+### \[UIDoNotGenerate\]
+
+Excludes a property from the generated UI form. The property still exists on the entity, DTO, and API surface — it just doesn't render in the admin panel.
+
+Common uses: server-managed timestamps, internal notes, computed fields populated in `OnBefore*` hooks.
+
+```csharp
+public class User : BusinessObject<long>
+{
+    public string Name { get; set; }
+
+    [UIDoNotGenerate]
+    public DateTime LastLoginDate { get; set; }
+
+    [UIDoNotGenerate]
+    public string InternalNotes { get; set; }
+}
+```
+
+## Ordered One-to-Many
+
+### \[UIOrderedOneToMany\]
+
+Renders a child collection as an inline, drag-reorderable list inside the parent's main form. The child entity must declare an `OrderNumber` property (exactly that name) — Spiderly persists ordering by writing it on save.
+
+```csharp
+public class Course : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [UIOrderedOneToMany]
+    public virtual List<CourseItem> CourseItems { get; set; } = new();
+}
+
+public class CourseItem : BusinessObject<long>
+{
+    [DisplayName]
+    public string Title { get; set; }
+
+    [UIDoNotGenerate] // Set by the framework, not the user
+    [Required]
+    public int OrderNumber { get; set; }
+
+    [Required] // CourseItem can't exist without a Course
+    [WithMany(nameof(Course.CourseItems))]
+    public virtual Course Course { get; set; }
+}
+```
+
+## Many-to-Many Table Columns
+
+### \[UITableColumn\]
+
+Declares which DTO fields appear as columns in an M2M relationship table. Must be combined with `[SimpleManyToManyTableLazyLoad]` — see [Relationships — Simple Many-to-Many](/docs/relationships#simple-many-to-many).
+
+Multiple `[UITableColumn]` attributes can stack on the same property; each one adds one column.
+
+```csharp
+public class Partner : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    #region UITableColumn
+    [UITableColumn(nameof(PartnerUserDTO.UserDisplayName))]
+    [UITableColumn(nameof(PartnerUserDTO.Points))]
+    [UITableColumn(nameof(PartnerUserDTO.TierDisplayName))]
+    [UITableColumn(nameof(PartnerUserDTO.CheckedSegmentationItemsCommaSeparated), "Segmentation")] // Custom translation key
+    [UITableColumn(nameof(PartnerUserDTO.CreatedAt))]
+    #endregion
+    [SimpleManyToManyTableLazyLoad]
+    public virtual List<PartnerUser> Recipients { get; set; } = new();
+}
+```
+
+## Per-Action Permissions
+
+By default, an entity's Insert/Update/Delete operations are gated by the auto-generated `Insert{Entity}` / `Update{Entity}` / `Delete{Entity}` permissions (see [Authorization](/docs/authorization)). The attributes below let you require **additional** permissions on top of those defaults — handy when the same entity is editable through different workflows that should be controlled separately.
+
+### \[UIAdditionalPermissionCodeForInsert\]
+
+Adds extra permission requirements for inserting the entity through the admin UI. The current user must have **one of** the listed permissions in addition to the default `Insert{Entity}` permission. Stack the attribute multiple times to list alternatives.
+
+### \[UIAdditionalPermissionCodeForUpdate\]
+
+Same semantics, for the update operation.
+
+```csharp
+[SpiderlyEntity]
+[UIAdditionalPermissionCodeForInsert(nameof(PermissionCodes.ManageReports))]
+[UIAdditionalPermissionCodeForUpdate(nameof(PermissionCodes.ManageReports))]
+public class Report : BusinessObject<long>
+{
+    [DisplayName]
+    public string Title { get; set; }
+}
+```
+
+## See Also
+
+- [Frontend Customization](/docs/frontend-customization) — app branding, theme, layout switching, and Angular service overrides
+- [Angular Components — Form Controls](/docs/angular-components/form-controls) — the actual component each `UIControlType` value maps to
+- [Relationships](/docs/relationships) — relationship attributes that work alongside the M2M UI attributes

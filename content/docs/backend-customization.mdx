@@ -347,6 +347,80 @@ namespace YourAppName.WebAPI.Controllers
 }
 ```
 
+### Grouping entities under one controller with \[Controller\]
+
+By default each entity's generated base controller is named `{EntityName}BaseController` and lives at its own route. Use `[Controller("CustomName")]` to share one controller across multiple related entities — useful when several entities form a single bounded context (e.g. user/role/permission all served by a security controller).
+
+```csharp
+[Controller("SecurityController")]
+public class User { }
+
+[Controller("SecurityController")]
+public class Role { }
+
+[Controller("SecurityController")]
+public class Permission { }
+```
+
+### Suppressing the loading spinner with \[SkipSpinner\]
+
+The Angular HTTP loading interceptor shows a global spinner for every request by default. Mark a controller method with `[SkipSpinner]` when the request is too fast to need one, runs in the background, or has its own inline loading UI.
+
+```csharp
+[HttpGet]
+[SkipSpinner]
+public async Task SendNotificationEmail(long notificationId)
+{
+    await _emailingService.SendNotification(notificationId);
+}
+```
+
+## Customizing What Gets Generated
+
+The attributes below fine-tune the generated DTOs and service methods on a per-property basis.
+
+### \[IncludeInDTO\]
+
+Forces a property to be included in the generated DTO. Use this for enumerable properties, which are excluded from DTOs by default. This attribute affects DTO **shape** only — it does not change mapping behavior.
+
+### \[ExcludeFromDTO\]
+
+Excludes a property from all generated DTOs. The property still exists on the entity (and in the database), but is invisible to the API surface and Angular client.
+
+```csharp
+[SpiderlyEntity]
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [ExcludeFromDTO]
+    public string InternalAuditNotes { get; set; } // Server-only, never sent to clients
+}
+```
+
+### \[ProjectToDTO\]
+
+Adds a custom Mapster projection step to the generated `{Entity}DTO`, executed when fetching a single entity. The attribute argument is the raw `.Map(...)` call appended to the projection config — pass the exact source/destination expression.
+
+```csharp
+[ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
+public class Achievement : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [WithMany(nameof(Transaction.Achievements))]
+    public virtual Transaction Transaction { get; set; }
+}
+```
+
+For more involved mapping logic, prefer overriding `{Entity}ToDTOConfig()` in your partial `Mapper` class — see [Partial Classes → Custom Mappings (Mapper)](#custom-mappings-mapper).
+
+### \[ExcludeServiceMethodsFromGeneration\]
+
+Prevents the generator from emitting the standard CRUD service methods for the decorated property. Use this when you want full control over how the property is read or saved — e.g., a navigation that's loaded through a custom join, or a blob that goes through a non-standard upload path. The property still exists on the entity; only its generated service methods are skipped.
+
 ## Replacing Services via Interfaces
 
 For complete behavior replacement, Spiderly provides interfaces that you can implement and register in the DI container. This is useful when you need to completely change how a service works rather than just extending it.

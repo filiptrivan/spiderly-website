@@ -5,6 +5,43 @@ description: Configure Google Authentication to allow users to sign in to your S
 
 ## Configure Google Client ID
 
+### 1. Create an OAuth 2.0 Client ID in Google Cloud
+
+1. Open the [Google Cloud Console — Credentials page](https://console.cloud.google.com/apis/credentials). Create or select a project.
+2. Click **Create credentials → OAuth client ID**. If prompted, configure the OAuth consent screen first (User type: **External**, fill in app name, support email, and developer email).
+3. Choose **Application type: Web application** and give it a name.
+4. Under **Authorized JavaScript origins**, add the origins your admin panel runs on (e.g. `http://localhost:4200` for local dev, `https://admin.example.com` for production).
+5. Click **Create** and copy the **Client ID** — a string ending in `.apps.googleusercontent.com`.
+
+### 2. Set the Client ID in your app
+
+The same Client ID goes into two files:
+
+**Backend** — `Backend/YourAppName.WebAPI/appsettings.json`, under `AppSettings.Spiderly.Security`:
+
+```json
+{
+  "AppSettings": {
+    "Spiderly.Security": {
+      "GoogleClientId": "1234567890-abc...apps.googleusercontent.com"
+    }
+  }
+}
+```
+
+For local development, put the value in `appsettings.Development.local.json` (gitignored). For production, set the environment variable `AppSettings__Spiderly.Security__GoogleClientId` — see [Deployment — Environment Variables](/docs/deployment#environment-variables).
+
+**Frontend** — `Frontend/src/environments/environment.ts`:
+
+```ts
+export const environment = {
+  // ...
+  googleClientId: '1234567890-abc...apps.googleusercontent.com',
+};
+```
+
+### Video walkthrough
+
 <iframe
   src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Spiderly_Google_Auth_ujljuc&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302340%2FCopy_of_Untitled_YouTube_Thumbnail_2_t7d5bd.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
   width="640"
@@ -13,8 +50,3 @@ description: Configure Google Authentication to allow users to sign in to your S
   allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
   allowFullScreen
 />
-
-After following the video tutorial, you will obtain the Google Client ID. Once you have it, make sure to set it in the following two places:
-
-- Locate the `Backend\YourAppName.WebAPI\appsettings.json` file and set the value for the `"GoogleClientId"`.
-- Locate the `Frontend\src\environments\environment.ts` file and set the value for the `"GoogleClientId"`.

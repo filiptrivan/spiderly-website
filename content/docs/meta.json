@@ -9,7 +9,6 @@
     "set-up-telegram-notifications",
     "add-new-entity",
     "relationships",
-    "attributes",
     "validation",
     "enums",
     "file-storage",
@@ -18,12 +17,14 @@
     "build-diagnostics",
     "backend-customization",
     "frontend-customization",
+    "ui-customization",
     "angular-components",
     "filtering-and-pagination",
     "translation",
     "spiderly-json-configuration",
     "excel-export",
     "cli-reference",
+    "attribute-reference",
     "claude-code",
     "deployment"
   ]

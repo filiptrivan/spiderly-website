@@ -15,11 +15,6 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/docs/ui-customization',
-        destination: '/docs/frontend-customization',
-        permanent: true,
-      },
-      {
         source: '/docs/entity-authorization',
         destination: '/docs/authorization',
         permanent: true,
@@ -32,6 +27,31 @@ const nextConfig = {
       {
         source: '/docs/translate-spiderly-app',
         destination: '/docs/translation',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes',
+        destination: '/docs/attribute-reference',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/general',
+        destination: '/docs/attribute-reference',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/code-generation',
+        destination: '/docs/attribute-reference',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/relationships',
+        destination: '/docs/relationships',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/ui',
+        destination: '/docs/ui-customization',
         permanent: true,
       },
       {
