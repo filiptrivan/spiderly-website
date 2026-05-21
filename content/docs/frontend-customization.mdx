@@ -40,6 +40,16 @@ Open the `Frontend\src\assets\primeng-theme.ts` file and edit the theme values, 
 
 For more information and advanced theming options, visit the [PrimeNG Theming Guide](https://primeng.org/theming).
 
+### Using theme colors as Tailwind utilities
+
+The generated `Frontend\src\assets\tailwind.css` imports [`tailwindcss-primeui`](https://github.com/primefaces/tailwindcss-primeui), which bridges your PrimeNG theme to Tailwind. This means utilities such as `bg-primary-50`, `text-primary-600`, and `border-surface-200` resolve to the live theme variables defined in `primeng-theme.ts` — change a color there and every utility follows.
+
+The bridge import must stay **before** `@import "tailwindcss/utilities"`; it registers the `surface`/`primary` color tokens, and Tailwind only picks up tokens that exist when the utilities import runs. Tokens registered afterwards are silently ignored, leaving `*-surface-*` / `*-primary-*` as dead classes.
+
+<Callout type="warn">
+  Tailwind CSS v4 defaults a bare `border` (with no color modifier) to `currentColor`, not a gray. Spiderly omits Tailwind's Preflight reset on purpose (to avoid clobbering PrimeNG base styles), so always pair a border with a color — e.g. `border border-surface-200`.
+</Callout>
+
 ## Enable Dark Theme
 
 Open the `Frontend\src\index.html` file and add the `dark` class to the `html` tag, like this:
