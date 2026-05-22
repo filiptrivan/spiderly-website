@@ -162,9 +162,10 @@ string filename = _localizer.GetExcelTranslation("ProductExcelExportName", "Prod
 The `ExcelService.FillReportTemplateAsync` method accepts `IStringLocalizer` for translating column headers. Generated Excel export endpoints automatically pass the injected localizer:
 
 ```csharp
+// _excelSettings is an injected IExcelSettings
 return File(
     fileContent,
-    SettingsProvider.Current.ExcelContentType,
+    _excelSettings.ExcelContentType,
     Uri.EscapeDataString($"{_localizer.GetExcelTranslation("ProductExcelExportName", "ProductList")}.xlsx")
 );
 ```

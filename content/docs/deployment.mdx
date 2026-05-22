@@ -174,7 +174,7 @@ builder
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    .WithOrigins(new[] { Spiderly.Shared.SettingsProvider.Current.FrontendUrl });
+    .WithOrigins(new[] { Configuration.GetValue<string>($"{Spiderly.Shared.Settings.ConfigurationSection}:FrontendUrl") });
 ```
 
 If you have additional frontends (e.g., a Next.js storefront), you can add more origins by overriding the CORS configuration in your `Startup.Configure`:
@@ -188,8 +188,8 @@ app.UseCors(builder =>
         .AllowCredentials()
         .WithOrigins(new[]
         {
-            Spiderly.Shared.SettingsProvider.Current.FrontendUrl,
-            YourApp.WebAPI.SettingsProvider.Current.StorefrontUrl,
+            Configuration.GetValue<string>($"{Spiderly.Shared.Settings.ConfigurationSection}:FrontendUrl"),
+            Configuration.GetValue<string>("AppSettings:StorefrontUrl"),
         })
         .WithExposedHeaders("Content-Disposition");
 });
