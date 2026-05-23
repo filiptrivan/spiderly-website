@@ -399,6 +399,31 @@ public class User : BusinessObject<long>
 }
 ```
 
+### \[ExcludeFromExcelExport\]
+
+Hides a property's column(s) from the generated `Export{Entity}ListToExcel` output, while keeping the property in the DTO and the rest of the API/UI. Use it for internal/technical columns that are noise in a human-readable sheet — raw foreign-key ids, payment-gateway correlation data, sync plumbing, and the like. (Enumerable/collection properties are excluded from the export automatically and don't need the attribute.)
+
+Place it on the property that produces the column: a **scalar** property hides the matching column; a **many-to-one navigation** property hides the generated `{Nav}DisplayName` (and the synthesized `{Nav}Id` when there is no explicit foreign-key scalar).
+
+```csharp
+[SpiderlyEntity]
+public class Order : BusinessObject<long>
+{
+    [DisplayName]
+    public string OrderNumber { get; set; }
+
+    [ExcludeFromExcelExport]
+    public string PaymentGatewayRrn { get; set; } // Kept in the API, hidden from the sheet
+
+    [ExcludeFromExcelExport] // Hides the OrderStatusId column; OrderStatusDisplayName stays
+    public byte OrderStatusId { get; set; }
+    [WithMany(nameof(OrderStatus.Orders))]
+    public virtual OrderStatus OrderStatus { get; set; }
+}
+```
+
+Unlike `[ExcludeFromDTO]`, the property is **not** removed from the DTO — it remains available to the admin grid, details views, and API consumers; only the spreadsheet column is dropped.
+
 ### \[ProjectToDTO\]
 
 Adds a custom Mapster projection step to the generated `{Entity}DTO`, executed when fetching a single entity. The attribute argument is the raw `.Map(...)` call appended to the projection config — pass the exact source/destination expression.

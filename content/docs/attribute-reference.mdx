@@ -24,6 +24,7 @@ Every attribute on this list lives in the `Spiderly.Shared` package. Standard .N
 | `[DoNotAuthorize]` | `Spiderly.Shared.Attributes.Entity` | Bypasses all authorization checks for the decorated entity's CRUD operations. | [Authorization](/docs/authorization#donotauthorize) |
 | `[Email]` | `Spiderly.Shared.Attributes.Entity` | Validates that a string property is a well-formed email address (server + client). | [Validation](/docs/validation#email) |
 | `[ExcludeFromDTO]` | `Spiderly.Shared.Attributes.Entity` | Removes the property from all generated DTOs (server-only field). | [Backend Customization](/docs/backend-customization#excludefromdto) |
+| `[ExcludeFromExcelExport]` | `Spiderly.Shared.Attributes.Entity` | Hides the property's column(s) from the generated Excel export, while keeping it in the DTO and the rest of the API/UI. | [Backend Customization](/docs/backend-customization#excludefromexcelexport) |
 | `[ExcludeServiceMethodsFromGeneration]` | `Spiderly.Shared.Attributes.Entity` | Skips generation of the standard CRUD service methods for the decorated property. | [Backend Customization](/docs/backend-customization#excludeservicemethodsfromgeneration) |
 | `[GenerateCommaSeparatedDisplayName]` | `Spiderly.Shared.Attributes.Entity` | Adds a `{Property}CommaSeparatedDisplayNames` field to the DTO containing display names for an M2M collection. | [Relationships](/docs/relationships#generatecommaseparateddisplayname) |
 | `[GreaterThanOrEqualTo]` | `Spiderly.Shared.Attributes.Entity` | Numeric lower-bound validator (server + client). | [Validation](/docs/validation#greaterthanorequalto) |
@@ -52,8 +53,8 @@ Every attribute on this list lives in the `Spiderly.Shared` package. Standard .N
 | `[UIControlWidth]` | `Spiderly.Shared.Attributes.Entity.UI` | Overrides the default grid width for a field. | [UI Customization](/docs/ui-customization#uicontrolwidth) |
 | `[UIDoNotGenerate]` | `Spiderly.Shared.Attributes.Entity.UI` | Excludes a property, entity class, or controller method from generated UI. | [UI Customization](/docs/ui-customization#uidonotgenerate) |
 | `[UIOrderedOneToMany]` | `Spiderly.Shared.Attributes.Entity.UI` | Renders a child collection as a drag-reorderable inline list. Child must have an `OrderNumber` property. | [UI Customization](/docs/ui-customization#uiorderedonetomany) |
-| `[UIPanel(name)]` | `Spiderly.Shared.Attributes.Entity` | **Not yet implemented.** Will group properties into named accordion-style panels on the form. | [UI Customization](/docs/ui-customization#uipanel) |
-| `[UIPropertyBlockOrder]` | `Spiderly.Shared.Attributes.Entity.UI` | **Not yet implemented.** Will override the field display order within a panel. | [UI Customization](/docs/ui-customization#uipropertyblockorder) |
+| `[UIPropertyBlockOrder]` | `Spiderly.Shared.Attributes.Entity.UI` | **Not yet implemented.** Will override the field display order within a section. | [UI Customization](/docs/ui-customization#uipropertyblockorder) |
+| `[UISection(name)]` | `Spiderly.Shared.Attributes.Entity.UI` | Groups a property into a named section (card) on the details page. Properties sharing a name render in one panel; unannotated properties fall into an implicit headerless section. | [UI Customization](/docs/ui-customization#uisection) |
 | `[UITableColumn(field, key?)]` | `Spiderly.Shared.Attributes.Entity.UI` | Declares a column in an M2M relationship table. Stack multiple times for multiple columns. | [UI Customization](/docs/ui-customization#uitablecolumn) |
 | `[WithMany(prop)]` | `Spiderly.Shared.Attributes.Entity` | Declares the inverse collection navigation for a many-to-one relationship. Required on every M2O navigation. | [Relationships](/docs/relationships#one-to-many-with-withmany) |
 
