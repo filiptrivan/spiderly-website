@@ -364,7 +364,11 @@ public class Permission { }
 
 ### Suppressing the loading spinner with \[SkipSpinner\]
 
-The Angular HTTP loading interceptor shows a global spinner for every request by default. Mark a controller method with `[SkipSpinner]` when the request is too fast to need one, runs in the background, or has its own inline loading UI.
+The Angular HTTP loading interceptor shows a global full-screen spinner for every request by default.
+
+Most reads are already exempt automatically, so you rarely need this attribute: the generator skips the spinner for read-shaped responses (`NamebookDTO`, `CodebookDTO`, `PaginatedResultDTO`, `LazyLoadSelectedIdsResultDTO`) and for any `[HttpGet]` that returns a bare scalar (`int`, `long`, `bool`, `decimal`, `DateTime`, …) — for example an unread-notifications count.
+
+Mark a controller method with `[SkipSpinner]` only when the inference can't see your intent: a `[HttpGet]` that returns a full DTO but is **polled / refreshed on a timer**, a background submit, or an endpoint with its own inline loading UI. The example below is a background `void` GET (which resolves to `any`, not a scalar, so it isn't auto-skipped):
 
 ```csharp
 [HttpGet]
@@ -372,6 +376,19 @@ The Angular HTTP loading interceptor shows a global spinner for every request by
 public async Task SendNotificationEmail(long notificationId)
 {
     await _emailingService.SendNotification(notificationId);
+}
+```
+
+### Forcing the spinner back on with \[ShowSpinner\]
+
+`[ShowSpinner]` is the inverse: it forces the overlay ON for a call the inference would auto-skip. Explicit attributes always win over inference. You rarely need it — a user-triggered operation that does real work is usually a `POST`, which keeps the spinner without any attribute. Reach for `[ShowSpinner]` only for a deliberately slow `[HttpGet]` that returns a bare scalar where you still want the blocking overlay. Don't put it on the read-shaped DTO responses (autocomplete, dropdowns, table pagination) — a full-screen blackout on every keystroke or page change is a regression.
+
+```csharp
+[HttpGet]
+[ShowSpinner]
+public async Task<int> RecalculateScore() // expensive, user-triggered
+{
+    return await _businessService.RecalculateScore();
 }
 ```
 
