@@ -65,37 +65,49 @@ public class Article : BusinessObject<long>
 
 ## Layout and Ordering
 
-### \[UIPanel\]
+### \[UISection\]
 
-<Callout type="warn">
-  **Not yet implemented.** The `[UIPanel]` attribute is exposed in the public API but the source
-  generators do not currently act on it — every property still renders in the default `"Details"`
-  panel regardless of this attribute. Documented here for forward reference; will activate in a
-  future release.
-</Callout>
-
-When wired up, `[UIPanel]` will group properties into named accordion-style sections:
+`[UISection("name")]` groups properties into named sections (cards) on the details page. Properties
+sharing the same name render together in one panel; the `name` is a Transloco translation key used
+as the section header.
 
 ```csharp
 public class User : BusinessObject<long>
 {
+    // No [UISection] -> implicit headerless section
     [DisplayName]
-    public string Name { get; set; } // Default "Details" panel
+    public string Name { get; set; }
 
-    [UIPanel("Security")]
+    [UISection("Security")]
     public string Password { get; set; }
 
-    [UIPanel("Preferences")]
+    [UISection("Preferences")]
     public bool ReceiveNotifications { get; set; }
 }
 ```
 
+**Behavior:**
+
+- Each distinct section renders as its own stacked card; the **Save** / return footer appears once, on
+  the last section.
+- **Field order within a section** follows Spiderly's standard control ordering — property declaration
+  order, except `file`, `text-area`, `editor`, and table/collection controls, which are pushed to the
+  end (the same ordering used for the ungrouped layout).
+- **Section order** follows the first appearance of each section in that same ordering — a section sits
+  at the position of its first field.
+- Properties **without** `[UISection]` collapse into a single implicit **headerless** section, positioned
+  by the first such property's appearance. A newly added property therefore always shows up
+  automatically — in its declared section, or the implicit one — never silently dropped.
+- **Backward compatible:** if no property on the entity declares `[UISection]`, the details page renders
+  as before (a single panel with one grid). Sectioning activates only when at least one property is
+  annotated.
+
 ### \[UIPropertyBlockOrder\]
 
 <Callout type="warn">
-  **Not yet implemented.** Like `[UIPanel]`, this attribute is exposed but not yet consumed by the
-  generators. Fields currently render in property-declaration order, with `file`, `text-area`,
-  `editor`, and `table` controls always pushed to the end.
+  **Not yet implemented.** Like `[UISection]` field ordering, this attribute is exposed but not yet
+  consumed by the generators. Fields currently render in property-declaration order, with `file`,
+  `text-area`, `editor`, and `table` controls always pushed to the end.
 </Callout>
 
 When wired up, `[UIPropertyBlockOrder]` will override the field display order within a panel:
