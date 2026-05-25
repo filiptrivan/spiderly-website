@@ -55,6 +55,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/docs/set-up-telegram-notifications',
+        destination: '/docs/exceptions',
+        permanent: true,
+      },
+      {
         source: '/playground',
         destination: '/#interactive-demo',
         permanent: true,

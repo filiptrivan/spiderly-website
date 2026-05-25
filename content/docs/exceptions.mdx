@@ -70,7 +70,7 @@ The handler also clears the access, refresh, and auth-result cookies. Clients sh
 
 ## SecurityViolationException
 
-For requests that indicate malicious intent (tampered IDs, forged hidden fields, file-size bypass attempts). Returns a generic error message (never revealing what went wrong) and triggers email/Telegram notifications so you can investigate. Used internally by Spiderly's generated services for integrity checks.
+For requests that indicate malicious intent (tampered IDs, forged hidden fields, file-size bypass attempts). Returns a generic error message (never revealing what went wrong) and triggers an admin notification so you can investigate. Used internally by Spiderly's generated services for integrity checks.
 
 ## DbUpdateException
 
@@ -87,4 +87,4 @@ Other `DbUpdateException` instances fall through to the generic 500 handler. `Db
 
 ## Unhandled Exceptions
 
-Any exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers email/Telegram notifications in production via `INotificationDispatcher`.
+Any exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers an admin notification in production via the notification framework (`INotifier` → the Email channel).

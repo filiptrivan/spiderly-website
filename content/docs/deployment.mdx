@@ -159,7 +159,6 @@ These must be set for every production deployment:
 | Variable | Description |
 |---|---|
 | `AppSettings__Spiderly.Shared__EmailSender`, `AppSettings__Spiderly.Shared__EmailSenderPassword` | Email sending credentials. See [Set Up Emailing](/docs/set-up-emailing). |
-| `AppSettings__Spiderly.Shared__TelegramBotToken`, `AppSettings__Spiderly.Shared__TelegramChatId` | Telegram error notifications. See [Set Up Telegram Notifications](/docs/set-up-telegram-notifications). |
 | `AppSettings__Spiderly.Security__GoogleClientId` | Google OAuth client ID. See [Set Up Google Authentication](/docs/set-up-google-authentication). |
 | `AppSettings__Spiderly.Shared__CookieDomain` | Cookie domain for cross-subdomain sharing (e.g., `.example.com`). See [Cookie Configuration](#cookie-configuration). |
 | `AppSettings__Spiderly.Shared__CookieSameSite` | Cookie SameSite attribute (`None`, `Lax`, `Strict`, `Unspecified`). Default: `None`. See [Cookie Configuration](#cookie-configuration). |
@@ -242,6 +241,6 @@ When your frontend and API are on different subdomains (e.g., `admin.example.com
 - [ ] `FrontendUrl` is set to the production admin panel URL (no trailing slash)
 - [ ] Database migrations are applied
 - [ ] CORS origins include all frontends that call the API
-- [ ] Email, Telegram, and file storage variables are set (if using those features)
+- [ ] Email and file storage variables are set (if using those features)
 - [ ] `CookieDomain` and `CookieSameSite` are set (if using cookie-based authentication across subdomains)
 - [ ] HTTPS is configured (via your hosting platform's load balancer or reverse proxy)
