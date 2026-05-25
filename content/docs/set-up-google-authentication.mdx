@@ -1,46 +1,110 @@
 ---
 title: Set Up Google Authentication
-description: Configure Google Authentication to allow users to sign in to your Spiderly app using their Google accounts.
+description: Configure Google as an external authentication provider so users can sign in to your Spiderly app using their Google accounts.
 ---
 
-## Configure Google Client ID
+Spiderly uses a server-side OAuth 2.0 code flow for external providers in the Angular admin panel. The backend owns the full OAuth dance — the frontend never handles `client_secret`; it just navigates to a challenge URL and picks up the cookie session on return.
 
-### 1. Create an OAuth 2.0 Client ID in Google Cloud
+## 1. Create an OAuth 2.0 Client ID in Google Cloud
 
 1. Open the [Google Cloud Console — Credentials page](https://console.cloud.google.com/apis/credentials). Create or select a project.
 2. Click **Create credentials → OAuth client ID**. If prompted, configure the OAuth consent screen first (User type: **External**, fill in app name, support email, and developer email).
 3. Choose **Application type: Web application** and give it a name.
-4. Under **Authorized JavaScript origins**, add the origins your admin panel runs on (e.g. `http://localhost:4200` for local dev, `https://admin.example.com` for production).
-5. Click **Create** and copy the **Client ID** — a string ending in `.apps.googleusercontent.com`.
+4. Under **Authorized redirect URIs**, add the backend callback URL — **not** the frontend origin. The redirect goes to the backend:
+   - Local dev: `https://localhost:7260/api/Security/ExternalLoginCallback`
+   - Production: `https://api.example.com/api/Security/ExternalLoginCallback`
+5. Click **Create** and copy both the **Client ID** (ends in `.apps.googleusercontent.com`) and the **Client Secret**.
 
-### 2. Set the Client ID in your app
+<Callout type="info">
+  The old Google Identity Services flow used **Authorized JavaScript origins**. The server-side code flow uses **Authorized redirect URIs** instead — these point at the backend, not the Angular frontend.
+</Callout>
 
-The same Client ID goes into two files:
+## 2. Configure the backend
 
-**Backend** — `Backend/YourAppName.WebAPI/appsettings.json`, under `AppSettings.Spiderly.Security`:
+Add (or update) the `ExternalProviders` array in `Backend/YourAppName.WebAPI/appsettings.json` under `AppSettings.Spiderly.Security`:
 
 ```json
 {
   "AppSettings": {
     "Spiderly.Security": {
-      "GoogleClientId": "1234567890-abc...apps.googleusercontent.com"
+      "ExternalProviders": [
+        {
+          "Code": "google",
+          "ClientId": "1234567890-abc...apps.googleusercontent.com",
+          "ClientSecret": "GOCSPX-..."
+        }
+      ]
     }
   }
 }
 ```
 
-For local development, put the value in `appsettings.Development.local.json` (gitignored). For production, set the environment variable `AppSettings__Spiderly.Security__GoogleClientId` — see [Deployment — Environment Variables](/docs/deployment#environment-variables).
+`Code: "google"` is a Spiderly built-in preset — the authority (`https://accounts.google.com`) is filled in automatically. You only need `ClientId` and `ClientSecret`.
 
-**Frontend** — `Frontend/src/environments/environment.ts`:
+For local development, put the secrets in `appsettings.Development.local.json` (gitignored):
 
-```ts
-export const environment = {
-  // ...
-  googleClientId: '1234567890-abc...apps.googleusercontent.com',
-};
+```json
+{
+  "AppSettings": {
+    "Spiderly.Security": {
+      "ExternalProviders": [
+        {
+          "Code": "google",
+          "ClientId": "1234567890-abc...apps.googleusercontent.com",
+          "ClientSecret": "GOCSPX-..."
+        }
+      ]
+    }
+  }
+}
 ```
 
-### Video walkthrough
+For production, .NET binds array items via indexed environment variables:
+
+| Setting | Environment variable |
+|---|---|
+| `ExternalProviders[0].Code` | `AppSettings__Spiderly.Security__ExternalProviders__0__Code` |
+| `ExternalProviders[0].ClientId` | `AppSettings__Spiderly.Security__ExternalProviders__0__ClientId` |
+| `ExternalProviders[0].ClientSecret` | `AppSettings__Spiderly.Security__ExternalProviders__0__ClientSecret` |
+
+See [Deployment — Environment Variables](/docs/deployment#environment-variables) for the general conventions.
+
+## 3. Frontend — no configuration needed
+
+The Angular admin fetches enabled providers from `GET /api/Security/GetExternalProviders` at runtime and renders a button for each one. The Google icon is bundled in the Spiderly lib as an inline SVG data URI — no asset files, no CDN, no CSP entry required.
+
+If you want to swap the icon (e.g. self-host `assets/icons/google.svg`), pass a `providerIcons` map to the login component:
+
+```ts
+// login.component.ts — a thin wrapper around spiderly-login
+@Component({
+  selector: 'app-login',
+  imports: [SpiderlyLoginComponent],
+  template: `<spiderly-login [providerIcons]="providerIcons" />`,
+})
+export class LoginComponent {
+  providerIcons = { google: 'assets/icons/google.svg' };
+}
+```
+
+Route `/login` to this wrapper in your `app.routes.ts`. See [Frontend Customization — Login Page](/docs/frontend-customization#login-page) for the full set of customization levels.
+
+## Adding more providers
+
+The same `ExternalProviders` array accepts any OIDC-compliant provider. For providers without a built-in preset, supply `Authority` explicitly:
+
+```json
+{
+  "Code": "microsoft",
+  "Authority": "https://login.microsoftonline.com/<tenant>/v2.0",
+  "ClientId": "...",
+  "ClientSecret": "..."
+}
+```
+
+Register the corresponding backend callback URL (`/api/Security/ExternalLoginCallback`) as an authorized redirect URI in that provider's console, the same way you did for Google in step 1.
+
+## Video walkthrough
 
 <iframe
   src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Spiderly_Google_Auth_ujljuc&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302340%2FCopy_of_Untitled_YouTube_Thumbnail_2_t7d5bd.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"

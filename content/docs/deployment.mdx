@@ -131,7 +131,7 @@ The generated `Program.cs` calls `config.AddEnvironmentVariables()`, so any sett
 |---|---|
 | `AppSettings:Spiderly.Shared:ConnectionString` | `AppSettings__Spiderly.Shared__ConnectionString` |
 | `AppSettings:Spiderly.Shared:JwtKey` | `AppSettings__Spiderly.Shared__JwtKey` |
-| `AppSettings:Spiderly.Security:GoogleClientId` | `AppSettings__Spiderly.Security__GoogleClientId` |
+| `AppSettings:Spiderly.Security:ExternalProviders:0:ClientId` | `AppSettings__Spiderly.Security__ExternalProviders__0__ClientId` |
 
 <Callout type="warn">
   `Spiderly.Shared` is the **section name** — the dots are part of the name, not configuration separators. The correct variable is `AppSettings__Spiderly.Shared__JwtKey`. A common mistake is `AppSettings__Spiderly__Shared__JwtKey` (treating the dot as a separator), which will be silently ignored and leave the setting at its default value.
@@ -159,7 +159,7 @@ These must be set for every production deployment:
 | Variable | Description |
 |---|---|
 | `AppSettings__Spiderly.Shared__EmailSender`, `AppSettings__Spiderly.Shared__EmailSenderPassword` | Email sending credentials. See [Set Up Emailing](/docs/set-up-emailing). |
-| `AppSettings__Spiderly.Security__GoogleClientId` | Google OAuth client ID. See [Set Up Google Authentication](/docs/set-up-google-authentication). |
+| `AppSettings__Spiderly.Security__ExternalProviders__0__Code`, `AppSettings__Spiderly.Security__ExternalProviders__0__ClientId`, `AppSettings__Spiderly.Security__ExternalProviders__0__ClientSecret` | External auth provider config (one entry per provider). See [Set Up Google Authentication](/docs/set-up-google-authentication). |
 | `AppSettings__Spiderly.Shared__CookieDomain` | Cookie domain for cross-subdomain sharing (e.g., `.example.com`). See [Cookie Configuration](#cookie-configuration). |
 | `AppSettings__Spiderly.Shared__CookieSameSite` | Cookie SameSite attribute (`None`, `Lax`, `Strict`, `Unspecified`). Default: `None`. See [Cookie Configuration](#cookie-configuration). |
 | File storage variables (`S3BucketName`, `S3PublicEndpoint`, plus your own S3 credentials / custom-adapter settings) | Depends on the `StorageAttribute` subclasses your entities use. See [File Storage — Provider Setup](/docs/file-storage#provider-setup). |
