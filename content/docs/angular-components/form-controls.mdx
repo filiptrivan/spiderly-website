@@ -5,7 +5,7 @@ description: Reference for all Spiderly form input components — text, number, 
 
 ## Overview
 
-Spiderly provides 13 form control components that wrap PrimeNG inputs with consistent labeling, validation display, and form integration. All controls are designed to work with `SpiderlyFormControl` and are used by the generated detail pages.
+Spiderly provides 14 form control components that wrap PrimeNG inputs with consistent labeling, validation display, and form integration. All controls are designed to work with `SpiderlyFormControl` and are used by the generated detail pages.
 
 Every control extends `BaseControl` and shares a common set of inputs documented below.
 
@@ -230,6 +230,31 @@ Rich text editor (Quill-based) with optional image upload.
 ```
 
 The generated `UploadXImageForY` endpoint on the backend returns an `EditorImageUploadResultDTO` (`Spiderly.Shared.DTO`). The image is WebP-encoded via `Helper.OptimizeImageWithDimensions`, and its post-resize dimensions are written onto the inserted `<img>` tag so storefront renderers can hand them to `next/image` (or equivalent) without re-probing the asset.
+
+## spiderly-markdown
+
+Markdown editor: a plain textarea (Write tab) with a live rendered Preview tab. The value is stored as **raw Markdown text** (use `[UIControlType(nameof(UIControlTypeCodes.Markdown))]` on a `string` property).
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `uploadImageMethod` | `(formData: FormData) => Observable<EditorImageUploadResult>` | — | Callback for uploading pasted images; the returned `url` is inserted as a standard `![](url)` Markdown link |
+| `objectId` | `number` | `0` | ID prepended to the filename when uploading images |
+
+```html
+<spiderly-markdown
+  [control]="form.getControl('readme')"
+  [uploadImageMethod]="uploadImage"
+  [objectId]="entityId"
+></spiderly-markdown>
+```
+
+The preview is rendered with [ngx-markdown](https://github.com/jfcere/ngx-markdown) (which wraps `marked`). It is intentionally **approximate** — a consuming storefront may render the same Markdown with a different engine or flavor, so treat the admin preview as an authoring aid, not a pixel-accurate mirror.
+
+`ngx-markdown` requires `provideMarkdown()` in your `app.config.ts` (the `spiderly init` template already includes it) and the `ngx-markdown` + `marked` packages.
+
+Image upload is **paste-only** and active only when the property has an `[S3PublicStorage]` attribute (which generates the same `UploadXImageForY` endpoint the editor uses). Pasted images are inserted as `![](url)` without width/height — unlike the editor, Markdown carries no inline dimensions.
+
+> **Editor vs. Markdown:** use `spiderly-editor` when you want a WYSIWYG surface storing HTML; use `spiderly-markdown` when you want portable Markdown source with a preview.
 
 ## spiderly-file
 
