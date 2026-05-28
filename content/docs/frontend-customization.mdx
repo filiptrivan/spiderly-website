@@ -65,16 +65,22 @@ Open the `Frontend\src\index.html` file and add the `dark` class to the `html` t
 
 For more information and advanced dark theme options, visit the [PrimeNG Dark Theme Guide](https://primeng.org/theming#darkmode).
 
-## Displaying Time in Calendar Control on Details Page
+## Showing or Hiding a Field on the Details Page
 
-Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the following Angular input attribute:
+Every field the generator renders into `{YourEntityName}BaseDetailsComponent` is exposed through a `show{PropertyName}For{YourEntityName}` input that defaults to `true`. Pass it from your details page to hide a field outright, or bind it to a condition to toggle the field at runtime — without editing the generated component.
+
+Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the input:
 
 ```html
 <your-entity-base-details
 // ... other attributes
-[showTimeOn{{YourCalendarPropertyName}}For{{YourEntityName}}]="true"
+[show{{YourPropertyName}}For{{YourEntityName}}]="false"
 ></your-entity-base-details>
 ```
+
+Names are PascalCase — for example `[showEmailForUser]="false"` hides the email field, while `[showIsDisabledForUser]="isAdmin"` shows it only when `isAdmin` is `true`.
+
+Calendar fields additionally expose `showTimeOn{PropertyName}For{YourEntityName}` (defaults to `false`) to also render the time picker — e.g. `[showTimeOnBirthDateForUser]="true"`.
 
 ## Customize Routes
 
