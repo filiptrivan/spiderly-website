@@ -152,8 +152,28 @@ public class Order : BusinessObject<long>
 
 **Generated behavior:**
 
-- The Angular form renders `Status` as a scalar dropdown populated from `OrderStatusCodes` — no lookup table or M2O navigation property is generated.
-- `IsManyToOneType` short-circuits for properties whose type is in the `[SpiderlyEnum]` registry, so the generators that previously emitted FK plumbing skip it for these properties.
+- The Angular form renders `Status` as a dropdown whose options are populated **client-side from the generated TypeScript enum** — no lookup table, no M2O navigation, and no API round-trip. Alongside each enum, the generator emits a `get{Enum}NamebookList(translocoService)` builder in `enums.generated.ts`, and the form binds the dropdown to it.
+- `IsManyToOneType` short-circuits for properties whose type is in the `[SpiderlyEnum]` registry, so the generators that would otherwise emit FK plumbing skip it for these properties.
 - `[SpiderlyEnum]` is the single source of truth — the type does **not** need to follow the `...Codes` naming convention to be recognized.
+- This applies to real `enum` types only. A [class-based enum](#class-based-enums) (a `static class` of string constants) can't be used as a property type, so it can't drive a dropdown — use an `enum` for dropdown fields.
 
 Use this pattern when the set of values is fixed at compile time and you don't need per-row metadata. For values that need labels, ordering, or admin-managed lifetimes, keep the lookup-table pattern with `ReadonlyObject<T>`.
+
+### Translating enum options
+
+Option labels are localized through Transloco, with the **translation key equal to the enum member name**. The generated builder wraps each member in `translate(marker('Member'))` so `transloco-keys-manager` discovers the keys — run `npm run i18n:extract`, then fill each locale file:
+
+```json
+// Frontend/src/assets/i18n/sr-Latn-RS.json
+{ "Pending": "Na čekanju", "Paid": "Plaćeno", "Shipped": "Poslato", "Cancelled": "Otkazano" }
+```
+
+A missing value renders the raw key, so don't skip the locale entries. If two enums share a member name (e.g. both have `Pending`) but need different translations, **rename one member** (e.g. `PendingReview`) — the key follows the member name, so no extra configuration is needed.
+
+The same `get{Enum}NamebookList(translocoService)` builder also feeds a list-table column's multiselect filter — wrap it in the `spiderly` helper `getPrimengNamebookOptions`, which maps `Namebook[]` to the table's `{ label, code }[]` shape:
+
+```typescript
+{ name: t('Status'), filterType: 'multiselect', field: 'status',
+  dropdownOrMultiselectValues:
+    getPrimengNamebookOptions(getOrderStatusCodesNamebookList(this.translocoService)) }
+```
