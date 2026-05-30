@@ -15,6 +15,10 @@ Spiderly's global exception handler catches all exceptions and maps them to appr
 }
 ```
 
+The `errorCode` discriminator is one of these machine-readable values (generated from the backend `ApiErrorCodes` contract):
+
+<ReferenceTable kind="apiErrorCodes" />
+
 | Exception | Status | Log Level | Message to Client | Notification |
 |-----------|--------|-----------|-------------------|--------------|
 | `BusinessException` | 400 | Information | Exception message | No |

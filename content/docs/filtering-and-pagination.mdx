@@ -86,14 +86,7 @@ public class FilterRuleDTO
 
 All supported match modes:
 
-| MatchModeCodes | Applies To | Description |
-|----------------|-----------|-------------|
-| `StartsWith` | string | Case-insensitive prefix match |
-| `Contains` | string | Case-insensitive substring match |
-| `Equals` | string, number, bool, DateTime | Exact match |
-| `LessThan` | number, DateTime | Less than comparison |
-| `GreaterThan` | number, DateTime | Greater than comparison |
-| `In` | number, collections | Value is in a set |
+<ReferenceTable kind="matchModes" />
 
 <Callout>
   String comparisons are always case-insensitive (`.ToLower()` is applied automatically).
