@@ -42,6 +42,10 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY016](#spiderly016) | Error | `[WithMany]` target collection does not exist on the related entity |
 | [SPIDERLY017](#spiderly017) | Error | `[WithMany]` target collection has the wrong element type |
 | [SPIDERLY018](#spiderly018) | Error | Entity primary key type must be `int`, `long`, or `byte` |
+| [SPIDERLY019](#spiderly019) | Error | `[WithOne]` declared on both sides of a one-to-one |
+| [SPIDERLY020](#spiderly020) | Error | `[WithOne]` inverse navigation does not exist on the principal |
+| [SPIDERLY021](#spiderly021) | Error | `[Required]` on the principal navigation of a one-to-one is unenforceable |
+| [SPIDERLY022](#spiderly022) | Error | Self-referential one-to-one is not supported |
 
 ## SPIDERLY001
 
@@ -209,6 +213,38 @@ public class Order : BusinessObject<long>
     public Guid PublicId { get; set; }
 }
 ```
+
+## SPIDERLY019
+
+**`[WithOne]` declared on both sides of a one-to-one.**
+
+A one-to-one is declared by placing `[WithOne]` on the **dependent** (foreign-key-holding) side only — that single placement is what designates which side owns the FK. If both navigations carry `[WithOne]`, the dependent side is ambiguous.
+
+**Fix:** keep `[WithOne]` on the dependent and make the principal a plain single-valued navigation with no attribute.
+
+## SPIDERLY020
+
+**`[WithOne]` inverse navigation does not exist on the principal.**
+
+`[WithOne(nameof(Principal.InverseNav))]` names the back-navigation on the principal entity, but the named property doesn't exist (or isn't a single-valued navigation of the dependent's type).
+
+**Fix:** add `public virtual {Dependent} {InverseNav} { get; set; }` on the principal, or use the parameterless `[WithOne]` for a unidirectional one-to-one.
+
+## SPIDERLY021
+
+**`[Required]` on the principal navigation of a one-to-one is unenforceable.**
+
+A unique foreign-key index guarantees *at most one* dependent per principal — never *at least one*. "Every principal has a dependent" cannot be enforced by the schema, so `[Required]` on the principal-side navigation is meaningless.
+
+**Fix:** configure requiredness on the dependent (`[WithOne]`) side — a non-nullable FK means the dependent must have a principal. If you genuinely need "every principal has a dependent", create the dependent in the principal's `OnAfter{Entity}Insert` hook.
+
+## SPIDERLY022
+
+**Self-referential one-to-one is not supported.**
+
+A `[WithOne]` navigation whose target type is the declaring entity itself is rejected in this version.
+
+**Fix:** model it differently (e.g. a self-referential many-to-one), or split the data into two entities.
 
 ## Suppressing Diagnostics
 

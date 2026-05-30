@@ -177,6 +177,37 @@ When an `Author` is deleted, their blog posts remain but `AuthorId` becomes null
 | `[CascadeDelete]` | All children deleted | Children have no meaning without parent |
 | `[SetNull]` | FK set to null on children | Children can exist independently |
 
+## One-to-One with \[WithOne\]
+
+A one-to-one relationship is defined with `[WithOne]` on the **dependent** (foreign-key-holding) side's single-valued navigation. Its presence designates that side as the dependent; the other side is the principal — a plain navigation with no attribute. Use this for a true 1-1 between two independent entities; for a value object that only lives inside its parent, inline the fields or use an EF owned type instead.
+
+```csharp
+public class Conversation : BusinessObject<long>   // dependent — owns the FK
+{
+    public long? OwningTaskItemId { get; set; }     // explicit FK; nullable => optional 1-1
+
+    [WithOne(nameof(TaskItem.Conversation))]
+    [CascadeDelete]                                  // delete the TaskItem => delete its Conversation
+    public virtual TaskItem OwningTaskItem { get; set; }
+}
+
+public class TaskItem : BusinessObject<long>        // principal
+{
+    public virtual Conversation Conversation { get; set; }   // inverse navigation, no attribute
+}
+```
+
+This maps a real one-to-one (`HasOne().WithOne().HasForeignKey()`), adds an automatic **unique index** on the FK, flattens the dependent's DTO to `{Nav}Id` + `{Nav}DisplayName` (like many-to-one), and renders an autocomplete on the dependent's page.
+
+**Required vs optional** is the dependent FK's nullability:
+
+- `[Required]` on the `[WithOne]` navigation → non-nullable FK → the dependent must have a principal.
+- No `[Required]` → nullable FK → optional; the unique index allows **many NULLs** (Postgres `NULLS DISTINCT` / SQL Server's auto `IS NOT NULL` filter — handled by provider conventions, no manual config).
+
+The schema cannot enforce "every principal has a dependent" (that direction is always 0..1), so `[Required]` on the principal-side navigation is a build error ([SPIDERLY021](/docs/build-diagnostics#spiderly021)).
+
+Other notes: cascade is app-layer (`[CascadeDelete]` / `[SetNull]`), exactly like many-to-one — no DB-level `ON DELETE CASCADE`. A parameterless `[WithOne]` makes the relationship unidirectional. Self-referential one-to-one is unsupported ([SPIDERLY022](/docs/build-diagnostics#spiderly022)). The principal-side inverse renders nothing in the admin by default (the FK lives on the dependent); add `[UIDoNotGenerate]` to the dependent's nav for a fully code-managed 1-1.
+
 ## Simple Many-to-Many
 
 A many-to-many relationship requires a **junction entity** marked with both `[M2M]` and `[SpiderlyEntity]`, containing two navigation properties decorated with `[M2MWithMany]`. `[M2M]` flags the class as a junction; `[SpiderlyEntity]` enrolls it in the generator pipeline — without it, opposite-M2M navigation lookups return null and the parent entity's generated service fails to compile.
