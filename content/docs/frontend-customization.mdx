@@ -130,6 +130,18 @@ If you want to add custom actions (buttons, links, or any other content) to the 
 </spiderly-layout>
 ```
 
+## Inject Content into the Login Screen
+
+The login component (`<spiderly-login>`) exposes a `loginExtra` projection slot for consumer-supplied content — a bot-protection widget (e.g. Cloudflare Turnstile), a legal notice, or an extra field. Projected content renders in **both** the email-entry and code-verification states, so a single-use challenge widget stays mounted across the resend flow.
+
+```html
+<spiderly-login [providerIcons]="providerIcons">
+  <app-turnstile-widget loginExtra />
+</spiderly-login>
+```
+
+Spiderly stays vendor-neutral — it only ships the slot. Attaching a token to the login request (e.g. an `X-Turnstile-Token` header) is done with a standard Angular HTTP interceptor in your own app, so the framework never depends on a specific bot-protection provider.
+
 ## Service Overrides
 
 Spiderly's Angular library uses base service classes that you extend in your project.
