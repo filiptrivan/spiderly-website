@@ -529,6 +529,8 @@ Your custom `ITokenStorage` implementation must support querying by these indexe
 
 Every generated save/delete method wraps its logic in `_context.WithTransactionAsync(...)`. All hooks called within that flow (e.g., `OnBeforeInsert`, `OnAfterSave`) automatically run inside the same transaction. Nested `WithTransactionAsync` calls reuse the existing transaction — you do **not** need to start your own transaction in hooks.
 
+Generated save and delete operations also **flush the change tracker for you** before the transaction commits — so a hook (including `OnBefore{Entity}Delete`) can stage a tracked write such as `IOutbox.Enqueue` and have it persist atomically with the operation. This holds for deletes even though `[CascadeDelete]` removes dependents through untracked bulk `ExecuteDeleteAsync`. A manual `SaveChangesAsync` is only needed in **custom** (non-hook) `WithTransactionAsync` blocks (see below).
+
 If you need a transaction in **custom** (non-hook) methods:
 
 ```csharp
@@ -540,7 +542,7 @@ await _context.WithTransactionAsync(async () =>
 ```
 
 <Callout type="warn">
-  `WithTransactionAsync` throws `InvalidOperationException` if the change tracker still has pending writes when the transaction is about to commit. `transaction.CommitAsync()` only commits the DB transaction — it does **not** flush the tracker — so a missed `SaveChangesAsync` after `Add` would otherwise silently drop the writes (a classic outbox-pattern footgun). Either call `SaveChangesAsync` before returning from the action, or detach entries you don't intend to persist.
+  `WithTransactionAsync` throws `InvalidOperationException` if the change tracker still has pending writes when the transaction is about to commit. `transaction.CommitAsync()` only commits the DB transaction — it does **not** flush the tracker — so a missed `SaveChangesAsync` after `Add` would otherwise silently drop the writes (a classic outbox-pattern footgun). In a **custom** (non-hook) block, either call `SaveChangesAsync` before returning from the action, or detach entries you don't intend to persist — generated save/delete operations already flush for you, so hooks don't need it.
 </Callout>
 
 ## Exception Types
