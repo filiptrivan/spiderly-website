@@ -1,6 +1,5 @@
 import { source } from '@/lib/source';
-
-const SITE_URL = 'https://www.spiderly.dev';
+import { SITE_URL } from '@/utils/constants/site';
 
 export const revalidate = false;
 

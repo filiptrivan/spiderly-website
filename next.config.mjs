@@ -12,6 +12,20 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    // Serve per-page Markdown at /docs/<slug>.mdx (and /docs.mdx for the index) from the llms.mdx route
+    // handler. Powers the docs "Copy Markdown" / "View as Markdown" page actions.
+    return [
+      {
+        source: '/docs.mdx',
+        destination: '/llms.mdx',
+      },
+      {
+        source: '/docs/:path*.mdx',
+        destination: '/llms.mdx/:path*',
+      },
+    ];
+  },
   async redirects() {
     return [
       {

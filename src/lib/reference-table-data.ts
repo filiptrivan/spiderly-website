@@ -1,9 +1,10 @@
-import metadata from '@/lib/framework-metadata.json';
+import metadata from './framework-metadata.json';
 
-// Renders a framework reference table from framework-metadata.json — the single source of truth synced
-// from the Spiderly repo on each release (see that repo's docs/framework-metadata-ssot.md). Because the
-// data is generated from code, these tables can't drift. Unknown kinds/names throw, so a typo in MDX
-// fails the build rather than rendering an empty table.
+// Single source of truth for the docs reference tables. The data is generated from the Spiderly codebase
+// on each release (see that repo's docs/framework-metadata-ssot.md), so these tables can't drift. The
+// build-time remark plugin (remark-reference-table.ts) consumes buildTable to render Markdown tables that
+// feed both the rendered docs page and the copied / llms.txt markdown. Unknown kinds/names throw, so a typo
+// in MDX fails the build rather than rendering an empty table.
 
 type EnumMember = { name: string; value?: string; summary: string };
 type EnumModel = { name: string; kind: string; summary?: string; members: EnumMember[] };
@@ -22,12 +23,13 @@ const md = metadata as unknown as {
   controls: { baseInputs: string[]; components: ControlComponent[] };
 };
 
-type Column = { header: string; code?: boolean };
-type Table = { columns: Column[]; rows: string[][]; note?: string };
+export type Column = { header: string; code?: boolean };
+export type Table = { columns: Column[]; rows: string[][]; note?: string };
 
 function enumByName(name: string): EnumModel {
   const found = md.enums.find((e) => e.name === name);
-  if (!found) throw new Error(`<ReferenceTable>: enum "${name}" is missing from framework-metadata.json`);
+  if (!found)
+    throw new Error(`<ReferenceTable>: enum "${name}" is missing from framework-metadata.json`);
   return found;
 }
 
@@ -38,11 +40,13 @@ function constTable(name: string): Table {
     columns: hasValue
       ? [{ header: 'Name', code: true }, { header: 'Value', code: true }, { header: 'Description' }]
       : [{ header: 'Name', code: true }, { header: 'Description' }],
-    rows: model.members.map((m) => (hasValue ? [m.name, m.value ?? '', m.summary] : [m.name, m.summary])),
+    rows: model.members.map((m) =>
+      hasValue ? [m.name, m.value ?? '', m.summary] : [m.name, m.summary],
+    ),
   };
 }
 
-function buildTable(kind: string): Table {
+export function buildTable(kind: string): Table {
   switch (kind) {
     case 'apiErrorCodes':
       return constTable('ApiErrorCodes');
@@ -52,14 +56,20 @@ function buildTable(kind: string): Table {
       return constTable('UIControlTypeCodes');
     case 'attributes':
       return {
-        columns: [{ header: 'Attribute', code: true }, { header: 'Target' }, { header: 'Description' }],
+        columns: [
+          { header: 'Attribute', code: true },
+          { header: 'Target' },
+          { header: 'Description' },
+        ],
         rows: md.attributes.map((a) => [`[${a.name}]`, a.target, a.summary]),
       };
     case 'endpoints': {
       const name = 'SecurityBaseController';
       const controller = md.controllers.find((c) => c.name === name);
       if (!controller)
-        throw new Error(`<ReferenceTable>: controller "${name}" is missing from framework-metadata.json`);
+        throw new Error(
+          `<ReferenceTable>: controller "${name}" is missing from framework-metadata.json`,
+        );
       return {
         columns: [
           { header: 'Endpoint', code: true },
@@ -93,32 +103,4 @@ function buildTable(kind: string): Table {
     default:
       throw new Error(`<ReferenceTable>: unknown kind "${kind}"`);
   }
-}
-
-export function ReferenceTable({ kind }: { kind: string }) {
-  const { columns, rows, note } = buildTable(kind);
-
-  return (
-    <>
-      {note ? <p>{note}</p> : null}
-      <table>
-        <thead>
-          <tr>
-            {columns.map((c) => (
-              <th key={c.header}>{c.header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i}>
-              {row.map((cell, j) => (
-                <td key={j}>{columns[j]?.code && cell ? <code>{cell}</code> : cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
-  );
 }

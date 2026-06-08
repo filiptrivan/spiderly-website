@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-
-const SITE_URL = 'https://www.spiderly.dev';
+import { SITE_URL } from '../constants/site';
 
 export const generateMetadata = ({
   title = `.NET Web App Framework Built For AI Coding Agents`,
