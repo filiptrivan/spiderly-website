@@ -10,12 +10,17 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { cn, NAV_LINKS } from '@/utils';
-import { GITHUB_STARS } from '@/utils/constants/nav-links';
-import { Menu, Star, X } from 'lucide-react';
+import { GITHUB_REPO_URL } from '@/utils/constants/nav-links';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import GitHubStarsBadge from './github-stars-badge';
 
-const MobileNavbar = () => {
+interface MobileNavbarProps {
+  stars: number;
+}
+
+const MobileNavbar = ({ stars }: MobileNavbarProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleClose = () => {
@@ -79,16 +84,12 @@ const MobileNavbar = () => {
             </ul>
             <div className="flex items-center justify-evenly w-full space-x-2 mt-6">
               <Link
-                href="https://github.com/filiptrivan/spiderly"
+                href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={buttonVariants({ className: 'w-full', variant: 'outline' })}
               >
-                <Star className="size-4 mr-2" />
-                Star on GitHub
-                <span className="ml-2 px-2 py-0.5 bg-muted rounded-full text-xs font-semibold">
-                  56
-                </span>
+                <GitHubStarsBadge stars={stars} />
               </Link>
             </div>
           </div>

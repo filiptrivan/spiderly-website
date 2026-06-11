@@ -40,6 +40,16 @@ Open the `Frontend\src\assets\primeng-theme.ts` file and edit the theme values, 
 
 For more information and advanced theming options, visit the [PrimeNG Theming Guide](https://primeng.org/theming).
 
+### Using theme colors as Tailwind utilities
+
+The generated `Frontend\src\assets\tailwind.css` imports [`tailwindcss-primeui`](https://github.com/primefaces/tailwindcss-primeui), which bridges your PrimeNG theme to Tailwind. This means utilities such as `bg-primary-50`, `text-primary-600`, and `border-surface-200` resolve to the live theme variables defined in `primeng-theme.ts` — change a color there and every utility follows.
+
+The bridge import must stay **before** `@import "tailwindcss/utilities"`; it registers the `surface`/`primary` color tokens, and Tailwind only picks up tokens that exist when the utilities import runs. Tokens registered afterwards are silently ignored, leaving `*-surface-*` / `*-primary-*` as dead classes.
+
+<Callout type="warn">
+  Tailwind CSS v4 defaults a bare `border` (with no color modifier) to `currentColor`, not a gray. Spiderly omits Tailwind's Preflight reset on purpose (to avoid clobbering PrimeNG base styles), so always pair a border with a color — e.g. `border border-surface-200`.
+</Callout>
+
 ## Enable Dark Theme
 
 Open the `Frontend\src\index.html` file and add the `dark` class to the `html` tag, like this:
@@ -55,16 +65,22 @@ Open the `Frontend\src\index.html` file and add the `dark` class to the `html` t
 
 For more information and advanced dark theme options, visit the [PrimeNG Dark Theme Guide](https://primeng.org/theming#darkmode).
 
-## Displaying Time in Calendar Control on Details Page
+## Showing or Hiding a Field on the Details Page
 
-Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the following Angular input attribute:
+Every field the generator renders into `{YourEntityName}BaseDetailsComponent` is exposed through a `show{PropertyName}For{YourEntityName}` input that defaults to `true`. Pass it from your details page to hide a field outright, or bind it to a condition to toggle the field at runtime — without editing the generated component.
+
+Open the `Frontend\src\app\pages\your-entity-name\your-entity-name-details.html` file, locate the `<your-entity-name-base-details>` component, and add the input:
 
 ```html
 <your-entity-base-details
 // ... other attributes
-[showTimeOn{{YourCalendarPropertyName}}For{{YourEntityName}}]="true"
+[show{{YourPropertyName}}For{{YourEntityName}}]="false"
 ></your-entity-base-details>
 ```
+
+Names are PascalCase — for example `[showEmailForUser]="false"` hides the email field, while `[showIsDisabledForUser]="isAdmin"` shows it only when `isAdmin` is `true`.
+
+Calendar fields additionally expose `showTimeOn{PropertyName}For{YourEntityName}` (defaults to `false`) to also render the time picker — e.g. `[showTimeOnBirthDateForUser]="true"`.
 
 ## Customize Routes
 
@@ -113,6 +129,18 @@ If you want to add custom actions (buttons, links, or any other content) to the 
   <div ACTIONS>Your custom actions</div>
 </spiderly-layout>
 ```
+
+## Inject Content into the Login Screen
+
+The login component (`<spiderly-login>`) exposes a `loginExtra` projection slot for consumer-supplied content — a bot-protection widget (e.g. Cloudflare Turnstile), a legal notice, or an extra field. Projected content renders in **both** the email-entry and code-verification states, so a single-use challenge widget stays mounted across the resend flow.
+
+```html
+<spiderly-login [providerIcons]="providerIcons">
+  <app-turnstile-widget loginExtra />
+</spiderly-login>
+```
+
+Spiderly stays vendor-neutral — it only ships the slot. Attaching a token to the login request (e.g. an `X-Turnstile-Token` header) is done with a standard Angular HTTP interceptor in your own app, so the framework never depends on a specific bot-protection provider.
 
 ## Service Overrides
 

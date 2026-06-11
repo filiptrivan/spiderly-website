@@ -1,11 +1,14 @@
 import { Footer, Navbar, Providers } from '@/components';
 import '@/styles/globals.css';
 import { cn, generateMetadata, inter } from '@/utils';
+import { getGitHubStars } from '@/utils/functions/get-github-stars';
 import Script from 'next/script';
 
 export const metadata = generateMetadata();
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const stars = await getGitHubStars();
+
   return (
     <html lang="en" className="dark">
       <Script
@@ -28,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       >
         <Providers>
-          <Navbar />
+          <Navbar stars={stars} />
           <main>{children}</main>
           <Footer />
         </Providers>

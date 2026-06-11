@@ -347,6 +347,122 @@ namespace YourAppName.WebAPI.Controllers
 }
 ```
 
+### Grouping entities under one controller with \[Controller\]
+
+By default each entity's generated base controller is named `{EntityName}BaseController` and lives at its own route. Use `[Controller("CustomName")]` to share one controller across multiple related entities — useful when several entities form a single bounded context (e.g. user/role/permission all served by a security controller).
+
+```csharp
+[Controller("SecurityController")]
+public class User { }
+
+[Controller("SecurityController")]
+public class Role { }
+
+[Controller("SecurityController")]
+public class Permission { }
+```
+
+### Suppressing the loading spinner with \[SkipSpinner\]
+
+The Angular HTTP loading interceptor shows a global full-screen spinner for every request by default.
+
+Most reads are already exempt automatically, so you rarely need this attribute: the generator skips the spinner for read-shaped responses (`NamebookDTO`, `CodebookDTO`, `PaginatedResultDTO`, `LazyLoadSelectedIdsResultDTO`) and for any `[HttpGet]` that returns a bare scalar (`int`, `long`, `bool`, `decimal`, `DateTime`, …) — for example an unread-notifications count.
+
+Mark a controller method with `[SkipSpinner]` only when the inference can't see your intent: a `[HttpGet]` that returns a full DTO but is **polled / refreshed on a timer**, a background submit, or an endpoint with its own inline loading UI. The example below is a background `void` GET (which resolves to `any`, not a scalar, so it isn't auto-skipped):
+
+```csharp
+[HttpGet]
+[SkipSpinner]
+public async Task SendNotificationEmail(long notificationId)
+{
+    await _emailingService.SendNotification(notificationId);
+}
+```
+
+### Forcing the spinner back on with \[ShowSpinner\]
+
+`[ShowSpinner]` is the inverse: it forces the overlay ON for a call the inference would auto-skip. Explicit attributes always win over inference. You rarely need it — a user-triggered operation that does real work is usually a `POST`, which keeps the spinner without any attribute. Reach for `[ShowSpinner]` only for a deliberately slow `[HttpGet]` that returns a bare scalar where you still want the blocking overlay. Don't put it on the read-shaped DTO responses (autocomplete, dropdowns, table pagination) — a full-screen blackout on every keystroke or page change is a regression.
+
+```csharp
+[HttpGet]
+[ShowSpinner]
+public async Task<int> RecalculateScore() // expensive, user-triggered
+{
+    return await _businessService.RecalculateScore();
+}
+```
+
+## Customizing What Gets Generated
+
+The attributes below fine-tune the generated DTOs and service methods on a per-property basis.
+
+### \[IncludeInDTO\]
+
+Forces a property to be included in the generated DTO. Use this for enumerable properties, which are excluded from DTOs by default. This attribute affects DTO **shape** only — it does not change mapping behavior.
+
+### \[ExcludeFromDTO\]
+
+Excludes a property from all generated DTOs. The property still exists on the entity (and in the database), but is invisible to the API surface and Angular client.
+
+```csharp
+[SpiderlyEntity]
+public class User : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [ExcludeFromDTO]
+    public string InternalAuditNotes { get; set; } // Server-only, never sent to clients
+}
+```
+
+### \[ExcludeFromExcelExport\]
+
+Hides a property's column(s) from the generated `Export{Entity}ListToExcel` output, while keeping the property in the DTO and the rest of the API/UI. Use it for internal/technical columns that are noise in a human-readable sheet — raw foreign-key ids, payment-gateway correlation data, sync plumbing, and the like. (Enumerable/collection properties are excluded from the export automatically and don't need the attribute.)
+
+Place it on the property that produces the column: a **scalar** property hides the matching column; a **many-to-one navigation** property hides the generated `{Nav}DisplayName` (and the synthesized `{Nav}Id` when there is no explicit foreign-key scalar).
+
+```csharp
+[SpiderlyEntity]
+public class Order : BusinessObject<long>
+{
+    [DisplayName]
+    public string OrderNumber { get; set; }
+
+    [ExcludeFromExcelExport]
+    public string PaymentGatewayRrn { get; set; } // Kept in the API, hidden from the sheet
+
+    [ExcludeFromExcelExport] // Hides the OrderStatusId column; OrderStatusDisplayName stays
+    public byte OrderStatusId { get; set; }
+    [WithMany(nameof(OrderStatus.Orders))]
+    public virtual OrderStatus OrderStatus { get; set; }
+}
+```
+
+Unlike `[ExcludeFromDTO]`, the property is **not** removed from the DTO — it remains available to the admin grid, details views, and API consumers; only the spreadsheet column is dropped.
+
+### \[ProjectToDTO\]
+
+Adds a custom Mapster projection step to the generated `{Entity}DTO`, executed when fetching a single entity. The attribute argument is the raw `.Map(...)` call appended to the projection config — pass the exact source/destination expression.
+
+```csharp
+[ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
+public class Achievement : BusinessObject<long>
+{
+    [DisplayName]
+    public string Name { get; set; }
+
+    [WithMany(nameof(Transaction.Achievements))]
+    public virtual Transaction Transaction { get; set; }
+}
+```
+
+For more involved mapping logic, prefer overriding `{Entity}ToDTOConfig()` in your partial `Mapper` class — see [Partial Classes → Custom Mappings (Mapper)](#custom-mappings-mapper).
+
+### \[ExcludeServiceMethodsFromGeneration\]
+
+Prevents the generator from emitting the standard CRUD service methods for the decorated property. Use this when you want full control over how the property is read or saved — e.g., a navigation that's loaded through a custom join, or a blob that goes through a non-standard upload path. The property still exists on the entity; only its generated service methods are skipped.
+
 ## Replacing Services via Interfaces
 
 For complete behavior replacement, Spiderly provides interfaces that you can implement and register in the DI container. This is useful when you need to completely change how a service works rather than just extending it.
@@ -413,6 +529,8 @@ Your custom `ITokenStorage` implementation must support querying by these indexe
 
 Every generated save/delete method wraps its logic in `_context.WithTransactionAsync(...)`. All hooks called within that flow (e.g., `OnBeforeInsert`, `OnAfterSave`) automatically run inside the same transaction. Nested `WithTransactionAsync` calls reuse the existing transaction — you do **not** need to start your own transaction in hooks.
 
+Generated save and delete operations also **flush the change tracker for you** before the transaction commits — so a hook (including `OnBefore{Entity}Delete`) can stage a tracked write such as `IOutbox.Enqueue` and have it persist atomically with the operation. This holds for deletes even though `[CascadeDelete]` removes dependents through untracked bulk `ExecuteDeleteAsync`. A manual `SaveChangesAsync` is only needed in **custom** (non-hook) `WithTransactionAsync` blocks (see below).
+
 If you need a transaction in **custom** (non-hook) methods:
 
 ```csharp
@@ -424,7 +542,7 @@ await _context.WithTransactionAsync(async () =>
 ```
 
 <Callout type="warn">
-  `WithTransactionAsync` throws `InvalidOperationException` if the change tracker still has pending writes when the transaction is about to commit. `transaction.CommitAsync()` only commits the DB transaction — it does **not** flush the tracker — so a missed `SaveChangesAsync` after `Add` would otherwise silently drop the writes (a classic outbox-pattern footgun). Either call `SaveChangesAsync` before returning from the action, or detach entries you don't intend to persist.
+  `WithTransactionAsync` throws `InvalidOperationException` if the change tracker still has pending writes when the transaction is about to commit. `transaction.CommitAsync()` only commits the DB transaction — it does **not** flush the tracker — so a missed `SaveChangesAsync` after `Add` would otherwise silently drop the writes (a classic outbox-pattern footgun). In a **custom** (non-hook) block, either call `SaveChangesAsync` before returning from the action, or detach entries you don't intend to persist — generated save/delete operations already flush for you, so hooks don't need it.
 </Callout>
 
 ## Exception Types

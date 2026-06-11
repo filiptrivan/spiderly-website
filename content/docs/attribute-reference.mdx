@@ -1,0 +1,27 @@
+---
+title: Attribute Reference
+description: Alphabetical index of every Spiderly attribute, with a one-line purpose and a link to the topic page where it is documented in context.
+---
+
+## How to Use This Page
+
+This page is a flat A–Z index — useful when you know the attribute name and want to jump straight to its full documentation. For tutorials and worked examples, follow the **Documented in** link to the relevant topic page.
+
+Every attribute on this list lives in the `Spiderly.Shared` package. Standard .NET data annotations (`[Required]`, `[StringLength]`, `[Range]`, `[Precision]`) that Spiderly also reacts to are documented in [Validation](/docs/validation).
+
+## Reference
+
+<ReferenceTable kind="attributes" />
+
+## Standard .NET Attributes
+
+Spiderly also reacts to the standard `System.ComponentModel.DataAnnotations` attributes:
+
+| Attribute | Generates |
+|---|---|
+| `[Required]` | Server + client `NotEmpty` validation, non-nullable column |
+| `[StringLength(max)]` / `[StringLength(max, MinimumLength = min)]` | Server + client length validation, EF column length |
+| `[Range(min, max)]` | Server + client range validation |
+| `[Precision(p, s)]` | Server + client decimal validation, EF column precision |
+
+See [Validation](/docs/validation) for usage examples.

@@ -48,6 +48,16 @@ After generation, open the entity file at `Backend\YourAppName.Business\Entities
 
 The entity class inherits from `BusinessObject<ID>` which supports create, read, update and delete operations. If you need a read-only entity that does not support create, update, or delete operations from the UI, change the base class to `ReadonlyObject<ID>`.
 
+### Optimistic concurrency
+
+Every `BusinessObject<ID>` carries a `[ConcurrencyCheck]` `Version` column that gives you optimistic concurrency for free — `ReadonlyObject<ID>` has none. Spiderly manages it end to end, so you never set or increment it yourself:
+
+- On insert, `Version` is set to `1`; on every update it is incremented inside `SaveChanges`.
+- The value round-trips to the client on the entity's DTO, so the client always holds the version it last read.
+- On update, the generated `Save{Entity}` reloads the row and compares the stored `Version` against the one the client sent back. If they differ, the write is rejected with a localized `ConcurrencyException`.
+
+This means two users editing the same record can't silently overwrite each other — the second save fails loudly instead of clobbering the first. No per-entity configuration is required. (The check runs on update; deletes use a bulk `ExecuteDeleteAsync` and are not version-guarded.)
+
 ### Example of a customized entity:
 
 ```csharp

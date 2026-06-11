@@ -131,7 +131,7 @@ The generated `Program.cs` calls `config.AddEnvironmentVariables()`, so any sett
 |---|---|
 | `AppSettings:Spiderly.Shared:ConnectionString` | `AppSettings__Spiderly.Shared__ConnectionString` |
 | `AppSettings:Spiderly.Shared:JwtKey` | `AppSettings__Spiderly.Shared__JwtKey` |
-| `AppSettings:Spiderly.Security:GoogleClientId` | `AppSettings__Spiderly.Security__GoogleClientId` |
+| `AppSettings:Spiderly.Security:ExternalProviders:0:ClientId` | `AppSettings__Spiderly.Security__ExternalProviders__0__ClientId` |
 
 <Callout type="warn">
   `Spiderly.Shared` is the **section name** — the dots are part of the name, not configuration separators. The correct variable is `AppSettings__Spiderly.Shared__JwtKey`. A common mistake is `AppSettings__Spiderly__Shared__JwtKey` (treating the dot as a separator), which will be silently ignored and leave the setting at its default value.
@@ -159,8 +159,7 @@ These must be set for every production deployment:
 | Variable | Description |
 |---|---|
 | `AppSettings__Spiderly.Shared__EmailSender`, `AppSettings__Spiderly.Shared__EmailSenderPassword` | Email sending credentials. See [Set Up Emailing](/docs/set-up-emailing). |
-| `AppSettings__Spiderly.Shared__TelegramBotToken`, `AppSettings__Spiderly.Shared__TelegramChatId` | Telegram error notifications. See [Set Up Telegram Notifications](/docs/set-up-telegram-notifications). |
-| `AppSettings__Spiderly.Security__GoogleClientId` | Google OAuth client ID. See [Set Up Google Authentication](/docs/set-up-google-authentication). |
+| `AppSettings__Spiderly.Security__ExternalProviders__0__Code`, `AppSettings__Spiderly.Security__ExternalProviders__0__ClientId`, `AppSettings__Spiderly.Security__ExternalProviders__0__ClientSecret` | External auth provider config (one entry per provider). See [Set Up Google Authentication](/docs/set-up-google-authentication). |
 | `AppSettings__Spiderly.Shared__CookieDomain` | Cookie domain for cross-subdomain sharing (e.g., `.example.com`). See [Cookie Configuration](#cookie-configuration). |
 | `AppSettings__Spiderly.Shared__CookieSameSite` | Cookie SameSite attribute (`None`, `Lax`, `Strict`, `Unspecified`). Default: `None`. See [Cookie Configuration](#cookie-configuration). |
 | File storage variables (`S3BucketName`, `S3PublicEndpoint`, plus your own S3 credentials / custom-adapter settings) | Depends on the `StorageAttribute` subclasses your entities use. See [File Storage — Provider Setup](/docs/file-storage#provider-setup). |
@@ -174,7 +173,7 @@ builder
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    .WithOrigins(new[] { Spiderly.Shared.SettingsProvider.Current.FrontendUrl });
+    .WithOrigins(new[] { Configuration.GetValue<string>($"{Spiderly.Shared.Settings.ConfigurationSection}:FrontendUrl") });
 ```
 
 If you have additional frontends (e.g., a Next.js storefront), you can add more origins by overriding the CORS configuration in your `Startup.Configure`:
@@ -188,8 +187,8 @@ app.UseCors(builder =>
         .AllowCredentials()
         .WithOrigins(new[]
         {
-            Spiderly.Shared.SettingsProvider.Current.FrontendUrl,
-            YourApp.WebAPI.SettingsProvider.Current.StorefrontUrl,
+            Configuration.GetValue<string>($"{Spiderly.Shared.Settings.ConfigurationSection}:FrontendUrl"),
+            Configuration.GetValue<string>("AppSettings:StorefrontUrl"),
         })
         .WithExposedHeaders("Content-Disposition");
 });
@@ -242,6 +241,6 @@ When your frontend and API are on different subdomains (e.g., `admin.example.com
 - [ ] `FrontendUrl` is set to the production admin panel URL (no trailing slash)
 - [ ] Database migrations are applied
 - [ ] CORS origins include all frontends that call the API
-- [ ] Email, Telegram, and file storage variables are set (if using those features)
+- [ ] Email and file storage variables are set (if using those features)
 - [ ] `CookieDomain` and `CookieSameSite` are set (if using cookie-based authentication across subdomains)
 - [ ] HTTPS is configured (via your hosting platform's load balancer or reverse proxy)

@@ -19,4 +19,6 @@ export const NAV_LINKS: NavLink[] = [
   },
 ];
 
-export const GITHUB_STARS = 51;
+export const GITHUB_REPO_URL = 'https://github.com/filiptrivan/spiderly';
+
+export const GITHUB_STARS_FALLBACK = 50;

@@ -62,6 +62,7 @@ public class FilterDTO
     public List<FilterSortMetaDTO> MultiSortMeta { get; set; } = new();
     public int? AdditionalFilterIdInt { get; set; }
     public long? AdditionalFilterIdLong { get; set; }
+    public byte? AdditionalFilterIdByte { get; set; }
 }
 ```
 
@@ -85,14 +86,7 @@ public class FilterRuleDTO
 
 All supported match modes:
 
-| MatchModeCodes | Applies To | Description |
-|----------------|-----------|-------------|
-| `StartsWith` | string | Case-insensitive prefix match |
-| `Contains` | string | Case-insensitive substring match |
-| `Equals` | string, number, bool, DateTime | Exact match |
-| `LessThan` | number, DateTime | Less than comparison |
-| `GreaterThan` | number, DateTime | Greater than comparison |
-| `In` | number, collections | Value is in a set |
+<ReferenceTable kind="matchModes" />
 
 <Callout>
   String comparisons are always case-insensitive (`.ToLower()` is applied automatically).
@@ -144,7 +138,7 @@ This is compile-time safe — no magic strings. The expression `x => x.Name` is 
 
 ## Custom Filtering with AdditionalFilterId
 
-`AdditionalFilterIdInt` and `AdditionalFilterIdLong` are extra filter parameters designed for **parent-child filtering** — when you need to show a list of child records filtered by a parent ID.
+`AdditionalFilterIdInt`, `AdditionalFilterIdLong`, and `AdditionalFilterIdByte` are extra filter parameters designed for **parent-child filtering** — when you need to show a list of child records filtered by a parent ID. Pick the variant that matches the parent entity's primary key type.
 
 **Frontend:** Pass the parent ID via the `additionalFilterIdLong` input on `spiderly-data-table`:
 

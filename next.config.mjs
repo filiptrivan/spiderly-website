@@ -12,13 +12,22 @@ const nextConfig = {
       },
     ],
   },
-  async redirects() {
+  async rewrites() {
+    // Serve per-page Markdown at /docs/<slug>.mdx (and /docs.mdx for the index) from the llms.mdx route
+    // handler. Powers the docs "Copy Markdown" / "View as Markdown" page actions.
     return [
       {
-        source: '/docs/ui-customization',
-        destination: '/docs/frontend-customization',
-        permanent: true,
+        source: '/docs.mdx',
+        destination: '/llms.mdx',
       },
+      {
+        source: '/docs/:path*.mdx',
+        destination: '/llms.mdx/:path*',
+      },
+    ];
+  },
+  async redirects() {
+    return [
       {
         source: '/docs/entity-authorization',
         destination: '/docs/authorization',
@@ -32,6 +41,36 @@ const nextConfig = {
       {
         source: '/docs/translate-spiderly-app',
         destination: '/docs/translation',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes',
+        destination: '/docs/attribute-reference',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/general',
+        destination: '/docs/attribute-reference',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/code-generation',
+        destination: '/docs/attribute-reference',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/relationships',
+        destination: '/docs/relationships',
+        permanent: true,
+      },
+      {
+        source: '/docs/attributes/ui',
+        destination: '/docs/ui-customization',
+        permanent: true,
+      },
+      {
+        source: '/docs/set-up-telegram-notifications',
+        destination: '/docs/exceptions',
         permanent: true,
       },
       {

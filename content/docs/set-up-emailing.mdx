@@ -3,7 +3,31 @@ title: Set Up Emailing
 description: Configure your Spiderly app to send emails such as verification codes, unhandled exception alerts, and notifications.
 ---
 
-## Prefer Watching Instead?
+## Configure Email Settings
+
+Locate the `Backend\YourAppName.WebAPI\appsettings.json` file and set the following fields under `AppSettings.Spiderly.Shared`:
+
+- `"EmailSender"` — the **existing email address** to send from (verification codes, exception alerts, notifications).
+- `"EmailSenderPassword"` — **not** your regular Gmail password. For Gmail this must be a **Gmail App Password** (see steps below).
+
+<Callout>
+  `SmtpHost` defaults to `smtp.gmail.com` and `SmtpPort` defaults to `587`, so for Gmail you only
+  need to set `EmailSender` and `EmailSenderPassword`.
+</Callout>
+
+## Generate a Gmail App Password
+
+App Passwords are 16-character codes that let an app sign in to your Google Account without your regular password. Two-Step Verification must be enabled first.
+
+1. Open [myaccount.google.com/security](https://myaccount.google.com/security) while signed in to the Google account you want to send from.
+2. Under **How you sign in to Google**, enable **2-Step Verification** if it isn't already on.
+3. Open [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (or search "App passwords" from the security page).
+4. Enter an app name (e.g. `Spiderly`) and click **Create**.
+5. Copy the **16-character code** shown in the yellow box — spaces are decorative, the code itself has no spaces. This is your `EmailSenderPassword`.
+6. The code is shown only once. If you lose it, delete the entry and create a new one.
+
+### Video walkthrough
+
 <iframe
   src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Gmail_App_Password_s5a34m&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302352%2FCopy_of_Copy_of_Untitled_YouTube_Thumbnail_h23qle.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
   width="640"
@@ -12,17 +36,6 @@ description: Configure your Spiderly app to send emails such as verification cod
   allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
   allowFullScreen
 />
-
-## Configure Email Settings
-
-Locate the `Backend\YourAppName.WebAPI\appsettings.json` file and set the following fields:
-
-- `"EmailSender"` - Set this to the **existing email address** you want to use for sending various types of emails, such as verification codes, unhandled exception alerts, and notifications.
-- `"EmailSenderPassword"` - **Do not** use your regular Gmail password. This must be the **Gmail App Password** for the same email account specified in `"EmailSender"`. Follow the video tutorial to see how to generate an Gmail App Password from your Google account.
-
-### Note:
-
-`SmtpHost` defaults to `smtp.gmail.com` and `SmtpPort` defaults to `587`, so for Gmail you only need to set `EmailSender` and `EmailSenderPassword`.
 
 ## Using Brevo
 

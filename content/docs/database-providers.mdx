@@ -49,7 +49,7 @@ In `Startup.cs`, the Hangfire storage and EF Core provider are configured based 
 ```csharp
 services.AddHangfire(config =>
     config.UseHangfirePostgreSqlStorage(
-        Spiderly.Shared.SettingsProvider.Current.ConnectionString)
+        Configuration.GetValue<string>($"{Spiderly.Shared.Settings.ConfigurationSection}:ConnectionString"))
 );
 
 services.SpiderlyConfigureServices<YourAppApplicationDbContext>(
@@ -61,7 +61,7 @@ services.SpiderlyConfigureServices<YourAppApplicationDbContext>(
 ```csharp
 services.AddHangfire(config =>
     config.UseSqlServerStorage(
-        Spiderly.Shared.SettingsProvider.Current.ConnectionString)
+        Configuration.GetValue<string>($"{Spiderly.Shared.Settings.ConfigurationSection}:ConnectionString"))
 );
 
 services.SpiderlyConfigureServices<YourAppApplicationDbContext>(

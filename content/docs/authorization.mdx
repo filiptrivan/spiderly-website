@@ -38,7 +38,7 @@ Tokens are stored in `HttpOnly` cookies — the browser handles storage and send
 `AuthResultWithCookies` includes `userId`, `email`, and `accessTokenExpiresAt` — no tokens in the response body.
 
 <Callout type="warn">
-  Cookie-based authentication requires the [`AuthGuard`](/docs/attributes/general#authguard) attribute's CSRF protection. All state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"` header.
+  Cookie-based authentication requires the [`[AuthGuard]`](#authguard) attribute's CSRF protection. All state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"` header.
 </Callout>
 
 ### Choosing a Strategy
@@ -54,11 +54,53 @@ Tokens are stored in `HttpOnly` cookies — the browser handles storage and send
 
 By default, all entities require authorization for Create, Read, Update, and Delete operations. If your code encounters an authorization issue (e.g., an `UnauthorizedException - You don't have the necessary rights to perform the operation.`), it means the current user lacks the necessary permissions.
 
+If your entity requires access control, follow the steps in this tutorial to configure proper authorization.
+
+## Authorization Attributes
+
+### \[AuthGuard\]
+
+Protects API endpoints by checking the authentication status set by the authentication middleware.
+
+For **cookie-based** authentication, `[AuthGuard]` also enforces CSRF protection on state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`). These requests must include an `X-CSRF` header — the value doesn't matter, only its presence is checked. If the header is missing, the request is rejected with `403 Forbidden`.
+
+Requests authenticated via the `Authorization` header (Bearer token) are not affected by CSRF checks. `GET`, `HEAD`, and `OPTIONS` requests are also not affected, regardless of the auth strategy.
+
+```csharp
+[SpiderlyController]
+[ApiController]
+[Route("/api/[controller]/[action]")]
+public class ReportController : ReportBaseController
+{
+    [HttpPost]
+    [AuthGuard] // Authenticated users only; cookie auth requires X-CSRF header
+    public async Task<IActionResult> RunExport() { /* ... */ }
+}
+```
+
+### \[DoNotAuthorize\]
+
+Disables authorization checks for **all CRUD operations** on the decorated entity. By default, every entity requires the user to hold the relevant `Read{Entity}` / `Insert{Entity}` / `Update{Entity}` / `Delete{Entity}` permission.
+
 <Callout type="warn">
-**Skipping Authorization:** If you want to explicitly bypass authorization for an entity, you can apply the `[DoNotAuthorize]` attribute. This disables all security checks for that entity across all operations.
+  `[DoNotAuthorize]` bypasses security checks entirely and is intended primarily for testing or for
+  entities that are truly public. Avoid it on entities that contain user data or any value worth
+  protecting in production.
 </Callout>
 
-If your entity requires access control, follow the steps in this tutorial to configure proper authorization.
+```csharp
+[SpiderlyEntity]
+[DoNotAuthorize] // Public catalog — no permissions required
+public class PublicAnnouncement : BusinessObject<long>
+{
+    [DisplayName]
+    public string Title { get; set; }
+}
+```
+
+### Per-action permissions
+
+For finer-grained control — e.g. requiring an extra permission on top of the default `Insert{Entity}` / `Update{Entity}` permission — see `[UIAdditionalPermissionCodeForInsert]` and `[UIAdditionalPermissionCodeForUpdate]` in [UI Customization — Per-Action Permissions](/docs/ui-customization#per-action-permissions).
 
 ## Add Permissions to Your Application
 
@@ -108,3 +150,9 @@ In the application UI:
 3. In the **Permissions** control, add the newly created permissions.
 
 This ensures users assigned to this role will have access to the specified entity operations.
+
+## See Also
+
+- [UI Customization — Per-Action Permissions](/docs/ui-customization#per-action-permissions) — require an extra permission on top of the default `Insert{Entity}` / `Update{Entity}` permission
+- [Backend Customization — Authorization Service](/docs/backend-customization#authorization-service) — override authorization logic in code (e.g., row-level checks)
+- [Deployment — Cookie Configuration](/docs/deployment#cookie-configuration) — `CookieDomain` and `CookieSameSite` settings for cookie-based authentication across subdomains
