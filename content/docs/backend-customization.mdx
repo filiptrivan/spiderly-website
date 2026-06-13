@@ -368,7 +368,7 @@ The Angular HTTP loading interceptor shows a global full-screen spinner for ever
 
 Most reads are already exempt automatically, so you rarely need this attribute: the generator skips the spinner for read-shaped responses (`NamebookDTO`, `CodebookDTO`, `PaginatedResultDTO`, `LazyLoadSelectedIdsResultDTO`) and for any `[HttpGet]` that returns a bare scalar (`int`, `long`, `bool`, `decimal`, `DateTime`, …) — for example an unread-notifications count.
 
-Mark a controller method with `[SkipSpinner]` only when the inference can't see your intent: a `[HttpGet]` that returns a full DTO but is **polled / refreshed on a timer**, a background submit, or an endpoint with its own inline loading UI. The example below is a background `void` GET (which resolves to `any`, not a scalar, so it isn't auto-skipped):
+Mark a controller method with `[SkipSpinner]` only when the inference can't see your intent: a `[HttpGet]` that returns a full DTO but is **polled / refreshed on a timer**, a background submit, an endpoint with its own inline loading UI, or a fetch feeding a **lightweight popover / inline panel** (e.g. a row-level "show order items" popover on a list page) where blocking the whole screen is disproportionate. Make this a deliberate decision for every endpoint you add — the inference covers the common cases, but only you know how the client consumes the response. The example below is a background `void` GET (which resolves to `any`, not a scalar, so it isn't auto-skipped):
 
 ```csharp
 [HttpGet]
