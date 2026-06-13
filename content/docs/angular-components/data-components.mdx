@@ -128,7 +128,7 @@ Use the `Action` class to add buttons to each row:
   actions: [
     { field: 'Details', icon: 'pi pi-pencil' },
     { field: 'Delete', icon: 'pi pi-trash' },
-    { field: 'custom', name: 'Preview', icon: 'pi pi-eye', onClick: (id) => this.preview(id) },
+    { field: 'custom', name: 'Preview', icon: 'pi pi-eye', onClick: (e) => this.preview(e.id) },
   ],
 }
 ```
@@ -137,6 +137,29 @@ Built-in `field` values:
 - `'Details'` — navigates to the detail page
 - `'Delete'` — opens a confirmation dialog and calls `deleteItemFromTableObservableMethod`
 - Any other value — triggers the `onClick` callback
+
+#### Action click payload
+
+The `onClick` callback receives an `ActionClickEvent` carrying everything you need to react to the click — including the clicked element, so you can anchor an overlay or popover to it:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `number` | The clicked row's id |
+| `row` | `any` | The full row object the action belongs to |
+| `element` | `HTMLElement` | The clicked action element — use as the popover/overlay anchor |
+| `originalEvent` | `MouseEvent` | The original DOM click event |
+
+For example, to open a PrimeNG popover anchored to the clicked action:
+
+```typescript
+{
+  field: 'preview', name: 'Preview', icon: 'pi pi-eye',
+  onClick: (e) => {
+    this.selectedRow = e.row;
+    this.previewPopover.show(e.originalEvent, e.element);
+  },
+}
+```
 
 ## SpiderlyDataView
 
