@@ -56,7 +56,7 @@ Every `BusinessObject<ID>` carries a `[ConcurrencyCheck]` `Version` column that 
 - The value round-trips to the client on the entity's DTO, so the client always holds the version it last read.
 - On update, the generated `Save{Entity}` reloads the row and compares the stored `Version` against the one the client sent back. If they differ, the write is rejected with a localized `ConcurrencyException`.
 
-This means two users editing the same record can't silently overwrite each other — the second save fails loudly instead of clobbering the first. No per-entity configuration is required. (The check runs on update; deletes use a bulk `ExecuteDeleteAsync` and are not version-guarded.)
+This means two users editing the same record can't silently overwrite each other — the second save fails loudly instead of clobbering the first. No per-entity configuration is required. (The check runs on update only: deletes use a bulk `ExecuteDeleteAsync` and are not version-guarded, and inserts have no version to race — guard duplicate creation with a unique index instead.)
 
 ### Example of a customized entity:
 

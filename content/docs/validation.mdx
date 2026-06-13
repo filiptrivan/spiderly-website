@@ -23,6 +23,13 @@ Spiderly simplifies validation across your application by allowing you to annota
 - EF Core attributes will result in database schema changes. When you use them, remember to run database migration and update.
 - Spiderly backend validation attributes require rebuilding the backend to take effect.
 
+<Callout>
+  Validation attributes belong on entities and on DTOs that accept input (request bodies you validate
+  and persist). Readonly / output-only DTOs don't need them — generated validation never runs against
+  data the server itself produced. The exception is `[Required]`, which also drives Swagger nullability
+  and the generated TypeScript types, so keep it on output DTOs.
+</Callout>
+
 ## Custom Validation Rules
 
 For validation logic that can't be expressed with attributes, use the `ConfigureCustomRules()` partial method. Spiderly generates each validator as a `partial` class with an empty `ConfigureCustomRules()` method. You implement this method in a separate file to add custom [FluentValidation](https://docs.fluentvalidation.net/) rules.
