@@ -1,0 +1,8 @@
+# Owner-reserved paths — SEO-load-bearing config (changes ripple to every page / indexed URLs).
+# CODEOWNERS auto-requests the owner; with require_code_owner_review, owned-path PRs need sign-off.
+
+# URL redirects for renamed/moved doc pages
+/next.config.mjs                    @filiptrivan
+
+# Centralized SEO metadata generator
+/src/utils/functions/metadata.ts    @filiptrivan
