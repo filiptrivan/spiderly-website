@@ -24,10 +24,10 @@ Spiderly simplifies validation across your application by allowing you to annota
 - Spiderly backend validation attributes require rebuilding the backend to take effect.
 
 <Callout>
-  Validation attributes belong on entities and on DTOs that accept input (request bodies you validate
-  and persist). Readonly / output-only DTOs don't need them — generated validation never runs against
-  data the server itself produced. The exception is `[Required]`, which also drives Swagger nullability
-  and the generated TypeScript types, so keep it on output DTOs.
+  Validation attributes belong on entities and on DTOs that accept input (request bodies you
+  validate and persist). Readonly / output-only DTOs don't need them — generated validation never
+  runs against data the server itself produced. The exception is `[Required]`, which also drives
+  Swagger nullability and the generated TypeScript types, so keep it on output DTOs.
 </Callout>
 
 ## Custom Validation Rules
@@ -176,8 +176,9 @@ This attribute is already built in EF Core, but apart from that, Spiderly also u
 </Callout>
 
 <Callout type="warn">
-  Always apply `StringLength` to string properties. If omitted, EF Core will map them to
-  `NVARCHAR(MAX)` by default, which can negatively impact performance.
+  Always apply `StringLength` to **entity** string properties. If omitted, EF Core maps them to
+  `NVARCHAR(MAX)`, which can hurt performance. This is a schema concern, so it applies to entity
+  columns only — output/readonly DTO strings don't need it (see the note at the top of this page).
 </Callout>
 
 ### Usage
