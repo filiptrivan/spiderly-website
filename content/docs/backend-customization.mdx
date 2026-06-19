@@ -308,6 +308,8 @@ namespace YourAppName.Business.DTO
 }
 ```
 
+These members are merged into the generated `ProductDTO` automatically — **no `[SpiderlyDTO]` needed** on the extension. Custom **properties** flow through to every generated artifact, including the Angular entity type (`entities.generated.ts`) and validators; **methods** stay server-side (only properties become TypeScript fields).
+
 ## Controller Overrides
 
 Generated controllers create a base class (e.g., `ProductBaseController`) with virtual methods. Create your own controller that inherits from the base and overrides specific endpoints or add new ones.
@@ -444,6 +446,8 @@ Unlike `[ExcludeFromDTO]`, the property is **not** removed from the DTO — it r
 ### \[ProjectToDTO\]
 
 Adds a custom Mapster projection step to the generated `{Entity}DTO`, executed when fetching a single entity. The attribute argument is the raw `.Map(...)` call appended to the projection config — pass the exact source/destination expression.
+
+`[ProjectToDTO]` only fills a **value** — the destination property must already exist on the DTO (add it as a [custom DTO property](#custom-dto-properties)). It does not create the property, so mapping to a `dest` with no matching DTO property maps nothing and the field won't appear in the generated Angular client.
 
 ```csharp
 [ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
