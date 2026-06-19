@@ -11,11 +11,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn, NAV_LINKS } from '@/utils';
-<<<<<<< HEAD
 import { GITHUB_REPO_URL } from '@/utils/constants/nav-links';
-=======
-import { Star } from 'lucide-react';
->>>>>>> d84520e (+add npm downloads counter)
 import Link from 'next/link';
 import React from 'react';
 import AnimationContainer from '../global/animation-container';

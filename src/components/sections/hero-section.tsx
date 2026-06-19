@@ -1,5 +1,6 @@
 import { AnimationContainer, Glow, SectionContainer } from '@/components';
 import { ReactNode } from 'react';
+import { DownloadsCounter } from '../ui/downloads-counter';
 
 interface HeroSectionProps {
   title: ReactNode;
@@ -26,6 +27,7 @@ export const HeroSection = ({ title, description, buttons }: HeroSectionProps) =
               <div className="mt-6 flex items-center gap-2 md:gap-3 lg:gap-4">{buttons}</div>
             )}
           </div>
+          <DownloadsCounter />
         </SectionContainer>
         <Glow />
       </AnimationContainer>

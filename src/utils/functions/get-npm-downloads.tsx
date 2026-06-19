@@ -1,3 +1,5 @@
+import { formatCompactNumber } from './format-compact-number';
+
 interface NpmDownloadsCounterProps {
   time?: 'last-week' | 'last-day' | 'last-month';
   packageName?: string;
@@ -9,13 +11,13 @@ async function fetchMonthlyDownloads({ time, packageName }: NpmDownloadsCounterP
   return downloads;
 }
 
-async function NpmDownloadCounter({
+async function getNpmDownloads({
   time = 'last-month',
   packageName = 'spiderly',
 }: NpmDownloadsCounterProps) {
   const downloads = await fetchMonthlyDownloads({ time, packageName });
-  const formatedNumber = new Intl.NumberFormat('en-us').format(downloads);
-  return <p className="text-sm text-muted-foreground">{formatedNumber} monthly downloads</p>;
+  const formatedNumber = formatCompactNumber(Number(downloads));
+  return formatedNumber;
 }
 
-export default NpmDownloadCounter;
+export default getNpmDownloads;
