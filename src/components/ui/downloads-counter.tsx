@@ -6,7 +6,7 @@ interface PackageManagerProps {
   icon: string;
   packageManagerName: string;
   timeInterval: 'Last Month' | 'All Time' | 'Yesterday' | 'Last Year';
-  downloads: Promise<string>;
+  downloads: Promise<string> | string;
   iconClassName?: string;
 }
 
@@ -14,7 +14,7 @@ async function DownloadsCounter() {
   const npmDownloads = getNpmDownloads({ time: 'last-month' });
   const nugetDownloads = await fetchTotalDownloadsOnNuget({ packageName: 'spiderly.shared' });
   return (
-    <div className="flex items-center gap-2 md:gap-3 lg:gap-4 justify-center mt-12">
+    <div className="flex flex-col sm:flex-row items-center gap-3 lg:gap-4 justify-center mt-12">
       <PackageManager
         icon={'/icons/npm-logo.svg'}
         packageManagerName="node package manager"
