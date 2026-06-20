@@ -1,0 +1,39 @@
+name: develop invariant
+
+# Guards the linear release model: master must always be an ancestor of develop, so the release
+# fast-forward of master onto develop keeps working (spiderly's release.yml fast-forwards this
+# repo's master to develop on every stable release). A direct/hotfix commit to master that isn't
+# reconciled back into develop breaks that — and it only surfaces (loudly) at the *next* release.
+# That is exactly what bit this repo's #75: a forgotten rebase sat unreconciled until it broke a
+# release run. This check moves detection to the next develop push, so the one-line fix can happen
+# immediately:
+#   git checkout develop && git rebase origin/master && git push --force-with-lease
+#
+# It runs from develop (push trigger), not on a schedule — scheduled workflows only run from the
+# default branch (master), which is updated solely by the release fast-forward, so a schedule could
+# never observe an unreleased develop.
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  master-is-ancestor-of-develop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+      - name: master must be an ancestor of develop
+        run: |
+          git fetch --quiet origin master develop
+          if git merge-base --is-ancestor origin/master origin/develop; then
+            echo "✓ master is an ancestor of develop — the release fast-forward will succeed."
+            exit 0
+          fi
+          echo "::error title=master diverged from develop::master has commit(s) not in develop — a direct/hotfix commit to master was not reconciled into develop. Fix: git checkout develop && git rebase origin/master && git push --force-with-lease. Until then the release fast-forward of master will fail."
+          exit 1
