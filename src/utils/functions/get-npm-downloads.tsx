@@ -1,3 +1,4 @@
+import { NPM_DOWNLOADS_FALLBACK } from '../constants/nav-links';
 import { formatCompactNumber } from './format-compact-number';
 
 interface NpmDownloadsCounterProps {
@@ -6,9 +7,19 @@ interface NpmDownloadsCounterProps {
 }
 
 async function fetchMonthlyDownloads({ time, packageName }: NpmDownloadsCounterProps) {
-  const req = await fetch(`https://api.npmjs.org/downloads/point/${time}/${packageName}`);
-  const { downloads } = await req.json();
-  return downloads;
+  try {
+    const req = await fetch(`https://api.npmjs.org/downloads/point/${time}/${packageName}`, {
+      next: { revalidate: 60 * 60 * 24 },
+      signal: AbortSignal.timeout(2000),
+    });
+    if (req.ok) {
+      const { downloads } = await req.json();
+      return downloads;
+    }
+    return NPM_DOWNLOADS_FALLBACK;
+  } catch (error) {
+    return NPM_DOWNLOADS_FALLBACK;
+  }
 }
 
 async function getNpmDownloads({
