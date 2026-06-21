@@ -1,18 +1,22 @@
 import getNpmDownloads from '@/utils/functions/get-npm-downloads';
-import { fetchTotalDownloadsOnNuget } from '@/utils/functions/get-nugget-downloads';
+import { getNugetDownloads } from '@/utils/functions/get-nuget-downloads';
+
 import Image from 'next/image';
 
 interface PackageManagerProps {
   icon: string;
   packageManagerName: string;
-  timeInterval: 'Last Month' | 'All Time' | 'Yesterday' | 'Last Year';
-  downloads: Promise<string> | string;
+  timeInterval: 'Last Month' | 'All Time';
+  downloads: string;
   iconClassName?: string;
 }
 
 async function DownloadsCounter() {
-  const npmDownloads = getNpmDownloads({ time: 'last-month' });
-  const nugetDownloads = await fetchTotalDownloadsOnNuget({ packageName: 'spiderly.shared' });
+  const [npmDownloads, nugetDownloads] = await Promise.all([
+    getNpmDownloads({ time: 'last-month' }),
+    getNugetDownloads(),
+  ]);
+
   return (
     <div className="flex flex-col sm:flex-row items-center gap-3 lg:gap-4 justify-center mt-12">
       <PackageManager

@@ -22,3 +22,5 @@ export const NAV_LINKS: NavLink[] = [
 export const GITHUB_REPO_URL = 'https://github.com/filiptrivan/spiderly';
 
 export const GITHUB_STARS_FALLBACK = 50;
+export const NUGET_DOWNLOADS_FALLBACK = 12000;
+export const NPM_DOWNLOADS_FALLBACK = 300;
