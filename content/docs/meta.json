@@ -12,6 +12,7 @@
     "enums",
     "file-storage",
     "authorization",
+    "api-keys",
     "exceptions",
     "build-diagnostics",
     "backend-customization",

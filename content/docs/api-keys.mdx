@@ -1,0 +1,108 @@
+---
+title: API Keys
+description: Give machines, partners, and AI agents access to your REST API with per-key authentication, where each key is a first-class principal carrying its own roles.
+---
+
+When a partner integration, a CI bot, or an AI agent needs to call your API without going through the interactive email-code login, they use an **API key** — a long-lived secret sent in an `X-Api-Key` header.
+
+In Spiderly an API key is a **first-class principal** (`PrincipalKinds.ApiKey`), not an impersonation of a user. Each key carries **its own roles**, and authorization resolves a key's permissions through the same pipeline as a logged-in user. So your existing permission-protected endpoints accept a key with no per-endpoint change.
+
+<Callout type="info">
+  API keys are **opt-in**. An app has zero API-key surface — no scheme, no endpoints, no database
+  table — until you enable the feature. Don't add it unless you actually need machine/partner/agent
+  access.
+</Callout>
+
+## How a key authenticates
+
+A client sends the key in the `X-Api-Key` header:
+
+```bash
+curl https://api.yourapp.com/api/Product/GetPaginatedProductList \
+  -H "X-Api-Key: <key>" \
+  -H "Content-Type: application/json" \
+  -d '{"first": 0, "rows": 10}'
+```
+
+Enabling the feature installs a **forwarding scheme** as the default: a request with the `X-Api-Key` header is authenticated by the key handler, and everything else falls through to JWT. The upshot is that the _same_ `[HasPermission]` / `[AuthGuard]` endpoints accept **either** a logged-in user's JWT **or** an API key — you don't annotate endpoints with a second scheme.
+
+## Keys are principals — with their own roles
+
+A key's authority is the **union of its own roles' permissions** (a many-to-many, exactly like a user's roles):
+
+- A key with no roles has **no permissions** — it authenticates, but is denied everything. Assign it a role (e.g. a read-only role) to grant access.
+- A key's roles are independent of the user who created it. Changing the creator's roles later does not change the key's.
+
+### Why a key, and not just a long-lived JWT?
+
+Because an API key must be **individually revocable**, and a JWT can't be. A JWT is stateless — once signed, it's valid until it expires, and you can't kill a single one without rotating the signing key (which logs out every user). An API key is an opaque secret stored **hashed**; every request checks it against a row, so revoking, expiring, or disabling a single key takes effect immediately.
+
+## Enabling API keys
+
+The fastest path is the **`api-keys` skill** — with [Claude Code](/docs/claude-code) set up, ask it to _"add API keys"_ and it assembles every piece below into your project, including the database migration. To do it by hand, the shape is:
+
+### 1. The `ApiKey` entity
+
+Add an entity that implements `IApiKey` (which extends `ISecurityPrincipal`), so the framework can verify a presented key generically:
+
+```csharp
+[Index(nameof(KeyHash), IsUnique = true)]
+[SpiderlyEntity]
+public class ApiKey : BusinessObject<long>, IApiKey
+{
+    [UIDoNotGenerate]
+    public string KeyHash { get; set; }       // SHA-256 of the key; the plaintext is never stored
+
+    [DisplayName]
+    public string Name { get; set; }
+
+    public DateTime? ExpiresAt { get; set; }
+    public bool? IsRevoked { get; set; }
+    public bool? IsDisabled { get; set; }
+
+    public virtual List<Role> Roles { get; } = new();   // M2M — the key's authority
+    IReadOnlyCollection<IRole> ISecurityPrincipal.Roles => Roles;
+
+    // Creator — auto-stamped at generation. A soft reference (id + kind), because the principal that
+    // mints a key can be any kind (a user, another key, ...).
+    [UIDoNotGenerate]
+    public long CreatedById { get; set; }
+
+    [UIDoNotGenerate]
+    public string CreatedByPrincipalKind { get; set; }
+}
+```
+
+### 2. Registration
+
+Register the key as a principal kind and turn on the authentication, after `AddSpiderly(...)`:
+
+```csharp
+services.AddSpiderlyPrincipal<ApiKey>(PrincipalKinds.ApiKey);
+services.AddSpiderlyApiKeyAuthentication<ApiKey>();
+```
+
+`AddSpiderlyApiKeyAuthentication<ApiKey>()` wires the default lookup (`DefaultApiKeyAuthenticator<ApiKey>`) over your entity — **you don't write the verification code**. Register your own `IApiKeyAuthenticator` before this call only if you need a non-standard lookup (e.g. an external key store).
+
+## Generating and revoking keys
+
+Keys are minted by a small pair of endpoints (the `api-keys` skill scaffolds them, or write them yourself):
+
+- **Generate** returns the plaintext key **exactly once** — store only its hash. The caller copies it on creation and it can never be retrieved again.
+- **Revoke** flags the key; the next request it makes is rejected.
+
+Day-to-day, you manage keys conversationally through the skill (_"generate a read-only key for the ACME partner, expiring in 90 days"_) rather than building admin screens for a feature most end users never touch — though nothing stops you from generating an admin page for the `ApiKey` entity if you want one.
+
+## Security model
+
+| Property                           | How it's enforced                                                                                    |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Plaintext is never stored          | Only the SHA-256 hash is persisted; the key is shown once at generation.                             |
+| Individually revocable / expirable | The authenticator checks `IsRevoked`, `ExpiresAt`, and `IsDisabled` live on every request.           |
+| A key can't outrank its creator    | Issuance is guarded — an admin may only grant a key roles whose permissions the admin already holds. |
+| Role-less means powerless          | A key with no roles is denied every permission check.                                                |
+
+<Callout type="warn">
+  Treat a key like a password. It grants its roles' permissions to anyone who holds it — rotate or
+  revoke it immediately if it leaks.
+</Callout>
