@@ -95,12 +95,12 @@ Day-to-day, you manage keys conversationally through the skill (_"generate a rea
 
 ## Security model
 
-| Property                           | How it's enforced                                                                                    |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Plaintext is never stored          | Only the SHA-256 hash is persisted; the key is shown once at generation.                             |
-| Individually revocable / expirable | The authenticator checks `IsRevoked`, `ExpiresAt`, and `IsDisabled` live on every request.           |
-| A key can't outrank its creator    | Issuance is guarded — an admin may only grant a key roles whose permissions the admin already holds. |
-| Role-less means powerless          | A key with no roles is denied every permission check.                                                |
+| Property                           | How it's enforced                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Plaintext is never stored          | Only the SHA-256 hash is persisted; the key is shown once at generation.                                                        |
+| Individually revocable / expirable | The authenticator checks `IsRevoked`, `ExpiresAt`, and `IsDisabled` live on every request.                                      |
+| A key can't outrank its creator    | Issuance is guarded — the creating principal (any kind — user, key, …) may only grant roles whose permissions it already holds. |
+| Role-less means powerless          | A key with no roles is denied every permission check.                                                                           |
 
 <Callout type="warn">
   Treat a key like a password. It grants its roles' permissions to anyone who holds it — rotate or
