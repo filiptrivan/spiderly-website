@@ -118,6 +118,7 @@ Columns are defined using the `Column` class. Each column maps to a data field a
 | `showTime` | `boolean` | For date columns: show time portion |
 | `decimalPlaces` | `number` | For numeric columns: decimal formatting |
 | `actions` | `Action[]` | Row action buttons (see [Actions](#actions)) |
+| `onCellClick` | `(e: CellClickEvent) => void` | Per-cell click handler (see [Cell click](#cell-click)) |
 
 ### Actions
 
@@ -160,6 +161,36 @@ For example, to open a PrimeNG popover anchored to the clicked action:
   },
 }
 ```
+
+### Cell click
+
+Set a column's `onCellClick` to react to clicks on the cell **value** (as opposed to an action icon) — the mirror of [`Action.onClick`](#action-click-payload), but for plain value cells. Only columns that define it become clickable (they get a cursor + hover affordance), and the click stops propagation so it does not also trigger `navigateOnRowClick`. It is not applied to editable cells.
+
+```typescript
+{
+  field: 'total', name: 'Total', filterType: 'numeric',
+  onCellClick: (e) => {
+    this.selectedRow = e.row;
+    this.itemsPopover.show(e.originalEvent, e.element);
+  },
+}
+```
+
+#### Cell click payload
+
+The `onCellClick` callback receives a `CellClickEvent`:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `number` | The clicked row's id (`row[idField]`) |
+| `field` | `string` | The clicked column's `field` |
+| `row` | `any` | The full row object |
+| `value` | `any` | The cell's raw value (`row[field]`) |
+| `displayValue` | `string` | The formatted text shown in the cell |
+| `element` | `HTMLElement` | The clicked `<td>` — use as the popover/overlay anchor |
+| `originalEvent` | `MouseEvent` | The original DOM click event |
+
+`element` is captured at click time on purpose: anchor overlays with it rather than `originalEvent.currentTarget`, which the DOM resets to `null` once dispatch ends — so it would already be null inside an async handler that opens the popover after a fetch.
 
 ## SpiderlyDataView
 
