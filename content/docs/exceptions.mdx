@@ -19,18 +19,18 @@ The `errorCode` discriminator is one of these machine-readable values (generated
 
 <ReferenceTable kind="apiErrorCodes" />
 
-| Exception | Status | Log Level | Message to Client | Notification |
-|-----------|--------|-----------|-------------------|--------------|
-| `BusinessException` | 400 | Information | Exception message | No |
-| `ExpiredVerificationException` | 400 | Information | Exception message | No |
-| `SpiderlyValidationException` | 422 | Information | Per-field errors | No |
-| `FluentValidation.ValidationException` | 422 | Information | Per-field errors | No |
-| `UnauthorizedException` | 401 | Warning | Exception message | No |
-| `SecurityTokenException` | 401 (RFC 6750) | Information | Exception message | No |
-| `SecurityViolationException` | 403 | Error | Generic error | Yes |
-| `DbUpdateConcurrencyException` | 409 | Warning | Localized `ConcurrencyException` | No |
-| `DbUpdateException` (unique/FK violation) | 409 | Warning | Localized message | No |
-| Unhandled | 500 | Error | Generic error | Yes |
+| Exception                                 | Status         | Log Level   | Message to Client                | Notification |
+| ----------------------------------------- | -------------- | ----------- | -------------------------------- | ------------ |
+| `BusinessException`                       | 400            | Information | Exception message                | No           |
+| `ExpiredVerificationException`            | 400            | Information | Exception message                | No           |
+| `SpiderlyValidationException`             | 422            | Information | Per-field errors                 | No           |
+| `FluentValidation.ValidationException`    | 422            | Information | Per-field errors                 | No           |
+| `UnauthorizedException`                   | 401            | Warning     | Exception message                | No           |
+| `SecurityTokenException`                  | 401 (RFC 6750) | Information | Exception message                | No           |
+| `SecurityViolationException`              | 403            | Error       | Generic error                    | Yes          |
+| `DbUpdateConcurrencyException`            | 409            | Warning     | Localized `ConcurrencyException` | No           |
+| `DbUpdateException` (unique/FK violation) | 409            | Warning     | Localized message                | No           |
+| Unhandled                                 | 500            | Error       | Generic error                    | Yes          |
 
 ## BusinessException
 
@@ -80,12 +80,12 @@ For requests that indicate malicious intent (tampered IDs, forged hidden fields,
 
 The handler recognises common Postgres and SQL Server constraint violations and maps them to `409 Conflict` with localized messages:
 
-| Dialect | Code | Meaning | Localization key |
-|---------|------|---------|------------------|
-| Postgres | `23505` | Unique violation | `UniqueConstraintException` |
-| Postgres | `23503` | Foreign-key violation | `ForeignKeyConstraintException` |
-| SQL Server | `2627`, `2601` | Unique violation | `UniqueConstraintException` |
-| SQL Server | `547` | Foreign-key violation | `ForeignKeyConstraintException` |
+| Dialect    | Code           | Meaning               | Localization key                |
+| ---------- | -------------- | --------------------- | ------------------------------- |
+| Postgres   | `23505`        | Unique violation      | `UniqueConstraintException`     |
+| Postgres   | `23503`        | Foreign-key violation | `ForeignKeyConstraintException` |
+| SQL Server | `2627`, `2601` | Unique violation      | `UniqueConstraintException`     |
+| SQL Server | `547`          | Foreign-key violation | `ForeignKeyConstraintException` |
 
 Other `DbUpdateException` instances fall through to the generic 500 handler. `DbUpdateConcurrencyException` is handled separately with the `ConcurrencyException` message.
 
@@ -93,17 +93,45 @@ Other `DbUpdateException` instances fall through to the generic 500 handler. `Db
 
 Any exception that doesn't match the types above returns a generic error message to the client (never exposing internal details) and triggers an admin notification in production via the notification framework (`INotifier` → the Email channel).
 
+## Keeping expected exceptions out of your error tracker
+
+The log levels in the table above are the contract for what counts as a _problem_: the `Information`/`Warning` rows are expected, client-facing conditions; the `Error` rows (`SecurityViolationException` and unhandled 500s) are genuine faults. An error tracker wired through its ASP.NET Core integration — for example Sentry's `UseSentry()` — **auto-captures the exception object directly**, and on **.NET 8 and 9 the framework emits that diagnostic even for exceptions your `IExceptionHandler` already handled into a clean 4xx**, regardless of log level. Left unfiltered, a routine `BusinessException` lands in your tracker as an `error` and alerts you for something that isn't a bug.
+
+`SpiderlyExceptionClassifier` is the single source of truth for that decision. `SpiderlyExceptionHandler` consumes it for the log levels above, so your tracker filter and the handler's logging can't drift:
+
+```csharp
+// true for the Information/Warning rows (expected); false for SecurityViolationException + 500s
+bool expected = SpiderlyExceptionClassifier.IsExpected(exception);
+
+// the level the handler logs the exception at
+LogLevel level = SpiderlyExceptionClassifier.GetLogLevel(exception);
+```
+
+Wire `IsExpected` into your tracker's pre-send filter so only real faults are reported. With Sentry:
+
+```csharp
+webBuilder.UseSentry(options =>
+{
+    options.SetBeforeSend((sentryEvent, _) =>
+        sentryEvent.Exception != null && SpiderlyExceptionClassifier.IsExpected(sentryEvent.Exception)
+            ? null            // drop expected, client-facing exceptions
+            : sentryEvent);   // report SecurityViolationException and genuine 500s
+});
+```
+
+> **.NET 10+** suppresses diagnostics for handled exceptions (`IExceptionHandler.TryHandleAsync` returning `true`) by default, so the auto-capture stops firing for handled exceptions on its own — but wiring `IsExpected` remains the explicit, version-independent way to express the rule.
+
 ## How errors surface in the admin UI
 
 The Angular admin handles failed requests globally — there is no per-call error wiring. An HTTP-error interceptor shows the right toast and **rethrows**, so calling code only ever runs its success path:
 
-| Response | What the user sees |
-|----------|--------------------|
-| Connection failure (status 0) | "Server lost connection" warning |
-| `400` | Warning toast with the server's message (your `BusinessException` text) |
-| `401` | Session cleared on an invalid token (guards redirect to login); otherwise a "login required" warning |
-| `403` | Permission warning |
-| `404` | Not-found warning |
-| Anything else | Generic error toast |
+| Response                      | What the user sees                                                                                   |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Connection failure (status 0) | "Server lost connection" warning                                                                     |
+| `400`                         | Warning toast with the server's message (your `BusinessException` text)                              |
+| `401`                         | Session cleared on an invalid token (guards redirect to login); otherwise a "login required" warning |
+| `403`                         | Permission warning                                                                                   |
+| `404`                         | Not-found warning                                                                                    |
+| Anything else                 | Generic error toast                                                                                  |
 
-Uncaught errors that are not HTTP responses get a generic toast from the global Angular `ErrorHandler`. The practical rule: throw the right exception server-side and the UI story is done — add client-side `catchError` only to *react* to a failure (e.g. reset local state), never to show the message, which has already been shown by the time your handler runs.
+Uncaught errors that are not HTTP responses get a generic toast from the global Angular `ErrorHandler`. The practical rule: throw the right exception server-side and the UI story is done — add client-side `catchError` only to _react_ to a failure (e.g. reset local state), never to show the message, which has already been shown by the time your handler runs.
