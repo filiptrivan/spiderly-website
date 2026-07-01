@@ -75,14 +75,13 @@ public class ApiKey : BusinessObject<long>, IApiKey
 
 ### 2. Registration
 
-Register the key as a principal kind and turn on the authentication, after `AddSpiderly(...)`:
+Enable API keys by passing the `AddApiKeys<ApiKey>()` sub-builder to your existing `AddSecurity<…>` call in `Startup.cs`:
 
 ```csharp
-services.AddSpiderlyPrincipal<ApiKey>(PrincipalKinds.ApiKey);
-services.AddSpiderlyApiKeyAuthentication<ApiKey>();
+spiderly.AddSecurity<User, UserExternalLogin, AuthorizationService>(s => s.AddApiKeys<ApiKey>());
 ```
 
-`AddSpiderlyApiKeyAuthentication<ApiKey>()` wires the default lookup (`DefaultApiKeyAuthenticator<ApiKey>`) over your entity — **you don't write the verification code**. Register your own `IApiKeyAuthenticator` before this call only if you need a non-standard lookup (e.g. an external key store).
+`AddApiKeys<ApiKey>()` registers the `ApiKey` principal kind and wires the default lookup (`DefaultApiKeyAuthenticator<ApiKey>`) over your entity — **you don't write the verification code**. Register your own `IApiKeyAuthenticator` before this call only if you need a non-standard lookup (e.g. an external key store).
 
 ## Generating and revoking keys
 
