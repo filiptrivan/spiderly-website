@@ -13,12 +13,12 @@ Tokens are returned in the response body and sent via the `Authorization` header
 
 **Angular methods:**
 
-| Method | Returns | Description |
-|---|---|---|
-| `login(request)` | `AuthResult` | Login with email verification token |
-| `loginExternal(provider)` | `AuthResult` | Login with external provider (e.g., Google) |
-| `logout(browserId)` | — | Invalidate tokens |
-| `refreshTokenWithHeaders(request)` | `AuthResult` | Refresh an expired access token |
+| Method                             | Returns      | Description                                 |
+| ---------------------------------- | ------------ | ------------------------------------------- |
+| `login(request)`                   | `AuthResult` | Login with email verification token         |
+| `loginExternal(provider)`          | `AuthResult` | Login with external provider (e.g., Google) |
+| `logout(browserId)`                | —            | Invalidate tokens                           |
+| `refreshTokenWithHeaders(request)` | `AuthResult` | Refresh an expired access token             |
 
 `AuthResult` includes `accessToken`, `refreshToken`, `userId`, and `email`.
 
@@ -28,33 +28,64 @@ Tokens are stored in `HttpOnly` cookies — the browser handles storage and send
 
 **Angular methods:**
 
-| Method | Returns | Description |
-|---|---|---|
-| `loginWithCookies(request)` | `AuthResultWithCookies` | Login with email verification token |
+| Method                               | Returns                 | Description                                 |
+| ------------------------------------ | ----------------------- | ------------------------------------------- |
+| `loginWithCookies(request)`          | `AuthResultWithCookies` | Login with email verification token         |
 | `loginExternalWithCookies(provider)` | `AuthResultWithCookies` | Login with external provider (e.g., Google) |
-| `logoutWithCookies(browserId)` | — | Clear auth cookies |
-| `refreshTokenWithCookies(browserId)` | `AuthResultWithCookies` | Refresh via cookie |
+| `logoutWithCookies(browserId)`       | —                       | Clear auth cookies                          |
+| `refreshTokenWithCookies(browserId)` | `AuthResultWithCookies` | Refresh via cookie                          |
 
 `AuthResultWithCookies` includes `userId`, `email`, and `accessTokenExpiresAt` — no tokens in the response body.
 
 <Callout type="warn">
-  Cookie-based authentication requires the [`[AuthGuard]`](#authguard) attribute's CSRF protection. All state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"` header.
+  Cookie-based authentication requires the [`[AuthGuard]`](#authguard) attribute's CSRF protection.
+  All state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"`
+  header.
 </Callout>
 
 ### Choosing a Strategy
 
-| | Token-Based | Cookie-Based |
-|---|---|---|
-| **Best for** | Mobile apps, cross-domain APIs, SPAs with explicit token handling | Same-domain/subdomain setups, simpler frontend code |
-| **Token storage** | Client manages (localStorage, memory) | Browser manages (HttpOnly cookies) |
-| **CSRF protection** | Not needed (tokens in headers) | Required (`X-CSRF` header) |
-| **Cross-subdomain** | Works out of the box | Requires [`CookieDomain` and `CookieSameSite`](/docs/deployment#cookie-configuration) configuration |
+|                     | Token-Based                                                       | Cookie-Based                                                                                        |
+| ------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Best for**        | Mobile apps, cross-domain APIs, SPAs with explicit token handling | Same-domain/subdomain setups, simpler frontend code                                                 |
+| **Token storage**   | Client manages (localStorage, memory)                             | Browser manages (HttpOnly cookies)                                                                  |
+| **CSRF protection** | Not needed (tokens in headers)                                    | Required (`X-CSRF` header)                                                                          |
+| **Cross-subdomain** | Works out of the box                                              | Requires [`CookieDomain` and `CookieSameSite`](/docs/deployment#cookie-configuration) configuration |
 
 ## Overview
 
 By default, all entities require authorization for Create, Read, Update, and Delete operations. If your code encounters an authorization issue (e.g., an `UnauthorizedException - You don't have the necessary rights to perform the operation.`), it means the current user lacks the necessary permissions.
 
 If your entity requires access control, follow the steps in this tutorial to configure proper authorization.
+
+## Registration
+
+Authentication and authorization are turned on by a single call inside the `AddSpiderly` builder in your `Startup.cs`. The `spiderly init` template scaffolds it for you — you rarely write it by hand:
+
+```csharp
+services.AddSpiderly<ApplicationDbContext>(Configuration, spiderly =>
+{
+    spiderly.UsePostgreSQL();
+    spiderly.AddSecurity<User, UserExternalLogin, AuthorizationService>();
+});
+```
+
+`AddSecurity<TUser, TUserExternalLogin, TAuthorizationService>` registers the whole auth core as one unit: the email-login and JWT services, the `User` principal kind, your `AuthorizationService`, and — crucially — the `[HasPermission]` handler that forwards to it. These pieces are **co-required**: an app with some but not all of them is silently broken, so `AddSecurity` bundles them all-or-nothing. A single-principal app needs nothing more.
+
+Optional add-ons opt in through a sub-builder. [API keys](/docs/api-keys), for example, register a second principal kind and its auth scheme:
+
+```csharp
+spiderly.AddSecurity<User, UserExternalLogin, AuthorizationService>(s => s.AddApiKeys<ApiKey>());
+```
+
+<Callout type="warn">
+  If you replace the scaffolded `AddSecurity` call with hand-rolled registration and forget the
+  `[HasPermission]` handler, the app **fails at startup**: _"Spiderly authentication is enabled, so
+  `[HasPermission]` materializes a `PermissionRequirement` policy, but no `IAuthorizationHandler` that
+  satisfies `PermissionRequirement` is registered."_ Fix it by calling
+  `services.AddSpiderlyAuthorization<AuthorizationServiceGenerated>()` — or simply keep using
+  `AddSecurity`, which registers the handler for you. It's a fail-loud boot guard, never a silent 403.
+</Callout>
 
 ## Authorization Attributes
 
@@ -97,6 +128,24 @@ public class PublicAnnouncement : BusinessObject<long>
     public string Title { get; set; }
 }
 ```
+
+### \[HasPermission\]
+
+Gates a custom controller action on a specific permission code. The principal — a logged-in user or an [API key](/docs/api-keys) — must hold that permission, or the request is rejected with `403 Forbidden`. Use it on endpoints you write yourself; entity CRUD already enforces the default `Read{Entity}` / `Insert{Entity}` / `Update{Entity}` / `Delete{Entity}` permissions with no attribute needed.
+
+```csharp
+[SpiderlyController]
+[ApiController]
+[Route("/api/[controller]/[action]")]
+public class ReportController : ReportBaseController
+{
+    [HttpPost]
+    [HasPermission("RunSalesReport")] // Caller must hold the RunSalesReport permission
+    public async Task<IActionResult> RunSalesReport() { /* ... */ }
+}
+```
+
+The permission code must be [seeded](#add-permissions-to-your-application) and assigned to the caller's role.
 
 ### Per-action permissions
 
@@ -145,7 +194,7 @@ spiderly update-database
 
 In the application UI:
 
-1. Navigate to *Administration → Roles*.
+1. Navigate to _Administration → Roles_.
 2. Select the role you want to modify.
 3. In the **Permissions** control, add the newly created permissions.
 

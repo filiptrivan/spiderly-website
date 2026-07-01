@@ -24,7 +24,7 @@ curl https://api.yourapp.com/api/Product/GetPaginatedProductList \
   -d '{"first": 0, "rows": 10}'
 ```
 
-Enabling the feature installs a **forwarding scheme** as the default: a request with the `X-Api-Key` header is authenticated by the key handler, and everything else falls through to JWT. The upshot is that the _same_ `[HasPermission]` / `[AuthGuard]` endpoints accept **either** a logged-in user's JWT **or** an API key — you don't annotate endpoints with a second scheme.
+Enabling the feature installs a **forwarding scheme** as the default: a request with the `X-Api-Key` header is authenticated by the key handler, and everything else falls through to JWT. The upshot is that the _same_ [`[HasPermission]`](/docs/authorization#haspermission) / `[AuthGuard]` endpoints accept **either** a logged-in user's JWT **or** an API key — you don't annotate endpoints with a second scheme.
 
 ## Keys are principals — with their own roles
 
