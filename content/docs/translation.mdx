@@ -8,16 +8,17 @@ description: Learn how to translate your Spiderly app using JSON files and IStri
 Spiderly uses a runtime, JSON-based translation system powered by .NET's `IStringLocalizer`. Translation files are flat key-value JSON files stored in your project, and `IStringLocalizer` is automatically injected into all generated services and controllers.
 
 Key features:
+
 - **JSON files** in `Backend\YourAppName.Shared\Translations\` named by [language tag](https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags) (e.g., `en.json`, `sr-Latn-RS.json`)
 - **Automatic injection** — generated services and controllers receive `IStringLocalizer` via constructor injection
 - **Graceful fallback** — if no translations are configured, the app still works (keys are returned as-is)
 
 ## Registration
 
-Enable translations in your `Program.cs` using the `SpiderlyBuilder`:
+Enable translations in your `Startup.cs` using the `SpiderlyBuilder`:
 
 ```csharp
-services.AddSpiderly<YourDbContext>(spiderly =>
+services.AddSpiderly<YourDbContext>(Configuration, spiderly =>
 {
     spiderly.UsePostgreSQL(); // or UseSQLServer()
 
@@ -49,6 +50,7 @@ spiderly.UseCulture("sr-Latn-RS", "en");
 ```
 
 When multiple cultures are provided, per-request culture resolution is enabled via:
+
 - `Accept-Language` header
 - Query string: `?culture=sr-Latn-RS`
 - Cookie
@@ -59,20 +61,22 @@ Spiderly uses the following key conventions for entities and properties:
 
 ### Entity Keys
 
-| Key pattern | Purpose | Example |
-|---|---|---|
-| `{EntityName}` | Singular name (forms, labels) | `"Product"` |
-| `{EntityName}List` | Plural name (table titles) | `"ProductList"` |
-| `{EntityName}ExcelExportName` | Excel export filename | `"ProductExcelExportName"` |
+| Key pattern                   | Purpose                       | Example                    |
+| ----------------------------- | ----------------------------- | -------------------------- |
+| `{EntityName}`                | Singular name (forms, labels) | `"Product"`                |
+| `{EntityName}List`            | Plural name (table titles)    | `"ProductList"`            |
+| `{EntityName}ExcelExportName` | Excel export filename         | `"ProductExcelExportName"` |
 
 ### Property Keys
 
-| Key pattern | Purpose | Example |
-|---|---|---|
+| Key pattern      | Purpose                           | Example                 |
+| ---------------- | --------------------------------- | ----------------------- |
 | `{PropertyName}` | Input labels, validation messages | `"Name"`, `"CreatedAt"` |
 
 <Callout>
-  When you run `spiderly init`, the CLI seeds an `en.json` file with framework keys (`Name`, `Description`, `CreatedAt`, `ModifiedAt`, etc.). You only need to add translations for your own entities and properties.
+  When you run `spiderly init`, the CLI seeds an `en.json` file with framework keys (`Name`,
+  `Description`, `CreatedAt`, `ModifiedAt`, etc.). You only need to add translations for your own
+  entities and properties.
 </Callout>
 
 ## Example
@@ -142,9 +146,9 @@ public class ProductService
 
 Spiderly provides two extension methods on `IStringLocalizer`:
 
-| Method | Description |
-|---|---|
-| `_localizer.Translate(key)` | Returns the translated value, or the key itself if not found |
+| Method                                                | Description                                                      |
+| ----------------------------------------------------- | ---------------------------------------------------------------- |
+| `_localizer.Translate(key)`                           | Returns the translated value, or the key itself if not found     |
 | `_localizer.GetExcelTranslation(excelKey, pluralKey)` | Tries the Excel-specific key first, falls back to the plural key |
 
 ```csharp
@@ -174,7 +178,7 @@ The `{EntityName}ExcelExportName` key controls the filename. If left empty, it f
 
 ## FluentValidation Integration
 
-When translations are enabled, FluentValidation automatically uses `IStringLocalizer` to resolve property display names. For example, if `"BirthDate"` is translated to `"Birth Date"`, validation messages will say *"Birth Date is required"* instead of *"BirthDate is required"*.
+When translations are enabled, FluentValidation automatically uses `IStringLocalizer` to resolve property display names. For example, if `"BirthDate"` is translated to `"Birth Date"`, validation messages will say _"Birth Date is required"_ instead of _"BirthDate is required"_.
 
 This is handled by the generated `TranslatePropertiesConfiguration` class — no manual setup needed.
 
@@ -196,7 +200,8 @@ provideTransloco({
 ## Custom Frontend Translations
 
 <Callout>
-  You only need to add custom frontend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+  You only need to add custom frontend translations if your app supports **multiple languages**. If
+  you're only using a single language, you can simply use hardcoded strings.
 </Callout>
 
 ### Add a Translation Key-Value Pair
@@ -219,10 +224,9 @@ import { TranslocoService } from '@jsverse/transloco';
   templateUrl: './your.component.html',
 })
 export class YourComponent {
-
   constructor(
     // ... other injections
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
   ngOnInit() {
@@ -251,15 +255,14 @@ export class YourComponent {
 Use the directive with Angular's `*transloco` syntax:
 
 ```html
-<ng-container *transloco="let t">
-    {{t('KeyForTranslation')}}
-</ng-container>
+<ng-container *transloco="let t"> {{t('KeyForTranslation')}} </ng-container>
 ```
 
 ## Custom Backend Translations
 
 <Callout>
-  You only need to add custom backend translations if your app supports **multiple languages**. If you're only using a single language, you can simply use hardcoded strings.
+  You only need to add custom backend translations if your app supports **multiple languages**. If
+  you're only using a single language, you can simply use hardcoded strings.
 </Callout>
 
 To use custom backend translations, add your keys to the JSON translation files and resolve them with `IStringLocalizer`:
