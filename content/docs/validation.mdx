@@ -211,6 +211,15 @@ public class User : BusinessObject<long>
 
 Specifies the accepted file types for a blob property. **This attribute is required on every blob property** (any property decorated with a `StorageAttribute` subclass like `[S3PublicStorage]`, `[S3PrivateStorage]`, `[DiskStorage]`, or a custom one) and must declare at least one MIME-typed value. If it is missing (or contains only extension values like `".pdf"` with no `image/jpeg`-shaped entry), the source generator raises build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). There is no implicit default — every blob property must whitelist its accepted types explicitly.
 
+Entry semantics:
+
+- MIME entries (`"image/png"`) are enforced server-side (declared-type whitelist + content inspection) and passed to the UI file picker.
+- Type wildcards (`"image/*"`) match any declared type with that prefix.
+- Extension entries (`".pdf"` — leading dot, no `/`) only widen the UI file picker; always pair them with the matching MIME type.
+- `"image/svg+xml"` is validated structurally (XML with an `<svg>` root; active content like scripts and event-handler attributes is rejected) since SVG has no magic bytes, and it skips ImageSharp optimization — the file uploads as-is.
+
+Validation failures throw `BusinessException`, so the user sees the specific localized message rather than a generic error.
+
 ### Example:
 
 ```csharp

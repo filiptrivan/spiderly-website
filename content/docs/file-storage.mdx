@@ -216,8 +216,8 @@ The source generator detects custom storage attributes by the convention "attrib
 2. `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` hook runs
 3. Authorization check (insert vs update based on entity ID)
 4. File size validation — `[MaxFileSize]` if set, otherwise **20 MB default**
-5. MIME-type + magic-byte signature validation — `[AcceptedFileTypes]` is **required** on every blob property and must declare at least one MIME-typed value (e.g. `[AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]`). If it is missing or contains only extension values, the source generator emits build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). The server reads the first 16 bytes of the stream and rejects requests whose content does not match the declared `Content-Type` — spoofing the header does not bypass validation.
-6. `OnBefore{Property}BlobFor{Entity}IsUploaded()` hook runs — for images, this validates dimensions and optimizes
+5. MIME-type + content signature validation — `[AcceptedFileTypes]` is **required** on every blob property and must declare at least one MIME-typed value (e.g. `[AcceptedFileTypes("image/jpeg", "image/png", "image/webp", "image/avif")]`). If it is missing or contains only extension values, the source generator emits build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014). MIME entries match the declared `Content-Type` exactly, or by prefix for type wildcards (`"image/*"`); extension entries (`".pdf"` — leading dot) only widen the UI file picker, so always pair them with a MIME type. The content is then verified against the declared type: binary types by magic-byte inspection, and `image/svg+xml` (a text format with no magic bytes) structurally — the document must parse as XML with an `<svg>` root, and active content (script elements, `on*` event attributes, `javascript:` hrefs, `foreignObject`) is rejected. Spoofing the header does not bypass validation. Failures throw `BusinessException`, so the user sees the specific localized message (`FileTypeNotAllowed`, `FileContentDoesNotMatchType`, `FileContainsActiveContent`, `FileIsEmpty`, `FileSizeExceeded`).
+6. `OnBefore{Property}BlobFor{Entity}IsUploaded()` hook runs — for raster images, this validates dimensions and optimizes; SVG and non-image files pass through raw
 7. File is uploaded to the storage adapter resolved per the property's `[*Storage]` attribute
 8. The file identifier (key or URL) is returned to the client
 
@@ -227,10 +227,12 @@ All generated `Upload*For*` endpoints are decorated with `[EnableRateLimiting(Sp
 
 ### Default image processing
 
-For image files, the default `OnBefore{Property}BlobFor{Entity}IsUploaded` hook:
+For raster image files (`image/*` except `image/svg+xml` — see `Helper.IsOptimizableImage`), the default `OnBefore{Property}BlobFor{Entity}IsUploaded` hook:
 
 1. **Validates dimensions** — if `[ImageWidth]` or `[ImageHeight]` are set, checks exact pixel dimensions
 2. **Optimizes** — converts to **WebP** format at **85% quality** using SixLabors.ImageSharp
+
+SVG is a vector text format ImageSharp cannot decode, so it skips both steps and uploads as-is; its safety is enforced by the structural validation in the upload flow above.
 
 ## File Processing Hooks
 
