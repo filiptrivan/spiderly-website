@@ -7,8 +7,9 @@ description: Configure your Spiderly app to send emails such as verification cod
 
 Locate the `Backend\YourAppName.WebAPI\appsettings.json` file and set the following fields under `AppSettings.Spiderly.Shared`:
 
-- `"EmailSender"` — the **existing email address** to send from (verification codes, exception alerts, notifications).
+- `"EmailSender"` — the **existing email address** to send from (verification codes, exception alerts, notifications), as an `{ "email": "...", "name": "..." }` object (`name` is the optional display name).
 - `"EmailSenderPassword"` — **not** your regular Gmail password. For Gmail this must be a **Gmail App Password** (see steps below).
+- `"EmailReplyTo"` — optional `{ "email": "...", "name": "..." }` Reply-To address attached to emails sent with the default `EmailSender`. Useful when the sender is a no-reply address: replies land in a monitored inbox instead of bouncing.
 
 <Callout>
   `SmtpHost` defaults to `smtp.gmail.com` and `SmtpPort` defaults to `587`, so for Gmail you only
@@ -32,7 +33,7 @@ App Passwords are 16-character codes that let an app sign in to your Google Acco
   src="https://player.cloudinary.com/embed/?cloud_name=dle7vs1ph&public_id=How_to_Set_Up_Gmail_App_Password_s5a34m&profile=cld-default&poster=https%3A%2F%2Fres.cloudinary.com%2Fdle7vs1ph%2Fimage%2Fupload%2Fv1762302352%2FCopy_of_Copy_of_Untitled_YouTube_Thumbnail_h23qle.png&playback_rates[0]=0.5&playback_rates[1]=1&playback_rates[2]=1.5&playback_rates[3]=2"
   width="640"
   height="360"
-  style={{height: 'auto', width: '100%', aspectRatio: '640 / 360'}}
+  style={{ height: 'auto', width: '100%', aspectRatio: '640 / 360' }}
   allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
   allowFullScreen
 />
@@ -47,25 +48,28 @@ Add your Brevo API key to the `Spiderly.Shared` section of `appsettings.Developm
 
 ```json
 "Spiderly.Shared": {
-  "EmailSender": "you@example.com",
+  "EmailSender": {
+    "email": "no-reply@example.com",
+    "name": "Example Shop"
+  },
+  "EmailReplyTo": {
+    "email": "info@example.com",
+    "name": "Example Shop"
+  },
   "BrevoApiKey": "xkeysib-..."
 }
 ```
 
-### 2. Register the Brevo HttpClient
+`EmailReplyTo` is optional — leave it out to send without a Reply-To header.
 
-In your `Startup.ConfigureServices` (or `Program.cs`), call:
+### 2. Register the Brevo emailing implementation
 
-```csharp
-services.SpiderlyAddBrevoEmailingService();
-```
-
-### 3. Register `BrevoEmailingService` in DI
-
-Wire up `IEmailingService` to the Brevo implementation:
+On the `AddSpiderly` builder in your `Startup.ConfigureServices`, call:
 
 ```csharp
-registry.Register<IEmailingService, Spiderly.Shared.Emailing.BrevoEmailingService>();
+spiderly.AddBrevoEmailing();
 ```
+
+This registers `BrevoEmailingService` as the `IEmailingService` implementation and configures the named Brevo `HttpClient` with the API key from settings.
 
 That's it — all emails (verification, exception alerts, background jobs) will now be sent through the Brevo API.
