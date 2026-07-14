@@ -58,6 +58,14 @@ Every `BusinessObject<ID>` carries a `[ConcurrencyCheck]` `Version` column that 
 
 This means two users editing the same record can't silently overwrite each other — the second save fails loudly instead of clobbering the first. No per-entity configuration is required. (The check runs on update only: deletes use a bulk `ExecuteDeleteAsync` and are not version-guarded, and inserts have no version to race — guard duplicate creation with a unique index instead.)
 
+### Audit timestamps
+
+Every `BusinessObject<ID>` also carries `CreatedAt` and `ModifiedAt` columns that Spiderly stamps inside `SaveChanges` — `ReadonlyObject<ID>` has neither.
+
+- On insert both are set to the current UTC time; on every update `ModifiedAt` is refreshed while `CreatedAt` is left untouched (it is immutable after creation).
+- In normal CRUD you never assign them by hand — the generated save path owns them.
+- **One exception, for imports and migrations:** set `CreatedAt` explicitly before inserting a new row and Spiderly preserves your value — it stamps `CreatedAt` only when left at its default. This lets a bulk import keep each row's real creation date from the source system. `ModifiedAt` is always stamped with the write time, so it reflects when the row entered _this_ database.
+
 ### Example of a customized entity:
 
 ```csharp
