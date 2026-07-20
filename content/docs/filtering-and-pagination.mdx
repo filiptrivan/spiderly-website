@@ -106,6 +106,8 @@ public class FilterSortMetaDTO
 
 Sort rules are applied in list order — the first entry is the primary sort.
 
+The generated query is always totally ordered: when `MultiSortMeta` is empty the backend falls back to `Id` descending (newest first), and when sort rules are present `Id` descending is appended as the final tie-breaker. Without this, `Skip`/`Take` on an unordered (or non-uniquely ordered) query returns rows in arbitrary database order, so pages could repeat or drop rows. M2M junction entities have no `Id` and are excluded. To show a different default sort in the UI, set `defaultSortField` on the data table (see [Data Components](/docs/angular-components/data-components)).
+
 ## PaginatedResultDTO
 
 The response wrapper returned by every paginated endpoint:
