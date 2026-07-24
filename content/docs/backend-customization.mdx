@@ -52,6 +52,8 @@ Override virtual methods in your entity service class to customize entity operat
 - `OnBefore{Entity}Update()` - Execute logic before updating an existing entity
 - `OnBefore{Entity}ListDelete()` - Execute logic before deletion (handles both single and bulk cases)
 - `OnBefore{Entity}Delete()` - Per-id variant; defaults to forwarding to `OnBefore{Entity}ListDelete` with a one-element list. Override only when the per-id flow genuinely diverges from the batch case.
+- `OnAfter{Entity}ListDelete()` - Execute logic after deletion (cascades included), still inside the delete transaction. Queries observe the post-delete state, so this is the place to recompute denormalized aggregates; writes commit or roll back atomically with the delete.
+- `OnAfter{Entity}Delete()` - Per-id variant; defaults to forwarding to `OnAfter{Entity}ListDelete` with a one-element list.
 
 ### Save Operation Hooks
 
@@ -560,7 +562,7 @@ Your custom `ITokenStorage` implementation must support querying by these indexe
 
 Every generated save/delete method wraps its logic in `_context.WithTransactionAsync(...)`. All hooks called within that flow (e.g., `OnBeforeInsert`, `OnAfterSave`) automatically run inside the same transaction. Nested `WithTransactionAsync` calls reuse the existing transaction — you do **not** need to start your own transaction in hooks.
 
-Generated save and delete operations also **flush the change tracker for you** before the transaction commits — so a hook (including `OnBefore{Entity}Delete`) can stage a tracked write such as `IOutbox.Enqueue` and have it persist atomically with the operation. This holds for deletes even though `[CascadeDelete]` removes dependents through untracked bulk `ExecuteDeleteAsync`. A manual `SaveChangesAsync` is only needed in **custom** (non-hook) `WithTransactionAsync` blocks (see below).
+Generated save and delete operations also **flush the change tracker for you** before the transaction commits — so a hook (including the `OnBefore{Entity}Delete` / `OnAfter{Entity}Delete` family) can stage a tracked write such as `IOutbox.Enqueue` and have it persist atomically with the operation. This holds for deletes even though `[CascadeDelete]` removes dependents through untracked bulk `ExecuteDeleteAsync`. A manual `SaveChangesAsync` is only needed in **custom** (non-hook) `WithTransactionAsync` blocks (see below).
 
 If you need a transaction in **custom** (non-hook) methods:
 
