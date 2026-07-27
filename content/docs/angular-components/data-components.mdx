@@ -120,7 +120,23 @@ Columns are defined using the `Column` class. Each column maps to a data field a
 | `showTime` | `boolean` | For date columns: show time portion |
 | `decimalPlaces` | `number` | For numeric columns: decimal formatting |
 | `actions` | `Action[]` | Row action buttons (see [Actions](#actions)) |
+| `visible` | `boolean` | Whether the column is initially rendered (default `true`; see [Column chooser](#column-chooser)) |
+| `lockVisible` | `boolean` | Pin the column — always rendered, shown checked and disabled in the chooser |
 | `onCellClick` | `(e: CellClickEvent) => void` | Per-cell click handler (see [Cell click](#cell-click)) |
+
+### Column chooser
+
+Lazy-loaded tables render a **Columns** toolbar button that opens a checkbox list of all data columns, letting the user show or hide each one. Since the column header is the table's only filter surface, showing a column is what makes it filterable — declare rarely-needed but filter-worthy columns with `visible: false` so they are available in the chooser without cluttering the default view:
+
+```typescript
+{ name: this.translocoService.translate('CreatedAt'), field: 'createdAt', filterType: 'date', visible: false },
+```
+
+Behavior notes:
+
+- **Hiding a column clears its active filter and sort** (a hidden column contributes nothing to filtering or sorting — otherwise it would restrict the data invisibly), reloading the table once. Hiding an unconstrained column doesn't trigger a server call.
+- **Choices persist per table** in `localStorage` under `` `${stateKey}:columns` `` — deliberately durable even when `stateStorage` is `'session'`, since a column layout is a preference while filters are a transient working set. Only explicit user toggles are stored, so changing a column's declared default later flows through to users who never touched it.
+- **Guards:** `lockVisible` columns can't be toggled, and the last visible data column can't be hidden. *Reset to default* in the chooser restores the declared configuration.
 
 ### Actions
 
