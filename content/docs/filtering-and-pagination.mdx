@@ -174,7 +174,6 @@ The generated filter code resolves **DTO property names** to entity paths automa
 
 - `categoryDisplayName` → `Category.Name` (follows navigation property + `[DisplayName]` attribute)
 - `categoryId` → `Category.Id` (follows FK relationship)
-- Properties with `[ProjectToDTO]` custom mappings are also resolved
 
 This means you can filter by DTO fields that don't directly exist on the entity — the generator knows how to translate them to the correct EF Core expression.
 

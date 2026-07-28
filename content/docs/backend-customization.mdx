@@ -232,7 +232,29 @@ Some generated classes use the partial class pattern, allowing you to add custom
 
 ### Custom Mappings (Mapper)
 
-The `Mapper` class is generated as a partial class. You can add your own custom mapping methods here. If you define a method with the same name as a generated one (e.g., `{Entity}DTOToEntityConfig`, `{Entity}ToDTOConfig`, `{Entity}ProjectToConfig`), the generator will skip that method and use yours instead.
+The `Mapper` class is generated as a partial class. You can add your own custom mapping methods here.
+
+**Adding mappings — `Customize*` partial hooks.** Every generated config method declares a matching `static partial void Customize{MethodName}(TypeAdapterConfig config)` hook and calls it before returning. Implement it to add custom mappings on top of the generated ones, in real compiler-checked C# — including the null guards that projections through optional navigations require:
+
+```csharp
+[SpiderlyDataMapper]
+public static partial class Mapper
+{
+    static partial void CustomizeOrderItemProjectToConfig(TypeAdapterConfig config)
+    {
+        // ProductVariant is an optional navigation — the null guard is mandatory:
+        // unguarded access LEFT JOINs to NULL and crashes EF's materializer.
+        config.ForType<OrderItem, OrderItemDTO>()
+            .Map(dest => dest.ProductId, src => src.ProductVariant != null ? (int?)src.ProductVariant.ProductId : null);
+    }
+}
+```
+
+Use `config.ForType<...>()` (get-or-extend) in hooks, never `NewConfig` (replace) — the generated mappings are already on the config when the hook runs. An unimplemented hook compiles away to nothing.
+
+Generated configs also disable Mapster's convention *flattening*: a DTO property named like a navigation chain (e.g. `ShippingTierIsBulky`) is **not** silently resolved through `ShippingTier.IsBulky` — an unmapped property stays at its default until you wire it deliberately through a hook.
+
+**Replacing mappings — same-name override.** If you define a method with the same name as a generated one (e.g., `{Entity}DTOToEntityConfig`, `{Entity}ToDTOConfig`, `{Entity}ProjectToConfig`), the generator will skip that method and use yours instead.
 
 ```csharp
 // File: Backend\YourAppName.Business\DataMappers\Mapper.cs
@@ -471,26 +493,6 @@ public class Order : BusinessObject<long>
 ```
 
 Unlike `[ExcludeFromDTO]`, the property is **not** removed from the DTO — it remains available to the admin grid, details views, and API consumers; only the spreadsheet column is dropped.
-
-### \[ProjectToDTO\]
-
-Adds a custom Mapster projection step to the generated `{Entity}DTO`, executed when fetching a single entity. The attribute argument is the raw `.Map(...)` call appended to the projection config — pass the exact source/destination expression.
-
-`[ProjectToDTO]` only fills a **value** — the destination property must already exist on the DTO (add it as a [custom DTO property](#custom-dto-properties)). It does not create the property, so mapping to a `dest` with no matching DTO property maps nothing and the field won't appear in the generated Angular client.
-
-```csharp
-[ProjectToDTO(".Map(dest => dest.TransactionPrice, src => src.Transaction.Price)")]
-public class Achievement : BusinessObject<long>
-{
-    [DisplayName]
-    public string Name { get; set; }
-
-    [WithMany(nameof(Transaction.Achievements))]
-    public virtual Transaction Transaction { get; set; }
-}
-```
-
-For more involved mapping logic, prefer overriding `{Entity}ToDTOConfig()` in your partial `Mapper` class — see [Partial Classes → Custom Mappings (Mapper)](#custom-mappings-mapper).
 
 ### \[ExcludeServiceMethodsFromGeneration\]
 
