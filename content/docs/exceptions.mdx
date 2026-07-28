@@ -11,9 +11,12 @@ Spiderly's global exception handler catches all exceptions and maps them to appr
   message: string;
   errorCode?: string;          // machine-readable discriminator (e.g. "invalid_token")
   fieldErrors?: { [field: string]: string[] };  // populated for 422 responses
+  traceId?: string;            // W3C trace id — support reference, reportable errors only
   exception?: string;          // full stack trace, development only
 }
 ```
+
+`traceId` is the request's W3C trace id, populated only for reportable errors — unhandled 500s and `SecurityViolationException`, the same classification `SpiderlyExceptionClassifier.IsExpected` exposes to error-tracker filters. Surface it to users as an error reference: it correlates the response with your server logs and error-tracker events (e.g. Sentry's `trace:` search), while expected 4xx responses never carry it, so ordinary validation feedback doesn't look like an incident. The Angular admin's HTTP interceptor appends it to the 403 and unexpected-error toasts automatically.
 
 The `errorCode` discriminator is one of these machine-readable values (generated from the backend `ApiErrorCodes` contract):
 
