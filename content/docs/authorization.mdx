@@ -175,7 +175,9 @@ Not challenged, by design: requests authenticated via an `Authorization: Bearer`
   This check used to live inside `[AuthGuard]`, which made it opt-in per endpoint: anything
   reachable with cookies but annotated differently — or not at all — had no CSRF protection,
   silently. If the middleware is missing while authentication is enabled, the app now **fails at
-  startup** rather than serving unprotected writes.
+  startup** rather than serving unprotected writes. Register it on the **main pipeline**: a
+  registration inside an `app.Map(...)` branch protects only that branch, and the startup guard
+  treats it as missing.
 </Callout>
 
 ### Per-action permissions
