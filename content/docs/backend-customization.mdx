@@ -252,6 +252,8 @@ public static partial class Mapper
 
 Use `config.ForType<...>()` (get-or-extend) in hooks, never `NewConfig` (replace) — the generated mappings are already on the config when the hook runs. An unimplemented hook compiles away to nothing.
 
+Precedence: `.Map` is *first-registration-wins* — a hook `.Map` targeting a member the generator already mapped is a silent no-op, while `.Ignore` does suppress it. Hooks add and suppress; to *replace* how a generated member is mapped, use the same-name full-method override below.
+
 Generated configs also disable Mapster's convention *flattening*: a DTO property named like a navigation chain (e.g. `ShippingTierIsBulky`) is **not** silently resolved through `ShippingTier.IsBulky` — an unmapped property stays at its default until you wire it deliberately through a hook.
 
 **Replacing mappings — same-name override.** If you define a method with the same name as a generated one (e.g., `{Entity}DTOToEntityConfig`, `{Entity}ToDTOConfig`, `{Entity}ProjectToConfig`), the generator will skip that method and use yours instead.
