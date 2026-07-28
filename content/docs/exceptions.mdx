@@ -16,7 +16,7 @@ Spiderly's global exception handler catches all exceptions and maps them to appr
 }
 ```
 
-`traceId` is the request's W3C trace id, populated only for reportable errors — unhandled 500s and `SecurityViolationException`, the same classification `SpiderlyExceptionClassifier.IsExpected` exposes to error-tracker filters. Surface it to users as an error reference: it correlates the response with your server logs and error-tracker events (e.g. Sentry's `trace:` search), while expected 4xx responses never carry it, so ordinary validation feedback doesn't look like an incident. The Angular admin's HTTP interceptor appends it to the 403 and unexpected-error toasts automatically.
+`traceId` is the request's W3C trace id, populated only for reportable errors — unhandled 500s and `SecurityViolationException`, the same classification `SpiderlyExceptionClassifier.IsExpected` exposes to error-tracker filters. Surface it to users as an error reference: it correlates the response with your server logs and error-tracker events (e.g. Sentry's `trace:` search), while expected 4xx responses never carry it, so ordinary validation feedback doesn't look like an incident. The Angular admin's HTTP interceptor appends it to the 403 and unexpected-error toasts automatically, and every response (not just errors) carries the same id in the `X-Request-Id` header via `RequestIdMiddleware` — one correlation id everywhere. Upstream callers who need to correlate their own logs supply a standard `traceparent` header; a client-sent `X-Request-Id` is deliberately ignored.
 
 The `errorCode` discriminator is one of these machine-readable values (generated from the backend `ApiErrorCodes` contract):
 
