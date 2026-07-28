@@ -24,7 +24,7 @@ curl https://api.yourapp.com/api/Product/GetPaginatedProductList \
   -d '{"first": 0, "rows": 10}'
 ```
 
-Enabling the feature installs a **forwarding scheme** as the default: a request with the `X-Api-Key` header is authenticated by the key handler, and everything else falls through to JWT. The upshot is that the _same_ [`[HasPermission]`](/docs/authorization#haspermission) / `[AuthGuard]` endpoints accept **either** a logged-in user's JWT **or** an API key — you don't annotate endpoints with a second scheme.
+Enabling the feature installs a **forwarding scheme** as the default: a request with the `X-Api-Key` header is authenticated by the key handler, and everything else falls through to JWT. The upshot is that the _same_ [`[AuthGuard]`](/docs/authorization#authguard) endpoints accept **either** a logged-in user's JWT **or** an API key — you don't annotate endpoints with a second scheme.
 
 ## Keys are principals — with their own roles
 
@@ -32,6 +32,26 @@ A key's authority is the **union of its own roles' permissions** (a many-to-many
 
 - A key with no roles has **no permissions** — it authenticates, but is denied everything. Assign it a role (e.g. a read-only role) to grant access.
 - A key's roles are independent of the user who created it. Changing the creator's roles later does not change the key's.
+
+### A key has an id, but not a user id
+
+Every principal kind is registered with its nature — `PrincipalNature.Human` for your `User`, `PrincipalNature.Machine` for `ApiKey` — and that split decides which identity question the framework will answer for it:
+
+| You need                                                | Call                          | With an API key    |
+| ------------------------------------------------------- | ----------------------------- | ------------------ |
+| Who is calling (authorization, auditing, rate limiting) | `GetCurrentPrincipalId()`     | The key's id       |
+| Which **person** this data belongs to                   | `GetCurrentUserId()`          | Refused with `403` |
+| The same, on a path that may be anonymous               | `GetCurrentUserIdOrDefault()` | `null`             |
+
+<Callout type="warn">
+  This matters because a key's id and a user's id come from **independent sequences**. Without the
+  split, an identity-scoped endpoint (`/my-orders`, saved addresses, a wishlist) filtering on "the
+  current user id" would happily serve the rows of whichever user happens to share a number with the
+  calling key — with no permission required, because such endpoints are gated on identity, not on a
+  permission. Kinds you register yourself must declare their nature for the same reason; an
+  unregistered kind is treated as non-human and refused. The refusal is an ordinary `403`, not a
+  server error — a key reaching a human-only path is an authorization outcome, not a fault.
+</Callout>
 
 ### Why a key, and not just a long-lived JWT?
 

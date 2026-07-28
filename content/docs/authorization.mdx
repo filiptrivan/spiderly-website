@@ -38,9 +38,8 @@ Tokens are stored in `HttpOnly` cookies — the browser handles storage and send
 `AuthResultWithCookies` includes `userId`, `email`, and `accessTokenExpiresAt` — no tokens in the response body.
 
 <Callout type="warn">
-  Cookie-based authentication requires the [`[AuthGuard]`](#authguard) attribute's CSRF protection.
-  All state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"`
-  header.
+  Cookie-based authentication requires [CSRF protection](#csrf-protection). All state-changing
+  requests (`POST`, `PUT`, `DELETE`, `PATCH`) must include the `X-CSRF: "1"` header.
 </Callout>
 
 ### Choosing a Strategy
@@ -70,7 +69,7 @@ services.AddSpiderly<ApplicationDbContext>(Configuration, spiderly =>
 });
 ```
 
-`AddSecurity<TUser, TUserExternalLogin, TAuthorizationService>` registers the whole auth core as one unit: the email-login and JWT services, the `User` principal kind, your `AuthorizationService`, and — crucially — the `[HasPermission]` handler that forwards to it. These pieces are **co-required**: an app with some but not all of them is silently broken, so `AddSecurity` bundles them all-or-nothing. A single-principal app needs nothing more.
+`AddSecurity<TUser, TUserExternalLogin, TAuthorizationService>` registers the whole auth core as one unit: the email-login and JWT services, the `User` principal kind, your `AuthorizationService`, and — crucially — the permission handler that forwards to it. These pieces are **co-required**: an app with some but not all of them is silently broken, so `AddSecurity` bundles them all-or-nothing. A single-principal app needs nothing more.
 
 Optional add-ons opt in through a sub-builder. [API keys](/docs/api-keys), for example, register a second principal kind and its auth scheme:
 
@@ -80,8 +79,8 @@ spiderly.AddSecurity<User, UserExternalLogin, AuthorizationService>(s => s.AddAp
 
 <Callout type="warn">
   If you replace the scaffolded `AddSecurity` call with hand-rolled registration and forget the
-  `[HasPermission]` handler, the app **fails at startup**: _"Spiderly authentication is enabled, so
-  `[HasPermission]` materializes a `PermissionRequirement` policy, but no `IAuthorizationHandler` that
+  permission handler, the app **fails at startup**: _"Spiderly authentication is enabled, so
+  `[AuthGuard("Code")]` materializes a `PermissionRequirement` policy, but no `IAuthorizationHandler` that
   satisfies `PermissionRequirement` is registered."_ Fix it by calling
   `services.AddSpiderlyAuthorization<AuthorizationServiceGenerated>()` — or simply keep using
   `AddSecurity`, which registers the handler for you. It's a fail-loud boot guard, never a silent 403.
@@ -91,11 +90,7 @@ spiderly.AddSecurity<User, UserExternalLogin, AuthorizationService>(s => s.AddAp
 
 ### \[AuthGuard\]
 
-Protects API endpoints by checking the authentication status set by the authentication middleware.
-
-For **cookie-based** authentication, `[AuthGuard]` also enforces CSRF protection on state-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`). These requests must include an `X-CSRF` header — the value doesn't matter, only its presence is checked. If the header is missing, the request is rejected with `403 Forbidden`.
-
-Requests authenticated via the `Authorization` header (Bearer token) are not affected by CSRF checks. `GET`, `HEAD`, and `OPTIONS` requests are also not affected, regardless of the auth strategy.
+The single attribute that protects an endpoint. Bare, it requires an authenticated principal. With a permission code, it additionally requires the principal — a logged-in user or an [API key](/docs/api-keys) — to hold that permission, or the request is rejected with `403 Forbidden`.
 
 ```csharp
 [SpiderlyController]
@@ -104,10 +99,30 @@ Requests authenticated via the `Authorization` header (Bearer token) are not aff
 public class ReportController : ReportBaseController
 {
     [HttpPost]
-    [AuthGuard] // Authenticated users only; cookie auth requires X-CSRF header
+    [AuthGuard] // Any authenticated principal
     public async Task<IActionResult> RunExport() { /* ... */ }
+
+    [HttpPost]
+    [AuthGuard("RunSalesReport")] // ...and must hold RunSalesReport
+    public async Task<IActionResult> RunSalesReport() { /* ... */ }
 }
 ```
+
+The permission code must be [seeded](#add-permissions-to-your-application) and assigned to the caller's role.
+
+Use it on endpoints you write yourself; entity CRUD already enforces the default `Read{Entity}` / `Insert{Entity}` / `Update{Entity}` / `Delete{Entity}` permissions with no attribute needed.
+
+`[AuthGuard]` derives from ASP.NET Core's `[Authorize]`, so it composes the way you would expect: put it on the controller class to apply one guard to every action, add it to an action to require both, and use `[AllowAnonymous]` to opt a single action out.
+
+<Callout type="info">
+  Earlier versions split this across two attributes — `[AuthGuard]` for authentication and
+  `[HasPermission("Code")]` for authorization. They were required together but easy to write apart,
+  and the failure was silent: an endpoint with only `[AuthGuard]` accepts **any** logged-in account,
+  including an ordinary customer on a public storefront. Replace `[HasPermission("Code")]` with
+  `[AuthGuard("Code")]` and delete the now-redundant `[AuthGuard]` line above it.
+</Callout>
+
+One permission per attribute. Stack two to require both. "Either A or B" needs a real composite policy and is deliberately not modelled here.
 
 ### \[DoNotAuthorize\]
 
@@ -129,23 +144,39 @@ public class PublicAnnouncement : BusinessObject<long>
 }
 ```
 
-### \[HasPermission\]
+## CSRF Protection
 
-Gates a custom controller action on a specific permission code. The principal — a logged-in user or an [API key](/docs/api-keys) — must hold that permission, or the request is rejected with `403 Forbidden`. Use it on endpoints you write yourself; entity CRUD already enforces the default `Read{Entity}` / `Insert{Entity}` / `Update{Entity}` / `Delete{Entity}` permissions with no attribute needed.
+Cookie authentication is ambient: the browser attaches the cookie to any request a page makes, including one triggered from another site. Spiderly rejects such a request unless it carries an `X-CSRF` header — the value doesn't matter, only its presence, because a custom header cannot be set cross-origin without passing a CORS preflight first.
+
+Register the middleware after `UseRouting()`:
 
 ```csharp
-[SpiderlyController]
-[ApiController]
-[Route("/api/[controller]/[action]")]
-public class ReportController : ReportBaseController
-{
-    [HttpPost]
-    [HasPermission("RunSalesReport")] // Caller must hold the RunSalesReport permission
-    public async Task<IActionResult> RunSalesReport() { /* ... */ }
-}
+app.UseRouting();
+
+app.UseSpiderlyCsrf();
+
+app.UseAuthentication();
+app.UseAuthorization();
 ```
 
-The permission code must be [seeded](#add-permissions-to-your-application) and assigned to the caller's role.
+Protection is **global and opt-out**, matching ASP.NET Core's own antiforgery guidance: with per-endpoint opt-in, an endpoint eventually gets left unprotected by mistake. Exempt an endpoint that a browser never reaches with the user's cookies — a payment-gateway callback, a partner webhook — with `[IgnoreCsrf]`.
+
+Not challenged, by design: requests authenticated via an `Authorization: Bearer` header (a token is sent deliberately, not ambiently), and `GET` / `HEAD` / `OPTIONS` (they must not change state to begin with).
+
+<Callout type="warn">
+  This defense rests on your **CORS origin allow-list**: it works because a cross-origin caller
+  cannot add a custom header without a preflight your policy must approve. An app that allows
+  arbitrary origins with credentials (`SetIsOriginAllowed(_ => true)`) makes it a no-op. ASP.NET
+  already blocks the common form of this mistake — `AllowAnyOrigin()` and `AllowCredentials()` are
+  mutually exclusive — so keep the explicit escape hatch out of a cookie-authenticated app.
+</Callout>
+
+<Callout type="info">
+  This check used to live inside `[AuthGuard]`, which made it opt-in per endpoint: anything
+  reachable with cookies but annotated differently — or not at all — had no CSRF protection,
+  silently. If the middleware is missing while authentication is enabled, the app now **fails at
+  startup** rather than serving unprotected writes.
+</Callout>
 
 ### Per-action permissions
 
