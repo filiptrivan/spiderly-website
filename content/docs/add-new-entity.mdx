@@ -111,10 +111,12 @@ The `[SpiderlyEntity]` attribute is **required** — source generators only enro
 These annotations do not reach your OpenAPI document unless you opt in:
 
 ```csharp
-spiderly.AddSwagger(supportNonNullableReferenceTypes: true);
+spiderly.AddSwagger(options => options.SupportNonNullableReferenceTypes());
 ```
 
-It is off by default because turning it on narrows your published contract — members become `required` and non-nullable, which regenerates every consumer's typed client. Treat it as its own deploy, coordinated with those consumers. Apps created by `spiderly init` have it on already, since a brand-new app has no consumers to coordinate with. The flag is also a no-op until your app is on `<Nullable>enable</Nullable>`.
+Spiderly does not turn this on for you, because it narrows your published contract — members become `required` and non-nullable, which regenerates every consumer's typed client. Treat it as its own deploy, coordinated with those consumers. Apps created by `spiderly init` have it already, since a brand-new app has no consumers to coordinate with. It is also a no-op until your app is on `<Nullable>enable</Nullable>`.
+
+`AddSwagger`'s callback runs after Spiderly's own defaults, and is the seam for any other `SwaggerGenOptions` setting you need — security definitions, schema filters, and so on.
 
 ## Database Table Naming
 
