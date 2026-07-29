@@ -46,6 +46,7 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY020](#spiderly020) | Error | `[WithOne]` inverse navigation does not exist on the principal |
 | [SPIDERLY021](#spiderly021) | Error | `[Required]` on the principal navigation of a one-to-one is unenforceable |
 | [SPIDERLY022](#spiderly022) | Error | Self-referential one-to-one is not supported |
+| [SPIDERLY028](#spiderly028) | Error | Nullable annotation disagrees with `[Required]` |
 
 ## SPIDERLY001
 
@@ -245,6 +246,30 @@ A unique foreign-key index guarantees *at most one* dependent per principal — 
 A `[WithOne]` navigation whose target type is the declaring entity itself is rejected in this version.
 
 **Fix:** model it differently (e.g. a self-referential many-to-one), or split the data into two entities.
+
+## SPIDERLY028
+
+**Nullable annotation disagrees with `[Required]`.**
+
+Under `<Nullable>enable</Nullable>` an entity property's annotation *is* its column's nullability — EF reads a navigation's nullability as the relationship's requiredness, and nothing configures scalar requiredness separately. So an annotation that disagrees with `[Required]` rewrites your schema without anyone asking: the next migration alters the column, and a save that legitimately omits the value writes a default instead of `NULL`.
+
+```csharp
+// Reported: no [Required], so the relationship is optional — but the annotation
+// makes EF create a NOT NULL foreign key. A task saved without a category then
+// writes 0 and dies on a foreign-key violation.
+[WithMany(nameof(TaskCategory.ProjectTasks))]
+public virtual TaskCategory TaskCategory { get; set; } = null!;
+
+// Reported the other way: [Required] says mandatory, the annotation says optional.
+[Required]
+public string? Name { get; set; }
+```
+
+**Fix:** make the two agree. Annotate the property nullable (`?`) if it really is optional, or add `[Required]` if it really is mandatory — the latter changes the schema, so generate and review the migration.
+
+Value types are never reported: `int` and `int?` carry their nullability in the CLR type, so there is nothing for `[Required]` to contradict. Collections are never reported either — they are initialized `= new()` and are never null.
+
+This diagnostic only fires for projects on `<Nullable>enable</Nullable>`. In a nullable-oblivious project `public virtual TaskCategory TaskCategory { get; set; }` is the *absence* of an annotation rather than a claim of non-nullability, so nothing can disagree.
 
 ## Suppressing Diagnostics
 
