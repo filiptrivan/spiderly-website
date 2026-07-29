@@ -88,6 +88,34 @@ namespace YourAppName.Business.Entities
 
 The `[SpiderlyEntity]` attribute is **required** — source generators only enroll classes that carry it. The CLI adds it for you; on hand-created entities, add it yourself. Hand-written DTOs use `[SpiderlyDTO]`. Generated DTOs (`{Entity}DTO`, `{Entity}SaveBodyDTO`, `{Entity}MainUIFormDTO`) are emitted by Spiderly and need no marker.
 
+### Generated DTO Nullability
+
+`[Required]` decides it — the same attribute EF Core turns into a NOT NULL column:
+
+| Entity property           | Generated DTO property                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `[Required] string Name`  | `string Name { get; set; } = null!;`                                                                                      |
+| `string Slug`             | `string? Slug` (plain `string` if your app is nullable-oblivious)                                                          |
+| `[Required] int Quantity` | `int Quantity`                                                                                                            |
+| `int Stock`               | `int? Stock`                                                                                                              |
+| `[Required]` navigation   | `long CategoryId` — the FK follows the navigation. `CategoryDisplayName` stays nullable: it projects out of *another* entity, so deriving it would make a `[Required]` over there silently change this DTO's contract. |
+| any collection            | unchanged, with `= new()`                                                                                                 |
+
+<Callout>
+  A required **value type** is non-nullable, so an explicit JSON `null` for it fails at model binding
+  with a 400 rather than your usual validation 422 — `null` cannot be assigned to `int`. A *missing*
+  property is fine (it lands as `default`). Required **reference types** have no such problem: `null`
+  assigns, and the generated `.NotEmpty()` rule returns the normal 422 with field errors.
+</Callout>
+
+These annotations do not reach your OpenAPI document unless you opt in:
+
+```csharp
+spiderly.AddSwagger(supportNonNullableReferenceTypes: true);
+```
+
+It is off by default because turning it on narrows your published contract — members become `required` and non-nullable, which regenerates every consumer's typed client. Treat it as its own deploy, coordinated with those consumers. Apps created by `spiderly init` have it on already, since a brand-new app has no consumers to coordinate with. The flag is also a no-op until your app is on `<Nullable>enable</Nullable>`.
+
 ## Database Table Naming
 
 Spiderly creates database tables with the **exact same name** as your entity class — singular, PascalCase. For example, a `YourEntityName` class produces a `"YourEntityName"` table, not `"YourEntityNames"`.
