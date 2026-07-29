@@ -251,12 +251,13 @@ A `[WithOne]` navigation whose target type is the declaring entity itself is rej
 
 **Nullable annotation disagrees with `[Required]`.**
 
-Under `<Nullable>enable</Nullable>` an entity property's annotation *is* its column's nullability — EF reads a navigation's nullability as the relationship's requiredness, and nothing configures scalar requiredness separately. So an annotation that disagrees with `[Required]` rewrites your schema without anyone asking: the next migration alters the column, and a save that legitimately omits the value writes a default instead of `NULL`.
+`[Required]` is what Spiderly turns into a column's nullability. When your nullable annotation contradicts it, the C# type lies about the schema — and which side wins depends on the property kind, so neither reading is safe to rely on.
+
+For **scalars** the annotation wins outright: nothing configures scalar requiredness, so EF's convention reads the annotation and your column silently changes. For **navigations** Spiderly configures `.IsRequired([Required] != null)` explicitly, so the attribute wins and it is the annotation that misinforms whoever reads the entity. Either way the two must tell the same story.
 
 ```csharp
-// Reported: no [Required], so the relationship is optional — but the annotation
-// makes EF create a NOT NULL foreign key. A task saved without a category then
-// writes 0 and dies on a foreign-key violation.
+// Reported: no [Required], so the relationship is optional, but the annotation
+// claims the value is always there.
 [WithMany(nameof(TaskCategory.ProjectTasks))]
 public virtual TaskCategory TaskCategory { get; set; } = null!;
 
