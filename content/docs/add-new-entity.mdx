@@ -90,22 +90,25 @@ The `[SpiderlyEntity]` attribute is **required** — source generators only enro
 
 ### Generated DTO Nullability
 
-`[Required]` decides it — the same attribute EF Core turns into a NOT NULL column:
+`[Required]` decides it for **reference types only**:
 
-| Entity property           | Generated DTO property                                                                                                  |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `[Required] string Name`  | `string Name { get; set; } = null!;`                                                                                      |
-| `string Slug`             | `string? Slug` (plain `string` if your app is nullable-oblivious)                                                          |
-| `[Required] int Quantity` | `int Quantity`                                                                                                            |
-| `int Stock`               | `int? Stock`                                                                                                              |
-| `[Required]` navigation   | `long CategoryId` — the FK follows the navigation. `CategoryDisplayName` stays nullable: it projects out of *another* entity, so deriving it would make a `[Required]` over there silently change this DTO's contract. |
-| any collection            | unchanged, with `= new()`                                                                                                 |
+| Entity property           | Generated DTO property                                       |
+| ------------------------- | ------------------------------------------------------------ |
+| `[Required] string Name`  | `string Name { get; set; } = null!;`                          |
+| `string Slug`             | `string? Slug` (plain `string` if your app is nullable-oblivious) |
+| `[Required] int Quantity` | `int? Quantity` — value types stay nullable, see below         |
+| `int Stock`               | `int? Stock`                                                   |
+| any navigation            | `long? CategoryId` + `string? CategoryDisplayName`             |
+| any collection            | unchanged, with `= new()`                                      |
 
 <Callout>
-  A required **value type** is non-nullable, so an explicit JSON `null` for it fails at model binding
-  with a 400 rather than your usual validation 422 — `null` cannot be assigned to `int`. A *missing*
-  property is fine (it lands as `default`). Required **reference types** have no such problem: `null`
-  assigns, and the generated `.NotEmpty()` rule returns the normal 422 with field errors.
+  **Value types stay nullable even under `[Required]`, and that is deliberate.** A generated
+  `{Entity}DTO` serves four roles at once: response shape, request shape, the Angular form model (an
+  empty numeric input posts `null`), and the sparse placeholder carrier for
+  `[ComplexManyToManyList]` grids, where an all-null row *is* the "no record" sentinel. The last two
+  need `null` to be representable, and `int` cannot hold it. Reference types are safe to tighten
+  because a non-nullable `string` still accepts `null` at runtime — `= null!` is an assertion for the
+  compiler and for you, not a runtime constraint.
 </Callout>
 
 These annotations do not reach your OpenAPI document unless you opt in:
