@@ -46,6 +46,11 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY020](#spiderly020) | Error | `[WithOne]` inverse navigation does not exist on the principal |
 | [SPIDERLY021](#spiderly021) | Error | `[Required]` on the principal navigation of a one-to-one is unenforceable |
 | [SPIDERLY022](#spiderly022) | Error | Self-referential one-to-one is not supported |
+| [SPIDERLY023](#spiderly023) | Error | `[ComplexManyToManyList]` junction has no additional data columns |
+| [SPIDERLY024](#spiderly024) | Error | A Spiderly source generator faulted |
+| [SPIDERLY025](#spiderly025) | Error | `[DisplayName]` on an entity requires a property path |
+| [SPIDERLY026](#spiderly026) | Error | `[UITableColumn]` field does not exist |
+| [SPIDERLY027](#spiderly027) | Error | Generic type argument could not be resolved for a base-class property |
 | [SPIDERLY028](#spiderly028) | Error | Nullable annotation disagrees with `[Required]` |
 
 ## SPIDERLY001
@@ -246,6 +251,63 @@ A unique foreign-key index guarantees *at most one* dependent per principal — 
 A `[WithOne]` navigation whose target type is the declaring entity itself is rejected in this version.
 
 **Fix:** model it differently (e.g. a self-referential many-to-one), or split the data into two entities.
+
+## SPIDERLY023
+
+**`[ComplexManyToManyList]` junction has no additional data columns.**
+
+The junction entity named by `[ComplexManyToManyList]` holds nothing but its two foreign keys. The generated grid tells a linked row apart from an empty placeholder row by whether its data columns are filled, so a junction with no data columns has no way to express "not linked" — every row would be saved as a link.
+
+**Fix:** use a plain collection (a simple many-to-many) if the relationship carries no extra data, or add the data column the junction exists to hold.
+
+## SPIDERLY024
+
+**A Spiderly source generator faulted.**
+
+A generator threw an unexpected exception, so it contributed **no output** and everything it generates is missing from the compilation — which usually shows up as a cascade of "type or member does not exist" errors in code that references the missing output. The message names the generator, the exception type, and its message.
+
+This is a bug in Spiderly, not in your code. It is reported instead of the compiler's own `CS8785` so that the build fails loudly and names what died, rather than silently omitting generated code.
+
+**Fix:** please [open an issue](https://github.com/filiptrivan/spiderly/issues) with the entity shape that triggered it — the exception message plus the entity's attributes and property types is usually enough to reproduce.
+
+## SPIDERLY025
+
+**`[DisplayName]` on an entity requires a property path.**
+
+`[DisplayName]` means two different things depending on where it sits. On a **property** the bare form is correct — it marks that property as the entity's display value. On an **entity** it must name the path to use, because there is no single property for it to refer to.
+
+```csharp
+// Reported: bare [DisplayName] on the entity.
+[DisplayName]
+[SpiderlyEntity]
+public class ProjectTask : BusinessObject<long> { }
+
+// Correct: name the path.
+[DisplayName(nameof(Title))]
+[SpiderlyEntity]
+public class ProjectTask : BusinessObject<long>
+{
+    public string Title { get; set; } = null!;
+}
+```
+
+**Fix:** pass the property path — `[DisplayName(nameof(Name))]`, or a dotted path through a navigation such as `[DisplayName("Category.Name")]`.
+
+## SPIDERLY026
+
+**`[UITableColumn]` field does not exist.**
+
+`[UITableColumn("...")]` names a property found on neither the entity nor its generated DTO. Since the column is resolved by name at generation time, the grid would reference a field that does not exist.
+
+**Fix:** check the spelling, or update the attribute — this most often fires after a property is renamed and the attribute string is left behind.
+
+## SPIDERLY027
+
+**Generic type argument could not be resolved for a base-class property.**
+
+A property inherited from a base class is typed as that base's generic parameter `T`, and the concrete type argument could not be resolved. A generic base entity declared inside your own project is not supported.
+
+**Fix:** declare the property with a concrete type, or inherit `BusinessObject<T>` directly rather than through your own generic base.
 
 ## SPIDERLY028
 
