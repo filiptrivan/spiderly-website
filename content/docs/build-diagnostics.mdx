@@ -251,9 +251,13 @@ A `[WithOne]` navigation whose target type is the declaring entity itself is rej
 
 **Nullable annotation disagrees with `[Required]`.**
 
-`[Required]` is what Spiderly turns into a column's nullability. When your nullable annotation contradicts it, the C# type lies about the schema — and which side wins depends on the property kind, so neither reading is safe to rely on.
+`[Required]` is the source of truth for a column's nullability. When your nullable annotation contradicts it, the C# type lies — and the two kinds of property lie about different things, which is why both are reported.
 
-For **scalars** the annotation wins outright: nothing configures scalar requiredness, so EF's convention reads the annotation and your column silently changes. For **navigations** Spiderly configures `.IsRequired([Required] != null)` explicitly, so the attribute wins and it is the annotation that misinforms whoever reads the entity. Either way the two must tell the same story.
+For **navigations** the attribute decides outright: Spiderly configures `.IsRequired([Required] != null)` after `.HasForeignKey()`, so the annotation cannot move the column. What it does instead is claim non-null over a nullable foreign key, and EF then materializes `null` into a non-nullable property — a `NullReferenceException` exactly where the type promised there could not be one.
+
+For **scalars** Spiderly configures nothing and EF's own conventions decide, so which side wins depends on the direction of the disagreement. `[Required]` on a nullable-annotated property still produces `NOT NULL` (`RequiredPropertyAttributeConvention` is a DataAnnotation source and outranks the nullable-reference convention). A non-nullable annotation with **no** `[Required]` has nothing opposing `NonNullableReferencePropertyConvention`, so it silently makes the column `NOT NULL`: your next migration alters the schema, and a save that legitimately omits the value writes a default instead of `NULL`.
+
+That last case is the only one where the annotation wins, and rejecting it here is what keeps `[Required]` authoritative for scalars too. Either way the two must tell the same story.
 
 ```csharp
 // Reported: no [Required], so the relationship is optional, but the annotation

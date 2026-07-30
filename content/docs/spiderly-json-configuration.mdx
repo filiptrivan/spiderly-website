@@ -70,6 +70,14 @@ If you don't create this file, all generators are enabled and the default `/api`
 
 A dictionary of generator name → `true`/`false`. Any generator not listed defaults to `true` (enabled).
 
+<Callout>
+  This switch controls generated **artifacts** only. Entity-shape validation — the
+  [build diagnostics](/docs/build-diagnostics) that tell you an entity is malformed — runs in a
+  separate generator that produces no output and **cannot be disabled**, so it is not in the tables
+  below. Declining code you don't want should never also decline the checks that say your entities are
+  well-formed.
+</Callout>
+
 ### .NET Generators
 
 | Generator                        | Output                                  | Purpose                                                  |
