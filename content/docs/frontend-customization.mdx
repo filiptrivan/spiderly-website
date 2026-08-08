@@ -82,6 +82,35 @@ Names are PascalCase — for example `[showEmailForUser]="false"` hides the emai
 
 Calendar fields additionally expose `showTimeOn{PropertyName}For{YourEntityName}` (defaults to `false`) to also render the time picker — e.g. `[showTimeOnBirthDateForUser]="true"`.
 
+## Replacing a Field With Your Own Control
+
+Next to every field, the generator also emits a content slot named `below{PropertyName}For{YourEntityName}`. Combine it with the `show*` input above to replace a generated control with your own: hide the generated one, project yours into its slot, and bind yours to the same form control so the generated save body still picks the value up.
+
+```html
+<user-base-details
+  [parentFormGroup]="parentFormGroup"
+  [showEmailForUser]="false"
+  (onSave)="onSave()"
+>
+  <div belowEmailForUser>
+    @if (parentFormGroup.controls.userDTO; as userDTO) {
+      <spiderly-textbox [control]="userDTO.getControl('email')"></spiderly-textbox>
+    }
+  </div>
+</user-base-details>
+```
+
+<Callout type="warn">
+  The `@if` is required. Content you project belongs to **your** view, and Angular creates it together with your view — it is not held back by the generated form's deferred block. So your control renders before the details page has loaded its data, while `parentFormGroup` is still the empty form group it starts out as, and `controls.{yourEntityName}DTO` is `undefined` for those first change detection passes. Without the guard, the binding throws on every one of them, and each throw becomes a generic error toast.
+
+  The symptom is easy to misread: a burst of error toasts as you open the page, then a form that works perfectly, because the throwing stops the moment the data arrives.
+</Callout>
+
+Two details decide whether the guard actually holds:
+
+- **Keep the slot name on a real element and put the `@if` inside it.** An `@if` block's anchor node carries no attribute, so wrapping `<div belowEmailForUser>` in an `@if` sends the content to the default slot instead of the field's. When the whole block must be conditional, use `<ng-container ngProjectAs="[belowEmailForUser]">`.
+- **`?.` is not a substitute for the guard** when you project a Spiderly control. It hands the control `undefined`, which every control's template is written to survive, but your own components have to be equally tolerant if you rely on it.
+
 ## Customize Routes
 
 The `spiderly add-new-entity` CLI command automatically adds routes to `Frontend\src\app\app.routes.ts`. If you need to customize them, the generated routes look like this:
