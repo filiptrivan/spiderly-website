@@ -109,7 +109,7 @@ Next to every field, the generator also emits a content slot named `below{Proper
 Two details decide whether the guard actually holds:
 
 - **Keep the slot name on a real element and put the `@if` inside it.** An `@if` block's anchor node carries no attribute, so wrapping `<div belowEmailForUser>` in an `@if` sends the content to the default slot instead of the field's. When the whole block must be conditional, use `<ng-container ngProjectAs="[belowEmailForUser]">`.
-- **`?.` is not a substitute for the guard** when you project a Spiderly control. It hands the control `undefined`, which every control's template is written to survive, but your own components have to be equally tolerant if you rely on it.
+- **`?.` is not a substitute for the guard.** It hands the control `undefined`. Every control's *template* survives that, but `spiderly-autocomplete`, `spiderly-colorpicker` and `spiderly-checkbox` (with `initializeToFalse`) read the control in their own `ngOnInit` and still throw — and a component of your own has to be equally tolerant if you rely on `?.`.
 
 ## Customize Routes
 
