@@ -112,11 +112,13 @@ The generated query is always totally ordered: when `MultiSortMeta` is empty the
 
 Client input the generated pipeline doesn't recognize is **rejected with HTTP 400** (`BusinessException`), never silently ignored:
 
-- A filter key that matches no generated case — silently ignoring it would return _unfiltered_ rows the caller treats as filtered.
-- A `MultiSortMeta.Field` that matches no sort case.
-- A `MatchMode` that isn't valid for the field's type.
+| Input                                                                                                                       | `ApiErrorDTO.errorCode` |
+| --------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| A filter key matching no generated case — silently ignoring it would return _unfiltered_ rows the caller treats as filtered | `unknown_filter_field`  |
+| A `MultiSortMeta.Field` matching no sort case                                                                               | `unknown_sort_field`    |
+| A `MatchMode` that isn't valid for the field's type                                                                         | `invalid_match_mode`    |
 
-The error message names the offending field and lists the valid ones, so both humans and AI agents can self-correct from the response alone.
+The message names the offending field and lists the valid ones, so humans and AI agents can self-correct from the response alone; branch on `errorCode` rather than the message text. The throws come from `PaginationErrors` (`Spiderly.Shared.Exceptions`), which is also where the wording lives.
 
 Two consequences to design around:
 
