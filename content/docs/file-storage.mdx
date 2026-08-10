@@ -11,11 +11,11 @@ Spiderly's file-storage model is **per-property**: every blob property on an ent
 
 Spiderly ships three built-in storage classes and matching attributes. Anything else (Cloudinary, Azure Blob, Backblaze, on-prem MinIO, …) is implemented by the consumer (see [Custom Adapters](#custom-adapters)).
 
-| Adapter | Attribute | Returns | Best For |
-|----------|-------------|---------|----------|
-| `DiskStorageService` | `[DiskStorage]` | File key | Local development |
-| `S3PublicStorageService` | `[S3PublicStorage]` | Full CDN URL | Public images/assets with CloudFront/R2 CDN |
-| `S3PrivateStorageService` | `[S3PrivateStorage]` | S3 key | Private documents, signed-URL access |
+| Adapter                   | Attribute            | Returns      | Best For                                    |
+| ------------------------- | -------------------- | ------------ | ------------------------------------------- |
+| `DiskStorageService`      | `[DiskStorage]`      | File key     | Local development                           |
+| `S3PublicStorageService`  | `[S3PublicStorage]`  | Full CDN URL | Public images/assets with CloudFront/R2 CDN |
+| `S3PrivateStorageService` | `[S3PrivateStorage]` | S3 key       | Private documents, signed-URL access        |
 
 All three implement `Spiderly.Shared.Interfaces.IFileManager`.
 
@@ -69,12 +69,12 @@ public class User : BusinessObject<long>
 
 These attributes add both server-side and client-side validation. See the [Validation](/docs/validation) page for details.
 
-| Attribute | Description | Default |
-|-----------|-------------|---------|
-| `[AcceptedFileTypes("image/*", ".pdf")]` | Allowed MIME types or extensions | **Required.** No default — build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014) if missing. |
-| `[MaxFileSize(5_000_000)]` | Max file size in bytes | 20 MB |
-| `[ImageWidth(800)]` | Required exact image width in pixels | No validation |
-| `[ImageHeight(600)]` | Required exact image height in pixels | No validation |
+| Attribute                                | Description                           | Default                                                                                                 |
+| ---------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `[AcceptedFileTypes("image/*", ".pdf")]` | Allowed MIME types or extensions      | **Required.** No default — build error [`SPIDERLY014`](/docs/build-diagnostics#spiderly014) if missing. |
+| `[MaxFileSize(5_000_000)]`               | Max file size in bytes                | 20 MB                                                                                                   |
+| `[ImageWidth(800)]`                      | Required exact image width in pixels  | No validation                                                                                           |
+| `[ImageHeight(600)]`                     | Required exact image height in pixels | No validation                                                                                           |
 
 ### Example with all validation attributes
 
@@ -238,12 +238,12 @@ SVG is a vector text format ImageSharp cannot decode, so it skips both steps and
 
 All hooks are `virtual` methods on the generated entity service class (e.g., `ProductServiceGenerated`). Override them in your entity service class (e.g., `ProductService`) to customize behavior.
 
-| Hook | Purpose | Default Behavior |
-|------|---------|-----------------|
-| `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` | Custom pre-authorization logic | No-op |
-| `OnBefore{Property}BlobFor{Entity}IsUploaded()` | Process file before storage | Images: validate + optimize. Others: read bytes |
-| `ValidateImageFor{Property}Of{Entity}()` | Custom dimension validation | Exact match if `[ImageWidth]`/`[ImageHeight]` set |
-| `OptimizeImageFor{Property}Of{Entity}()` | Custom image optimization | Convert to WebP at 85% quality |
+| Hook                                                    | Purpose                        | Default Behavior                                  |
+| ------------------------------------------------------- | ------------------------------ | ------------------------------------------------- |
+| `OnBefore{Property}BlobFor{Entity}UploadIsAuthorized()` | Custom pre-authorization logic | No-op                                             |
+| `OnBefore{Property}BlobFor{Entity}IsUploaded()`         | Process file before storage    | Images: validate + optimize. Others: read bytes   |
+| `ValidateImageFor{Property}Of{Entity}()`                | Custom dimension validation    | Exact match if `[ImageWidth]`/`[ImageHeight]` set |
+| `OptimizeImageFor{Property}Of{Entity}()`                | Custom image optimization      | Convert to WebP at 85% quality                    |
 
 ### Example: custom image optimization
 
@@ -290,17 +290,37 @@ public string ProfilePictureData { get; set; }  // file content for display
 
 ### What `{Property}Data` contains
 
-| Adapter | Format | Usage |
-|----------|--------|-------|
-| `DiskStorageService` | `filename={key};base64,{data}` | Decode base64 for display |
+| Adapter                   | Format                         | Usage                     |
+| ------------------------- | ------------------------------ | ------------------------- |
+| `DiskStorageService`      | `filename={key};base64,{data}` | Decode base64 for display |
 | `S3PrivateStorageService` | `filename={key};base64,{data}` | Decode base64 for display |
-| `S3PublicStorageService` | Full public URL | Use directly as `src` |
+| `S3PublicStorageService`  | Full public URL                | Use directly as `src`     |
 
 In the Angular admin panel, `spiderly-file` handles this automatically. It uses the `[isUrlFileData]` input (auto-generated) to determine how to render the preview.
 
 <Callout>
   For `[S3PublicStorage]` properties, the column itself contains the full CDN URL. You can use it
   directly as an image `src` without going through the `{Property}Data` base64 field.
+</Callout>
+
+### Where `{Property}Data` is populated
+
+Only single-row reads populate base64 blob data. `Get{Entity}DTO` — the read behind the details
+form — fills it; the list reads `GetPaginated{Entity}List` and `Get{Entity}DTOList` leave it `null`
+for `[DiskStorage]` and `[S3PrivateStorage]` properties.
+
+That is deliberate: filling it in a list costs one storage round-trip and one base64 encode **per
+row**, on the request path of every table page, and no list surface renders file content. A table
+over a few hundred rows with a private blob column spends most of its response time downloading
+bytes the client throws away.
+
+`[S3PublicStorage]` properties are unaffected — their `{Property}Data` is the URL the query already
+selected, so it is passed through everywhere, lists included.
+
+<Callout type="warn">
+  Reading `{Property}Data` from a list response will get you `null` for private blobs. When you need
+  the content, load the single row via `Get{Entity}DTO`, or take the storage key from the property
+  itself and fetch it yourself.
 </Callout>
 
 ## Storage Paths and Orphan Cleanup
@@ -322,9 +342,9 @@ When a user uploads a file for an entity that doesn't exist yet (insert), the en
 Once the entity is saved and has a real ID, the generated save code calls `IFileManager.MoveBlobToEntityPathAsync(...)`, which copies the blob to its permanent key (`{Entity}/{Prop}/{realId}/{BlobGuid}.ext`), deletes the staging source, and updates the DB column. The client never sees the staged path.
 
 <Callout>
-  Configure a storage lifecycle rule to auto-expire objects under the `_tmp/` prefix after
-  7 days (S3/R2 lifecycle rule, etc.). This cleans up uploads that were abandoned before the
-  entity was saved — no cron needed.
+  Configure a storage lifecycle rule to auto-expire objects under the `_tmp/` prefix after 7 days
+  (S3/R2 lifecycle rule, etc.). This cleans up uploads that were abandoned before the entity was
+  saved — no cron needed.
 </Callout>
 
 ### Update flow — replace and clean
