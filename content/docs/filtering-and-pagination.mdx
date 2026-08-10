@@ -108,6 +108,31 @@ Sort rules are applied in list order — the first entry is the primary sort.
 
 The generated query is always totally ordered: when `MultiSortMeta` is empty the backend falls back to `Id` descending (newest first), and when sort rules are present `Id` descending is appended as the final tie-breaker. Without this, `Skip`/`Take` on an unordered (or non-uniquely ordered) query returns rows in arbitrary database order, so pages could repeat or drop rows. M2M junction entities have no `Id` and are excluded. To show a different default sort in the UI, set `defaultSortField` on the data table (see [Data Components](/docs/angular-components/data-components)).
 
+## Invalid filter and sort input
+
+Client input the generated pipeline doesn't recognize is **rejected with HTTP 400** (`BusinessException`), never silently ignored:
+
+- A filter key that matches no generated case — silently ignoring it would return _unfiltered_ rows the caller treats as filtered.
+- A `MultiSortMeta.Field` that matches no sort case.
+- A `MatchMode` that isn't valid for the field's type.
+
+The error message names the offending field and lists the valid ones, so both humans and AI agents can self-correct from the response alone.
+
+Two consequences to design around:
+
+- `*CommaSeparated` collection fields are **filterable but not sortable**. The data table auto-disables click-to-sort on such columns, so this only matters for hand-built API calls.
+- A hand-written `GetPaginated{Entity}List` override that consumes a custom pseudo filter key must remove it before delegating — otherwise the generated base rejects the key:
+
+```csharp
+if (filterDTO.Filters.TryGetValue("customSkuSearch", out List<FilterRuleDTO> skuFilters))
+{
+    filterDTO.Filters.Remove("customSkuSearch");
+    // apply skuFilters to the query yourself
+}
+
+return await base.GetPaginatedProductList(filterDTO, query, authorize);
+```
+
 ## PaginatedResultDTO
 
 The response wrapper returned by every paginated endpoint:
@@ -210,12 +235,12 @@ class FilterRule<T = any> {
 
 The `AllowedMatchModes<T>` type restricts which match modes are valid based on the value type:
 
-| Type | Allowed Match Modes |
-|------|-------------------|
-| `string` | `Contains`, `StartsWith`, `Equals` |
-| `boolean` | `Equals` |
-| `Date` | `Equals`, `GreaterThan`, `LessThan` |
-| `number` | `Equals`, `GreaterThan`, `LessThan`, `In` |
+| Type      | Allowed Match Modes                       |
+| --------- | ----------------------------------------- |
+| `string`  | `Contains`, `StartsWith`, `Equals`        |
+| `boolean` | `Equals`                                  |
+| `Date`    | `Equals`, `GreaterThan`, `LessThan`       |
+| `number`  | `Equals`, `GreaterThan`, `LessThan`, `In` |
 
 ### MatchModeCodes
 
