@@ -219,7 +219,7 @@ Set `selectionMode="multiple"` (or provide `deleteListFromTableObservableMethod`
 
 Click one checkbox, hold **Shift**, and click another: every row between them receives the state of the checkbox you clicked. Shift+checking selects the whole range; shift+unchecking clears it, which undoes an overshoot without clicking row by row.
 
-The range anchor is the last checkbox you clicked, and it resets whenever the visible rows change (page, sort, or filter change), so a range never spans pages. Rows already in the target state are skipped, and every actual change emits `onRowSelect`/`onRowUnselect` exactly as a single click would.
+The range anchor is the last checkbox you clicked, and a range only ever spans rows currently visible on the page — if the anchor is no longer visible (the page, sort, or filter changed since), the shift+click falls back to a plain toggle. Rows already in the target state are skipped, and every actual change emits `onRowSelect`/`onRowUnselect` exactly as a single click would.
 
 ## SpiderlyDataView
 
