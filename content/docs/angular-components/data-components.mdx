@@ -20,38 +20,38 @@ Advanced paginated table with server-side filtering, sorting, selection, inline 
 
 ### Key Inputs
 
-| Input | Type | Default | Description |
-|-------|------|---------|-------------|
-| `cols` | `Column[]` | — | Column definitions (see [Column Configuration](#column-configuration)) |
-| `getPaginatedListObservableMethod` | `(filter) => Observable<PaginatedResult>` | — | Server fetch method for lazy loading |
-| `exportListToExcelObservableMethod` | `(filter) => Observable<any>` | — | Method called on "Export to Excel" |
-| `deleteItemFromTableObservableMethod` | `(id) => Observable<any>` | — | Method called when a row is deleted |
-| `deleteListFromTableObservableMethod` | `(ids) => Observable<any>` | — | Method called when selected rows are bulk-deleted. When provided, `selectionMode` is auto-set to `'multiple'` and checkboxes appear on each row. |
-| `rows` | `number` | config default | Page size |
-| `rowsPerPageOptions` | `number[]` | config default | Page-size selector options |
-| `selectionMode` | `'single' \| 'multiple'` | — | Row selection mode |
-| `readonly` | `boolean` | `false` | Hides all action buttons |
-| `hasLazyLoad` | `boolean` | `true` | `true` = server-side; `false` = client-side |
-| `items` | `any[]` | — | Data rows (only when `hasLazyLoad` is `false`) |
-| `showAddButton` | `boolean` | `true` | Show the "Add" button |
-| `showExportToExcelButton` | `boolean` | `true` | Show the "Export" button |
-| `showReloadTableButton` | `boolean` | `false` | Show the reload-table button |
-| `showPaginator` | `boolean` | `true` | Show the paginator. Pass only when `hasLazyLoad` is `false` |
-| `showCardWrapper` | `boolean` | `false` | Wrap the table in a card container |
-| `navigateOnRowClick` | `boolean` | `false` | Clicking a row navigates to details |
-| `additionalFilterIdLong` | `number` | — | Extra filter ID appended to every request |
-| `defaultSortField` | `string` | — | Sort applied while the user has no sort of their own — shows as a normal header arrow; persisted user sort wins; un-sorting (tri-state header click, Clear filters) returns to it |
-| `defaultSortOrder` | `1 \| -1` | `1` | Direction for `defaultSortField` |
+| Input                                 | Type                                      | Default             | Description                                                                                                                                                                       |
+| ------------------------------------- | ----------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cols`                                | `Column[]`                                | —                   | Column definitions (see [Column Configuration](#column-configuration))                                                                                                            |
+| `getPaginatedListObservableMethod`    | `(filter) => Observable<PaginatedResult>` | —                   | Server fetch method for lazy loading                                                                                                                                              |
+| `exportListToExcelObservableMethod`   | `(filter) => Observable<any>`             | —                   | Method called on "Export to Excel"                                                                                                                                                |
+| `deleteItemFromTableObservableMethod` | `(id) => Observable<any>`                 | —                   | Method called when a row is deleted                                                                                                                                               |
+| `deleteListFromTableObservableMethod` | `(ids) => Observable<any>`                | —                   | Method called when selected rows are bulk-deleted. When provided, `selectionMode` is auto-set to `'multiple'` and checkboxes appear on each row.                                  |
+| `rows`                                | `number`                                  | config default      | Page size                                                                                                                                                                         |
+| `rowsPerPageOptions`                  | `number[]`                                | `[10, 25, 50, 100]` | Page-size choices in the paginator dropdown. A custom `rows` value is merged in automatically; the user's pick persists with the table state                                      |
+| `selectionMode`                       | `'single' \| 'multiple'`                  | —                   | Row selection mode                                                                                                                                                                |
+| `readonly`                            | `boolean`                                 | `false`             | Hides all action buttons                                                                                                                                                          |
+| `hasLazyLoad`                         | `boolean`                                 | `true`              | `true` = server-side; `false` = client-side                                                                                                                                       |
+| `items`                               | `any[]`                                   | —                   | Data rows (only when `hasLazyLoad` is `false`)                                                                                                                                    |
+| `showAddButton`                       | `boolean`                                 | `true`              | Show the "Add" button                                                                                                                                                             |
+| `showExportToExcelButton`             | `boolean`                                 | `true`              | Show the "Export" button                                                                                                                                                          |
+| `showReloadTableButton`               | `boolean`                                 | `false`             | Show the reload-table button                                                                                                                                                      |
+| `showPaginator`                       | `boolean`                                 | `true`              | Show the paginator. Pass only when `hasLazyLoad` is `false`                                                                                                                       |
+| `showCardWrapper`                     | `boolean`                                 | `false`             | Wrap the table in a card container                                                                                                                                                |
+| `navigateOnRowClick`                  | `boolean`                                 | `false`             | Clicking a row navigates to details                                                                                                                                               |
+| `additionalFilterIdLong`              | `number`                                  | —                   | Extra filter ID appended to every request                                                                                                                                         |
+| `defaultSortField`                    | `string`                                  | —                   | Sort applied while the user has no sort of their own — shows as a normal header arrow; persisted user sort wins; un-sorting (tri-state header click, Clear filters) returns to it |
+| `defaultSortOrder`                    | `1 \| -1`                                 | `1`                 | Direction for `defaultSortField`                                                                                                                                                  |
 
 ### Key Outputs
 
-| Output | Payload | Description |
-|--------|---------|-------------|
-| `onLazyLoad` | `Filter` | Fires on every table load (sort, filter, page change) |
-| `onTotalRecordsChange` | `number` | Fires when the total record count changes |
-| `onRowSelect` | `RowClickEvent` | Fires when a row is selected |
-| `onRowUnselect` | `RowClickEvent` | Fires when a row is deselected |
-| `onIsAllSelectedChange` | `AllClickEvent` | Fires when the "select all" checkbox changes |
+| Output                  | Payload         | Description                                           |
+| ----------------------- | --------------- | ----------------------------------------------------- |
+| `onLazyLoad`            | `Filter`        | Fires on every table load (sort, filter, page change) |
+| `onTotalRecordsChange`  | `number`        | Fires when the total record count changes             |
+| `onRowSelect`           | `RowClickEvent` | Fires when a row is selected                          |
+| `onRowUnselect`         | `RowClickEvent` | Fires when a row is deselected                        |
+| `onIsAllSelectedChange` | `AllClickEvent` | Fires when the "select all" checkbox changes          |
 
 ### Example
 
@@ -108,21 +108,21 @@ export class ProductListComponent implements OnInit {
 
 Columns are defined using the `Column` class. Each column maps to a data field and can have filtering, sorting, and custom actions.
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | `string` | Column header label |
-| `field` | `string` | Data field name (key from the DTO) |
-| `filterType` | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric' \| 'blob'` | Type of column filter |
-| `filterField` | `string` | Alternate field used for filtering (useful for FK autocomplete fields) |
-| `showMatchModes` | `boolean` | Show match mode dropdown in the column filter |
-| `dropdownOrMultiselectValues` | `PrimengOption[]` | Options for multiselect column filters |
-| `editable` | `boolean` | Enable inline editing for this column |
-| `showTime` | `boolean` | For date columns: show time portion |
-| `decimalPlaces` | `number` | For numeric columns: decimal formatting |
-| `actions` | `Action[]` | Row action buttons (see [Actions](#actions)) |
-| `visible` | `boolean` | Whether the column is initially rendered (default `true`; see [Column chooser](#column-chooser)) |
-| `lockVisible` | `boolean` | Pin the column — always rendered, shown checked and disabled in the chooser |
-| `onCellClick` | `(e: CellClickEvent) => void` | Per-cell click handler (see [Cell click](#cell-click)) |
+| Property                      | Type                                                                    | Description                                                                                      |
+| ----------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `name`                        | `string`                                                                | Column header label                                                                              |
+| `field`                       | `string`                                                                | Data field name (key from the DTO)                                                               |
+| `filterType`                  | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric' \| 'blob'` | Type of column filter                                                                            |
+| `filterField`                 | `string`                                                                | Alternate field used for filtering (useful for FK autocomplete fields)                           |
+| `showMatchModes`              | `boolean`                                                               | Show match mode dropdown in the column filter                                                    |
+| `dropdownOrMultiselectValues` | `PrimengOption[]`                                                       | Options for multiselect column filters                                                           |
+| `editable`                    | `boolean`                                                               | Enable inline editing for this column                                                            |
+| `showTime`                    | `boolean`                                                               | For date columns: show time portion                                                              |
+| `decimalPlaces`               | `number`                                                                | For numeric columns: decimal formatting                                                          |
+| `actions`                     | `Action[]`                                                              | Row action buttons (see [Actions](#actions))                                                     |
+| `visible`                     | `boolean`                                                               | Whether the column is initially rendered (default `true`; see [Column chooser](#column-chooser)) |
+| `lockVisible`                 | `boolean`                                                               | Pin the column — always rendered, shown checked and disabled in the chooser                      |
+| `onCellClick`                 | `(e: CellClickEvent) => void`                                           | Per-cell click handler (see [Cell click](#cell-click))                                           |
 
 ### Column chooser
 
@@ -136,7 +136,7 @@ Behavior notes:
 
 - **Hiding a column clears its active filter and sort** (a hidden column contributes nothing to filtering or sorting — otherwise it would restrict the data invisibly), reloading the table once. Hiding an unconstrained column doesn't trigger a server call.
 - **Choices persist per table** in `localStorage` under `` `${stateKey}:columns` `` — deliberately durable even when `stateStorage` is `'session'`, since a column layout is a preference while filters are a transient working set. Only explicit user toggles are stored, so changing a column's declared default later flows through to users who never touched it.
-- **Guards:** `lockVisible` columns can't be toggled, and the last visible data column can't be hidden. *Reset to default* in the chooser restores the declared configuration.
+- **Guards:** `lockVisible` columns can't be toggled, and the last visible data column can't be hidden. _Reset to default_ in the chooser restores the declared configuration.
 
 ### Actions
 
@@ -153,6 +153,7 @@ Use the `Action` class to add buttons to each row:
 ```
 
 Built-in `field` values:
+
 - `'Details'` — navigates to the detail page
 - `'Delete'` — opens a confirmation dialog and calls `deleteItemFromTableObservableMethod`
 - Any other value — triggers the `onClick` callback
@@ -161,12 +162,12 @@ Built-in `field` values:
 
 The `onClick` callback receives an `ActionClickEvent` carrying everything you need to react to the click — including the clicked element, so you can anchor an overlay or popover to it:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `id` | `number` | The clicked row's id |
-| `row` | `any` | The full row object the action belongs to |
-| `element` | `HTMLElement` | The clicked action element — use as the popover/overlay anchor |
-| `originalEvent` | `MouseEvent` | The original DOM click event |
+| Property        | Type          | Description                                                    |
+| --------------- | ------------- | -------------------------------------------------------------- |
+| `id`            | `number`      | The clicked row's id                                           |
+| `row`           | `any`         | The full row object the action belongs to                      |
+| `element`       | `HTMLElement` | The clicked action element — use as the popover/overlay anchor |
+| `originalEvent` | `MouseEvent`  | The original DOM click event                                   |
 
 For example, to open a PrimeNG popover anchored to the clicked action:
 
@@ -198,17 +199,27 @@ Set a column's `onCellClick` to react to clicks on the cell **value** (as oppose
 
 The `onCellClick` callback receives a `CellClickEvent`:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `id` | `number` | The clicked row's id (`row[idField]`) |
-| `field` | `string` | The clicked column's `field` |
-| `row` | `any` | The full row object |
-| `value` | `any` | The cell's raw value (`row[field]`) |
-| `displayValue` | `string` | The formatted text shown in the cell |
-| `element` | `HTMLElement` | The clicked `<td>` — use as the popover/overlay anchor |
-| `originalEvent` | `MouseEvent` | The original DOM click event |
+| Property        | Type          | Description                                            |
+| --------------- | ------------- | ------------------------------------------------------ |
+| `id`            | `number`      | The clicked row's id (`row[idField]`)                  |
+| `field`         | `string`      | The clicked column's `field`                           |
+| `row`           | `any`         | The full row object                                    |
+| `value`         | `any`         | The cell's raw value (`row[field]`)                    |
+| `displayValue`  | `string`      | The formatted text shown in the cell                   |
+| `element`       | `HTMLElement` | The clicked `<td>` — use as the popover/overlay anchor |
+| `originalEvent` | `MouseEvent`  | The original DOM click event                           |
 
 `element` is captured at click time on purpose: anchor overlays with it rather than `originalEvent.currentTarget`, which the DOM resets to `null` once dispatch ends — so it would already be null inside an async handler that opens the popover after a fetch.
+
+## Row Selection
+
+Set `selectionMode="multiple"` (or provide `deleteListFromTableObservableMethod`, which enables it automatically) to render a checkbox column. Clicking a checkbox only toggles the selection — it never triggers `navigateOnRowClick` navigation.
+
+### Shift+click range selection
+
+Click one checkbox, hold **Shift**, and click another: every row between them receives the state of the checkbox you clicked. Shift+checking selects the whole range; shift+unchecking clears it, which undoes an overshoot without clicking row by row.
+
+The range anchor is the last checkbox you clicked, and it resets whenever the visible rows change (page, sort, or filter change), so a range never spans pages. Rows already in the target state are skipped, and every actual change emits `onRowSelect`/`onRowUnselect` exactly as a single click would.
 
 ## SpiderlyDataView
 
@@ -218,17 +229,17 @@ Card-based paginated list with custom rendering and filtering. Use this when you
 
 ### Key Inputs
 
-| Input | Type | Default | Description |
-|-------|------|---------|-------------|
-| `filters` | `DataViewFilter[]` | `[]` | Filter definitions displayed above the card list |
-| `getPaginatedListObservableMethod` | `(filter) => Observable<PaginatedResult>` | — | Server fetch method |
-| `rows` | `number` | `10` | Page size |
-| `items` | `any[]` | — | Data items (only for non-lazy mode) |
+| Input                              | Type                                      | Default | Description                                      |
+| ---------------------------------- | ----------------------------------------- | ------- | ------------------------------------------------ |
+| `filters`                          | `DataViewFilter[]`                        | `[]`    | Filter definitions displayed above the card list |
+| `getPaginatedListObservableMethod` | `(filter) => Observable<PaginatedResult>` | —       | Server fetch method                              |
+| `rows`                             | `number`                                  | `10`    | Page size                                        |
+| `items`                            | `any[]`                                   | —       | Data items (only for non-lazy mode)              |
 
 ### Key Outputs
 
-| Output | Payload | Description |
-|--------|---------|-------------|
+| Output       | Payload  | Description                                           |
+| ------------ | -------- | ----------------------------------------------------- |
 | `onLazyLoad` | `Filter` | Fires on every lazy load (page change, filter change) |
 
 ### Content Projection
@@ -302,26 +313,27 @@ export class ProductDataViewComponent implements OnInit {
 ```
 
 <Callout>
-  For a quick-start version of this example, see the [Frontend Customization](/docs/frontend-customization#using-the-spiderly-data-view-component) guide.
+  For a quick-start version of this example, see the [Frontend
+  Customization](/docs/frontend-customization#using-the-spiderly-data-view-component) guide.
 </Callout>
 
 ## DataViewFilter
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `label` | `string` | Filter label displayed above the input |
-| `field` | `string` | Data field to filter on |
-| `filterField` | `string` | Alternate field for filtering |
-| `type` | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric'` | Filter input type |
-| `showMatchModes` | `boolean` | Show match mode dropdown (e.g., equals, greater than) |
-| `dropdownOrMultiselectValues` | `PrimengOption[]` | Options for multiselect/dropdown filters |
+| Property                      | Type                                                          | Description                                           |
+| ----------------------------- | ------------------------------------------------------------- | ----------------------------------------------------- |
+| `label`                       | `string`                                                      | Filter label displayed above the input                |
+| `field`                       | `string`                                                      | Data field to filter on                               |
+| `filterField`                 | `string`                                                      | Alternate field for filtering                         |
+| `type`                        | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric'` | Filter input type                                     |
+| `showMatchModes`              | `boolean`                                                     | Show match mode dropdown (e.g., equals, greater than) |
+| `dropdownOrMultiselectValues` | `PrimengOption[]`                                             | Options for multiselect/dropdown filters              |
 
 ### Filter Type Behavior
 
-| Type | Match Modes | Description |
-|------|-------------|-------------|
-| `text` | Contains | Text search (contains by default) |
-| `numeric` | Equals, Greater Than, Less Than | Number comparison |
-| `date` | Equals, Greater Than, Less Than | Date comparison |
-| `boolean` | Equals | True/false selection |
-| `multiselect` | In | Multi-value selection |
+| Type          | Match Modes                     | Description                       |
+| ------------- | ------------------------------- | --------------------------------- |
+| `text`        | Contains                        | Text search (contains by default) |
+| `numeric`     | Equals, Greater Than, Less Than | Number comparison                 |
+| `date`        | Equals, Greater Than, Less Than | Date comparison                   |
+| `boolean`     | Equals                          | True/false selection              |
+| `multiselect` | In                              | Multi-value selection             |
