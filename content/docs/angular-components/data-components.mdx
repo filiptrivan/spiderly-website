@@ -38,7 +38,7 @@ Advanced paginated table with server-side filtering, sorting, selection, inline 
 | `showReloadTableButton`               | `boolean`                                 | `false`             | Show the reload-table button                                                                                                                                                      |
 | `showPaginator`                       | `boolean`                                 | `true`              | Show the paginator. Pass only when `hasLazyLoad` is `false`                                                                                                                       |
 | `showCardWrapper`                     | `boolean`                                 | `false`             | Wrap the table in a card container                                                                                                                                                |
-| `navigateOnRowClick`                  | `boolean`                                 | `false`             | Clicking a row navigates to details                                                                                                                                               |
+| `navigateOnRowClick`                  | `boolean`                                 | `false`             | Clicking a row navigates to details (using `idField`). Interactive cells — checkboxes, action icons, editable and `onCellClick` cells — keep their click and never navigate       |
 | `additionalFilterIdLong`              | `number`                                  | —                   | Extra filter ID appended to every request                                                                                                                                         |
 | `defaultSortField`                    | `string`                                  | —                   | Sort applied while the user has no sort of their own — shows as a normal header arrow; persisted user sort wins; un-sorting (tri-state header click, Clear filters) returns to it |
 | `defaultSortOrder`                    | `1 \| -1`                                 | `1`                 | Direction for `defaultSortField`                                                                                                                                                  |
@@ -213,7 +213,7 @@ The `onCellClick` callback receives a `CellClickEvent`:
 
 ## Row Selection
 
-Set `selectionMode="multiple"` (or provide `deleteListFromTableObservableMethod`, which enables it automatically) to render a checkbox column. Clicking a checkbox only toggles the selection — it never triggers `navigateOnRowClick` navigation.
+Set `selectionMode="multiple"` (or provide `deleteListFromTableObservableMethod`, which enables it automatically) to render a checkbox column. Clicking a checkbox only toggles the selection: on a `navigateOnRowClick` table it never navigates, and neither do action icons, editable cells or `onCellClick` cells.
 
 ### Shift+click range selection
 
