@@ -400,6 +400,8 @@ services.Configure<BlobKeyOptions>(options =>
 
 The default optimize hook transcodes raster images to WebP, and a consumer override may produce any format — so before the key is built, the file name's extension is re-aligned with the bytes actually stored (by magic-byte detection, `Helper.AlignExtensionWithContent`). An admin uploading `photo.jpg` gets a `.webp` key served as `image/webp`; the key never lies about its content.
 
+Two cases are deliberately left alone. **SVG keeps its extension**: it is a text format with no magic bytes, so detection can only see the generic XML underneath it, and renaming `logo.svg` to `logo.xml` would have it served as `text/xml` and stop rendering in an `<img>`. And a name that **already agrees with any** detected type is kept as-is, so a container format is never renamed to its generic parent (an `.avif` is also a generic ISO `ftyp` box; a `.docx` is also a `.zip`).
+
 ## Storage Lifecycle and Orphan Cleanup
 
 ### Insert flow — staging prefix
