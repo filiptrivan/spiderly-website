@@ -362,13 +362,39 @@ public class ProductMediaService : ProductMediaServiceGenerated
 }
 ```
 
-Whatever you return is slugified defensively — lowercased, diacritics transliterated (`š→s`, `ü→u`, plus the stroked letters and ligatures Unicode decomposition cannot fold: `đ→dj`, `ł→l`, `ø→o`, `æ→ae`, `ß→ss`), separator runs collapsed, and capped at 60 characters on a word boundary rather than mid-word. So a raw display name is as safe to return as a clean slug. The resulting key:
+Whatever you return is slugified defensively — lowercased, diacritics transliterated (`š→s`, `ü→u`, plus the stroked letters and ligatures Unicode decomposition cannot fold: `đ→dj`, `ł→l`, `ø→o`, `æ→ae`, `ß→ss`), separator runs collapsed, and capped at 60 characters on a word boundary rather than mid-word. So a raw display name is as safe to return as a clean slug — and every one of those rules is [configurable](#naming-policy--blobkeyoptions). The resulting key:
 
 ```
 products/84512/cordless-drill-gsb-13-re-3f9a21c4.webp
 ```
 
 The 8-character random suffix is load-bearing, not decoration: blobs are served with `Cache-Control: immutable`, so every upload must mint a fresh key or replaced content would be cached stale for up to a year. The hook is called eagerly on direct uploads (real entity id) and lazily at staged-blob promotion — the common no-staged-upload save never pays the lookup.
+
+### Naming policy — `BlobKeyOptions`
+
+The defaults above encode judgements that are not universal, so each is a knob. Register it like any options class; anything you leave alone keeps its default.
+
+```csharp
+services.Configure<BlobKeyOptions>(options =>
+{
+    options.MaxSlugLength = 80;
+    options.Transliterations['đ'] = "d";   // Vietnamese: đ is the letter d, not the digraph dj
+});
+```
+
+| Option | Default | Why you might change it |
+| --- | --- | --- |
+| `MaxSlugLength` | `60` | An SEO preference. Raise it if your names carry meaning further in, lower it for a tighter key budget. |
+| `UniquenessSuffixLength` | `8` | The random suffix exists so a **replaced** file gets a new URL — `S3PublicStorageService` serves blobs `immutable` for a year, and a browser cache no purge can reach would otherwise keep the old bytes. Set `0` for deterministic named keys **only** if you bust caches another way or never replace files. |
+| `Transliterations` | Latin stroked letters + ligatures | The table is one region's conventions and they conflict: `đ→dj` is right for Serbo-Croatian and wrong for Vietnamese. A letter that is neither decomposable nor listed is dropped, so correct the mapping rather than lose it. |
+| `Slugifier` | built-in | Replaces slugification entirely. **Required for non-Latin scripts** — CJK text has no ASCII alphanumerics, so the built-in folds it to nothing and every key silently falls back to a bare GUID. Plug a romanization library in here. |
+
+<Callout type="warn">
+  The `{KeyPrefix}/{ObjectId}/` path **structure** is deliberately not configurable. Blob cleanup and
+  staging promotion find objects by listing that prefix, so a different structure would make them
+  delete files rather than rename them. For the same reason a custom `Slugifier`'s output has `/`
+  folded to `-`.
+</Callout>
 
 ### Honest extensions
 

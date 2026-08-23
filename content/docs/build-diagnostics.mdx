@@ -18,7 +18,7 @@ Each diagnostic:
 - Appears in the build output with a clickable file and line.
 - Is parseable by CI logs and AI agents for automated fix suggestions.
 
-Diagnostics are reported by the generator's `SourceProductionContext`, so they behave like any other compiler warning or error — you can suppress individual codes via `<NoWarn>` in the `.csproj`, treat warnings as errors, or filter them in CI output. Severity is **Error** for everything except `SPIDERLY013` (Warning).
+Diagnostics are reported by the generator's `SourceProductionContext`, so they behave like any other compiler warning or error — you can suppress individual codes via `<NoWarn>` in the `.csproj`, treat warnings as errors, or filter them in CI output. Severity is **Error** for everything except `SPIDERLY013` and `SPIDERLY031` (Warning).
 
 ## Diagnostic Reference
 
@@ -53,6 +53,7 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY027](#spiderly027) | Error | Generic type argument could not be resolved for a base-class property |
 | [SPIDERLY028](#spiderly028) | Error | Nullable annotation disagrees with `[Required]` |
 | [SPIDERLY030](#spiderly030) | Error | Invalid or colliding blob `KeyPrefix` |
+| [SPIDERLY031](#spiderly031) | Warning | Blob `KeyPrefix` departs from the lowercase kebab-case convention |
 
 ## SPIDERLY001
 
@@ -343,7 +344,9 @@ This diagnostic only fires for projects on `<Nullable>enable</Nullable>`. In a n
 
 **Invalid or colliding blob `KeyPrefix`.**
 
-A blob property's key prefix (the custom `KeyPrefix` where declared, the `{Entity}/{Property}` default otherwise — see [File Storage](/docs/file-storage#descriptive-seo-friendly-keys)) is the listing scope for save-time cleanup and staging promotion. Two properties sharing an effective prefix — or one prefix nested under another — would list and delete each other's stored objects, so the model is rejected at build time. Custom prefixes must also be key-safe: lowercase ASCII kebab-case segments separated by `/` (they land verbatim in public URLs, where anything else percent-encodes; the reserved `_tmp` staging segment is excluded by the same rule).
+A blob property's key prefix (the custom `KeyPrefix` where declared, the `{Entity}/{Property}` default otherwise — see [File Storage](/docs/file-storage#descriptive-seo-friendly-keys)) is the listing scope for save-time cleanup and staging promotion. Two properties sharing an effective prefix — or one prefix nested under another — would list and delete each other's stored objects, so the model is rejected at build time.
+
+A custom prefix is also rejected when it cannot work as a storage key: whitespace or non-ASCII characters (they percent-encode in the public URL), a leading, trailing or doubled slash (an empty path segment changes the depth cleanup lists by), or a segment equal to the reserved `_tmp` staging marker (permanent blobs under it read as not-yet-promoted uploads). Uppercase letters and underscores are **not** rejected — they are legal keys everywhere Spiderly stores blobs, and are reported as [SPIDERLY031](#spiderly031) instead.
 
 ```csharp
 // Reported: two properties claim the same prefix.
@@ -360,7 +363,23 @@ public class Catalog : BusinessObject<int>
 }
 ```
 
-**Fix:** give every blob property a distinct, non-nested, lowercase kebab-case prefix (`"products"` and `"product-thumbs"` are fine together; `"products"` and `"products/thumbs"` are not).
+**Fix:** give every blob property a distinct, non-nested prefix (`"products"` and `"product-thumbs"` are fine together; `"products"` and `"products/thumbs"` are not).
+
+## SPIDERLY031
+
+**Blob `KeyPrefix` departs from the lowercase kebab-case convention.**
+
+The prefix works, but it contains uppercase letters or underscores while the rest of the key — the slugified file segment — is lowercase kebab-case, so a mixed convention reads as a mistake in a public URL.
+
+This is a **warning, deliberately**. Both forms are valid keys in every storage provider Spiderly targets, so if your prefix has to match an existing bucket layout, suppress it and keep the real guard armed:
+
+```xml
+<PropertyGroup>
+  <NoWarn>$(NoWarn);SPIDERLY031</NoWarn>
+</PropertyGroup>
+```
+
+That is the whole reason this is a separate id from [SPIDERLY030](#spiderly030): suppressing a naming preference must not also switch off the check that stops one property deleting another property's blobs.
 
 ## Suppressing Diagnostics
 
