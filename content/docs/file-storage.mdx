@@ -362,7 +362,7 @@ public class ProductMediaService : ProductMediaServiceGenerated
 }
 ```
 
-Whatever you return is slugified defensively — lowercased, diacritics transliterated (`š→s`, `ü→u`, plus the stroked letters and ligatures Unicode decomposition cannot fold: `đ→dj`, `ł→l`, `ø→o`, `æ→ae`, `ß→ss`), separator runs collapsed, and capped at 60 characters on a word boundary rather than mid-word. So a raw display name is as safe to return as a clean slug — and every one of those rules is [configurable](#naming-policy--blobkeyoptions). The resulting key:
+Whatever you return is slugified defensively — lowercased, diacritics transliterated (`š→s`, `ü→u`, plus the stroked letters and ligatures Unicode decomposition cannot fold: `đ→dj`, `ł→l`, `ø→o`, `æ→ae`, `ß→ss`), separator runs collapsed, and capped at 100 characters on a word boundary rather than mid-word. So a raw display name is as safe to return as a clean slug — and every one of those rules is [configurable](#naming-policy--blobkeyoptions). The resulting key:
 
 ```
 products/84512/cordless-drill-gsb-13-re-3f9a21c4.webp
@@ -384,7 +384,7 @@ services.Configure<BlobKeyOptions>(options =>
 
 | Option | Default | Why you might change it |
 | --- | --- | --- |
-| `MaxSlugLength` | `60` | An SEO preference. Raise it if your names carry meaning further in, lower it for a tighter key budget. |
+| `MaxSlugLength` | `100` | Deliberately generous: a cap that is too low destroys information permanently inside an immutable key, while one that is too high only lengthens a URL. Measured on a 71.472-product tool catalogue, a 60-char cap stripped the manufacturer article number — usually the **last** token of a product name — from 14,8% of the catalogue; 100 leaves 0,68%, for a worst-case key of ~150 chars against S3's 1024-byte limit. Lower it only for a tighter storage or CDN budget. |
 | `UniquenessSuffixLength` | `8` | The random suffix exists so a **replaced** file gets a new URL — `S3PublicStorageService` serves blobs `immutable` for a year, and a browser cache no purge can reach would otherwise keep the old bytes. Set `0` for deterministic named keys **only** if you bust caches another way or never replace files. |
 | `Transliterations` | Latin stroked letters + ligatures | The table is one region's conventions and they conflict: `đ→dj` is right for Serbo-Croatian and wrong for Vietnamese. A letter that is neither decomposable nor listed is dropped, so correct the mapping rather than lose it. |
 | `Slugifier` | built-in | Replaces slugification entirely. **Required for non-Latin scripts** — CJK text has no ASCII alphanumerics, so the built-in folds it to nothing and every key silently falls back to a bare GUID. Plug a romanization library in here. |
