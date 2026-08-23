@@ -362,7 +362,7 @@ public class ProductMediaService : ProductMediaServiceGenerated
 }
 ```
 
-Whatever you return is slugified defensively (lowercased, diacritics transliterated — `đ→dj`, `š→s`, `ü→u` — separators collapsed, capped at 60 chars), so a raw display name is as safe to return as a clean slug. The resulting key:
+Whatever you return is slugified defensively — lowercased, diacritics transliterated (`š→s`, `ü→u`, plus the stroked letters and ligatures Unicode decomposition cannot fold: `đ→dj`, `ł→l`, `ø→o`, `æ→ae`, `ß→ss`), separator runs collapsed, and capped at 60 characters on a word boundary rather than mid-word. So a raw display name is as safe to return as a clean slug. The resulting key:
 
 ```
 products/84512/cordless-drill-gsb-13-re-3f9a21c4.webp
