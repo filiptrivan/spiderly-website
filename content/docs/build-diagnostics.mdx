@@ -52,6 +52,7 @@ Diagnostics are reported by the generator's `SourceProductionContext`, so they b
 | [SPIDERLY026](#spiderly026) | Error | `[UITableColumn]` field does not exist |
 | [SPIDERLY027](#spiderly027) | Error | Generic type argument could not be resolved for a base-class property |
 | [SPIDERLY028](#spiderly028) | Error | Nullable annotation disagrees with `[Required]` |
+| [SPIDERLY030](#spiderly030) | Error | Invalid or colliding blob `KeyPrefix` |
 
 ## SPIDERLY001
 
@@ -337,6 +338,29 @@ public string? Name { get; set; }
 Value types are never reported: `int` and `int?` carry their nullability in the CLR type, so there is nothing for `[Required]` to contradict. Collections are never reported either — they are initialized `= new()` and are never null.
 
 This diagnostic only fires for projects on `<Nullable>enable</Nullable>`. In a nullable-oblivious project `public virtual TaskCategory TaskCategory { get; set; }` is the *absence* of an annotation rather than a claim of non-nullability, so nothing can disagree.
+
+## SPIDERLY030
+
+**Invalid or colliding blob `KeyPrefix`.**
+
+A blob property's key prefix (the custom `KeyPrefix` where declared, the `{Entity}/{Property}` default otherwise — see [File Storage](/docs/file-storage#descriptive-seo-friendly-keys)) is the listing scope for save-time cleanup and staging promotion. Two properties sharing an effective prefix — or one prefix nested under another — would list and delete each other's stored objects, so the model is rejected at build time. Custom prefixes must also be key-safe: lowercase ASCII kebab-case segments separated by `/` (they land verbatim in public URLs, where anything else percent-encodes; the reserved `_tmp` staging segment is excluded by the same rule).
+
+```csharp
+// Reported: two properties claim the same prefix.
+public class ProductMedia : BusinessObject<long>
+{
+    [S3PublicStorage(KeyPrefix = "products")]
+    public string Url { get; set; }
+}
+
+public class Catalog : BusinessObject<int>
+{
+    [S3PublicStorage(KeyPrefix = "products")] // collides with ProductMedia.Url
+    public string File { get; set; }
+}
+```
+
+**Fix:** give every blob property a distinct, non-nested, lowercase kebab-case prefix (`"products"` and `"product-thumbs"` are fine together; `"products"` and `"products/thumbs"` are not).
 
 ## Suppressing Diagnostics
 

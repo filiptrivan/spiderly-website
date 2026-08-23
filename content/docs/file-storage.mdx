@@ -244,6 +244,7 @@ All hooks are `virtual` methods on the generated entity service class (e.g., `Pr
 | `OnBefore{Property}BlobFor{Entity}IsUploaded()`         | Process file before storage    | Images: validate + optimize. Others: read bytes   |
 | `ValidateImageFor{Property}Of{Entity}()`                | Custom dimension validation    | Exact match if `[ImageWidth]`/`[ImageHeight]` set |
 | `OptimizeImageFor{Property}Of{Entity}()`                | Custom image optimization      | Convert to WebP at 85% quality                    |
+| `GetBlobDescriptiveNameFor{Property}Of{Entity}()`       | [Descriptive key names](#descriptive-file-names--the-getblobdescriptivename-hook) | Empty → GUID-only key |
 
 ### Example: custom image optimization
 
@@ -323,23 +324,67 @@ selected, so it is passed through everywhere, lists included.
   itself and fetch it yourself.
 </Callout>
 
-## Storage Paths and Orphan Cleanup
+## Descriptive, SEO-friendly Keys
 
 All adapters place uploaded blobs under a hierarchical, entity-scoped key:
 
 ```
-{EntityName}/{PropertyName}/{ObjectId}/{BlobGuid}.{ext}
+{KeyPrefix}/{ObjectId}/{FileSegment}.{ext}
 ```
+
+Both parts are customizable per property, and for `[S3PublicStorage]` they matter beyond aesthetics: the key is the public URL — the thing search engines index for your images and the thing every log and bucket listing shows you.
+
+### `KeyPrefix` — the path
+
+`KeyPrefix` defaults to `{EntityName}/{PropertyName}` (editor-image properties: `{EntityName}/{PropertyName}Image`). Override it per property for short, lowercase, human-readable paths:
+
+```csharp
+[S3PublicStorage(KeyPrefix = "products")]
+[AcceptedFileTypes("image/*")]
+[StringLength(1000, MinimumLength = 1)]
+public string Url { get; set; }
+```
+
+The prefix is also the listing scope for save-time cleanup and staging promotion, so it must be unique per blob property, no prefix may be a path-parent of another, and custom values must be lowercase ASCII kebab-case segments — all enforced at build time by [`SPIDERLY030`](/docs/build-diagnostics#spiderly030).
+
+### Descriptive file names — the `GetBlobDescriptiveName` hook
+
+By default the file segment is a bare GUID. Override `GetBlobDescriptiveNameFor{Property}Of{Entity}(id)` on your entity service to give uploads a human/SEO-readable name — return the entity's slug, its display name, or a parent's (return empty for "no name"):
+
+```csharp
+public class ProductMediaService : ProductMediaServiceGenerated
+{
+    public override async Task<string> GetBlobDescriptiveNameForUrlOfProductMedia(long id) =>
+        await _deps.Context.DbSet<ProductMedia>()
+            .Where(x => x.Id == id)
+            .Select(x => x.Product.Slug)
+            .SingleOrDefaultAsync() ?? "";
+}
+```
+
+Whatever you return is slugified defensively (lowercased, diacritics transliterated — `đ→dj`, `š→s`, `ü→u` — separators collapsed, capped at 60 chars), so a raw display name is as safe to return as a clean slug. The resulting key:
+
+```
+products/84512/cordless-drill-gsb-13-re-3f9a21c4.webp
+```
+
+The 8-character random suffix is load-bearing, not decoration: blobs are served with `Cache-Control: immutable`, so every upload must mint a fresh key or replaced content would be cached stale for up to a year. The hook is called eagerly on direct uploads (real entity id) and lazily at staged-blob promotion — the common no-staged-upload save never pays the lookup.
+
+### Honest extensions
+
+The default optimize hook transcodes raster images to WebP, and a consumer override may produce any format — so before the key is built, the file name's extension is re-aligned with the bytes actually stored (by magic-byte detection, `Helper.AlignExtensionWithContent`). An admin uploading `photo.jpg` gets a `.webp` key served as `image/webp`; the key never lies about its content.
+
+## Storage Lifecycle and Orphan Cleanup
 
 ### Insert flow — staging prefix
 
 When a user uploads a file for an entity that doesn't exist yet (insert), the entity ID is `0`. Spiderly routes these uploads to a temporary staging prefix:
 
 ```
-{EntityName}/{PropertyName}/_tmp/{UploadGuid}/{BlobGuid}.{ext}
+{KeyPrefix}/_tmp/{UploadGuid}/{BlobGuid}.{ext}
 ```
 
-Once the entity is saved and has a real ID, the generated save code calls `IFileManager.MoveBlobToEntityPathAsync(...)`, which copies the blob to its permanent key (`{Entity}/{Prop}/{realId}/{BlobGuid}.ext`), deletes the staging source, and updates the DB column. The client never sees the staged path.
+Once the entity is saved and has a real ID, the generated save code calls `IFileManager.MoveBlobToEntityPathAsync(...)`, which copies the blob to its permanent key (`{KeyPrefix}/{realId}/{FileSegment}.{ext}` — this is where the [descriptive name](#descriptive-file-names--the-getblobdescriptivename-hook) is applied, since no trusted entity existed at upload time), deletes the staging source, and updates the DB column. The client never sees the staged path.
 
 <Callout>
   Configure a storage lifecycle rule to auto-expire objects under the `_tmp/` prefix after 7 days
@@ -354,6 +399,20 @@ When a user replaces a file on an existing entity:
 1. User uploads a new file → new key/URL is returned
 2. User saves the entity with the new key/URL
 3. After `SaveChangesAsync()`, the generated code calls `DeleteNonActiveBlobs()` on the storage adapter
-4. The adapter lists all files under `{Entity}/{Prop}/{id}/` and deletes everything except the active file
+4. The adapter lists all files under `{KeyPrefix}/{id}/` and deletes everything except the active file
 
 This design is intentional — files are uploaded **before** the entity is saved (so the upload endpoint works independently). Cleanup only happens at save time, which means refreshing the page without saving won't lose the old file.
+
+### Opting out — `[RetainReplacedBlobs]`
+
+Save-time cleanup assumes the entity is the only holder of the blob's URL. When copies of the URL outlive the entity's current value — order-line snapshots, sent emails, exports — deleting the replaced bytes breaks those historical references. Put `[RetainReplacedBlobs]` on the property to keep every replaced blob:
+
+```csharp
+[S3PublicStorage(KeyPrefix = "products")]
+[RetainReplacedBlobs] // order lines snapshot this URL at checkout
+[AcceptedFileTypes("image/*")]
+[StringLength(1000, MinimumLength = 1)]
+public string Url { get; set; }
+```
+
+An orphaned blob costs fractions of a cent and is invisible; a deleted-but-referenced blob breaks a customer-facing record. When one side of the trade is cents, don't optimize the cents.
