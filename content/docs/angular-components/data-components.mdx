@@ -115,6 +115,8 @@ Columns are defined using the `Column` class. Each column maps to a data field a
 | `filterType`                  | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric' \| 'blob'` | Type of column filter                                                                            |
 | `filterField`                 | `string`                                                                | Alternate field used for filtering (useful for FK autocomplete fields)                           |
 | `showMatchModes`              | `boolean`                                                               | Show match mode dropdown in the column filter                                                    |
+| `matchModes`                  | `MatchModeCodes[]`                                                      | Narrows the match modes offered; first entry becomes the column's default (applies even when the dropdown is hidden) |
+| `minWidth`                    | `string`                                                                | CSS length overriding the column's default minimum width (e.g. `'8rem'`)                         |
 | `dropdownOrMultiselectValues` | `PrimengOption[]`                                                       | Options for multiselect column filters                                                           |
 | `editable`                    | `boolean`                                                               | Enable inline editing for this column                                                            |
 | `showTime`                    | `boolean`                                                               | For date columns: show time portion                                                              |
@@ -326,6 +328,7 @@ export class ProductDataViewComponent implements OnInit {
 | `filterField`                 | `string`                                                      | Alternate field for filtering                         |
 | `type`                        | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric'` | Filter input type                                     |
 | `showMatchModes`              | `boolean`                                                     | Show match mode dropdown (e.g., equals, greater than) |
+| `matchModes`                  | `MatchModeCodes[]`                                            | Narrows the offered match modes; first is the default |
 | `dropdownOrMultiselectValues` | `PrimengOption[]`                                             | Options for multiselect/dropdown filters              |
 
 ### Filter Type Behavior
