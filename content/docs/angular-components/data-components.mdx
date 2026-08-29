@@ -108,6 +108,8 @@ export class ProductListComponent implements OnInit {
 
 Columns are defined using the `Column` class. Each column maps to a data field and can have filtering, sorting, and custom actions.
 
+The table lays its columns out from these declarations rather than from the rows on screen (`table-layout: fixed`), so a column keeps its width across paging, searching and filtering. Declared widths behave as ratios: the table shares surplus space in proportion to them, and a table whose columns need more room than its container gets scrolls horizontally instead of crushing them. Because a column no longer widens to fit its text, the default cell clamps to one line with an ellipsis; a column rendering its own cell template clamps its own lines.
+
 | Property                      | Type                                                                    | Description                                                                                      |
 | ----------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | `name`                        | `string`                                                                | Column header label                                                                              |
@@ -116,7 +118,7 @@ Columns are defined using the `Column` class. Each column maps to a data field a
 | `filterField`                 | `string`                                                                | Alternate field used for filtering (useful for FK autocomplete fields)                           |
 | `showMatchModes`              | `boolean`                                                               | Show match mode dropdown in the column filter                                                    |
 | `matchModes`                  | `MatchModeCodes[]`                                                      | Narrows the match modes offered; first entry becomes the column's default (applies even when the dropdown is hidden) |
-| `minWidth`                    | `string`                                                                | CSS length overriding the column's default minimum width (e.g. `'8rem'`)                         |
+| `width`                       | `string`                                                                | CSS length fixing the column's width, overriding the per-`filterType` default (e.g. `'8rem'`)    |
 | `dropdownOrMultiselectValues` | `PrimengOption[]`                                                       | Options for multiselect column filters                                                           |
 | `editable`                    | `boolean`                                                               | Enable inline editing for this column                                                            |
 | `showTime`                    | `boolean`                                                               | For date columns: show time portion                                                              |
