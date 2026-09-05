@@ -155,7 +155,7 @@ The table's whole filter surface is a **store the page owns** and hands to `[fil
 - Late-arriving option lists (an async lookup) go in through `store.setOptions(id, options)`; programmatic writes through `store.setAndCommit(id, { operator, value })`.
 - Applied filters persist per table under `` `${stateKey}:filters` `` in the `stateStorage` storage; a custom editor control for one filter is a projected `<ng-template spiderlyFilterTemplate="filterId" let-f>`.
 
-**Views** (`[views]`) are saved filter presets rendered as tabs: each view's `apply` receives the cleared store and writes with `setAndCommit`; a view that depends on _now_ (e.g. "received today") declares `transient: true` so selecting it re-derives instead of restoring a stale answer. Column layout persists per view.
+**Views** (`[views]`) are saved filter presets rendered as tabs: each view's `apply` receives the cleared store and writes with `setAndCommit`; a view that depends on _now_ (e.g. "received today") declares `transient: true` so selecting it re-derives instead of restoring a stale answer. A view whose question includes an ordering (e.g. "oldest shipped first") declares it as `sort: [{ field: 'statusChangedAt', order: 1 }]` — selecting the view applies it, and un-sorting returns to it instead of the table default. Column layout and the user's own sort persist per view.
 
 ### Column chooser
 
