@@ -23,6 +23,8 @@ Advanced paginated table with server-side filtering, sorting, selection, inline 
 | Input                                 | Type                                      | Default             | Description                                                                                                                                                                       |
 | ------------------------------------- | ----------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `cols`                                | `Column[]`                                | —                   | Column definitions (see [Column Configuration](#column-configuration))                                                                                                            |
+| `filters`                             | `FilterSource`                            | —                   | The page's filter store — the table's whole filter surface (see [Filtering](#filtering--the-filter-store-and-chip-bar)). Read once at init                                        |
+| `views`                               | `TableView[]`                             | —                   | Saved filter presets rendered as tabs above the filter bar                                                                                                                        |
 | `getPaginatedListObservableMethod`    | `(filter) => Observable<PaginatedResult>` | —                   | Server fetch method for lazy loading                                                                                                                                              |
 | `exportListToExcelObservableMethod`   | `(filter) => Observable<any>`             | —                   | Method called on "Export to Excel"                                                                                                                                                |
 | `deleteItemFromTableObservableMethod` | `(id) => Observable<any>`                 | —                   | Method called when a row is deleted                                                                                                                                               |
@@ -58,8 +60,23 @@ Advanced paginated table with server-side filtering, sorting, selection, inline 
 ```typescript
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
-import { Column, SpiderlyDataTableComponent } from 'spiderly';
+import {
+  Column,
+  createFilterStore,
+  dateFilter,
+  numberFilter,
+  SpiderlyDataTableComponent,
+  textFilter,
+} from 'spiderly';
 import { ApiService } from 'src/app/business/services/api/api.service';
+
+function createProductFilters(t: (key: string) => string) {
+  return createFilterStore({
+    name: textFilter({ label: t('Name') }),
+    price: numberFilter({ label: t('Price') }),
+    createdAt: dateFilter({ label: t('CreatedAt') }),
+  });
+}
 
 @Component({
   selector: 'product-list',
@@ -68,6 +85,7 @@ import { ApiService } from 'src/app/business/services/api/api.service';
 })
 export class ProductListComponent implements OnInit {
   cols: Column[];
+  filters: ReturnType<typeof createProductFilters>;
 
   getProductTableDataObservableMethod = this.apiService.getProductPaginatedList;
   exportProductListToExcelObservableMethod = this.apiService.exportProductListToExcel;
@@ -80,6 +98,7 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.filters = createProductFilters((key) => this.translocoService.translate(key));
     this.cols = [
       { name: this.translocoService.translate('Name'), field: 'name', filterType: 'text' },
       { name: this.translocoService.translate('Price'), field: 'price', filterType: 'numeric' },
@@ -87,7 +106,6 @@ export class ProductListComponent implements OnInit {
         name: this.translocoService.translate('CreatedAt'),
         field: 'createdAt',
         filterType: 'date',
-        showMatchModes: true,
       },
     ];
   }
@@ -97,6 +115,7 @@ export class ProductListComponent implements OnInit {
 ```html
 <spiderly-data-table
   [cols]="cols"
+  [filters]="filters"
   [getPaginatedListObservableMethod]="getProductTableDataObservableMethod"
   [exportListToExcelObservableMethod]="exportProductListToExcelObservableMethod"
   [deleteItemFromTableObservableMethod]="deleteProductObservableMethod"
@@ -110,27 +129,37 @@ Columns are defined using the `Column` class. Each column maps to a data field a
 
 The table lays its columns out from these declarations rather than from the rows on screen (`table-layout: fixed`), so a column keeps its width across paging, searching and filtering. Declared widths behave as ratios: the table shares surplus space in proportion to them, and a table whose columns need more room than its container gets scrolls horizontally instead of crushing them. Because a column no longer widens to fit its text, the default cell clamps to one line with an ellipsis; a column rendering its own cell template clamps its own lines.
 
-| Property                      | Type                                                                    | Description                                                                                      |
-| ----------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `name`                        | `string`                                                                | Column header label                                                                              |
-| `field`                       | `string`                                                                | Data field name (key from the DTO)                                                               |
-| `filterType`                  | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric' \| 'blob'` | Type of column filter                                                                            |
-| `filterField`                 | `string`                                                                | Alternate field used for filtering (useful for FK autocomplete fields)                           |
-| `showMatchModes`              | `boolean`                                                               | Show match mode dropdown in the column filter                                                    |
-| `matchModes`                  | `MatchModeCodes[]`                                                      | Narrows the match modes offered; first entry becomes the column's default (applies even when the dropdown is hidden) |
-| `width`                       | `string`                                                                | CSS length fixing the column's width, overriding the per-`filterType` default (e.g. `'8rem'`)    |
-| `dropdownOrMultiselectValues` | `PrimengOption[]`                                                       | Options for multiselect column filters                                                           |
-| `editable`                    | `boolean`                                                               | Enable inline editing for this column                                                            |
-| `showTime`                    | `boolean`                                                               | For date columns: show time portion                                                              |
-| `decimalPlaces`               | `number`                                                                | For numeric columns: decimal formatting                                                          |
-| `actions`                     | `Action[]`                                                              | Row action buttons (see [Actions](#actions))                                                     |
-| `visible`                     | `boolean`                                                               | Whether the column is initially rendered (default `true`; see [Column chooser](#column-chooser)) |
-| `lockVisible`                 | `boolean`                                                               | Pin the column — always rendered, shown checked and disabled in the chooser                      |
-| `onCellClick`                 | `(e: CellClickEvent) => void`                                           | Per-cell click handler (see [Cell click](#cell-click))                                           |
+| Property                      | Type                                                                    | Description                                                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                        | `string`                                                                | Column header label                                                                                                                                                 |
+| `field`                       | `string`                                                                | Data field name (key from the DTO)                                                                                                                                  |
+| `filterType`                  | `'text' \| 'date' \| 'multiselect' \| 'boolean' \| 'numeric' \| 'blob'` | The column's value shape — drives cell rendering, alignment and the default width                                                                                   |
+| `filterId`                    | `string`                                                                | Id of the filter in the table's store this column stands for; needed only when it differs from `field` (see [Filtering](#filtering--the-filter-store-and-chip-bar)) |
+| `width`                       | `string`                                                                | CSS length fixing the column's width, overriding the per-`filterType` default (e.g. `'8rem'`)                                                                       |
+| `dropdownOrMultiselectValues` | `PrimengOption[]`                                                       | Options a `multiselect` column maps its cell values through (id → label)                                                                                            |
+| `editable`                    | `boolean`                                                               | Enable inline editing for this column                                                                                                                               |
+| `showTime`                    | `boolean`                                                               | For date columns: show time portion                                                                                                                                 |
+| `decimalPlaces`               | `number`                                                                | For numeric columns: decimal formatting                                                                                                                             |
+| `actions`                     | `Action[]`                                                              | Row action buttons (see [Actions](#actions))                                                                                                                        |
+| `visible`                     | `boolean`                                                               | Whether the column is initially rendered (default `true`; see [Column chooser](#column-chooser))                                                                    |
+| `lockVisible`                 | `boolean`                                                               | Pin the column — always rendered, shown checked and disabled in the chooser                                                                                         |
+| `onCellClick`                 | `(e: CellClickEvent) => void`                                           | Per-cell click handler (see [Cell click](#cell-click))                                                                                                              |
+
+### Filtering — the filter store and chip bar
+
+The table's whole filter surface is a **store the page owns** and hands to `[filters]`; a table given none has no filtering. Declare it with `createFilterStore` and one factory per filter — `textFilter`, `numberFilter` (accepts `options` for a pick-list), `booleanFilter`, `dateFilter` — as in the [example](#example) above. The table renders it as a **chip bar** above the header: one chip per applied filter, a read-only sort chip, the result count, a searchable **+ Filter** menu of every declared filter, and **Clear filters**.
+
+- **Filter ids are backend property names** — they go straight into the paginated request — so they normally repeat the column's `field`. A column whose filter id differs links to it with `Column.filterId`; columns never declare filters themselves.
+- **Filters live independently of columns.** A filter with no column, or a hidden one, is still offered and still narrows the grid — hiding a column keeps its filter and sort, because the chips are where both stay visible.
+- `operators` on a factory narrows what the editor offers (the first entry becomes the default; each kind's full list mirrors what the generated backend implements). `offered: false` keeps a filter out of **+ Filter** when a dedicated control on the page drives it through `filters.get(id)`.
+- Late-arriving option lists (an async lookup) go in through `store.setOptions(id, options)`; programmatic writes through `store.setAndCommit(id, { operator, value })`.
+- Applied filters persist per table under `` `${stateKey}:filters` `` in the `stateStorage` storage; a custom editor control for one filter is a projected `<ng-template spiderlyFilterTemplate="filterId" let-f>`.
+
+**Views** (`[views]`) are saved filter presets rendered as tabs: each view's `apply` receives the cleared store and writes with `setAndCommit`; a view that depends on _now_ (e.g. "received today") declares `transient: true` so selecting it re-derives instead of restoring a stale answer. Column layout persists per view.
 
 ### Column chooser
 
-Lazy-loaded tables render a **Columns** toolbar button that opens a checkbox list of all data columns, letting the user show or hide each one. Since the column header is the table's only filter surface, showing a column is what makes it filterable — declare rarely-needed but filter-worthy columns with `visible: false` so they are available in the chooser without cluttering the default view:
+Lazy-loaded tables render a **Columns** toolbar button that opens a checkbox list of all data columns, letting the user show or hide each one. Declare rarely-needed columns with `visible: false` so they are available in the chooser without cluttering the default view:
 
 ```typescript
 { name: this.translocoService.translate('CreatedAt'), field: 'createdAt', filterType: 'date', visible: false },
@@ -138,7 +167,7 @@ Lazy-loaded tables render a **Columns** toolbar button that opens a checkbox lis
 
 Behavior notes:
 
-- **Hiding a column clears its active filter and sort** (a hidden column contributes nothing to filtering or sorting — otherwise it would restrict the data invisibly), reloading the table once. Hiding an unconstrained column doesn't trigger a server call.
+- **Hiding a column keeps its filter and sort** — both stay visible on the chip bar, so nothing narrows the data invisibly.
 - **Choices persist per table** in `localStorage` under `` `${stateKey}:columns` `` — deliberately durable even when `stateStorage` is `'session'`, since a column layout is a preference while filters are a transient working set. Only explicit user toggles are stored, so changing a column's declared default later flows through to users who never touched it.
 - **Guards:** `lockVisible` columns can't be toggled, and the last visible data column can't be hidden. _Reset to default_ in the chooser restores the declared configuration.
 
