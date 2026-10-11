@@ -24,7 +24,7 @@ Advanced paginated table with server-side filtering, sorting, selection, inline 
 | ------------------------------------- | ----------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `cols`                                | `Column[]`                                | —                   | Column definitions (see [Column Configuration](#column-configuration))                                                                                                            |
 | `filters`                             | `FilterSource`                            | —                   | The page's filter store — the table's whole filter surface (see [Filtering](#filtering--the-filter-store-and-chip-bar)). Read once at init                                        |
-| `views`                               | `TableView[]`                             | —                   | Saved filter presets rendered as tabs above the filter bar                                                                                                                        |
+| `views`                               | `TableView[]`                             | —                   | Saved filter presets rendered as tabs above the filter bar, each with an optional `count` badge and its own `columns`                                                             |
 | `getPaginatedListObservableMethod`    | `(filter) => Observable<PaginatedResult>` | —                   | Server fetch method for lazy loading                                                                                                                                              |
 | `exportListToExcelObservableMethod`   | `(filter) => Observable<any>`             | —                   | Method called on "Export to Excel"                                                                                                                                                |
 | `deleteItemFromTableObservableMethod` | `(id) => Observable<any>`                 | —                   | Method called when a row is deleted                                                                                                                                               |
@@ -156,6 +156,20 @@ The table's whole filter surface is a **store the page owns** and hands to `[fil
 - Applied filters persist per table under `` `${stateKey}:filters` `` in the `stateStorage` storage; a custom editor control for one filter is a projected `<ng-template spiderlyFilterTemplate="filterId" let-f>`.
 
 **Views** (`[views]`) are saved filter presets rendered as tabs: each view's `apply` receives the cleared store and writes with `setAndCommit`; a view that depends on _now_ (e.g. "received today") declares `transient: true` so selecting it re-derives instead of restoring a stale answer. A view whose question includes an ordering (e.g. "oldest shipped first") declares it as `sort: [{ field: 'statusChangedAt', order: 1 }]` — selecting the view applies it, and un-sorting returns to it instead of the table default. A view is a complete state, sort included: switching tabs never carries the previous tab's ordering along — a view with no declared sort falls back to the table's `defaultSortField`, or to unsorted when there is none. Column layout and the user's own sort persist per view.
+
+A view's tab can show a **count**: `count: 12` renders a badge beside the label (`null` or absent shows none, `0` shows one). The table never computes it — run your own count query beside each list load and rebuild `[views]` with the fresh numbers, keeping each view's `id` stable. The rebuild neither re-enters the active view nor sends a request, and the focused tab keeps focus.
+
+A view can also declare its **columns**, as a field → visible map that names only what the view changes: `columns: { why: true, assignedLocation: false }` shows `why` and hides `assignedLocation` in that view only, and every column it does not name keeps its `visible`. Visibility resolves per column as the user's own choice in that view ?? the view's `columns` ?? the column's `visible`; the user's choice is stored only where it differs from the view's declaration, _Reset to default_ returns to that declaration, and `lockVisible` columns always show. To swap one column for another, declare them next to each other in `cols` (the swapped-in one `visible: false`) and the view's column takes the other's place. The second type parameter of `TableView` types the field names:
+
+```typescript
+views: TableView<OrderFilters, Order>[] = [
+  { id: 'all', label: 'All' },
+  { id: 'late', label: 'Late goods', count: 3, columns: { why: true, assignedLocation: false } },
+];
+
+// after each list load
+this.views = this.views.map((view) => ({ ...view, count: counts[view.id] }));
+```
 
 ### Column chooser
 
