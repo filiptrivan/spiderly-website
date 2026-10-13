@@ -184,18 +184,22 @@ This is handled by the generated `TranslatePropertiesConfiguration` class — no
 
 ## Changing Default Language
 
-To change the default language, call `UseCulture()` in your builder (see [Registration](#registration)). Then update the Angular frontend in `Frontend\src\app\app.config.ts` to match:
+To change the default language, call `UseCulture()` in your builder (see [Registration](#registration)). Then update the Angular frontend in `Frontend\src\app\business\services\translations.ts` to match:
 
 ```typescript
-provideTransloco({
-  config: {
-    availableLangs: ['sr-Latn-RS'],
-    defaultLang: 'sr-Latn-RS',
-    reRenderOnLangChange: true,
-  },
-  loader: SpiderlyTranslocoLoader
-}),
+export function provideTranslations() {
+  return provideTransloco({
+    config: {
+      availableLangs: ['sr-Latn-RS'],
+      defaultLang: 'sr-Latn-RS',
+      reRenderOnLangChange: true,
+    },
+    loader: ImportedTranslocoLoader,
+  });
+}
 ```
+
+`ImportedTranslocoLoader`, in the same file, imports the language files into the build instead of fetching them from `/assets/i18n/`. Each file ships with the code that reads its keys, so after a deploy no user's browser can pair the new code with a cached, older translation file.
 
 ## Custom Frontend Translations
 
