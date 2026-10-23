@@ -62,7 +62,7 @@ This means two users editing the same record can't silently overwrite each other
 
 Every `BusinessObject<ID>` also carries `CreatedAt` and `ModifiedAt` columns that Spiderly stamps inside `SaveChanges` — `ReadonlyObject<ID>` has neither.
 
-- On insert both are set to the current UTC time; on every update `ModifiedAt` is refreshed while `CreatedAt` is left untouched (it is immutable after creation).
+- On insert both are set to the current UTC time; on every update `ModifiedAt` is refreshed while `CreatedAt` is left untouched (it is immutable after creation). The time comes from the app's `TimeProvider`, so a test can fix it (see [Controlling the clock](/docs/backend-customization#controlling-the-clock)).
 - In normal CRUD you never assign them by hand — the generated save path owns them.
 - **One exception, for imports and migrations:** set `CreatedAt` explicitly before inserting a new row and Spiderly preserves your value — it stamps `CreatedAt` only when left at its default. This lets a bulk import keep each row's real creation date from the source system. `ModifiedAt` is always stamped with the write time, so it reflects when the row entered _this_ database.
 

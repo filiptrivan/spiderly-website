@@ -594,6 +594,33 @@ throw new BusinessException("Sale price must be less than regular price.");
 throw new SecurityViolationException(); // Logs detailed message server-side, returns generic error to client
 ```
 
+## Controlling the clock
+
+Spiderly reads the time from the `TimeProvider` registered in your app's container. `AddSpiderly` registers `TimeProvider.System` unless you register your own, the same way ASP.NET Core's `AddAuthentication` does. That one clock stamps `CreatedAt` / `ModifiedAt`, sets and checks the expiry of access, refresh and login-verification tokens and the external-login nonce, checks an API key's `ExpiresAt`, judges a bearer token's lifetime, and decides when outbox rows are retried, purged and reported as overdue.
+
+To run a test at a time of your choosing, register a fake clock, for example `FakeTimeProvider` from the `Microsoft.Extensions.TimeProvider.Testing` package:
+
+```csharp
+using Microsoft.Extensions.Time.Testing;
+
+FakeTimeProvider clock = new(new DateTimeOffset(2030, 1, 1, 12, 0, 0, TimeSpan.Zero));
+services.AddSingleton<TimeProvider>(clock); // before or after AddSpiderly, which adds the system clock only when none is registered
+
+// ... save an entity, issue a token, create an API key ...
+
+clock.Advance(TimeSpan.FromHours(2)); // time passes only when the test says so
+```
+
+In a `WebApplicationFactory`, make that registration in `ConfigureTestServices`. Code of your own that needs the current time should take `TimeProvider` in its constructor and call `GetUtcNow()` instead of reading `DateTime.UtcNow`, so it reads the same clock as the stamps and expiries it compares against.
+
+A `DbContext` you construct with `new` is outside the container and stamps the system clock; pass it the clock with `DbContextOptionsBuilder.UseApplicationServiceProvider(...)` over a service provider that registers it.
+
+<Callout type="info">
+  A cookie's `Expires` stays on the machine's clock: the browser judges it by its own clock, so a
+  fake clock there would drop or keep the cookie at the wrong time. The token inside the cookie is
+  still judged by your app's clock, on the server.
+</Callout>
+
 ## Common Pitfalls
 
 ### PostgreSQL MARS (Multiple Active Result Sets)
