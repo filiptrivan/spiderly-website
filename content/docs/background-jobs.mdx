@@ -1,0 +1,80 @@
+---
+title: Background Jobs
+description: Run Hangfire background jobs that the container builds, so a missing dependency stops the boot instead of failing a job at night.
+---
+
+Spiderly apps run background work on [Hangfire](https://www.hangfire.io/). By default Hangfire builds a job class the container doesn't know by constructing it on the spot, so a job whose dependency was never registered starts fine and fails the first time it runs. Spiderly's **job seam** closes that gap: every job becomes a registered service, and Hangfire builds jobs only from the container.
+
+<Callout type="info">
+  The job seam is **opt-in**. Without `spiderly.AddJobs(...)`, Hangfire builds jobs the way it
+  always has.
+</Callout>
+
+## Opt in
+
+Pass the assemblies that hold your jobs:
+
+```csharp
+services.AddSpiderly<MyDbContext>(Configuration, spiderly =>
+{
+    // ...
+    spiderly.AddJobs(typeof(Startup).Assembly, typeof(InvoiceExportJob).Assembly);
+});
+```
+
+This does two things in one call:
+
+- registers every class implementing `ISpiderlyJob` in those assemblies (scoped, one instance per job run);
+- replaces Hangfire's job activator with `SpiderlyJobActivator`, which builds only registered jobs and refuses anything else with an error naming the job.
+
+It works whether `services.AddHangfire(...)` runs before or after `AddSpiderly`. Together with a host that validates its service graph at boot (`ValidateOnBuild`), every job's constructor is checked before the first job runs.
+
+## Write a job
+
+```csharp
+using Spiderly.Shared.Jobs;
+
+public class InvoiceExportJob : ISpiderlyJob
+{
+    private readonly IApplicationDbContext _context;
+
+    public InvoiceExportJob(IApplicationDbContext context) => _context = context;
+
+    public async Task ExportAsync(long invoiceId)
+    {
+        // ...
+    }
+}
+```
+
+`ISpiderlyJob` has no members; it marks the class as a job. You don't register it yourself, the scan does.
+
+## Schedule it
+
+Schedule through the typed methods. They accept only a class that implements `ISpiderlyJob`, so every job you schedule is one the container registered:
+
+```csharp
+// Fire and forget, from an injected IBackgroundJobClient
+backgroundJobClient.EnqueueJob<InvoiceExportJob>(job => job.ExportAsync(invoiceId));
+
+// Recurring, from IRecurringJobManager in the Configure phase
+IRecurringJobManager jobs = app.ApplicationServices.GetRequiredService<IRecurringJobManager>();
+jobs.AddOrUpdateJob<InvoiceExportJob>(
+    "invoice-export-nightly",
+    job => job.ExportAllAsync(),
+    "0 2 * * *",
+    new RecurringJobOptions { TimeZone = TimeZoneInfo.Utc });
+```
+
+Hangfire's own `Enqueue<T>` and `AddOrUpdate<T>` accept any type. If you want the compiler to refuse a job that isn't marked, ban them in your app (for example with a banned-symbols analyzer) and use `EnqueueJob` and `AddOrUpdateJob` everywhere.
+
+## Spiderly's own jobs
+
+The jobs Spiderly schedules for you are registered by the features that schedule them, whether or not you call `AddJobs`:
+
+| Feature                          | Jobs                                                                                                 |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `spiderly.AddOutbox<TOutbox>()`  | outbox dispatcher, retention and health, scheduled by `app.SpiderlyUseOutboxRecurringJob<TOutbox>()` |
+| `spiderly.AddNotifications(...)` | `NotificationDeliveryJob`, enqueued for each `FireNow` notification                                  |
+
+`SpiderlyUseOutboxRecurringJob` schedules through the container's `IRecurringJobManager`, so it needs `services.AddHangfire(...)`, which every app that runs jobs already has.
