@@ -16,6 +16,7 @@
     "exceptions",
     "build-diagnostics",
     "backend-customization",
+    "background-jobs",
     "frontend-customization",
     "ui-customization",
     "angular-components",
