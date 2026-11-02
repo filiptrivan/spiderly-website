@@ -1,0 +1,13 @@
+diff --git a/.github/workflows/develop-invariant.yml b/.github/workflows/develop-invariant.yml
+index 5d9745e..76e09ae 100644
+--- a/.github/workflows/develop-invariant.yml
++++ b/.github/workflows/develop-invariant.yml
+@@ -23,7 +23,7 @@ permissions:
+ 
+ jobs:
+   master-is-ancestor-of-develop:
+-    runs-on: ubuntu-latest
++    runs-on: ubuntu-24.04
+     steps:
+       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+         with:
