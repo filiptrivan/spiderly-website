@@ -1,5 +1,5 @@
 diff --git a/.github/workflows/develop-invariant.yml b/.github/workflows/develop-invariant.yml
-index 5d9745e..76e09ae 100644
+index 5d9745e..59bec59 100644
 --- a/.github/workflows/develop-invariant.yml
 +++ b/.github/workflows/develop-invariant.yml
 @@ -23,7 +23,7 @@ permissions:
@@ -11,3 +11,23 @@ index 5d9745e..76e09ae 100644
      steps:
        - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
          with:
+@@ -37,3 +37,19 @@ jobs:
+           fi
+           echo "::error title=master diverged from develop::master has commit(s) not in develop — a direct/hotfix commit to master was not reconciled into develop. Fix: git checkout develop && git rebase origin/master && git push --force-with-lease. Until then the release fast-forward of master will fail."
+           exit 1
++
++  workflow-policy:
++    runs-on: ubuntu-24.04
++    timeout-minutes: 5
++    steps:
++      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
++      # ci-workflows' `main`, which a push sends before this repo's.
++      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
++        with:
++          repository: filiptrivan/ci-workflows
++          ref: main
++          path: ci-workflows
++          persist-credentials: false
++      # The runner image's own Node, with no setup-node step: the checker imports only Node's built-ins.
++      - name: No job on ubuntu-latest, no unversioned npm package
++        run: node ci-workflows/workflow-policy/pins.mjs --root .
