@@ -52,7 +52,8 @@ No test framework is configured.
 - Dark mode only (`<html className="dark">`, theme toggle disabled in Fumadocs)
 - Site URL hardcoded to `https://www.spiderly.dev` in metadata helper
 - Barrel exports via `index.ts` files in components and utils directories
-- URL redirects for renamed doc pages are maintained in `next.config.mjs`
+- URL redirects for renamed doc pages are maintained in `next.config.mjs` (when a page needs one: the
+  `spiderly/` sibling repo's `CODING_STANDARDS.md` → "A docs page keeps its URL")
 
 **Docs page actions (Copy Markdown / AI actions):**
 - Each docs page renders `LLMCopyButton` + `ViewOptions` (`src/components/ai/page-actions.tsx`): copy the
