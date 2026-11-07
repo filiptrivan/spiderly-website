@@ -1,0 +1,6 @@
+content/docs/angular-components/data-components.mdx
+content/docs/backend-customization.mdx
+content/docs/build-diagnostics.mdx
+content/docs/file-storage.mdx
+src/app/privacy-policy/page.tsx
+src/components/global/icons.tsx
