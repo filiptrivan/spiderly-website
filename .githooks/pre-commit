@@ -1,0 +1,15 @@
+#!/bin/sh
+# Activate once per clone: scripts/setup-hooks.sh
+set -e
+
+# The Size cap on the files this commit adds or modifies, as staged: a hand-written file stays under
+# 20,000 bytes unless .over-cap-list holds it, and .gitattributes marks what a tool writes. The
+# check is ci-workflows' size-cap/size-cap.mjs, run from the ci-workflows clone beside this repo's
+# main checkout; a contributor without one skips it, and CI judges their pull request.
+checker="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")/../ci-workflows/size-cap/size-cap.mjs"
+if [ ! -f "$checker" ]; then
+  echo "pre-commit: size cap skipped: no $checker; CI judges the pull request." >&2
+elif ! out=$(node "$checker" --staged 2>&1); then
+  printf '%s\n' "$out"
+  exit 1
+fi

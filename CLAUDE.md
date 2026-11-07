@@ -72,3 +72,6 @@ No test framework is configured.
 
 - Prettier: single quotes, 100 char print width
 - Format on save enabled (VS Code settings checked in)
+- A hand-written file stays under 20,000 bytes unless `.over-cap-list` holds it, judged at commit
+  (activate the hooks once per clone: `scripts/setup-hooks.sh`) and in CI; `.gitattributes` marks what
+  a tool writes.
