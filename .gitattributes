@@ -4,12 +4,10 @@
 .githooks/** text eol=lf
 *.sh text eol=lf
 
-# A file a script or tool writes is marked linguist-generated, so the Size cap skips it (ci-workflows
-# size-cap/size-cap.mjs, run by .githooks/pre-commit and CI); every other text file over 20,000 bytes
-# sits on .over-cap-list until it is split.
+# What a script or tool writes, which the Size cap skips (ci-workflows size-cap/size-cap.mjs, run by
+# .githooks/pre-commit and CI).
 package-lock.json linguist-generated
 # Copied from spiderly's framework-metadata.json by spiderly's release workflow.
 src/lib/framework-metadata.json linguist-generated
-# Drawn by a design tool.
-public/app-screenshots/*.svg linguist-generated
-public/icons/npm-logo.svg linguist-generated
+# Logos and screenshots a design tool exported: all 21 SVGs under public/ on 2026-11-07.
+public/**/*.svg linguist-generated
