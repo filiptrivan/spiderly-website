@@ -10,4 +10,4 @@ cd "$(git rev-parse --show-toplevel)"
 git config core.hooksPath .githooks
 chmod +x .githooks/* 2>/dev/null || true
 
-echo "Hooks installed: core.hooksPath -> .githooks (pre-commit: the Size cap on the staged files; post-commit: an Agent box's landing)."
+echo "Hooks installed: core.hooksPath -> .githooks (pre-commit: the Size cap on the staged files; post-commit: an Agent box's landing; prepare-commit-msg: an Agent box's Ticket: trailer)."
