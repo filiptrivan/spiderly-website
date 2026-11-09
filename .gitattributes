@@ -1,0 +1,13 @@
+# Hooks and shell scripts stay LF: Git for Windows defaults to autocrlf=true, and a CRLF shebang
+# makes Git Bash fail with "bad interpreter: /usr/bin/env bash^M". Scoped narrowly so no other file
+# is renormalized.
+.githooks/** text eol=lf
+*.sh text eol=lf
+
+# What a script or tool writes, which the Size cap skips (ci-workflows size-cap/size-cap.mjs, run by
+# .githooks/pre-commit and CI).
+package-lock.json linguist-generated
+# Copied from spiderly's framework-metadata.json by spiderly's release workflow.
+src/lib/framework-metadata.json linguist-generated
+# Logos and screenshots a design tool exported: all 21 SVGs under public/ on 2026-11-07.
+public/**/*.svg linguist-generated
