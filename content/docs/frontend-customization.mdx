@@ -189,28 +189,28 @@ export class ConfigService extends ConfigBaseService {
 
 ### AuthService
 
-Extend `AuthServiceBase` and override methods in `Frontend\src\app\business\services\auth.service.ts`:
+Extend `AuthServiceBase` and override its hooks in `Frontend\src\app\business\services\auth\auth.service.ts`:
 
-- `onAfterLoginExternal()` - Executes after external authentication (e.g., Google)
-- `onAfterLogout()` - Runs after logout completion
-- `onAfterRefreshToken()` - Triggers following token refresh
+- `onAfterLogout()` - Runs after logout. The base clears the permission codes and opens the login page.
+- `onAfterRefreshToken()` - Runs after every successful token refresh, including the one at page load. The base loads the permission codes.
 - `onAfterNgOnDestroy()` - Custom cleanup during component destruction
+
+Each hook is an arrow-function property, not a method. An override replaces the base's hook, and `super` cannot call it, so the override must repeat the base's work. An `onAfterLogout` that skips it leaves a signed-out user on the page they were on. An `onAfterRefreshToken` that skips it leaves the menu with no permission codes after a reload.
 
 #### Example
 
 ```typescript
 export class AuthService extends AuthServiceBase {
-  override onAfterLoginExternal(): void {
-    // Custom post-login logic
-    this.analyticsService.trackLogin();
-    this.router.navigate(['/dashboard']);
-  }
-
-  override onAfterLogout(): void {
-    // Custom logout cleanup
+  override onAfterLogout = () => {
     this.cacheService.clear();
-    super.onAfterLogout();
-  }
+    this._currentUserPermissionCodes.next(null); // the base's work
+    this.router.navigate([this.config.loginSlug]); // the base's work
+  };
+
+  override onAfterRefreshToken = () => {
+    this.analyticsService.trackSessionRefresh();
+    this.setCurrentUserPermissionCodes().subscribe(); // the base's work
+  };
 }
 ```
 
