@@ -47,7 +47,7 @@ Tokens are stored in `HttpOnly` cookies — the browser handles storage and send
 The admin has no refresh timer. Before each API request, `jwtInterceptor` checks the access token. When the token has less than 60 seconds left, the request waits for a refresh first. Requests sent at the same time share one refresh.
 
 - The server refuses the refresh (a 4xx other than 408 or 429): the session ends, and the user goes to the login page at the next navigation.
-- The server does not answer, or answers 5xx, 408 or 429: the user stays signed in, and the next request tries again.
+- The server does not answer, or answers 5xx, 408 or 429: the user stays signed in, and the next request tries again. At page load the admin opens on the login page instead, and a reload signs back in.
 
 Your own auth request (one that signs in, refreshes or signs out) must carry `SKIP_REFRESH_CHECK`, so that it does not wait for a refresh:
 
