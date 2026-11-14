@@ -117,7 +117,6 @@ export const FAQ = [
   },
   {
     question: 'What operating systems does Spiderly support?',
-    answer:
-      'Spiderly is fully cross-platform and works on Windows, Linux, and macOS.',
+    answer: 'Spiderly is fully cross-platform and works on Windows, Linux, and macOS.',
   },
 ];
