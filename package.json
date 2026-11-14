@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/published-urls.mjs",
+    "build": "npm test && next build && node scripts/published-urls.mjs",
     "start": "next start",
     "lint": "eslint",
+    "test": "node --test scripts/*.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
