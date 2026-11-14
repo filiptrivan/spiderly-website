@@ -448,7 +448,7 @@ public class User : BusinessObject<long>
 
 Marks a property as **server-owned**: clients can read it but never write it (the same idea as OpenAPI's `readOnly`). The property stays in the read `{Entity}DTO` — so it's still returned by GET endpoints and shown in the list table — but Spiderly closes its write path: no inbound validation rule is generated, the generated DTO→entity Mapster config `.Ignore()`s it (so a crafted payload can't set it), and it gets no editable control in the details form.
 
-Use it for values only your backend assigns — usage counters, denormalized aggregates, computed timestamps. Pair it with `[Required]` to document the non-null column without generating an unsatisfiable rule: `[Required]` alone would emit a `NotEmpty` check the form can never satisfy (the form never sends the field), so every save would fail with a 422.
+Use it for values only your backend assigns — usage counters, denormalized aggregates, computed timestamps. Pair it with `[Required]` to document the non-null column without generating an unsatisfiable rule: `[Required]` alone would emit a not-null check the form can never satisfy (the form never sends the field), so every save would fail with a 422.
 
 ```csharp
 [SpiderlyEntity]
