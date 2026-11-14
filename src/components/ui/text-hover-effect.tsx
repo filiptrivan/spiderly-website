@@ -55,7 +55,13 @@ export const TextHoverEffect = ({
         className="select-none"
       >
         <defs>
-          <linearGradient id="textGradient" gradientUnits="userSpaceOnUse" cx="50%" cy="50%" r="25%">
+          <linearGradient
+            id="textGradient"
+            gradientUnits="userSpaceOnUse"
+            cx="50%"
+            cy="50%"
+            r="25%"
+          >
             {hovered && (
               <>
                 <stop offset="0%" stopColor={'var(--indigo-500)'} />

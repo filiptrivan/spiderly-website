@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm test && next build && node scripts/published-urls.mjs",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint",
+    "test": "node --test scripts/*.test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

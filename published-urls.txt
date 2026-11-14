@@ -1,0 +1,44 @@
+# Each URL that the site published under /docs, and each redirect source. The build fails when
+# a URL here neither renders a page nor redirects to one (scripts/published-urls.mjs).
+# The build adds new URLs. Never remove a line.
+/docs
+/docs/add-new-entity
+/docs/angular-components
+/docs/angular-components/data-components
+/docs/angular-components/form-controls
+/docs/angular-components/layout
+/docs/api-keys
+/docs/architecture
+/docs/attribute-reference
+/docs/attributes
+/docs/attributes/code-generation
+/docs/attributes/general
+/docs/attributes/relationships
+/docs/attributes/ui
+/docs/authorization
+/docs/backend-customization
+/docs/background-jobs
+/docs/build-diagnostics
+/docs/claude-code
+/docs/cli-reference
+/docs/database-providers
+/docs/deployment
+/docs/entity-authorization
+/docs/entity-validation
+/docs/enums
+/docs/excel-export
+/docs/exceptions
+/docs/file-storage
+/docs/filtering-and-pagination
+/docs/frontend-customization
+/docs/getting-started
+/docs/relationships
+/docs/set-up-emailing
+/docs/set-up-google-authentication
+/docs/set-up-telegram-notifications
+/docs/spiderly-json-configuration
+/docs/translate-spiderly-app
+/docs/translation
+/docs/ui-customization
+/docs/validation
+/playground
