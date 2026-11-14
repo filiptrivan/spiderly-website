@@ -188,17 +188,14 @@ To change the default language, call `UseCulture()` in your builder (see [Regist
 
 ```typescript
 export function provideTranslations() {
-  return [
-    ...provideTransloco({
-      config: {
-        availableLangs: ['sr-Latn-RS'],
-        defaultLang: 'sr-Latn-RS',
-        reRenderOnLangChange: true,
-      },
-      loader: ImportedTranslocoLoader,
-    }),
-    provideSpiderlyTranslations(),
-  ];
+  return provideSpiderlyTransloco({
+    config: {
+      availableLangs: ['sr-Latn-RS'],
+      defaultLang: 'sr-Latn-RS',
+      reRenderOnLangChange: true,
+    },
+    loader: ImportedTranslocoLoader,
+  });
 }
 ```
 
@@ -211,10 +208,10 @@ A language other than English also needs a file for Spiderly's own strings. See 
 Spiderly's components and services ship their own strings: the data table's buttons, the filter bar, the login page, toasts and validation messages. They live in a Transloco scope named `spiderly`, so your translation files hold none of them.
 
 - **English ships inside the library.** An English app needs nothing more.
-- **`provideSpiderlyTranslations()`** loads these strings before the first page, and again on each language switch. `spiderly init` adds it to `provideTranslations()`.
+- **`provideSpiderlyTransloco`** takes `provideTransloco`'s options. It also loads these strings before the first page, and again on each language switch.
 - **Another language is one more file:** `Frontend\src\assets\i18n\spiderly\<lang>.json`, for each language in `availableLangs`. Transloco asks your loader for `spiderly/<lang>`, and `ImportedTranslocoLoader` imports this file with no change.
 - **Start from the library's English.** Copy `node_modules/spiderly/i18n/en.json` and translate each value. Keep the keys as they are, with no `spiderly.` prefix.
-- **A language with no file shows Spiderly's strings in English**, and the browser console names the file it looked for.
+- **A key your file lacks shows in English**, never as a raw key. A language with no file shows all of Spiderly's strings in English, and the browser console names the file it looked for.
 
 For example, `Frontend\src\assets\i18n\spiderly\sr-Latn-RS.json`:
 
