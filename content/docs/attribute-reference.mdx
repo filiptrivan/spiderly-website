@@ -19,7 +19,7 @@ Spiderly also reacts to the standard `System.ComponentModel.DataAnnotations` att
 
 | Attribute | Generates |
 |---|---|
-| `[Required]` | Server + client validation that refuses null (a string also `""`, a relation the id `0`), non-nullable column |
+| `[Required]` | Server + client validation that refuses null (a string also `""`, a navigation's id `0`), non-nullable column |
 | `[StringLength(max)]` / `[StringLength(max, MinimumLength = min)]` | Server + client length validation, EF column length |
 | `[Range(min, max)]` | Server + client range validation |
 | `[Precision(p, s)]` | Server + client decimal validation, EF column precision |
