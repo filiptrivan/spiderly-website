@@ -4,5 +4,9 @@
 # URL redirects for renamed/moved doc pages
 /next.config.mjs                    @filiptrivan
 
+# The build checks each published URL here, and it only adds lines. The owner reviews a pull
+# request that removes one.
+/published-urls.txt                 @filiptrivan
+
 # Centralized SEO metadata generator
 /src/utils/functions/metadata.ts    @filiptrivan
