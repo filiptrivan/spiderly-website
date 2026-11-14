@@ -228,7 +228,7 @@ All generated files are located in `Frontend\src\app\business\`:
 | `services\validators\validators.generated.ts` | Form validators matching your C# validation rules |
 | `enums\enums.generated.ts`                    | TypeScript enums matching your C# enums           |
 
-Each file opens with a comment that names its generator and the C# to change instead. In `api.service.generated.ts`, a method takes a `DateTime` query parameter as a plain `Date` and sends it as an ISO 8601 string.
+Each file opens with a comment that names its generator and the backend source to change instead. In `api.service.generated.ts`, a method takes a `DateTime` query parameter as a plain `Date` and sends it as an ISO 8601 string.
 
 To customize behavior, use the non-generated counterparts (e.g., `api.service.ts` extends `ApiGeneratedService`).
 
