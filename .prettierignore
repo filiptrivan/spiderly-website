@@ -16,9 +16,9 @@ coverage
 .env.local
 .env.production.local
 
-# Prettier parses MDX 1 only, and these docs pages are MDX 3: it splits an inline code span across
-# two lines (prettier/prettier#12209, "MDX 3", open).
+# Prettier 3.7.4 parses MDX 1 only, and these docs pages are MDX 3. On them, Prettier splits an
+# inline code span across two lines (prettier/prettier#12209, "MDX 3", open on 2026-11-14).
 *.mdx
 
-# Copied from spiderly's framework-metadata.json by spiderly's release workflow.
+# A tool writes this file, as `.gitattributes` says.
 src/lib/framework-metadata.json
