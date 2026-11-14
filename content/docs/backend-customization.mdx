@@ -147,7 +147,7 @@ All entity service DI registration is **auto-generated** — you never register 
 
 - If you create `[SpiderlyService] ProductService : ProductServiceGenerated`, the generator registers both the concrete type and a forwarding registration so that resolving `ProductServiceGenerated` returns your `ProductService`.
 - If no user override exists for an entity, only the generated service is registered.
-- The class can sit in any namespace, such as a folder below `Services`. The registration names it in full.
+- The class can sit in any namespace, such as the namespace of a folder below `Services`. The registration names it in full.
 - Without the `[SpiderlyService]` marker, the override is invisible to the generator and the forwarding registration is not emitted — the generated base wins at runtime.
 
 ## Security Service
