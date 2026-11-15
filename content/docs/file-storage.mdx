@@ -223,7 +223,7 @@ The source generator detects custom storage attributes by the convention "attrib
 
 ### Rate Limiting
 
-All generated `Upload*For*` endpoints are decorated with `[EnableRateLimiting(SpiderlyRateLimitPolicies.BlobUpload)]`. Calling `spiderly.AddRateLimiting()` in your `AddSpiderly(...)` setup registers the policy with a default of **20 requests per minute per caller**: an IPv4 address, or an IPv6 /64, since a provider often gives one server a whole /64 (`Helper.GetCallerKey`). Override the policy in your own `Configure<RateLimiterOptions>` call to tune the limit without forking Spiderly.
+All generated `Upload*For*` endpoints are decorated with `[EnableRateLimiting(SpiderlyRateLimitPolicies.BlobUpload)]`. Calling `spiderly.AddRateLimiting()` in your `AddSpiderly(...)` setup registers the policy with a default of **20 requests per minute per caller**. A caller is an IPv4 address or an IPv6 /64 (`Helper.GetCallerKey`), since RFC 6177 gives each site at least one /64. Override the policy in your own `Configure<RateLimiterOptions>` call to tune the limit without forking Spiderly.
 
 ### Default image processing
 
