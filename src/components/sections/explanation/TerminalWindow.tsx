@@ -22,9 +22,7 @@ export const TerminalWindow = ({
 }: TerminalWindowProps) => {
   return (
     <div className={className}>
-      <TerminalHeader>
-        {isTriggered && onUndo && <UndoButton onClick={onUndo} />}
-      </TerminalHeader>
+      <TerminalHeader>{isTriggered && onUndo && <UndoButton onClick={onUndo} />}</TerminalHeader>
 
       <TerminalContent steps={steps} visibleSteps={visibleSteps}>
         {!isTriggered && <RunCommandButton onClick={onRunCommand} />}

@@ -24,9 +24,7 @@ export const CodeWindow = ({
 }: CodeWindowProps) => {
   return (
     <div className={className}>
-      <CodeHeader>
-        {isTriggered && onUndo && <UndoButton onClick={onUndo} />}
-      </CodeHeader>
+      <CodeHeader>{isTriggered && onUndo && <UndoButton onClick={onUndo} />}</CodeHeader>
 
       <CodeContent properties={properties} isTriggered={isTriggered}>
         <RunCommandButton onClick={onAddProperties} text="Add More Properties" />
