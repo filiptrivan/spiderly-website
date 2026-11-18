@@ -376,6 +376,22 @@ namespace YourAppName.WebAPI.Controllers
 }
 ```
 
+### A `string` action parameter is required, a `string?` one is optional
+
+Under `<Nullable>enable</Nullable>`, the type of an action's `string` parameter is the request's rule. A `string` parameter without a default value is required. On an `[ApiController]`, a missing value answers 400 before your action runs. So does an empty one, such as `?q=`, which MVC reads as null. A `string?` parameter is optional, and the compiler makes your code handle its null.
+
+```csharp
+[HttpGet]
+public async Task<ProductDTO> ProductBySlug(string slug) // ?slug= answers 400
+    => await _products.GetBySlug(slug);
+
+[HttpGet]
+public async Task<SearchResultDTO> Search(string? q) // ?q= reaches the action with null
+    => await _search.Search(q ?? "");
+```
+
+So make a parameter `string?` when an empty value has a meaning, such as a search box that opens empty. The generated autocomplete actions take `string? filter` for this reason. A request body is different: a null body property still reaches your FluentValidation rules, which answer 422.
+
 ### Grouping entities under one controller with \[Controller\]
 
 By default each entity's generated base controller is named `{EntityName}BaseController` and lives at its own route. Use `[Controller("CustomName")]` to share one controller across multiple related entities — useful when several entities form a single bounded context (e.g. user/role/permission all served by a security controller).
