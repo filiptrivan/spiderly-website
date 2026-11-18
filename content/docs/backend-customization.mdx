@@ -378,7 +378,7 @@ namespace YourAppName.WebAPI.Controllers
 
 ### A `string` action parameter is required, a `string?` one is optional
 
-Under `<Nullable>enable</Nullable>`, the type of an action's `string` parameter is the request's rule. A `string` parameter without a default value is required: a missing value, or an empty one (`?q=`, which MVC reads as null), answers 400 before your action runs. A `string?` parameter is optional, and the compiler makes your code handle its null.
+Under `<Nullable>enable</Nullable>`, the type of an action's `string` parameter is the request's rule. A `string` parameter without a default value is required. On an `[ApiController]`, a missing value answers 400 before your action runs. So does an empty one, such as `?q=`, which MVC reads as null. A `string?` parameter is optional, and the compiler makes your code handle its null.
 
 ```csharp
 [HttpGet]
