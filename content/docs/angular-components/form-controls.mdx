@@ -258,7 +258,7 @@ Image upload is **paste-only** and active only when the property has an `[S3Publ
 
 ## spiderly-file
 
-File upload with validation.
+File upload with validation. A file outside `acceptedFileTypes` or over `maxFileSize` shows an error in the control, and `onFileSelected` does not fire for it, so it is never uploaded.
 
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|
