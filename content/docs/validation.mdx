@@ -147,21 +147,54 @@ public class Product : BusinessObject<long>
 
 ### Usage
 
-Specifies that a value must be provided for the decorated property, enforcing non-null values.
+Specifies that a value must be provided for the decorated property. It means what ASP.NET Core's `RequiredAttribute` means: it refuses null.
+
+- On a **string**, it also refuses `""` and a whitespace string.
+- On a **navigation**, its `{Nav}Id` also refuses `0`, because no row has that id.
+- On **any other type** (a bool, a number, a date, an enum, a list), it refuses only null. `false`, `0`, a date and `[]` are legal answers. A foreign key without a navigation is a number here.
+
+Spiderly does not read `AllowEmptyStrings`, so a `[Required]` string always refuses `""`.
 
 <Callout>
   Applies to the server-side, client-side validation and affects the EF Core model and will generate
   corresponding SQL column definition.
 </Callout>
 
+Where `false`, `0` or `[]` is not a legal answer, add a rule for it: `[Range]` or `[GreaterThanOrEqualTo]` on a number, else a [custom rule](#custom-validation-rules).
+
 ### Example:
 
 ```csharp
-public class User : BusinessObject<long>
+public class Order : BusinessObject<long>
 {
-    [Required] // Name cannot be null or empty
-    public string Name { get; set; }
+    [Required] // Cannot be null, empty or whitespace
+    [StringLength(100, MinimumLength = 1)]
+    public string CustomerName { get; set; }
+
+    [Required] // 0 is a legal answer
+    public int DiscountPercent { get; set; }
+
+    [Required]
+    [Range(1, 100)] // 0 is not a legal answer, so Range refuses it
+    public int Quantity { get; set; }
 }
+```
+
+A list that must not be empty takes a custom rule on the server:
+
+```csharp
+partial void ConfigureCustomRules()
+{
+    RuleFor(x => x.Items).NotEmpty();
+}
+```
+
+On the client, call `isFormArrayEmpty` from your `ValidatorService`. The generated `setFormArrayValidator` is an arrow-function property, so override it as one:
+
+```typescript
+override setFormArrayValidator = (formArray: SpiderlyFormArray, className: string): void => {
+  if (formArray.label + className === 'itemsOrder') this.isFormArrayEmpty(formArray);
+};
 ```
 
 ## StringLength

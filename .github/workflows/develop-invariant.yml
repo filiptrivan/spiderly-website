@@ -9,9 +9,8 @@ name: develop invariant
 # immediately:
 #   git checkout develop && git rebase origin/master && git push --force-with-lease
 #
-# It runs from develop (push trigger), not on a schedule — scheduled workflows only run from the
-# default branch (master), which is updated solely by the release fast-forward, so a schedule could
-# never observe an unreleased develop.
+# It runs on each develop push, so a master commit missing from develop is caught at the next
+# develop push, before the next release.
 
 on:
   push:

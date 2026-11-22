@@ -3,7 +3,7 @@ export const Step02TextContent = () => {
     <>
       <h3 className="mb-3 lg:mb-5 md:text-3xl text-xl font-medium">Define Your Class</h3>
       <p className="mb-2 lg:mb-4 text-muted-foreground">
-        Simply define your EF Core entities using properties and attributes. Spiderly's code
+        Simply define your EF Core entities using properties and attributes. Spiderly&apos;s code
         generator reads those and automatically produces a complete CRUD stack for each entity,
         including UI pages, service-layer database logic, API controllers and corresponding strongly
         typed Angular API client.
