@@ -376,6 +376,27 @@ namespace YourAppName.WebAPI.Controllers
 }
 ```
 
+### The Angular client reads the controller's `[Route]`
+
+The generated Angular client (`api.service.generated.ts`) calls the URL that your controller's class-level `[Route]` template gives. So you can split one large controller into several controllers and keep every URL:
+
+```csharp
+[SpiderlyController]
+[Route("/api/Order/[action]")] // the client calls ${apiUrl}/Order/<Method>, as ASP.NET Core serves it
+public class OrderFulfilmentController : ControllerBase { }
+```
+
+| Class-level `[Route]` | Client URL after `apiUrl` |
+|---|---|
+| None, on `OrderController` | `/Order/<Method>` (the class name without `Controller`) |
+| `/api/[controller]/[action]` | `/Order/<Method>` |
+| `/api/Order/[action]` | `/Order/<Method>` |
+| `/api/Payment/Intesa/[action]` | `/Payment/Intesa/<Method>` |
+
+The client drops the leading `api`, because `apiUrl` already holds it. The controller's own `[Route]` wins over a base class's `[Route]`. The client reads a template of this form: `api/` or `/api/`, then one or more segments, then `/[action]`. A segment is literal text or `[controller]`. Any other template gives the class-name URL and the warning [SPIDERLY033](/docs/build-diagnostics#spiderly033).
+
+The client gets one method for each method name. When two controllers have a method with the same name, only the first one gets a client method.
+
 ### A `string` action parameter is required, a `string?` one is optional
 
 Under `<Nullable>enable</Nullable>`, the type of an action's `string` parameter is the request's rule. A `string` parameter without a default value is required. On an `[ApiController]`, a missing value answers 400 before your action runs. So does an empty one, such as `?q=`, which MVC reads as null. A `string?` parameter is optional, and the compiler makes your code handle its null.
