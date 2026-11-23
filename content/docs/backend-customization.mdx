@@ -388,12 +388,12 @@ public class OrderFulfilmentController : ControllerBase { }
 
 | Class-level `[Route]` | Client URL after `apiUrl` |
 |---|---|
-| None | `/Order/<Method>` (the class name without `Controller`) |
+| None, on `OrderController` | `/Order/<Method>` (the class name without `Controller`) |
 | `/api/[controller]/[action]` | `/Order/<Method>` |
 | `/api/Order/[action]` | `/Order/<Method>` |
 | `/api/Payment/Intesa/[action]` | `/Payment/Intesa/<Method>` |
 
-The client drops the leading `api`, because `apiUrl` already holds it. The controller's own `[Route]` wins over a base class's `[Route]`. The client reads a template that starts with `api/` or `/api/`, has one or more literal segments or `[controller]` next, and ends with `/[action]`. Any other template gives the class-name URL and the warning [SPIDERLY033](/docs/build-diagnostics#spiderly033).
+The client drops the leading `api`, because `apiUrl` already holds it. The controller's own `[Route]` wins over a base class's `[Route]`. The client reads a template of this form: `api/` or `/api/`, then one or more segments, then `/[action]`. A segment is literal text or `[controller]`. Any other template gives the class-name URL and the warning [SPIDERLY033](/docs/build-diagnostics#spiderly033).
 
 The client gets one method for each method name. When two controllers have a method with the same name, only the first one gets a client method.
 

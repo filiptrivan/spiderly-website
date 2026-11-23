@@ -386,7 +386,7 @@ That is the whole reason this is a separate id from [SPIDERLY030](#spiderly030):
 
 **The Angular client cannot read the controller's `[Route]` template.**
 
-The generated Angular client builds each controller's URL from its class-level `[Route]` template (see [The Angular client reads the controller's `[Route]`](/docs/backend-customization#the-angular-client-reads-the-controllers-route)). It reads a template that starts with `api/` or `/api/`, has one or more literal segments or `[controller]` next, and ends with `/[action]`, with no other argument. For any other template, the client calls the class-name URL. The backend may not serve that URL, so the call fails with 404 at run time. This warning names the controller at build time.
+The generated Angular client builds each controller's URL from its class-level `[Route]` template (see [The Angular client reads the controller's `[Route]`](/docs/backend-customization#the-angular-client-reads-the-controllers-route)). It reads a template of this form: `api/` or `/api/`, then one or more segments, then `/[action]`. A segment is literal text or `[controller]`. The `[Route]` must have no other argument. For any other template, the client calls the class-name URL. The backend may not serve that URL, so the call fails with 404 at run time. This warning names the controller at build time.
 
 ```csharp
 // Reported: a route value, a named argument, no [action], or no leading api.
