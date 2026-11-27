@@ -1,0 +1,11 @@
+{
+  "checks": [
+    {
+      "name": "size cap",
+      "fast": true,
+      "command": "node \"$CI_WORKFLOWS/size-cap/size-cap.mjs\" --base origin/develop",
+      "ciWorkflows": true,
+      "ci": ["size-cap / size cap"]
+    }
+  ]
+}
